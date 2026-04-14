@@ -1,36 +1,106 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portal_TEC_general
+Se desarrrolla un portal corporativo empresarial que consista en brindar una visualización centralizada de la productividad de la empresa, así como también un almacenamiento de los productos importados y herramientas para agilizar la generación y análisis de reportes empresariales
 
-## Getting Started
+## Features
+1. Módulo 1: Base de datos de productos eléctricos importados 
+2. Módulo 2: Distribución de costos por proyecto
+3. Módulo 3: Estudio y generación de reportes de cotización por proyecto
+4. Módulo 4: Estudio y generación de reportes financieros por proyecto
+ 
+En la página principal, se muestra el dashboard donde se registra, en base a los 4 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas.
 
-First, run the development server:
+## Stack
+1. Supabase: alojamiento de la base de datos
+2. Next.js: framework para desarrollar la plataforma
+3. React.js: librería para gestionar componentes de visualización
+4. PostgreSQL: motor SQL incrustrado en Supabase
+5. TailwindCSS: librería para estilización
+
+## Database Schema
+
+### Table of Module 1
+```SQL
+Table Productos {
+    id            int       [pk, increment]
+    // generales
+    proveedor     varchar   [not null]
+    codigo        varchar   [unique, not null]
+    tipo          varchar   [not null]
+    marca         varchar   [not null]
+    // propiedades
+    Tipo_conexion    varchar // monofasico (220V), trifasico (220V o 380V)
+    Pot_maxima       float
+    MPPT             int 
+    DoD              float // en decimal (/100)
+    array_MPPT       int
+    VOC              float
+    VMPP             float
+    ISC              float
+    IMPP             float
+    Fuente_electrica varchar // DC, AC, bateria, DC/AC
+    // precios 
+    unidad         varchar   [not null]
+    igv            float     [not null] // en decimal (/100)
+    precio_soles   float     [not null]
+    precio_dolares float     [not null]
+    precio_soles_igv  float     [not null]
+    precio_dolares_igv  float     [not null]
+    created_at    timestamp [default: `now()`]
+    updated_at    timestamp
+}
+```
+
+---
+
+## Prerequisites
+
+- Git
+- Node.js 20+ (includes npm)
+
+## Installation
+
+1. Clone the repository on the new desktop:
+
+```bash
+git clone <REPO_URL>
+cd Portal_TEC_general
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Create environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+If `.env.example` does not exist, create `.env.local` manually and add the required keys for Supabase (for example `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+
+4. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open the app in your browser:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```text
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+<!-- ### Optional production run
 
-## Learn More
+```bash
+npm run build
+npm run start
+``` -->
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+**Note**: This project uses Supabase as backend. Make sure your `.env.local` contains valid Supabase credentials before starting the app.
