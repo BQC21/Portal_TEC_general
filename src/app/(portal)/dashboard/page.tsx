@@ -3,24 +3,21 @@ import { PortalShell } from "@/app/components/PortalShell";
 const metrics = [
     {
         title: "Productos Activos",
-        value: "247",
-        delta: "+12%",
+        value: "247", // por condicionarse
         accent: "bg-blue-50 text-blue-700",
         icon: "▣",
     },
     {
         title: "Proyectos en Curso",
-        value: "18",
-        delta: "+3",
+        value: "18", // por condicionarse
         accent: "bg-emerald-50 text-emerald-700",
-        icon: "∿",
+        icon: "▣",
     },
     {
         title: "Cotizaciones",
-        value: "34",
-        delta: "+15%",
-        accent: "bg-sky-50 text-sky-700",
-        icon: "↗",
+        value: "34", // por condicionarse
+        accent: "bg-yellow-50 text-yellow-700",
+        icon: "▣",
     },
 ];
 
@@ -41,9 +38,6 @@ export default function DashboardPage() {
                             <div className={`grid h-14 w-14 place-items-center rounded-2xl text-2xl ${metric.accent}`}>
                                 {metric.icon}
                             </div>
-                            <span className="text-lg font-semibold text-emerald-600">
-                                {metric.delta}
-                            </span>
                         </div>
                         <div className="mt-10">
                             <p className="text-3xl font-bold text-slate-900">{metric.value}</p>
