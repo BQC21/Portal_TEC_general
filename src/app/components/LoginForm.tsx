@@ -21,12 +21,21 @@ export function LoginForm() {
             setErrorMessage(null);
 
             const supabase = createClient();
+            const normalizedEmail = email.trim();
+
             const { error } = await supabase.auth.signInWithPassword({
-                email,
+                email: normalizedEmail,
                 password,
             });
 
             if (error) {
+                if (error.message.toLowerCase().includes("invalid login credentials")) {
+                    setErrorMessage(
+                        "Ese usuario no existe en Supabase Auth o la contraseña no coincide. Revisa que la cuenta esté creada en Authentication, no solo en la tabla public.usuarios."
+                    );
+                    return;
+                }
+
                 setErrorMessage(error.message);
                 return;
             }
