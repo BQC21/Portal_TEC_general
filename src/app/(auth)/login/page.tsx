@@ -1,17 +1,8 @@
-import { redirect } from "next/navigation";
-
 import { LoginForm } from "@/app/components/LoginForm";
-import { createClient } from "@/lib/supabase/server";
 
 import TECLogo from "@/features/components/Images/TEC_logo";
 
 export default async function LoginPage() {
-    const supabase = await createClient();
-    const { data } = await supabase.auth.getUser();
-
-    if (data.user) {
-        redirect("/dashboard");
-    }
 
     return (
         <main className="min-h-screen bg-[radial-gradient(circle_at_top,_#e7efff,_#f6f8fc_40%,_#eef2f7_100%)] px-6 py-10 text-slate-900">

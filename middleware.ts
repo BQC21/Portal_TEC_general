@@ -30,25 +30,21 @@ export async function middleware(request: NextRequest) {
     const isProtectedRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/products");
     const isLoginRoute = pathname.startsWith("/login");
 
-    if (isProtectedRoute && !user) {
+
+    // direccionamiento a login
+    if ((isProtectedRoute || "/") && !user) {
         const loginUrl = request.nextUrl.clone();
         loginUrl.pathname = "/login";
         loginUrl.search = "";
         return NextResponse.redirect(loginUrl);
     }
 
+    // direccionamiento a dashboard
     if (isLoginRoute && user) {
         const dashboardUrl = request.nextUrl.clone();
         dashboardUrl.pathname = "/dashboard";
         dashboardUrl.search = "";
         return NextResponse.redirect(dashboardUrl);
-    }
-
-    if (pathname === "/" && !user) {
-        const loginUrl = request.nextUrl.clone();
-        loginUrl.pathname = "/login";
-        loginUrl.search = "";
-        return NextResponse.redirect(loginUrl);
     }
 
     return response;

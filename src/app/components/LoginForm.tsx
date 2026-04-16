@@ -41,9 +41,9 @@ export function LoginForm() {
             }
 
             router.replace("/dashboard");
-            router.refresh();
+            router.refresh(); // actualizar la vista con refresco de datos
         } finally {
-            setIsLoading(false);
+            setIsLoading(false); // quita el indicador de carga 
         }
     }
 
@@ -94,20 +94,6 @@ export function LoginForm() {
             >
                 {isLoading ? "Ingresando..." : "Ingresar al portal"}
             </button>
-            {/* <button
-                type="submit"
-                disabled={isLoading}
-                className="flex w-full items-center justify-center rounded-2xl bg-[#2f4ea8] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f4ea8]/20 transition hover:bg-[#254192] disabled:cursor-not-allowed disabled:opacity-70"
-            >
-                {isLoading ? "Cargando..." : "Registrar cuenta nueva"}
-            </button>
-            <button
-                type="submit"
-                disabled={isLoading}
-                className="flex w-full items-center justify-center rounded-2xl bg-[#2f4ea8] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f4ea8]/20 transition hover:bg-[#254192] disabled:cursor-not-allowed disabled:opacity-70"
-            >
-                {isLoading ? "Cargando..." : "Actualizar contraseña"}
-            </button> */}
         </form>
     );
 }
