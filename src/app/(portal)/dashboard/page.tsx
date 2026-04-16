@@ -1,27 +1,33 @@
-import { PortalShell } from "@/app/components/PortalShell";
+"use client";
 
-const metrics = [
-    {
-        title: "Productos Activos",
-        value: "247", // por condicionarse
-        accent: "bg-blue-50 text-blue-700",
-        icon: "▣",
-    },
-    {
-        title: "Proyectos en Curso",
-        value: "18", // por condicionarse
-        accent: "bg-emerald-50 text-emerald-700",
-        icon: "▣",
-    },
-    {
-        title: "Cotizaciones",
-        value: "34", // por condicionarse
-        accent: "bg-yellow-50 text-yellow-700",
-        icon: "▣",
-    },
-];
+import { PortalShell } from "@/app/components/PortalShell";
+import { useProducts } from "@/features/hooks/useRealtimeProducts";
 
 export default function DashboardPage() {
+
+    const { products } = useProducts();
+
+    const metrics = [
+        {
+            title: "Productos Activos",
+            value: products.length,
+            accent: "bg-blue-50 text-blue-700",
+            icon: "▣",
+        },
+        {
+            title: "Proyectos en Curso",
+            value: "0", // por condicionarse cuando se tenga el módulo 2
+            accent: "bg-emerald-50 text-emerald-700",
+            icon: "▣",
+        },
+        {
+            title: "Cotizaciones",
+            value: "0", // por condicionarse cuando se tenga el módulo 2
+            accent: "bg-yellow-50 text-yellow-700",
+            icon: "▣",
+        },
+    ];
+
     return (
         <PortalShell
             title="Panel de Control"
