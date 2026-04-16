@@ -6,6 +6,8 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { createClient } from "@/lib/supabase/client";
 
+import  TECIcon  from "@/features/components/Images/TEC_Icon";
+
 type PortalNavItem = {
     label: string;
     href: string;
@@ -62,9 +64,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
             <div className="flex min-h-screen flex-col">
                 <header className="flex flex-col gap-4 border-b border-slate-200 bg-white px-6 py-4 shadow-sm md:h-24 md:flex-row md:items-center md:justify-between md:py-0">
                     <div className="flex items-center gap-4">
-                        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-500 text-2xl font-bold text-white shadow-md">
-                            ☼
-                        </div>
+                        <TECIcon />
                         <div>
                             <h1 className="text-2xl font-semibold tracking-tight text-slate-800">
                                 TEC Energy Solutions
