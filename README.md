@@ -1,8 +1,6 @@
 
-auto_awesome
-Translate from: Spanish
-3,207
-#Portal_TEC_general
+
+# Portal_TEC_general
 Se desarrolla un portal corporativo empresarial que consiste en brindar una visualización centralizada de la productividad de la empresa, así como también un almacenamiento de los productos importados y herramientas para agilizar la generación y análisis de informes empresariales.
 
 ## Características
