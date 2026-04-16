@@ -73,19 +73,13 @@ export default function ProductsPage() {
     return (
         <PortalShell
             title="Base de Productos"
-            subtitle="Acceso al módulo externo de inventario"
+            subtitle="Gestión de inventario de productos para energía solar fotovoltaica"
             activePath="/products"
         >
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-1">
-                        <h1 className="text-3xl font-bold tracking-[-0.02em] text-slate-900">
-                        Base de Datos de Productos
-                        </h1>
-                        <p className="text-lg text-slate-600">
-                        Gestión de inventario de productos para energía solar fotovoltaica
-                        </p>
                         <p className="text-lg text-slate-500">
                         Tasa de cambio actual: S/. {exchangeRate.toFixed(2)} por dólar
                         </p>
