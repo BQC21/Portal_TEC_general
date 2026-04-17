@@ -96,25 +96,25 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className="px-4 py-5 text-slate-900">{formatPen(product.precio_soles_igv)}</td>
                         <td className="px-4 py-5 text-slate-900">{formatUsd(product.precio_dolares_igv)}</td>
                         <td className="px-4 py-5">
-                        <div className="flex items-center gap-4 text-slate-500">
-                            <Button2Edit
-                                product={product}
-                                exchangeRate={exchangeRate}
-                                onUpdateProduct={onUpdateProduct}
-                            />
-                            <Button2Trash 
-                                product={product}
-                                onDeleteProduct={onDeleteProduct}
-                            />
-                        </div>
+                            <div className="flex items-center gap-4 text-slate-500">
+                                <Button2Edit
+                                    product={product}
+                                    exchangeRate={exchangeRate}
+                                    onUpdateProduct={onUpdateProduct}
+                                />
+                                <Button2Trash 
+                                    product={product}
+                                    onDeleteProduct={onDeleteProduct}
+                                />
+                            </div>
                         </td>
                     </tr>
                     ))
                 ) : (
                     <tr className="bg-white">
-                    <td colSpan={TABLE_HEADERS.length} className="px-4 py-10 text-center text-slate-500">
-                        No hay productos registrados todavía.
-                    </td>
+                        <td colSpan={TABLE_HEADERS.length} className="px-4 py-10 text-center text-slate-500">
+                            No hay productos registrados todavía.
+                        </td>
                     </tr>
                 )}
                 </tbody>
