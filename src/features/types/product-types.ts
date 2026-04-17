@@ -25,6 +25,7 @@ export type Product = {
     priceUsd: number;
     igv: number;
     powerSource: string;
+    beta_percent: number;
     precio_soles_igv: number;
     precio_dolares_igv: number;
 };

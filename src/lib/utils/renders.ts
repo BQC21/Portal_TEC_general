@@ -15,6 +15,10 @@ export function shouldRenderDod(productType: string): boolean {
     return productType === "Batería";
 }
 
+export function shouldRenderBeta(productType: string): boolean {
+    return productType === "Módulo";
+}
+
 export function shouldRenderArraysPerMppt(productType: string): boolean {
     return productType === "Inversor";
 }
@@ -22,6 +26,7 @@ export function shouldRenderArraysPerMppt(productType: string): boolean {
 export function shouldRenderVocVmppIscImpp(productType: string): boolean {
     return productType === "Inversor" || productType === "Módulo" || productType === "Batería";
 }
+
 
 export function shouldRenderPowerSource(productType: string): boolean {
     return productType === "Cable" || productType === "Protección" || productType === "MC4";

@@ -31,7 +31,8 @@ import {
     shouldRenderMppt, 
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
-    shouldRenderConnectionType 
+    shouldRenderConnectionType, 
+    shouldRenderBeta
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
@@ -211,6 +212,16 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     />
                     )}
 
+                    {/* Beta - Módulo */}
+                    {shouldRenderBeta(form.type) && (
+                    <AddProductTextField
+                        label="Beta - Porcentaje de degradación por temperatura (%)"
+                        placeholder="25%"
+                        value={String(form.beta_percent)}
+                        onChange={(value) => updateField("beta_percent", parseFloat(value) || 0)}
+                    />
+                    )}
+
                     {/* Arreglos por MPPT - Solo Inversor */}
                     {shouldRenderArraysPerMppt(form.type) && (
                     <AddProductTextField
@@ -225,30 +236,32 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     {shouldRenderVocVmppIscImpp(form.type) && (
                     <>
                         <AddProductTextField
-                        label="VOC (Voltaje máximo) en Voltios"
-                        placeholder="550V"
-                        value={form.voc}
-                        onChange={(value) => updateField("voc", value)}
+                            label="VOC (Voltaje máximo) en Voltios"
+                            placeholder="550V"
+                            value={form.voc}
+                            onChange={(value) => updateField("voc", value)}
                         />
                         <AddProductTextField
-                        label="VMPP (Voltaje mínimo) en Voltios"
-                        placeholder="120V"
-                        value={form.vmpp}
-                        onChange={(value) => updateField("vmpp", value)}
-                        />
-                        <AddProductTextField
-                        label="ISC (Corriente máxima entrada) en Amperios"
-                        placeholder="12.5A"
-                        value={form.isc}
-                        onChange={(value) => updateField("isc", value)}
+                            label="ISC (Corriente máxima entrada) en Amperios"
+                            placeholder="12.5A"
+                            value={form.isc}
+                            onChange={(value) => updateField("isc", value)}
                         />
                         {(form.type === "Inversor" || form.type === "Módulo") && (
-                        <AddProductTextField
-                            label="IMPP (Corriente máxima salida) en Amperios"
-                            placeholder="11.8A"
-                            value={form.impp}
-                            onChange={(value) => updateField("impp", value)}
-                        />
+                            <AddProductTextField
+                                label="VMPP (Voltaje mínimo) en Voltios"
+                                placeholder="120V"
+                                value={form.vmpp}
+                                onChange={(value) => updateField("vmpp", value)}
+                            />
+                        )}
+                        {(form.type === "Inversor" || form.type === "Módulo") && (
+                            <AddProductTextField
+                                label="IMPP (Corriente máxima salida) en Amperios"
+                                placeholder="11.8A"
+                                value={form.impp}
+                                onChange={(value) => updateField("impp", value)}
+                            />
                         )}
                     </>
                     )}

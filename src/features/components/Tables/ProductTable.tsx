@@ -13,6 +13,7 @@ const TABLE_HEADERS = [
     "Potencia Máxima (KW)",
     "Número de MPPT",
     "DoD (%)",
+    "Beta (%)",
     "Arrays por MPPT",
     "VOC (V)",
     "VMPP (V)",
@@ -85,6 +86,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className="px-4 py-5 text-slate-900">{product.maxPower}</td>
                         <td className="px-4 py-5 text-slate-900">{product.mpptNumber}</td>
                         <td className="px-4 py-5 text-slate-900">{product.dod}</td>
+                        <td className="px-4 py-5 text-slate-900">{product.beta_percent}</td>
                         <td className="px-4 py-5 text-slate-900">{product.arraysPerMppt}</td>
                         <td className="px-4 py-5 text-slate-900">{product.voc}</td>
                         <td className="px-4 py-5 text-slate-900">{product.vmpp}</td>
