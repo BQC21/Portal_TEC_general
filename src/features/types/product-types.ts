@@ -32,6 +32,7 @@ export type Product = {
     fecha_creada: Date;
     fecha_actualizada: Date;
     estado_equipo: string;
+    fecha_estimada_importacion?: Date;
 };
 
 // Estado del formulario para agregar o editar productos

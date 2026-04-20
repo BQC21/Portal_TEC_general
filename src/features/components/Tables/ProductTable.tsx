@@ -29,6 +29,7 @@ const TABLE_HEADERS = [
     "Fecha creada",
     "Fecha actualizada",
     "Estado del equipo",
+    "Fecha estimada de importación",
     "Acciones",
 ];
 
@@ -106,6 +107,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className="px-4 py-5 text-slate-900">{formatDate(product.fecha_creada)}</td>
                         <td className="px-4 py-5 text-slate-900">{formatDate(product.fecha_actualizada)}</td>
                         <td className="px-4 py-5 text-slate-900">{product.estado_equipo}</td>
+                        <td className="px-4 py-5 text-slate-900">{formatDate(product.fecha_estimada_importacion)}</td>
+
                         <td className="px-4 py-5">
                             <div className="flex items-center gap-4 text-slate-500">
                                 <Button2Edit
