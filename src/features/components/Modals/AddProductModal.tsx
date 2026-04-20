@@ -23,6 +23,7 @@ import {
     convertUsdToPen,
     formatReadonlyCurrency,
     type ProductFormState,
+    RUC_OPTIONS, STATUS_OPTIONS
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
@@ -111,6 +112,13 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                 <AddProductSectionTitle title="Información Básica" />
                 <div className="grid gap-5 md:grid-cols-2">
                     <AddProductSelectField
+                    label="RUC"
+                    required
+                    value={form.ruc}
+                    options={RUC_OPTIONS}
+                    onChange={(value) => updateField("ruc", value)}
+                    />
+                    <AddProductSelectField
                     label="Proveedor"
                     required
                     value={form.supplier}
@@ -151,6 +159,14 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     options={UNIT_OPTIONS}
                     onChange={(value) => updateField("unit", value)}
                     />
+                    <AddProductSelectField
+                    label="Estado del producto"
+                    required
+                    value={form.estado_equipo}
+                    options={STATUS_OPTIONS}
+                    onChange={(value) => updateField("unit", value)}
+                    />
+                    </div>
                     <div className="md:col-span-2">
                     <AddProductTextAreaField
                         label="Descripción"
@@ -159,7 +175,6 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                         value={form.description}
                         onChange={(value) => updateField("description", value)}
                     />
-                    </div>
                 </div>
                 </section>
 
