@@ -1,4 +1,6 @@
 import { FilterIcon } from "@/features/components/Icons/FilterIcon";
+import { SUPPLIER_OPTIONS, 
+    PRODUCT_TYPE_OPTIONS, BRAND_OPTIONS } from "@/lib/utils/helpers"
 
 type FilterKey = "type" | "brand" | "supplier";
 
@@ -9,23 +11,19 @@ const FILTERS = [
         id: "type",
         label: "Filtrar por Tipo",
         placeholder: "Todos los Tipos",
-        content: ["Accesorio", "Batería", "Controlador", "Convertidor", "Datalogger", "Estructura",
-                "Inversor", "Módulo", "Monitor", "Smart Meter", "Cable", "Protección", "MC4"],
+        content: PRODUCT_TYPE_OPTIONS,
     },
     {
         id: "brand",
         label: "Filtrar por Marca",
         placeholder: "Todas las Marcas",
-        content: ["LIVOLTEK", "GOODWE", "JA SOLAR", "INVT", "PYLONTECH", "VICTRON", "TELPERION",
-                "JINKO", "SOLIS", "SOLUNA", "TRINA", "FELICITY", "SUNTREE", "TIBOX",
-                "CHINT", "INDECO", "SCHNEIDER", "ABB"],
+        content: BRAND_OPTIONS,
     },
     {
         id: "supplier",
         label: "Filtrar por Proveedor",
         placeholder: "Todos los Proveedores",
-        content: ["Andet SAC", "Sigelet SAC", "AutoSolar SAC", "Novum Solar SAC",
-                "Caral Energía SAC", "Felicity SAC", "RE&GE Import", "Grupo Coinp", "Proyect and Quality"],
+        content: SUPPLIER_OPTIONS,
     },
 ];
 
@@ -39,7 +37,7 @@ export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) 
         <div className="grid gap-4 lg:grid-cols-3">
         {FILTERS.map((filter) => (
             <label key={filter.id} className="space-y-2">
-            <span className="block text-lg font-semibold text-slate-600">{filter.label}</span>
+            <span className="block text-center text-lg font-semibold text-slate-600">{filter.label}</span>
             <div className="relative">
                 <FilterIcon />
                 <select

@@ -123,7 +123,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	isc: "",
 	impp: "",
 	powerSource: "",
-	beta_percent: 0,
+	beta_percent: "",
 	priceInputCurrency: "PEN",
 	pricePen: 0,
 	priceUsd: 0,

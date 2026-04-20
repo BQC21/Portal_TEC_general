@@ -96,10 +96,6 @@ export default function ProductsPage() {
 
                 <section className="panel">
                     <div className="space-y-6">
-                        {/* <SearchBar 
-                        value={searchTerm}
-                        onChange={(newValue: string) => setSearchTerm(newValue)}
-                        /> */}
                         <ProductFilters
                         values={filters}
                         onFilterChange={(key: string, value: string) =>
