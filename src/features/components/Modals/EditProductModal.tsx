@@ -22,7 +22,8 @@ import {
     createProductFormStateFromProduct,
     formatReadonlyCurrency,
     type ProductFormState,
-    RUC_OPTIONS, STATUS_OPTIONS,
+    RUC_OPTIONS,
+    STATUS_OPTIONS,
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
@@ -174,10 +175,7 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         disabled
                         onChange={() => undefined}
                     />
-                    <AddProductReadonlyField
-                        label="Código del Producto"
-                        value={form.code}
-                    />
+                    <AddProductReadonlyField label="Código del Producto" value={form.code} />
                     <AddProductSelectField
                         label="Tipo de Producto"
                         required

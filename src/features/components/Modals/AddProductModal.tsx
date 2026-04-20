@@ -10,7 +10,7 @@ import { AddProductSelectField } from "@/features/components/Form_fields/AddProd
 import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
 import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
-import type { CurrencyCode, ProductFormData } from "@/features/types/product-types";
+import type { CurrencyCode, Product, ProductFormData } from "@/features/types/product-types";
 import {
     CONNECTION_TYPE_OPTIONS,
     INITIAL_PRODUCT_FORM,
@@ -43,12 +43,12 @@ import {
 // --- Tipo de variables ---
 type AddProductModalProps = {
     exchangeRate: number;
-    nextProductRowNumber: number;
+    existingProducts: Product[];
     onAddProduct: (product: ProductFormData) => void;
     onClose: () => void;
 };
 
-export function AddProductModal({ exchangeRate, nextProductRowNumber, onAddProduct, onClose }: AddProductModalProps) {
+export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
 
@@ -95,6 +95,8 @@ export function AddProductModal({ exchangeRate, nextProductRowNumber, onAddProdu
     }
 
     const productInfoSelection = shouldRender_ProductInfoSelection(form.type);
+    const supplierProductCount = existingProducts.filter((product) => product.supplier === form.supplier).length;
+    const generatedCode = buildProductCode(form.type, form.supplier, supplierProductCount + 1);
 
     // Cambiar la modalidad base de precios
     function handleCurrencyModeChange(currency: CurrencyCode) {
@@ -110,8 +112,6 @@ export function AddProductModal({ exchangeRate, nextProductRowNumber, onAddProdu
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        const generatedCode = buildProductCode(form.type, form.supplier, nextProductRowNumber);
-
         onAddProduct({
         ...form,
         code: generatedCode || form.code,
@@ -121,8 +121,6 @@ export function AddProductModal({ exchangeRate, nextProductRowNumber, onAddProdu
         priceUsd: Number(computedPrices.priceUsd.toFixed(2)),
         });
     }
-
-    const generatedCode = buildProductCode(form.type, form.supplier, nextProductRowNumber);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">

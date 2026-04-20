@@ -88,7 +88,7 @@ export default function ProductsPage() {
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
                         exchangeRate={exchangeRate}
-                        nextProductRowNumber={products.length + 1}
+                        existingProducts={products}
                         onAddProduct={handleAddProduct}
                         />
                     </div>
