@@ -18,7 +18,7 @@ En la página principal, se muestra el tablero donde se registra, en base a los 
 4. PostgreSQL: motor SQL incrustado en Supabase
 5. TailwindCSS: librería para estilización
 
-##Autenticación
+## Autenticación
 
 El portal usa Supabase Auth para controlar el acceso a las rutas internas. La entrada pública queda en `/login`, mientras que `/dashboard` y `/products` requieren sesión activa.
 
@@ -27,7 +27,7 @@ Variables requeridas en `.env.local`:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-## Esquema de la base de datos
+<!-- ## Esquema de la base de datos
 
 ### Tabla del módulo 1
 ```SQL Tabla Productos {
@@ -72,7 +72,7 @@ precio_dolares_igv float [no nulo]
 created_at timestamp [predeterminado: `now()`]
 updated_at timestamp
 }
-```
+``` -->
 
 ---
 
