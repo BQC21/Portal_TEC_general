@@ -25,8 +25,8 @@ export type SupabaseProductRow = {
   igv?: number;
   fuente_electrica?: string;
   power_source?: string;
-  fecha_creada?: Date;
-  fecha_actualizada?: Date;
+  created_at?: Date;
+  updated_at?: Date;
   beta_percent?: number;
   ruc?: string;
   estado_equipo?: string;
@@ -66,8 +66,8 @@ export function mapSupabaseRowToProduct(
     beta_percent: row.beta_percent || 0,
     ruc: row.ruc || "",
     estado_equipo: row.estado_equipo || "",
-    fecha_creada: row.fecha_creada ? new Date(row.fecha_creada) : new Date(),
-    fecha_actualizada: row.fecha_actualizada ? new Date(row.fecha_actualizada) : new Date(),
+    fecha_creada: row.created_at ? new Date(row.created_at) : new Date(),
+    fecha_actualizada: row.updated_at ? new Date(row.updated_at) : new Date(),
   };
 }
 
@@ -101,7 +101,7 @@ export function mapProductToSupabaseRow(
     beta_percent: Number(product.beta_percent) || undefined,
     ruc: product.ruc || "",
     estado_equipo: product.estado_equipo || "",
-    fecha_creada: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
-    fecha_actualizada: product.fecha_actualizada ? new Date(product.fecha_actualizada) : new Date(),
+    created_at: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
+    updated_at: product.fecha_actualizada ? new Date(product.fecha_actualizada) : new Date(),
   };
 }

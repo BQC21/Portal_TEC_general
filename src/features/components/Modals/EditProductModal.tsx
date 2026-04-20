@@ -23,15 +23,16 @@ import {
     createProductFormStateFromProduct,
     formatReadonlyCurrency,
     type ProductFormState,
+    RUC_OPTIONS, STATUS_OPTIONS,
 } from "@/lib/utils/helpers";
 import { 
-  shouldRenderArraysPerMppt, 
-  shouldRenderDod, 
-  shouldRenderMaxPower, 
-  shouldRenderMppt, 
-  shouldRenderPowerSource, 
-  shouldRenderVocVmppIscImpp, 
-  shouldRenderConnectionType 
+    shouldRenderArraysPerMppt, 
+    shouldRenderDod, 
+    shouldRenderMaxPower, 
+    shouldRenderMppt, 
+    shouldRenderPowerSource, 
+    shouldRenderVocVmppIscImpp, 
+    shouldRenderConnectionType 
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
@@ -126,6 +127,13 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     <AddProductSectionTitle title="Información Básica" />
                     <div className="grid gap-5 md:grid-cols-2">
                     <AddProductSelectField
+                        label="RUC"
+                        required
+                        value={form.ruc}
+                        options={RUC_OPTIONS}
+                        onChange={(value) => updateField("ruc", value)}
+                    />
+                    <AddProductSelectField
                         label="Proveedor"
                         required
                         value={form.supplier}
@@ -163,6 +171,13 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         required
                         value={form.unit}
                         options={UNIT_OPTIONS}
+                        onChange={(value) => updateField("unit", value)}
+                    />
+                    <AddProductSelectField
+                        label="Estado del producto"
+                        required
+                        value={form.estado_equipo}
+                        options={STATUS_OPTIONS}
                         onChange={(value) => updateField("unit", value)}
                     />
                     <div className="md:col-span-2">
