@@ -25,7 +25,11 @@ export type SupabaseProductRow = {
   igv?: number;
   fuente_electrica?: string;
   power_source?: string;
+  fecha_creada?: Date;
+  fecha_actualizada?: Date;
   beta_percent?: number;
+  ruc?: string;
+  estado_equipo?: string;
 };
 
 /**
@@ -60,6 +64,10 @@ export function mapSupabaseRowToProduct(
     precio_soles_igv: row.precio_soles_igv || 0,
     precio_dolares_igv: row.precio_dolares_igv || 0,
     beta_percent: row.beta_percent || 0,
+    ruc: row.ruc || "",
+    estado_equipo: row.estado_equipo || "",
+    fecha_creada: row.fecha_creada ? new Date(row.fecha_creada) : new Date(),
+    fecha_actualizada: row.fecha_actualizada ? new Date(row.fecha_actualizada) : new Date(),
   };
 }
 
@@ -91,5 +99,9 @@ export function mapProductToSupabaseRow(
     igv: product.igv / 100,
     fuente_electrica: product.powerSource,
     beta_percent: Number(product.beta_percent) || undefined,
+    ruc: product.ruc || "",
+    estado_equipo: product.estado_equipo || "",
+    fecha_creada: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
+    fecha_actualizada: product.fecha_actualizada ? new Date(product.fecha_actualizada) : new Date(),
   };
 }

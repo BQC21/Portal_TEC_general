@@ -4,6 +4,7 @@ export type CurrencyCode = "PEN" | "USD";
 // Campos para la base de datos para los productos
 export type Product = {
     id: string;
+    ruc: string;
     supplier: string;
     supplierCode: string;
     code: string;
@@ -28,6 +29,9 @@ export type Product = {
     beta_percent: number;
     precio_soles_igv: number;
     precio_dolares_igv: number;
+    fecha_creada: Date;
+    fecha_actualizada: Date;
+    estado_equipo: string;
 };
 
 // Estado del formulario para agregar o editar productos
