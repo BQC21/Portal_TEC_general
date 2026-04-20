@@ -71,7 +71,7 @@ export function mapSupabaseRowToProduct(
     powerSource: row.fuente_electrica || row.power_source || "",
     precio_soles_igv: row.precio_soles_igv || 0,
     precio_dolares_igv: row.precio_dolares_igv || 0,
-    beta_percent: row.beta_percent || 0,
+    beta_percent: row.beta_percent?.toString() || "",
     ruc: row.ruc || "",
     estado_equipo: row.estado_equipo || "",
     fecha_creada: parseNullableDate(row.created_at) ?? new Date(),

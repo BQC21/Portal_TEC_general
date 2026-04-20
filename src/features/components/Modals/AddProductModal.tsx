@@ -276,7 +276,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         label="Beta - Porcentaje de degradación por temperatura (%)"
                         placeholder="25%"
                         value={String(form.beta_percent)}
-                        onChange={(value) => updateField("beta_percent", parseFloat(value) || 0)}
+                        onChange={(value) => updateField("beta_percent", value)}
                     />
                     )}
 
