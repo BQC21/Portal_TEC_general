@@ -35,7 +35,8 @@ import {
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
     shouldRenderConnectionType, 
-    shouldRenderBeta
+    shouldRenderBeta,
+    shouldRenderImportDate,
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
@@ -170,6 +171,9 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     options={STATUS_OPTIONS}
                     onChange={(value) => updateField("estado_equipo", value)}
                     />
+
+                    {/* En caso el producto se encuentre en importación */}
+                    {shouldRenderImportDate(form.estado_equipo) && (
                     <AddProductDateField
                     label="Fecha estimada de importación"
                     required
@@ -183,6 +187,8 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
                     min={today}
                     />
+                    )}
+
                     </div>
                     <div className="md:col-span-2">
                     <AddProductTextAreaField

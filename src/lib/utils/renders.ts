@@ -31,3 +31,7 @@ export function shouldRenderVocVmppIscImpp(productType: string): boolean {
 export function shouldRenderPowerSource(productType: string): boolean {
     return productType === "Cable" || productType === "Protección" || productType === "MC4";
 }
+
+export function shouldRenderImportDate(productStatus: string): boolean {
+    return productStatus === "En importación"
+}

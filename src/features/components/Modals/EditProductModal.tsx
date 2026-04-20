@@ -34,7 +34,8 @@ import {
     shouldRenderMppt, 
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
-    shouldRenderConnectionType 
+    shouldRenderConnectionType,
+    shouldRenderImportDate, 
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
@@ -185,19 +186,23 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         options={STATUS_OPTIONS}
                         onChange={(value) => updateField("estado_equipo", value)}
                     />
-                    <AddProductDateField
-                        label="Fecha estimada de importación"
-                        required
-                        value={
-                            form.fecha_estimada_importacion
-                            ? typeof form.fecha_estimada_importacion === "string"
-                                ? form.fecha_estimada_importacion
-                                : form.fecha_estimada_importacion.toISOString().split("T")[0]
-                            : ""
-                        }
-                        onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
-                        min={today}
-                    />
+                    {/* En caso el producto se encuentre en importación */}
+                    {shouldRenderImportDate(form.estado_equipo) && (
+                        <AddProductDateField
+                            label="Fecha estimada de importación"
+                            required
+                            value={
+                                form.fecha_estimada_importacion
+                                ? typeof form.fecha_estimada_importacion === "string"
+                                    ? form.fecha_estimada_importacion
+                                    : form.fecha_estimada_importacion.toISOString().split("T")[0]
+                                : ""
+                            }
+                            onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
+                            min={today}
+                        />
+                    )}
+
                     <div className="md:col-span-2">
                         <AddProductTextAreaField
                         label="Descripción"
