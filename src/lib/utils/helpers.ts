@@ -1,18 +1,41 @@
 import type { Product } from "@/features/types/product-types";
 
+export function formatDate(value: unknown) {
+    if (!value) return "-";
+
+    const date = value instanceof Date ? value : new Date(value as string | number);
+    return Number.isNaN(date.getTime()) ? "-" : date.toLocaleDateString("es-PE");
+}
+
+export function getCurrentDate(): Date {
+    return new Date();
+}
+
 export type ProductFormState = Omit<Product, "id">;
 
 export const SUPPLIER_OPTIONS = [
-	"Andet SAC",
-	"Sigelet SAC",
-	"AutoSolar SAC",
-	"Novum Solar SAC",
-	"Caral Energía SAC",
-	"Felicity SAC",
-	"RE&GE Import",
-	"Grupo Coinp",
-	"Proyect and Quality",
+	"Andet S.A.C",
+	"Sigelec S.A.C",
+	"AutoSolar Energía del Perú S.A.C",
+	"Novum Solar S.A.C",
+	"Caral Soluciones Energéticas S.A.C",
+	"Felicitysolar Peru E.I.R.L",
+	"RE & GE Import S.A.C",
+	"Grupo Coinp S.A.C",
+	"Proyect & Quality S.A.C",
 ];
+
+export const RUC_OPTIONS = [
+	"20601248647",
+	"20268214527",
+	"20602492118",
+	"20601873894",
+	"20603087675",
+	"20611054069",
+	"20502234693",
+	"20548407991",
+	"20611896116",
+]
 
 export const SUPPLIER_CODE_OPTIONS = ["ANDE", "SIGE", "AUTO", "NOVU", "CARA", 
 										"FELI", "REGE", "COIN", "PROY"];
@@ -54,6 +77,12 @@ export const BRAND_OPTIONS = [
 	"ABB",
 ];
 
+export const STATUS_OPTIONS = [
+	"En stock",
+	"En importación",
+	"Descontinuado",
+]
+
 export const UNIT_OPTIONS = ["Unidad", "Metros"];
 
 export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
@@ -61,6 +90,7 @@ export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "
 export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC", "BAT"];
 
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
+	ruc: RUC_OPTIONS[0],
 	supplier: SUPPLIER_OPTIONS[0],
 	supplierCode: SUPPLIER_CODE_OPTIONS[0],
 	code: "",
@@ -85,10 +115,14 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	igv: 18,
 	precio_soles_igv: 0,
 	precio_dolares_igv: 0,
+	fecha_creada: new Date(),
+	fecha_actualizada: new Date(),
+    estado_equipo: STATUS_OPTIONS[0],
 };
 
 export function createProductFormStateFromProduct(product: Product): ProductFormState {
 	return {
+		ruc: product.ruc,
 		supplier: product.supplier,
 		supplierCode: product.supplierCode,
 		code: product.code,
@@ -113,9 +147,11 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		igv: product.igv,
 		precio_soles_igv: product.precio_soles_igv,
 		precio_dolares_igv: product.precio_dolares_igv,
+		fecha_creada: product.fecha_creada,
+		fecha_actualizada: product.fecha_actualizada,
+		estado_equipo: product.estado_equipo,
 	};
 }
-
 export function formatReadonlyCurrency(symbol: string, value: number) {
 	return `${symbol} ${value.toFixed(2)}`;
 }

@@ -1,8 +1,10 @@
 import { Button2Edit } from "@/features/components/Buttons/button2edit";
 import { Button2Trash } from "@/features/components/Buttons/button2trash";
 import type { Product } from "@/features/types/product-types";
+import { formatDate } from "@/lib/utils/helpers";
 
 const TABLE_HEADERS = [
+    "RUC",
     "Código Proveedor",
     "Proveedor",
     "Código",
@@ -24,6 +26,9 @@ const TABLE_HEADERS = [
     "Precio $",
     "Precio S/. con IGV",
     "Precio $ con IGV",
+    "Fecha creada",
+    "Fecha actualizada",
+    "Estado del equipo",
     "Acciones",
 ];
 
@@ -76,7 +81,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                 {products.length > 0 ? (
                     products.map((product) => (
                     <tr key={product.id} className="bg-white">
-                        <td className="px-4 py-5 text-slate-500">{product.supplierCode || "-"}</td>
+                        <td className="px-4 py-5 text-slate-800">{product.ruc || "-"}</td>
+                        <td className="px-4 py-5 text-slate-500">{product.supplierCode}</td>
                         <td className="px-4 py-5 text-slate-800">{product.supplier}</td>
                         <td className="px-4 py-5 font-medium text-slate-900">{product.code}</td>
                         <td className="px-4 py-5 text-slate-900">{product.type}</td>
@@ -97,6 +103,9 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
                         <td className="px-4 py-5 text-slate-900">{formatPen(product.precio_soles_igv)}</td>
                         <td className="px-4 py-5 text-slate-900">{formatUsd(product.precio_dolares_igv)}</td>
+                        <td className="px-4 py-5 text-slate-900">{formatDate(product.fecha_creada)}</td>
+                        <td className="px-4 py-5 text-slate-900">{formatDate(product.fecha_actualizada)}</td>
+                        <td className="px-4 py-5 text-slate-900">{product.estado_equipo}</td>
                         <td className="px-4 py-5">
                             <div className="flex items-center gap-4 text-slate-500">
                                 <Button2Edit
