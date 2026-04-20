@@ -9,6 +9,7 @@ import { AddProductSectionTitle } from "@/features/components/Form_fields/AddPro
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
 import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
+import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
 import type { CurrencyCode, ProductFormData } from "@/features/types/product-types";
 import {
     CONNECTION_TYPE_OPTIONS,
@@ -24,7 +25,7 @@ import {
     convertUsdToPen,
     formatReadonlyCurrency,
     type ProductFormState,
-    RUC_OPTIONS, STATUS_OPTIONS
+    RUC_OPTIONS, STATUS_OPTIONS,
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
@@ -45,6 +46,7 @@ type AddProductModalProps = {
 };
 
 export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProductModalProps) {
+    const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
 
     // Calcular cambios de precios
@@ -167,6 +169,19 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     value={form.estado_equipo}
                     options={STATUS_OPTIONS}
                     onChange={(value) => updateField("estado_equipo", value)}
+                    />
+                    <AddProductDateField
+                    label="Fecha estimada de importación"
+                    required
+                    value={
+                        form.fecha_estimada_importacion
+                        ? typeof form.fecha_estimada_importacion === "string"
+                            ? form.fecha_estimada_importacion
+                            : form.fecha_estimada_importacion.toISOString().split("T")[0]
+                        : ""
+                    }
+                    onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
+                    min={today}
                     />
                     </div>
                     <div className="md:col-span-2">

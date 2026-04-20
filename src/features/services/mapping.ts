@@ -30,6 +30,7 @@ export type SupabaseProductRow = {
   beta_percent?: number;
   ruc?: string;
   estado_equipo?: string;
+  fecha_estimada_importacion?: Date;
 };
 
 /**
@@ -68,6 +69,7 @@ export function mapSupabaseRowToProduct(
     estado_equipo: row.estado_equipo || "",
     fecha_creada: row.created_at ? new Date(row.created_at) : new Date(),
     fecha_actualizada: row.updated_at ? new Date(row.updated_at) : new Date(),
+    fecha_estimada_importacion: row.fecha_estimada_importacion ? new Date(row.fecha_estimada_importacion): new Date(),
   };
 }
 
@@ -103,5 +105,6 @@ export function mapProductToSupabaseRow(
     estado_equipo: product.estado_equipo || "",
     created_at: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
     updated_at: product.fecha_actualizada ? new Date(product.fecha_actualizada) : new Date(),
+    fecha_estimada_importacion: product.fecha_estimada_importacion ? new Date(product.fecha_estimada_importacion): new Date(),
   };
 }
