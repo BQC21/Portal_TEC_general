@@ -22,7 +22,7 @@ import {
     convertUsdToPen,
     formatReadonlyCurrency,
     type ProductFormState,
-    RUC_OPTIONS, STATUS_OPTIONS,
+    STATUS_OPTIONS,
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
@@ -35,17 +35,20 @@ import {
     shouldRenderBeta,
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
-    shouldRender_ProductInfoSelection
+    shouldRender_ProductInfoSelection,
+    shouldRender_CodeProduct,
+    buildProductCode,
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
     exchangeRate: number;
+    nextProductRowNumber: number;
     onAddProduct: (product: ProductFormData) => void;
     onClose: () => void;
 };
 
-export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProductModalProps) {
+export function AddProductModal({ exchangeRate, nextProductRowNumber, onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
 
@@ -107,14 +110,19 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        const generatedCode = buildProductCode(form.type, form.supplier, nextProductRowNumber);
+
         onAddProduct({
         ...form,
+        code: generatedCode || form.code,
         fecha_estimada_importacion:
             form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
         pricePen: Number(computedPrices.pricePen.toFixed(2)),
         priceUsd: Number(computedPrices.priceUsd.toFixed(2)),
         });
     }
+
+    const generatedCode = buildProductCode(form.type, form.supplier, nextProductRowNumber);
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -158,13 +166,17 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     options={PRODUCT_TYPE_OPTIONS}
                     onChange={(value) => updateField("type", value)}
                     />
-                    <AddProductTextField
-                    label="Código del Producto"
-                    required
-                    placeholder="PANEL-450-MONO"
-                    value={form.code}
-                    onChange={(value) => updateField("code", value)}
+                    {shouldRender_CodeProduct(form.type, form.supplier) ? (
+                    <AddProductReadonlyField
+                        label="Código del Producto"
+                        value={generatedCode}
                     />
+                    ) : (
+                    <AddProductReadonlyField
+                        label="Código del Producto"
+                        value="Selecciona tipo de producto y proveedor"
+                    />
+                    )}
                     <AddProductSelectField
                     label="Marca"
                     required

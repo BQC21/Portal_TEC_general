@@ -35,10 +35,7 @@ export function shouldRenderImportDate(productStatus: string): boolean {
     return productStatus === "En importación"
 }
 
-
-// --- Funciones auxiliares para mostrar opciones de selección ---
-
-export function shouldRender_SupplyInfoSelection(productSupplier: string) {
+export function getSupplierInfo(productSupplier: string) {
     const supplierMap: { [key: string]: { RUC: string; supplierCode: string } } = {
         "Andet S.A.C": { RUC: "20601248647", supplierCode: "ANDE" },
         "Sigelec S.A.C": { RUC: "20268214527", supplierCode: "SIGE" },
@@ -50,7 +47,6 @@ export function shouldRender_SupplyInfoSelection(productSupplier: string) {
         "Grupo Coinp S.A.C": { RUC: "20548407991", supplierCode: "COIN" },
         "Proyect & Quality S.A.C": { RUC: "20611896116", supplierCode: "PROY" },
 
-        // Backward compatibility if the function is called with RUC as key.
         "20601248647": { RUC: "20601248647", supplierCode: "ANDE" },
         "20268214527": { RUC: "20268214527", supplierCode: "SIGE" },
         "20602492118": { RUC: "20602492118", supplierCode: "AUTO" },
@@ -59,10 +55,66 @@ export function shouldRender_SupplyInfoSelection(productSupplier: string) {
         "20611054069": { RUC: "20611054069", supplierCode: "FELI" },
         "20502234693": { RUC: "20502234693", supplierCode: "REGE" },
         "20548407991": { RUC: "20548407991", supplierCode: "COIN" },
-        "20611896116": { RUC: "20611896116", supplierCode: "PROY" }
+        "20611896116": { RUC: "20611896116", supplierCode: "PROY" },
     };
 
     return supplierMap[productSupplier] || { RUC: "", supplierCode: "" };
+}
+
+export function getProductTypeCode(productType: string) {
+    const equipmentTypes = new Set([
+        "Accesorio",
+        "Batería",
+        "Controlador",
+        "Convertidor",
+        "Datalogger",
+        "Estructura",
+        "Inversor",
+        "Módulo",
+        "Monitor",
+        "Rack",
+        "Smart Meter",
+    ]);
+
+    const materialTypes = new Set([
+        "Cable",
+        "Protección",
+        "MC4",
+        "Tablero",
+        "CT",
+        "Fusible",
+        "Portafusible",
+    ]);
+
+    if (equipmentTypes.has(productType)) return "E";
+    if (materialTypes.has(productType)) return "M";
+    return "";
+}
+
+// Confirma si se necesita la asignacion automatica del codigo del producto
+export function shouldRender_CodeProduct(productType: string, supplier: string) {
+    const productCode = getProductTypeCode(productType);
+    const { supplierCode } = getSupplierInfo(supplier);
+
+    return Boolean(productCode && supplierCode);
+}
+
+export function buildProductCode(productType: string, supplier: string, rowNumber: number) {
+    const productCode = getProductTypeCode(productType);
+    const { supplierCode } = getSupplierInfo(supplier);
+
+    if (!productCode || !supplierCode || rowNumber < 1) {
+        return "";
+    }
+
+    return `${productCode}${supplierCode}${String(rowNumber).padStart(5, "0")}`;
+}
+
+
+// --- Funciones auxiliares para mostrar opciones de selección ---
+
+export function shouldRender_SupplyInfoSelection(productSupplier: string) {
+    return getSupplierInfo(productSupplier);
 }
 
 export function shouldRender_ProductInfoSelection(productType: string) {

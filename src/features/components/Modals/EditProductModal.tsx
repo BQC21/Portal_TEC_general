@@ -174,12 +174,9 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         disabled
                         onChange={() => undefined}
                     />
-                    <AddProductTextField
+                    <AddProductReadonlyField
                         label="Código del Producto"
-                        required
-                        placeholder="PANEL-450-MONO"
                         value={form.code}
-                        onChange={(value) => updateField("code", value)}
                     />
                     <AddProductSelectField
                         label="Tipo de Producto"

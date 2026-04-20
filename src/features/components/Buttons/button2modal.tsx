@@ -7,10 +7,11 @@ import type { ProductFormData } from "@/features/types/product-types";
 
 type Button2ModalProps = {
     exchangeRate: number;
+    nextProductRowNumber: number;
     onAddProduct: (product: ProductFormData) => void;
 };
 
-export default function Button2Modal({ exchangeRate, onAddProduct }: Button2ModalProps) {
+export default function Button2Modal({ exchangeRate, nextProductRowNumber, onAddProduct }: Button2ModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -26,6 +27,7 @@ export default function Button2Modal({ exchangeRate, onAddProduct }: Button2Moda
         {open && (
             <AddProductModal
                 exchangeRate={exchangeRate}
+                nextProductRowNumber={nextProductRowNumber}
                 onAddProduct={async (product) => {
                     await onAddProduct(product);
                     setOpen(false);
