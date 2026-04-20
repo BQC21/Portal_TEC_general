@@ -40,6 +40,17 @@ export function shouldRenderImportDate(productStatus: string): boolean {
 
 export function shouldRender_SupplyInfoSelection(productSupplier: string) {
     const supplierMap: { [key: string]: { RUC: string; supplierCode: string } } = {
+        "Andet S.A.C": { RUC: "20601248647", supplierCode: "ANDE" },
+        "Sigelec S.A.C": { RUC: "20268214527", supplierCode: "SIGE" },
+        "AutoSolar Energía del Perú S.A.C": { RUC: "20602492118", supplierCode: "AUTO" },
+        "Novum Solar S.A.C": { RUC: "20601873894", supplierCode: "NOVU" },
+        "Caral Soluciones Energéticas S.A.C": { RUC: "20603087675", supplierCode: "CARA" },
+        "Felicitysolar Peru E.I.R.L": { RUC: "20611054069", supplierCode: "FELI" },
+        "RE & GE Import S.A.C": { RUC: "20502234693", supplierCode: "REGE" },
+        "Grupo Coinp S.A.C": { RUC: "20548407991", supplierCode: "COIN" },
+        "Proyect & Quality S.A.C": { RUC: "20611896116", supplierCode: "PROY" },
+
+        // Backward compatibility if the function is called with RUC as key.
         "20601248647": { RUC: "20601248647", supplierCode: "ANDE" },
         "20268214527": { RUC: "20268214527", supplierCode: "SIGE" },
         "20602492118": { RUC: "20602492118", supplierCode: "AUTO" },

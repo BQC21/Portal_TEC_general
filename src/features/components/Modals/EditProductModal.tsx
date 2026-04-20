@@ -12,13 +12,10 @@ import { AddProductTextField } from "@/features/components/Form_fields/AddProduc
 import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
 import type { CurrencyCode, Product } from "@/features/types/product-types";
 import {
-    BRAND_OPTIONS,
     CONNECTION_TYPE_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
-    UNIT_OPTIONS,
     POWER_SOURCE_OPTIONS,
-    SUPPLIER_CODE_OPTIONS,
     computePricesWithIgv,
     convertPenToUsd,
     convertUsdToPen,
@@ -35,6 +32,8 @@ import {
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
     shouldRenderConnectionType,
+    shouldRender_SupplyInfoSelection,
+    shouldRender_ProductInfoSelection,
     shouldRenderImportDate, 
 } from "@/lib/utils/renders";
 
@@ -74,6 +73,20 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                 [field]: value,
             };
 
+            if (field === "supplier") {
+                const { RUC, supplierCode } = shouldRender_SupplyInfoSelection(String(value));
+                updated.ruc = RUC;
+                updated.supplierCode = supplierCode;
+            }
+
+            if (field === "type") {
+                const { brand_options, unit } = shouldRender_ProductInfoSelection(String(value));
+                if (!brand_options.includes(updated.brand)) {
+                    updated.brand = brand_options[0] || "";
+                }
+                updated.unit = unit || "";
+            }
+
             if (field === "type") {
                 if (value === "Batería") {
                     updated.connectionType = "BAT";
@@ -89,6 +102,8 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
             return updated;
         });
     }
+
+    const productInfoSelection = shouldRender_ProductInfoSelection(form.type);
 
     // Cambiar la modalidad base de precios
     function handleCurrencyModeChange(currency: CurrencyCode) {
@@ -140,8 +155,9 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         label="RUC"
                         required
                         value={form.ruc}
-                        options={RUC_OPTIONS}
-                        onChange={(value) => updateField("ruc", value)}
+                        options={form.ruc ? [form.ruc] : RUC_OPTIONS}
+                        disabled
+                        onChange={() => undefined}
                     />
                     <AddProductSelectField
                         label="Proveedor"
@@ -154,8 +170,9 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         label="Código del proveedor"
                         required
                         value={form.supplierCode}
-                        options={SUPPLIER_CODE_OPTIONS}
-                        onChange={(value) => updateField("supplierCode", value)}
+                        options={form.supplierCode ? [form.supplierCode] : [""]}
+                        disabled
+                        onChange={() => undefined}
                     />
                     <AddProductTextField
                         label="Código del Producto"
@@ -175,15 +192,16 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         label="Marca"
                         required
                         value={form.brand}
-                        options={BRAND_OPTIONS}
+                        options={productInfoSelection.brand_options.length > 0 ? productInfoSelection.brand_options : [""]}
                         onChange={(value) => updateField("brand", value)}
                     />
                     <AddProductSelectField
                         label="Unidad"
                         required
                         value={form.unit}
-                        options={UNIT_OPTIONS}
-                        onChange={(value) => updateField("unit", value)}
+                        options={productInfoSelection.unit ? [productInfoSelection.unit] : [""]}
+                        disabled
+                        onChange={() => undefined}
                     />
                     <AddProductSelectField
                         label="Estado del producto"

@@ -14,11 +14,8 @@ import type { CurrencyCode, ProductFormData } from "@/features/types/product-typ
 import {
     CONNECTION_TYPE_OPTIONS,
     INITIAL_PRODUCT_FORM,
-    BRAND_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
-    SUPPLIER_CODE_OPTIONS,
-    UNIT_OPTIONS,
     POWER_SOURCE_OPTIONS,
     computePricesWithIgv,
     convertPenToUsd,
@@ -37,6 +34,8 @@ import {
     shouldRenderConnectionType, 
     shouldRenderBeta,
     shouldRenderImportDate,
+    shouldRender_SupplyInfoSelection,
+    shouldRender_ProductInfoSelection
 } from "@/lib/utils/renders";
 
 // --- Tipo de variables ---
@@ -66,6 +65,21 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
     function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
         setForm((current) => {
         const updated = { ...current, [field]: value };
+
+        if (field === "supplier") {
+            const { RUC, supplierCode } = shouldRender_SupplyInfoSelection(String(value));
+            updated.ruc = RUC;
+            updated.supplierCode = supplierCode;
+        }
+
+        if (field === "type") {
+            const { brand_options, unit } = shouldRender_ProductInfoSelection(String(value));
+            if (!brand_options.includes(updated.brand)) {
+                updated.brand = brand_options[0] || "";
+            }
+            updated.unit = unit || "";
+        }
+
         // Establecer connectionType a "BAT" cuando se selecciona Batería
         if (field === "type" && value === "Batería") {
             updated.connectionType = "BAT";
@@ -76,6 +90,8 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
         return updated;
         });
     }
+
+    const productInfoSelection = shouldRender_ProductInfoSelection(form.type);
 
     // Cambiar la modalidad base de precios
     function handleCurrencyModeChange(currency: CurrencyCode) {
@@ -121,25 +137,26 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                 <AddProductSectionTitle title="Información Básica" />
                 <div className="grid gap-5 md:grid-cols-2">
                     <AddProductSelectField
-                    label="RUC"
-                    required
-                    value={form.ruc}
-                    options={RUC_OPTIONS}
-                    onChange={(value) => updateField("ruc", value)}
+                        label="Proveedor"
+                        required
+                        value={form.supplier}
+                        options={SUPPLIER_OPTIONS}
+                        onChange={(value) => updateField("supplier", value)}
+                    />
+                    <AddProductReadonlyField
+                        label="RUC"
+                        value={form.ruc}
+                    />
+                    <AddProductReadonlyField
+                        label="Código del proveedor"
+                        value={form.supplierCode}
                     />
                     <AddProductSelectField
-                    label="Proveedor"
+                    label="Tipo de Producto"
                     required
-                    value={form.supplier}
-                    options={SUPPLIER_OPTIONS}
-                    onChange={(value) => updateField("supplier", value)}
-                    />
-                    <AddProductSelectField
-                    label="Código del proveedor"
-                    required
-                    value={form.supplierCode}
-                    options={SUPPLIER_CODE_OPTIONS}
-                    onChange={(value) => updateField("supplierCode", value)}
+                    value={form.type}
+                    options={PRODUCT_TYPE_OPTIONS}
+                    onChange={(value) => updateField("type", value)}
                     />
                     <AddProductTextField
                     label="Código del Producto"
@@ -149,25 +166,15 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     onChange={(value) => updateField("code", value)}
                     />
                     <AddProductSelectField
-                    label="Tipo de Producto"
-                    required
-                    value={form.type}
-                    options={PRODUCT_TYPE_OPTIONS}
-                    onChange={(value) => updateField("type", value)}
-                    />
-                    <AddProductSelectField
                     label="Marca"
                     required
                     value={form.brand}
-                    options={BRAND_OPTIONS}
+                    options={productInfoSelection.brand_options.length > 0 ? productInfoSelection.brand_options : [""]}
                     onChange={(value) => updateField("brand", value)}
                     />
-                    <AddProductSelectField
-                    label="Unidad"
-                    required
-                    value={form.unit}
-                    options={UNIT_OPTIONS}
-                    onChange={(value) => updateField("unit", value)}
+                    <AddProductReadonlyField
+                        label="Unidad"
+                        value={form.unit}
                     />
                     <AddProductSelectField
                     label="Estado del producto"
