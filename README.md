@@ -5,11 +5,12 @@ Se desarrolla un portal corporativo empresarial que consiste en brindar una visu
 
 ## Características
 1. Módulo 1: Base de datos de productos eléctricos importados
-2. Módulo 2: Distribución de costos por proyecto
-3. Módulo 3: Estudio y generación de informes de cotización por proyecto
-4. Módulo 4: Estudio y generación de informes financieros por proyecto
+2. Módulo 2: Dimensionamiento del sistema solar FV
+3. Módulo 3: Distribución de costos por proyecto
+4. Módulo 4: Estudio y generación de informes de cotización por proyecto
+5. Módulo 5: Estudio y generación de informes financieros por proyecto
 
-En la página principal, se muestra el tablero donde se registra, en base a los 4 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas.
+En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas.
 
 ## Pila
 1. Supabase: alojamiento de la base de datos

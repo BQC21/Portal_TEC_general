@@ -35,6 +35,7 @@ export function shouldRenderImportDate(productStatus: string): boolean {
     return productStatus === "En importación"
 }
 
+// --- Funciones auxiliares para mostrar campos según proveedor ---
 export function getSupplierInfo(productSupplier: string) {
     const supplierMap: { [key: string]: { RUC: string; supplierCode: string } } = {
         "Andet S.A.C": { RUC: "20601248647", supplierCode: "ANDE" },
@@ -61,6 +62,7 @@ export function getSupplierInfo(productSupplier: string) {
     return supplierMap[productSupplier] || { RUC: "", supplierCode: "" };
 }
 
+// --- Funciones auxiliares para mostrar campos según tipo de producto ---
 export function getProductTypeCode(productType: string) {
     const equipmentTypes = new Set([
         "Accesorio",
@@ -112,7 +114,6 @@ export function buildProductCode(productType: string, supplier: string, rowNumbe
 
 
 // --- Funciones auxiliares para mostrar opciones de selección ---
-
 export function shouldRender_SupplyInfoSelection(productSupplier: string) {
     return getSupplierInfo(productSupplier);
 }
