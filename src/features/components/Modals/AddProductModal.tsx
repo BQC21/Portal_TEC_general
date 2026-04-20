@@ -16,6 +16,7 @@ import {
     BRAND_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
+    SUPPLIER_CODE_OPTIONS,
     UNIT_OPTIONS,
     POWER_SOURCE_OPTIONS,
     computePricesWithIgv,
@@ -125,10 +126,11 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     options={SUPPLIER_OPTIONS}
                     onChange={(value) => updateField("supplier", value)}
                     />
-                    <AddProductTextField
-                    label="Código del Proveedor"
+                    <AddProductSelectField
+                    label="Código del proveedor"
                     required
                     value={form.supplierCode}
+                    options={SUPPLIER_CODE_OPTIONS}
                     onChange={(value) => updateField("supplierCode", value)}
                     />
                     <AddProductTextField
@@ -164,7 +166,7 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     required
                     value={form.estado_equipo}
                     options={STATUS_OPTIONS}
-                    onChange={(value) => updateField("unit", value)}
+                    onChange={(value) => updateField("estado_equipo", value)}
                     />
                     </div>
                     <div className="md:col-span-2">
