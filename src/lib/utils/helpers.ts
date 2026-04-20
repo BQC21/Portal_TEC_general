@@ -37,8 +37,17 @@ export const RUC_OPTIONS = [
 	"20611896116",
 ]
 
-export const SUPPLIER_CODE_OPTIONS = ["ANDE", "SIGE", "AUTO", "NOVU", "CARA", 
-										"FELI", "REGE", "COIN", "PROY"];
+export const SUPPLIER_CODE_OPTIONS = [
+	"ANDE", 
+	"SIGE", 
+	"AUTO", 
+	"NOVU", 
+	"CARA", 
+	"FELI", 
+	"REGE", 
+	"COIN", 
+	"PROY"
+];
 
 export const PRODUCT_TYPE_OPTIONS = [
 	"Accesorio",
@@ -50,10 +59,15 @@ export const PRODUCT_TYPE_OPTIONS = [
 	"Inversor",
 	"Módulo",
 	"Monitor",
+	"Rack",
 	"Smart Meter",
 	"Cable",
 	"Protección",
 	"MC4",
+	"Tablero",
+	"CT",
+	"Fusible",
+	"Portafusible",
 ];
 
 export const BRAND_OPTIONS = [
@@ -74,6 +88,7 @@ export const BRAND_OPTIONS = [
 	"CHINT",
 	"INDECO",
 	"SCHNEIDER",
+	"TENSITE",
 	"ABB",
 ];
 
