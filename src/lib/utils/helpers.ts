@@ -117,6 +117,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	precio_dolares_igv: 0,
 	fecha_creada: new Date(),
 	fecha_actualizada: new Date(),
+    fecha_estimada_importacion: null,
     estado_equipo: STATUS_OPTIONS[0],
 };
 
@@ -149,6 +150,7 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		precio_dolares_igv: product.precio_dolares_igv,
 		fecha_creada: product.fecha_creada,
 		fecha_actualizada: product.fecha_actualizada,
+		fecha_estimada_importacion: product.estado_equipo === "En importación" ? product.fecha_estimada_importacion : null,
 		estado_equipo: product.estado_equipo,
 	};
 }

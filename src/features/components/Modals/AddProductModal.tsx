@@ -70,6 +70,9 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
         if (field === "type" && value === "Batería") {
             updated.connectionType = "BAT";
         }
+        if (field === "estado_equipo" && value !== "En importación") {
+            updated.fecha_estimada_importacion = null;
+        }
         return updated;
         });
     }
@@ -90,6 +93,8 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
 
         onAddProduct({
         ...form,
+        fecha_estimada_importacion:
+            form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
         pricePen: Number(computedPrices.pricePen.toFixed(2)),
         priceUsd: Number(computedPrices.priceUsd.toFixed(2)),
         });
@@ -179,12 +184,10 @@ export function AddProductModal({ exchangeRate, onAddProduct, onClose }: AddProd
                     required
                     value={
                         form.fecha_estimada_importacion
-                        ? typeof form.fecha_estimada_importacion === "string"
-                            ? form.fecha_estimada_importacion
-                            : form.fecha_estimada_importacion.toISOString().split("T")[0]
+                            ? form.fecha_estimada_importacion.toISOString().split("T")[0]
                         : ""
                     }
-                    onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
+                    onChange={(value) => updateField("fecha_estimada_importacion", value ? new Date(value) : null)}
                     min={today}
                     />
                     )}

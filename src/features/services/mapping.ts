@@ -25,13 +25,20 @@ export type SupabaseProductRow = {
   igv?: number;
   fuente_electrica?: string;
   power_source?: string;
-  created_at?: Date;
-  updated_at?: Date;
+  created_at?: Date | string | null;
+  updated_at?: Date | string | null;
   beta_percent?: number;
   ruc?: string;
   estado_equipo?: string;
-  fecha_estimada_importacion?: Date;
+  fecha_estimada_importacion?: Date | string | null;
 };
+
+function parseNullableDate(value: Date | string | null | undefined): Date | null {
+  if (!value) return null;
+
+  const date = value instanceof Date ? value : new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date;
+}
 
 /**
  * Map Supabase row format to Product type for frontend consumption
@@ -67,9 +74,12 @@ export function mapSupabaseRowToProduct(
     beta_percent: row.beta_percent || 0,
     ruc: row.ruc || "",
     estado_equipo: row.estado_equipo || "",
-    fecha_creada: row.created_at ? new Date(row.created_at) : new Date(),
-    fecha_actualizada: row.updated_at ? new Date(row.updated_at) : new Date(),
-    fecha_estimada_importacion: row.fecha_estimada_importacion ? new Date(row.fecha_estimada_importacion): new Date(),
+    fecha_creada: parseNullableDate(row.created_at) ?? new Date(),
+    fecha_actualizada: parseNullableDate(row.updated_at) ?? new Date(),
+    fecha_estimada_importacion:
+      row.estado_equipo === "En importación"
+        ? parseNullableDate(row.fecha_estimada_importacion)
+        : null,
   };
 }
 
@@ -105,6 +115,9 @@ export function mapProductToSupabaseRow(
     estado_equipo: product.estado_equipo || "",
     created_at: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
     updated_at: product.fecha_actualizada ? new Date(product.fecha_actualizada) : new Date(),
-    fecha_estimada_importacion: product.fecha_estimada_importacion ? new Date(product.fecha_estimada_importacion): new Date(),
+    fecha_estimada_importacion:
+      product.estado_equipo === "En importación" && product.fecha_estimada_importacion
+        ? new Date(product.fecha_estimada_importacion)
+        : null,
   };
 }
