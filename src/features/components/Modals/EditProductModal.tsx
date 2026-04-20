@@ -9,6 +9,7 @@ import { AddProductSectionTitle } from "@/features/components/Form_fields/AddPro
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
 import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
+import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
 import type { CurrencyCode, Product } from "@/features/types/product-types";
 import {
     BRAND_OPTIONS,
@@ -45,6 +46,7 @@ type EditProductModalProps = {
 };
 
 export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClose }: EditProductModalProps) {
+    const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(() => createProductFormStateFromProduct(product));
 
     useEffect(() => {
@@ -182,6 +184,19 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         value={form.estado_equipo}
                         options={STATUS_OPTIONS}
                         onChange={(value) => updateField("estado_equipo", value)}
+                    />
+                    <AddProductDateField
+                        label="Fecha estimada de importación"
+                        required
+                        value={
+                            form.fecha_estimada_importacion
+                            ? typeof form.fecha_estimada_importacion === "string"
+                                ? form.fecha_estimada_importacion
+                                : form.fecha_estimada_importacion.toISOString().split("T")[0]
+                            : ""
+                        }
+                        onChange={(value) => updateField("fecha_estimada_importacion", new Date(value))}
+                        min={today}
                     />
                     <div className="md:col-span-2">
                         <AddProductTextAreaField
