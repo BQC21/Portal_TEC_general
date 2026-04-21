@@ -25,7 +25,7 @@ export function AddProductDateField({
             <input
                 type="date"
                 required={required}
-                value={value}
+                value={value ?? ""}
                 onChange={(event) => onChange(event.target.value)}
                 min={min}
                 max={max}

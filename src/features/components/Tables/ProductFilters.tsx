@@ -53,7 +53,7 @@ export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) 
                 <FilterIcon />
                 <select
                     className="filter-control h-12 w-full appearance-none pl-11 pr-10"
-                    value={values[filter.id as FilterKey]}
+                    value={values[filter.id as FilterKey] ?? ""}
                     onChange={(event) => {
                         const nextValue = event.target.value;
 

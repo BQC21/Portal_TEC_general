@@ -23,7 +23,7 @@ export function AddProductSelectField({
         <select
             required={required}
             disabled={disabled}
-            value={value}
+            value={value ?? ""}
             onChange={(event) => onChange(event.target.value)}
             aria-label={label}
             className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 outline-none transition focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100"
