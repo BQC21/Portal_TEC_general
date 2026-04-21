@@ -153,35 +153,30 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     <AddProductSectionTitle title="Información Básica" />
                     <div className="grid gap-5 md:grid-cols-2">
                     <AddProductSelectField
-                        label="RUC"
-                        required
-                        value={form.ruc}
-                        options={form.ruc ? [form.ruc] : RUC_OPTIONS}
-                        disabled
-                        onChange={() => undefined}
-                    />
-                    <AddProductSelectField
                         label="Proveedor"
                         required
                         value={form.supplier}
                         options={SUPPLIER_OPTIONS}
                         onChange={(value) => updateField("supplier", value)}
                     />
-                    <AddProductSelectField
-                        label="Código del proveedor"
-                        required
-                        value={form.supplierCode}
-                        options={form.supplierCode ? [form.supplierCode] : [""]}
-                        disabled
-                        onChange={() => undefined}
+                    <AddProductReadonlyField
+                        label="RUC"
+                        value={form.ruc}
                     />
-                    <AddProductReadonlyField label="Código del Producto" value={form.code} />
+                    <AddProductReadonlyField
+                        label="Código del proveedor"
+                        value={form.supplierCode}
+                    />
                     <AddProductSelectField
                         label="Tipo de Producto"
                         required
                         value={form.type}
                         options={PRODUCT_TYPE_OPTIONS}
                         onChange={(value) => updateField("type", value)}
+                    />
+                    <AddProductReadonlyField 
+                        label="Código del Producto" 
+                        value={form.code} 
                     />
                     <AddProductSelectField
                         label="Marca"
