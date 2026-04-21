@@ -73,6 +73,16 @@ function displayCellValue(value: unknown): string {
     return isEmptyCellValue(value) ? "---" : String(value);
 }
 
+function isPriceOriginUSD(product: Product): boolean {
+    return product.priceInputCurrency === "USD";
+}
+
+function getPriceCellClass(product: Product, currency: "USD" | "PEN"): string {
+    const isHighlighted = currency === "USD" ? isPriceOriginUSD(product) : !isPriceOriginUSD(product);
+
+    return isHighlighted ? "font-semibold text-slate-950" : "text-slate-400";
+}
+
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
     return (
         <section className="space-y-4">
@@ -113,10 +123,10 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.isc)}`}>{displayCellValue(product.isc)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.impp)}`}>{displayCellValue(product.impp)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.powerSource)}`}>{displayCellValue(product.powerSource)}</td>
-                        <td className="px-4 py-5 text-slate-900">{formatPen(product.pricePen)}</td>
-                        <td className="px-4 py-5 text-slate-900">{formatUsd(product.priceUsd)}</td>
-                        <td className="px-4 py-5 text-slate-900">{formatPen(product.precio_soles_igv)}</td>
-                        <td className="px-4 py-5 text-slate-900">{formatUsd(product.precio_dolares_igv)}</td>
+                        <td className={`px-4 py-5 ${getPriceCellClass(product, "PEN")}`}>{formatPen(product.pricePen)}</td>
+                        <td className={`px-4 py-5 ${getPriceCellClass(product, "USD")}`}>{formatUsd(product.priceUsd)}</td>
+                        <td className={`px-4 py-5 ${getPriceCellClass(product, "PEN")}`}>{formatPen(product.precio_soles_igv)}</td>
+                        <td className={`px-4 py-5 ${getPriceCellClass(product, "USD")}`}>{formatUsd(product.precio_dolares_igv)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.fecha_creada)}`}>{formatDate(product.fecha_creada)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.fecha_actualizada)}`}>{formatDate(product.fecha_actualizada)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.estado_equipo)}`}>{displayCellValue(product.estado_equipo)}</td>
