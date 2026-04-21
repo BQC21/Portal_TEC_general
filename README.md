@@ -4,15 +4,15 @@
 Se desarrolla un portal corporativo empresarial que consiste en brindar una visualización centralizada de la productividad de la empresa, así como también un almacenamiento de los productos importados y herramientas para agilizar la generación y análisis de informes empresariales.
 
 ## Características
-1. Módulo 1: Base de datos de productos eléctricos importados
-2. Módulo 2: Dimensionamiento del sistema solar FV
-3. Módulo 3: Distribución de costos por proyecto
-4. Módulo 4: Estudio y generación de informes de cotización por proyecto
-5. Módulo 5: Estudio y generación de informes financieros por proyecto
+- [x] Módulo 1: Base de datos de productos eléctricos importados
+- [ ] Módulo 2: Dimensionamiento del sistema solar FV 
+- [ ] Módulo 3: Distribución de costos por proyecto
+- [ ] Módulo 4: Estudio y generación de informes de cotización por proyecto
+- [ ] Módulo 5: Estudio y generación de informes financieros por proyecto
 
 En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas.
 
-## Pila
+## Stack
 1. Supabase: alojamiento de la base de datos
 2. Next.js: framework para desarrollar la plataforma
 3. React.js: librería para gestionar componentes de visualización
@@ -127,5 +127,3 @@ npm run start
 ---
 
 **Nota**: Este proyecto utiliza Supabase como backend. Asegúrese de que su archivo `.env.local` contenga credenciales válidas de Supabase antes de iniciar la aplicación.
-Send feedback
-Translation results available
