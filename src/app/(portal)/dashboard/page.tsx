@@ -14,18 +14,18 @@ export default function DashboardPage() {
             accent: "bg-blue-50 text-blue-700",
             icon: "▣",
         },
-        {
-            title: "Proyectos en Curso",
-            value: "0", // por condicionarse cuando se tenga el módulo 2
-            accent: "bg-emerald-50 text-emerald-700",
-            icon: "▣",
-        },
-        {
-            title: "Cotizaciones",
-            value: "0", // por condicionarse cuando se tenga el módulo 2
-            accent: "bg-yellow-50 text-yellow-700",
-            icon: "▣",
-        },
+        // {
+        //     title: "Proyectos en Curso",
+        //     value: "0", // por condicionarse cuando se tenga el módulo 2
+        //     accent: "bg-emerald-50 text-emerald-700",
+        //     icon: "▣",
+        // },
+        // {
+        //     title: "Cotizaciones",
+        //     value: "0", // por condicionarse cuando se tenga el módulo 2
+        //     accent: "bg-yellow-50 text-yellow-700",
+        //     icon: "▣",
+        // },
     ];
 
     return (
