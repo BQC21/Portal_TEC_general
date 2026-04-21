@@ -18,6 +18,7 @@ En la página principal, se muestra el tablero donde se registra, en base a los 
 3. React.js: librería para gestionar componentes de visualización
 4. PostgreSQL: motor SQL incrustado en Supabase
 5. TailwindCSS: librería para estilización
+6. API de la sunat (https://apis.net.pe/api-tipo-cambio.html): integración del tipo de cambio (USD -> PEN)
 
 ## Autenticación
 
