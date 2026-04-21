@@ -26,6 +26,7 @@ import {
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
+    shouldRenderPowerAC,
     shouldRenderDod, 
     shouldRenderMaxPower, 
     shouldRenderMppt, 
@@ -289,6 +290,16 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         onChange={(value) => updateField("arraysPerMppt", value)}
                     />
                     )}
+
+                    {/* Potencia AC - Solo Inversor */}
+                    {shouldRenderPowerAC(form.type) && (
+                    <AddProductTextField
+                        label="Potencia AC"
+                        placeholder="2 KW"
+                        value={form.potenciaAC}
+                        onChange={(value) => updateField("potenciaAC", value)}
+                    />
+                    )}                
 
                     {/* VOC, VMPP, ISC, IMPP - Inversor, Módulo y Batería */}
                     {shouldRenderVocVmppIscImpp(form.type) && (

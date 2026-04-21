@@ -3,6 +3,10 @@ export function shouldRenderConnectionType(productType: string): boolean {
     return productType === "Inversor" || productType === "Batería" || productType === "Smart Meter";
 }
 
+export function shouldRenderPowerAC(productType: string): boolean {
+    return productType === "Inversor";
+}
+
 export function shouldRenderMaxPower(productType: string): boolean {
     return productType === "Inversor" || productType === "Módulo";
 }

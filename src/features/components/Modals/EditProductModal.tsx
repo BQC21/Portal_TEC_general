@@ -27,6 +27,7 @@ import {
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
+    shouldRenderPowerAC,
     shouldRenderDod, 
     shouldRenderMaxPower, 
     shouldRenderMppt, 
@@ -275,6 +276,15 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                             onChange={(value) => updateField("arraysPerMppt", value)}
                         />
                     )}
+
+                    {shouldRenderPowerAC(form.type) && (
+                    <AddProductTextField
+                        label="Potencia AC"
+                        placeholder="2 KW"
+                        value={form.potenciaAC}
+                        onChange={(value) => updateField("potenciaAC", value)}
+                    />
+                    )} 
 
                     {shouldRenderVocVmppIscImpp(form.type) && (
                         <>
