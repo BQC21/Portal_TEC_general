@@ -22,7 +22,7 @@ import {
     convertUsdToPen,
     formatReadonlyCurrency,
     type ProductFormState,
-    STATUS_OPTIONS,
+    STATUS_OPTIONS, PRICE_CURRENCY_OPTIONS,
 } from "@/lib/utils/helpers";
 import { 
     shouldRenderArraysPerMppt, 
@@ -350,20 +350,26 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                 <section className="space-y-5">
                 <AddProductSectionTitle title="Información de Precios" />
                 <div className="space-y-5">
+                    <AddProductSelectField
+                        label="Fuente de tasa de cambio"
+                        value={form.priceInputCurrency}
+                        options={[...PRICE_CURRENCY_OPTIONS]}
+                        onChange={(value) => updateField("priceInputCurrency", value as CurrencyCode)}
+                    />
                     <div className="space-y-3">
-                    <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
-                    <div className="flex flex-wrap gap-6">
-                        <AddProductRadioField
-                        label="Soles (S/.)"
-                        checked={form.priceInputCurrency === "PEN"}
-                        onChange={() => handleCurrencyModeChange("PEN")}
-                        />
-                        <AddProductRadioField
-                        label="Dólares ($)"
-                        checked={form.priceInputCurrency === "USD"}
-                        onChange={() => handleCurrencyModeChange("USD")}
-                        />
-                    </div>
+                        <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
+                        <div className="flex flex-wrap gap-6">
+                            <AddProductRadioField
+                            label="Soles (S/.)"
+                            checked={form.priceInputCurrency === "PEN"}
+                            onChange={() => handleCurrencyModeChange("PEN")}
+                            />
+                            <AddProductRadioField
+                            label="Dólares ($)"
+                            checked={form.priceInputCurrency === "USD"}
+                            onChange={() => handleCurrencyModeChange("USD")}
+                            />
+                        </div>
                     </div>
 
                     <div className="grid gap-5 md:grid-cols-2">

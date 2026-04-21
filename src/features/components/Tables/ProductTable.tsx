@@ -23,6 +23,7 @@ const TABLE_HEADERS = [
     "ISC (A)",
     "IMPP (A)",
     "Fuente eléctrica",
+    "Fuente de divisas",
     "Precio S/.",
     "Precio $",
     "Precio S/. con IGV",
@@ -82,7 +83,7 @@ function getPriceCellClass(product: Product, priceValue: number): string {
     const isCellUSD = priceValue === product.priceUsd || priceValue === product.precio_dolares_igv;
     const isHighlighted = isCellUSD ? isPriceOriginUSD(product) : !isPriceOriginUSD(product);
 
-    return isHighlighted ? "font-semibold text-slate-950" : "text-slate-400";
+    return isHighlighted ? "font-semibold text-slate-950" : "text-slate-700";
 }
 
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
@@ -126,6 +127,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.isc)}`}>{displayCellValue(product.isc)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.impp)}`}>{displayCellValue(product.impp)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.powerSource)}`}>{displayCellValue(product.powerSource)}</td>
+                        <td className={`px-4 py-5 ${getCellTextClass(product.priceInputCurrency)}`}>{displayCellValue(product.priceInputCurrency)}</td>
                         <td className={`px-4 py-5 ${getPriceCellClass(product, product.pricePen)}`}>{formatPen(product.pricePen)}</td>
                         <td className={`px-4 py-5 ${getPriceCellClass(product, product.priceUsd)}`}>{formatUsd(product.priceUsd)}</td>
                         <td className={`px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{formatPen(product.precio_soles_igv)}</td>

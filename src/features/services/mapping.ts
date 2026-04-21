@@ -33,7 +33,21 @@ export type SupabaseProductRow = {
   ruc?: string;
   estado_equipo?: string;
   fecha_estimada_importacion?: Date | string | null;
+  priceInputCurrency?: string;
+  price_input_currency?: string;
+  fuente_divisas?: string;
+  fuente_divisa?: string;
+  moneda?: string;
+  currency_source?: string;
 };
+
+function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
+  if (value === "USD" || value === "PEN") {
+    return value;
+  }
+
+  return "PEN";
+}
 
 function parseNullableDate(value: Date | string | null | undefined): Date | null {
   if (!value) return null;
@@ -66,7 +80,14 @@ export function mapSupabaseRowToProduct(
     vmpp: row.vmpp?.toString() || "",
     isc: row.isc?.toString() || "",
     impp: row.impp?.toString() || "",
-    priceInputCurrency: "PEN",
+    priceInputCurrency: normalizeCurrencyCode(
+      row.priceInputCurrency
+        ?? row.price_input_currency
+        ?? row.fuente_divisas
+        ?? row.fuente_divisa
+        ?? row.currency_source
+        ?? row.moneda
+    ),
     pricePen: row.precio_soles || 0,
     priceUsd: row.precio_dolares || 0,
     igv: row.igv ? row.igv * 100 : 0,

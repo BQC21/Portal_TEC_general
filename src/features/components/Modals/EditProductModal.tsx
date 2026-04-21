@@ -330,22 +330,26 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
 
                 <section className="space-y-5">
                     <AddProductSectionTitle title="Información de Precios" />
+                    <AddProductReadonlyField
+                        label="Fuente de tasa de cambio"
+                        value={form.priceInputCurrency}
+                    />
                     <div className="space-y-5">
-                    <div className="space-y-3">
-                        <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
-                        <div className="flex flex-wrap gap-6">
-                        <AddProductRadioField
-                            label="Soles (S/.)"
-                            checked={form.priceInputCurrency === "PEN"}
-                            onChange={() => handleCurrencyModeChange("PEN")}
-                        />
-                        <AddProductRadioField
-                            label="Dólares ($)"
-                            checked={form.priceInputCurrency === "USD"}
-                            onChange={() => handleCurrencyModeChange("USD")}
-                        />
+                        <div className="space-y-3">
+                            <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
+                            <div className="flex flex-wrap gap-6">
+                            <AddProductRadioField
+                                label="Soles (S/.)"
+                                checked={form.priceInputCurrency === "PEN"}
+                                onChange={() => handleCurrencyModeChange("PEN")}
+                            />
+                            <AddProductRadioField
+                                label="Dólares ($)"
+                                checked={form.priceInputCurrency === "USD"}
+                                onChange={() => handleCurrencyModeChange("USD")}
+                            />
+                            </div>
                         </div>
-                    </div>
 
                     <div className="grid gap-5 md:grid-cols-2">
                         <AddProductNumberField
