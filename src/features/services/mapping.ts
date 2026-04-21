@@ -28,6 +28,8 @@ export type SupabaseProductRow = {
   created_at?: Date | string | null;
   updated_at?: Date | string | null;
   beta_percent?: number;
+  potencia_ac?: number;
+  potenciaAC?: number;
   ruc?: string;
   estado_equipo?: string;
   fecha_estimada_importacion?: Date | string | null;
@@ -72,6 +74,7 @@ export function mapSupabaseRowToProduct(
     precio_soles_igv: row.precio_soles_igv || 0,
     precio_dolares_igv: row.precio_dolares_igv || 0,
     beta_percent: row.beta_percent?.toString() || "",
+    potenciaAC: (row.potenciaAC ?? row.potencia_ac)?.toString() || "",
     ruc: row.ruc || "",
     estado_equipo: row.estado_equipo || "",
     fecha_creada: parseNullableDate(row.created_at) ?? new Date(),
@@ -111,6 +114,7 @@ export function mapProductToSupabaseRow(
     igv: product.igv / 100,
     fuente_electrica: product.powerSource,
     beta_percent: Number(product.beta_percent) || undefined,
+    potenciaAC: Number(product.potenciaAC) || undefined,
     ruc: product.ruc || "",
     estado_equipo: product.estado_equipo || "",
     created_at: product.fecha_creada ? new Date(product.fecha_creada) : new Date(),
