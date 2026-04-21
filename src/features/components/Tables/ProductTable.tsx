@@ -17,6 +17,7 @@ const TABLE_HEADERS = [
     "DoD (%)",
     "Beta (%)",
     "Arrays por MPPT",
+    "Potencia AC (KW)",
     "VOC (V)",
     "VMPP (V)",
     "ISC (A)",
@@ -119,6 +120,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.beta_percent)}`}>{displayCellValue(product.beta_percent)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.arraysPerMppt)}`}>{displayCellValue(product.arraysPerMppt)}</td>
+                        <td className={`px-4 py-5 ${getCellTextClass(product.potenciaAC)}`}>{displayCellValue(product.potenciaAC)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.voc)}`}>{displayCellValue(product.voc)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.vmpp)}`}>{displayCellValue(product.vmpp)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.isc)}`}>{displayCellValue(product.isc)}</td>
