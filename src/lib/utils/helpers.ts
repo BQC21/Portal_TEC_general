@@ -15,11 +15,13 @@ export function getCurrentDate(): Date {
 // Estado del formulario de productos
 export type ProductFormState = Omit<Product, "id">;
 
+export type ProductSortingOrder = "asc" | "desc" | null;
+
 // Opciones para el sorting
-export const SORTING_OPTIONS = [
-	"Ascendente",
-	"Descendente",
-]
+export const SORTING_OPTIONS = {
+	asc: "Ascendente",
+	desc: "Descendente",
+} as const;
 
 // Opciones para el filtrado y los modals (add y edit)
 export const SUPPLIER_OPTIONS = [
