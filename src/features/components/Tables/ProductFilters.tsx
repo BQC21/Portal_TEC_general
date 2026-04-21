@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import { FilterIcon } from "@/features/components/Icons/FilterIcon";
 import { SUPPLIER_OPTIONS, 
     PRODUCT_TYPE_OPTIONS, BRAND_OPTIONS } from "@/lib/utils/helpers"
+import { shouldRender_ProductInfoSelection } from "@/lib/utils/renders";
 
 type FilterKey = "type" | "brand" | "supplier";
 
@@ -33,6 +35,15 @@ type ProductFiltersProps = {
 };
 
 export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) {
+    const brandFilterOptions = useMemo(() => {
+        if (!values.type) {
+            return BRAND_OPTIONS;
+        }
+
+        const { brand_options } = shouldRender_ProductInfoSelection(values.type);
+        return brand_options.length > 0 ? brand_options : BRAND_OPTIONS;
+    }, [values.type]);
+
     return (
         <div className="grid gap-4 lg:grid-cols-3">
         {FILTERS.map((filter) => (
@@ -43,10 +54,24 @@ export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) 
                 <select
                     className="filter-control h-12 w-full appearance-none pl-11 pr-10"
                     value={values[filter.id as FilterKey]}
-                    onChange={(event) => onFilterChange(filter.id as FilterKey, event.target.value)}
+                    onChange={(event) => {
+                        const nextValue = event.target.value;
+
+                        if (filter.id === "type") {
+                            onFilterChange("type", nextValue);
+
+                            const { brand_options } = shouldRender_ProductInfoSelection(nextValue);
+                            if (values.brand && brand_options.length > 0 && !brand_options.includes(values.brand)) {
+                                onFilterChange("brand", "");
+                            }
+                            return;
+                        }
+
+                        onFilterChange(filter.id as FilterKey, nextValue);
+                    }}
                 >
                 <option value="">{filter.placeholder}</option>
-                {filter.content.map((item) => (
+                {(filter.id === "brand" ? brandFilterOptions : filter.content).map((item: string) => (
                     <option key={item} value={item}>
                     {item}
                     </option>
