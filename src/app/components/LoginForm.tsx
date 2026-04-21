@@ -7,12 +7,14 @@ import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export function LoginForm() {
-    const router = useRouter();
+    // variables de estado
+    const router = useRouter(); // permite navegación entre rutas
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+    // lógica del evento al ingresar al dashboard desde auth
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -20,14 +22,16 @@ export function LoginForm() {
             setIsLoading(true);
             setErrorMessage(null);
 
-            const supabase = createClient();
-            const normalizedEmail = email.trim();
+            const supabase = createClient(); // conexión a Supabase desde browser
+            const normalizedEmail = email.trim(); 
 
+            // esperar la lectura de la tabla usuarios de Supabase
             const { error } = await supabase.auth.signInWithPassword({
                 email: normalizedEmail,
                 password,
             });
 
+            // en caso lo ingresado no coincida con el DB de Supabase
             if (error) {
                 if (error.message.toLowerCase().includes("invalid login credentials")) {
                     setErrorMessage(
@@ -40,6 +44,7 @@ export function LoginForm() {
                 return;
             }
 
+            // en caso de éxito navegarlo al dashboard principal
             router.replace("/dashboard");
             router.refresh(); // actualizar la vista con refresco de datos
         } finally {
@@ -81,6 +86,7 @@ export function LoginForm() {
                 />
             </div>
 
+            {/* Mostrar mensaje de error en caso el usuario haya intentado ingresar con credenciales inválidas o campos vacíos */}
             {errorMessage ? (
                 <p className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
                     {errorMessage}
