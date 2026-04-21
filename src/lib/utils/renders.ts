@@ -1,6 +1,6 @@
 // --- Funciones auxiliares para mostrar campos según tipo de producto ---
 export function shouldRenderConnectionType(productType: string): boolean {
-    return productType === "Inversor" || productType === "Batería";
+    return productType === "Inversor" || productType === "Batería" || productType === "Smart Meter";
 }
 
 export function shouldRenderMaxPower(productType: string): boolean {

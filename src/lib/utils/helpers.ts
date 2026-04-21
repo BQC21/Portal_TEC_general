@@ -104,8 +104,8 @@ export const STATUS_OPTIONS = [
 	"Descontinuado",
 ]
 export const UNIT_OPTIONS = ["Unidad", "Metros"];
-export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
-export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC", "BAT"];
+export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
+export const POWER_SOURCE_OPTIONS = ["---", "DC", "AC", "DC/AC", "BAT"];
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
@@ -126,7 +126,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	vmpp: "",
 	isc: "",
 	impp: "",
-	powerSource: "",
+	powerSource: POWER_SOURCE_OPTIONS[0],
 	beta_percent: "",
 	priceInputCurrency: "PEN",
 	pricePen: 0,
