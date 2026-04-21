@@ -1,5 +1,6 @@
 import type { Product } from "@/features/types/product-types";
 
+// Formato de fecha
 export function formatDate(value: unknown) {
     if (!value) return "-";
 
@@ -11,8 +12,16 @@ export function getCurrentDate(): Date {
     return new Date();
 }
 
+// Estado del formulario de productos
 export type ProductFormState = Omit<Product, "id">;
 
+// Opciones para el sorting
+export const SORTING_OPTIONS = [
+	"Ascendente",
+	"Descendente",
+]
+
+// Opciones para el filtrado y los modals (add y edit)
 export const SUPPLIER_OPTIONS = [
 	"Andet S.A.C",
 	"Sigelec S.A.C",
@@ -24,7 +33,6 @@ export const SUPPLIER_OPTIONS = [
 	"Grupo Coinp S.A.C",
 	"Proyect & Quality S.A.C",
 ];
-
 export const RUC_OPTIONS = [
 	"20601248647",
 	"20268214527",
@@ -36,7 +44,6 @@ export const RUC_OPTIONS = [
 	"20548407991",
 	"20611896116",
 ]
-
 export const SUPPLIER_CODE_OPTIONS = [
 	"ANDE", 
 	"SIGE", 
@@ -48,7 +55,6 @@ export const SUPPLIER_CODE_OPTIONS = [
 	"COIN", 
 	"PROY"
 ];
-
 export const PRODUCT_TYPE_OPTIONS = [
 	"Accesorio",
 	"Batería",
@@ -69,7 +75,6 @@ export const PRODUCT_TYPE_OPTIONS = [
 	"Fusible",
 	"Portafusible",
 ];
-
 export const BRAND_OPTIONS = [
 	"LIVOLTEK",
 	"GOODWE",
@@ -91,19 +96,16 @@ export const BRAND_OPTIONS = [
 	"TENSITE",
 	"ABB",
 ];
-
 export const STATUS_OPTIONS = [
 	"En stock",
 	"En importación",
 	"Descontinuado",
 ]
-
 export const UNIT_OPTIONS = ["Unidad", "Metros"];
-
 export const CONNECTION_TYPE_OPTIONS = ["1F 220V", "3F 220V", "3F 380V", "1F", "3F"];
-
 export const POWER_SOURCE_OPTIONS = ["DC", "AC", "DC/AC", "BAT"];
 
+// valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
 	ruc: RUC_OPTIONS[0],
 	supplier: SUPPLIER_OPTIONS[0],
@@ -136,6 +138,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     estado_equipo: STATUS_OPTIONS[0],
 };
 
+// enlace con los atributos de Supabase
 export function createProductFormStateFromProduct(product: Product): ProductFormState {
 	return {
 		ruc: product.ruc,
@@ -169,18 +172,17 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		estado_equipo: product.estado_equipo,
 	};
 }
+
+// Exchange rates compute and operation to obtain prices with IGV
 export function formatReadonlyCurrency(symbol: string, value: number) {
 	return `${symbol} ${value.toFixed(2)}`;
 }
-
 export function convertPenToUsd(pricePen: number, exchangeRate: number): number {
 	return pricePen / exchangeRate;
 }
-
 export function convertUsdToPen(priceUsd: number, exchangeRate: number): number {
 	return priceUsd * exchangeRate;
 }
-
 export function computePricesWithIgv(pricePen: number, priceUsd: number, igvPercent: number) {
 	const igvFactor = 1 + igvPercent / 100;
 
