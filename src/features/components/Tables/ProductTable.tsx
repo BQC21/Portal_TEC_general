@@ -151,6 +151,9 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
         <p className="text-lg text-slate-500">
             Mostrando {products.length} de {totalProducts} productos
         </p>
+        <p className="text-lg text-slate-500">
+            <strong>Nota:</strong> Los campos donde tengan barritas representan que no corresponden según el tipo de producto. 
+        </p>
         </section>
     );
 }
