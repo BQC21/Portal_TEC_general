@@ -1,8 +1,12 @@
 import { createClient } from "@/lib/supabase/client";
-import type { Product, ProductFormData } from "@/features/types/product-types";
+import { Product, ProductFormData } from "@/features/types/product-types";
 import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "./mapping";
 
 const PRODUCTS_TABLE = "productos";
+
+// --------------------------
+// ---- Tolerancias de nomenclatura para el atributo de fuente de divisas
+// --------------------------
 
 const CURRENCY_COLUMN_CANDIDATES = [
   "priceInputCurrency",
@@ -13,7 +17,7 @@ const CURRENCY_COLUMN_CANDIDATES = [
   "moneda",
 ] as const;
 
-let cachedCurrencyColumnName: string | null | undefined;
+let cachedCurrencyColumnName: string | null | undefined; // memoria caché de la columna asociada a la fuente de divisas
 
 async function resolveCurrencyColumnName(supabase: ReturnType<typeof createClient>): Promise<string | null> {
   if (cachedCurrencyColumnName !== undefined) {
@@ -36,6 +40,9 @@ async function resolveCurrencyColumnName(supabase: ReturnType<typeof createClien
   return null;
 }
 
+// --------------------------
+// ---- Añadir la fuente de divisa
+// --------------------------
 async function addCurrencyToRow(
   supabase: ReturnType<typeof createClient>,
   row: Record<string, unknown>,
@@ -52,6 +59,10 @@ async function addCurrencyToRow(
     [currencyColumnName]: currency,
   };
 }
+
+// --------------------------
+// ---- Operaciones CRUD ----
+// --------------------------
 
 export async function createProduct(product: ProductFormData): Promise<Product> {
   const supabase = createClient();

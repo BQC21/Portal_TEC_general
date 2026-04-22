@@ -1,4 +1,5 @@
-import type { Product, ProductFormData } from "@/features/types/product-types";
+import { Product, ProductFormData } from "@/features/types/product-types";
+import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
 
 export type SupabaseProductRow = {
   id?: number | string;
@@ -40,21 +41,6 @@ export type SupabaseProductRow = {
   moneda?: string;
   currency_source?: string;
 };
-
-function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
-  if (value === "USD" || value === "PEN") {
-    return value;
-  }
-
-  return "PEN";
-}
-
-function parseNullableDate(value: Date | string | null | undefined): Date | null {
-  if (!value) return null;
-
-  const date = value instanceof Date ? value : new Date(value);
-  return Number.isNaN(date.getTime()) ? null : date;
-}
 
 /**
  * Map Supabase row format to Product type for frontend consumption

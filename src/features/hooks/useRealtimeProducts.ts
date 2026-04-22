@@ -21,6 +21,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const supabase = createClient();
 
+// Conexión con la lista de productos
 export function useProducts(): UseProductsResult {
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState(true);
@@ -89,6 +90,7 @@ export function useProducts(): UseProductsResult {
     };
 }
 
+// Obtener lista filtrada de productos
 export function useProductFilterOptions() {
     const [options, setOptions] = useState<ProductFilterOptions>({
         types: [],
@@ -127,10 +129,12 @@ export function useProductFilterOptions() {
     };
 }
 
+// Aplicar mutaciones a la lista de productos
 export function useProductMutations(): UseProductMutationsResult {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
+    // crear productos
     const create = useCallback(async (product: ProductFormData) => {
         try {
             setLoading(true);
@@ -148,6 +152,7 @@ export function useProductMutations(): UseProductMutationsResult {
         }
     }, []);
 
+    // actualizar producto
     const update = useCallback(async (id: string, product: ProductFormData) => {
         try {
             setLoading(true);
@@ -165,6 +170,7 @@ export function useProductMutations(): UseProductMutationsResult {
         }
     }, []);
 
+    // eliminar producto
     const remove = useCallback(async (id: string) => {
         try {
             setLoading(true);

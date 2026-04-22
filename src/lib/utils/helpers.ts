@@ -1,5 +1,20 @@
 import type { Product } from "@/features/types/product-types";
 
+export function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
+	if (value === "USD" || value === "PEN") {
+		return value;
+	}
+
+		return "PEN";
+}
+
+export function parseNullableDate(value: Date | string | null | undefined): Date | null {
+	if (!value) return null;
+
+	const date = value instanceof Date ? value : new Date(value);
+	return Number.isNaN(date.getTime()) ? null : date;
+}
+
 // Formato de fecha
 export function formatDate(value: unknown) {
     if (!value) return "-";
