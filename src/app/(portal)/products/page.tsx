@@ -11,10 +11,9 @@ import { PortalShell } from "@/app/components/PortalShell";
 import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
 import { useConverter } from "@/features/hooks/useConverter"; // API
 
-import type { Product, ProductFormData } from "@/lib/types/product-types";
-
-import type { ProductSortingOrder, ProductFilterValues } from "@/lib/utils/helpers";
-
+import type { Product, ProductFormData, 
+    ProductSortingOrder, ProductFilterValues 
+} from "@/lib/types/product-types"; // Tipados
 
 export default function ProductsPage() {
 
@@ -135,8 +134,13 @@ export default function ProductsPage() {
                         onSortingChange={setSorting}
                         />
                     </div>
+
                     {/* añadir subida masiva*/}
+
+
                     {/* añadir limpieza masiva*/}
+
+
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
                         exchangeRate={exchangeRate}

@@ -1,7 +1,14 @@
-// Codigos de definición para tipo de cambio
-export type CurrencyCode = "PEN" | "USD";
+// Codigos de definición 
+export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
+export type ProductSortingOrder = "asc" | "desc" | null; // tipo de ordenamiento
+export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 
-// Tipar filas correspondientes a la tabla de productos de Supabase
+// Estado del formulario de productos
+export type ProductFormState = Omit<Product, "id">; // DB productos visto desde el componente ProductTable
+export type ProductFilterValues = Record<FilterKey, string>; // ProductTable con los filtros de búsqueda activados
+export type ProductFormData = Omit<Product, "id">; // usado para las mutaciones (update || remove)
+
+// Filas correspondientes a la tabla de productos de Supabase
 export type SupabaseProductRow = {
     id?: number | string;
     cod_prov?: string;
@@ -43,7 +50,7 @@ export type SupabaseProductRow = {
     currency_source?: string;
 };
 
-// Campos para la base de datos para los productos
+// Campos para la base de datos para los productos de ProductTable
 export type Product = {
     id: string;
     ruc: string;
@@ -78,11 +85,8 @@ export type Product = {
     potenciaAC: string; 
 };
 
-// Estado del formulario para agregar o editar productos
-export type ProductFormData = Omit<Product, "id">;
-
 // Estado de la visualización de productos
-export interface UseProductsResult {
+export type UseProductsResult = {
     products: Product[];
     loading: boolean;
     error: string | null;
@@ -97,7 +101,7 @@ export type ProductFilterOptions = {
 };
 
 // Mostrar tabla de productos modificadas
-export interface UseProductMutationsResult {
+export type UseProductMutationsResult = {
     loading: boolean;
     error: string | null;
     create: (product: ProductFormData) => Promise<Product>;

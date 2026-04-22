@@ -1,4 +1,7 @@
-import type { Product } from "@/lib/types/product-types";
+import type { 
+	Product,
+	ProductFormState,
+} from "@/lib/types/product-types";
 
 export function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
 	if (value === "USD" || value === "PEN") {
@@ -26,14 +29,6 @@ export function formatDate(value: unknown) {
 export function getCurrentDate(): Date {
     return new Date();
 }
-
-// Estado del formulario de productos
-export type ProductFormState = Omit<Product, "id">;
-
-export type ProductSortingOrder = "asc" | "desc" | null;
-
-export type FilterKey = "type" | "brand" | "supplier";
-export type ProductFilterValues = Record<FilterKey, string>;
 
 // Opciones para el sorting
 export const SORTING_OPTIONS = {
