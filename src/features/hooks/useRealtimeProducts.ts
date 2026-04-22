@@ -15,7 +15,7 @@ import type {
     ProductFilterOptions,
     UseProductMutationsResult,
     UseProductsResult,
-} from "@/features/types/product-types";
+} from "@/lib/types/product-types";
 
 import { createClient } from "@/lib/supabase/client";
 

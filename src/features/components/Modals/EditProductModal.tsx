@@ -10,7 +10,7 @@ import { AddProductSelectField } from "@/features/components/Form_fields/AddProd
 import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
 import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
-import type { CurrencyCode, Product } from "@/features/types/product-types";
+import type { CurrencyCode, Product } from "@/lib/types/product-types";
 import {
     CONNECTION_TYPE_OPTIONS,
     PRODUCT_TYPE_OPTIONS,

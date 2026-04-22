@@ -1,4 +1,4 @@
-import type { Product } from "@/features/types/product-types";
+import type { Product } from "@/lib/types/product-types";
 
 export function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
 	if (value === "USD" || value === "PEN") {

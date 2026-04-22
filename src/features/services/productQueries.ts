@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { Product, ProductFormData } from "@/features/types/product-types";
+import { Product, ProductFormData } from "@/lib/types/product-types";
 import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "./mapping";
 
 const PRODUCTS_TABLE = "productos";

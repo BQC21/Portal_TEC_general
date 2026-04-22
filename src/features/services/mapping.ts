@@ -1,4 +1,4 @@
-import { Product, ProductFormData } from "@/features/types/product-types";
+import { Product, ProductFormData } from "@/lib/types/product-types";
 import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
 
 export type SupabaseProductRow = {

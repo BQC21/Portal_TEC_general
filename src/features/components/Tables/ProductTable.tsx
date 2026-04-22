@@ -1,6 +1,6 @@
 import { Button2Edit } from "@/features/components/Buttons/button2edit";
 import { Button2Trash } from "@/features/components/Buttons/button2trash";
-import type { Product } from "@/features/types/product-types";
+import type { Product } from "@/lib/types/product-types";
 import { formatDate } from "@/lib/utils/helpers";
 
 const TABLE_HEADERS = [

@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/components/Icons/AddProductCloseIcon";
 import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField";
-import type { Product } from "@/features/types/product-types";
+import type { Product } from "@/lib/types/product-types";
 
 // --- Tipo de variables ---
 type DeleteProductModalProps = {

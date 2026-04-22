@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/components/Icons/PlusIcon";
 import { AddProductModal } from "@/features/components/Modals/AddProductModal";
-import type { Product, ProductFormData } from "@/features/types/product-types";
+import type { Product, ProductFormData } from "@/lib/types/product-types";
 
 type Button2ModalProps = {
     exchangeRate: number;

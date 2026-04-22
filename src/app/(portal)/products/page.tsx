@@ -11,7 +11,7 @@ import { PortalShell } from "@/app/components/PortalShell";
 import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
 import { useConverter } from "@/features/hooks/useConverter"; // API
 
-import type { Product, ProductFormData } from "@/features/types/product-types";
+import type { Product, ProductFormData } from "@/lib/types/product-types";
 
 import type { ProductSortingOrder, ProductFilterValues } from "@/lib/utils/helpers";
 
