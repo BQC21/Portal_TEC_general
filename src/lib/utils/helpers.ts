@@ -17,6 +17,9 @@ export type ProductFormState = Omit<Product, "id">;
 
 export type ProductSortingOrder = "asc" | "desc" | null;
 
+export type FilterKey = "type" | "brand" | "supplier";
+export type ProductFilterValues = Record<FilterKey, string>;
+
 // Opciones para el sorting
 export const SORTING_OPTIONS = {
 	asc: "Ascendente",

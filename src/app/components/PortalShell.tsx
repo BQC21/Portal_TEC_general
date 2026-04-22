@@ -13,6 +13,7 @@ type PortalNavItem = {
     href: string;
 };
 
+// añadir modulos por rutas
 const navigation: PortalNavItem[] = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Productos", href: "/products" },
@@ -27,8 +28,8 @@ type PortalShellProps = {
 
 export function PortalShell({ title, subtitle, activePath, children }: PortalShellProps) {
     const router = useRouter();
-    const [userEmail, setUserEmail] = useState<string | null>(null);
-    const [isSigningOut, setIsSigningOut] = useState(false);
+    const [userEmail, setUserEmail] = useState<string | null>(null); // mostrar email del usuario
+    const [isSigningOut, setIsSigningOut] = useState(false); // indica si el usuario salió de la cuenta
 
     useEffect(() => {
         const supabase = createClient();
@@ -45,12 +46,13 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
         };
     }, []);
 
+    // Evento en caso el usuario cierre sesión
     async function handleSignOut() {
         try {
             setIsSigningOut(true);
 
-            const supabase = createClient();
-            await supabase.auth.signOut();
+            const supabase = createClient(); // invoca una instancia del cliente de Supabase
+            await supabase.auth.signOut(); // cierra la sesión en Supabase
 
             router.replace("/login");
             router.refresh();
@@ -62,6 +64,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
     return (
         <main className="min-h-screen bg-[#f6f8fc] text-slate-900">
             <div className="flex min-h-screen flex-col">
+                {/* Encabezado */}
                 <header className="flex flex-col gap-4 border-b border-slate-200 bg-white px-6 py-4 shadow-sm md:h-24 md:flex-row md:items-center md:justify-between md:py-0">
                     <div className="flex items-center gap-4">
                         <TECIcon />
@@ -91,12 +94,12 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
                         </button>
                     </div>
                 </header>
-
+                {/* Barra de navegación vertical */}
                 <div className="grid flex-1 grid-cols-1 lg:grid-cols-[320px_1fr]">
                     <aside className="border-r border-slate-200 bg-[#f8fafc] px-4 py-6">
                         <nav className="space-y-4">
                             {navigation.map((item) => {
-                                const isActive = item.href === activePath;
+                                const isActive = item.href === activePath; // indicador de activación
 
                                 return (
                                     <Link
@@ -116,7 +119,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
                             })}
                         </nav>
                     </aside>
-
+                    {/* Contenido del módulo */}
                     <section className="px-6 py-8 lg:px-8">
                         <div className="mx-auto max-w-7xl space-y-8">
                             <div>

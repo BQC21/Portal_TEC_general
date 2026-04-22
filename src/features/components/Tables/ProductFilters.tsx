@@ -3,10 +3,7 @@ import { FilterIcon } from "@/features/components/Icons/FilterIcon";
 import { SUPPLIER_OPTIONS, 
     PRODUCT_TYPE_OPTIONS, BRAND_OPTIONS } from "@/lib/utils/helpers"
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/renders";
-
-type FilterKey = "type" | "brand" | "supplier";
-
-export type ProductFilterValues = Record<FilterKey, string>;
+import { ProductFilterValues, FilterKey } from "@/lib/utils/helpers"
 
 const FILTERS = [
     {

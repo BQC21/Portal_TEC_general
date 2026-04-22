@@ -1,74 +1,99 @@
 "use client";
 
 import { useMemo, useState } from "react";
-// import { SearchBar } from "@/features/components/SearchBar";
-import { ProductFilters, type ProductFilterValues } from "@/features/components/Tables/ProductFilters";
-import { ProductTable } from "@/features/components/Tables/ProductTable";
-import Button2Modal from "@/features/components/Buttons/button2modal";
-import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts";
-import type { Product, ProductFormData } from "@/features/types/product-types";
-import { useConverter } from "@/features/hooks/useConverter";
-import { Sorting_IGV_USD } from "@/features/components/Tables/SortingIGVUSD";
-import type { ProductSortingOrder } from "@/lib/utils/helpers";
 
+import { ProductFilters } from "@/features/components/Tables/ProductFilters";
+import { ProductTable } from "@/features/components/Tables/ProductTable";
+import { Sorting_IGV_USD } from "@/features/components/Tables/SortingIGVUSD";
+import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
+
+import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
+import { useConverter } from "@/features/hooks/useConverter"; // API
+
+import type { Product, ProductFormData } from "@/features/types/product-types";
+
+import type { ProductSortingOrder, ProductFilterValues } from "@/lib/utils/helpers";
+
 
 export default function ProductsPage() {
 
-    const { products, refetch } = useProducts();
-    const { create, update, remove } = useProductMutations();
+    const { products, refetch } = useProducts(); // obtener la lista de proudctos
+    const { create, update, remove } = useProductMutations(); // poder hacer mutaciones a la lista
+
+    // ---------------------------------
+    // ---- Llamada de API -------------
+    // ---------------------------------
 
     const {
         exchangeRate,
         loading: exchangeRateLoading,
         error: exchangeRateError,
-    } = useConverter("USD", "PEN");
+    } = useConverter("USD", "PEN"); // convertir moneda
+
+    // ---------------------------------
+    // ---- Filtrado de productos ------
+    // ---------------------------------
 
     const [filters, setFilters] = useState<ProductFilterValues>({
         type: "",
         brand: "",
         supplier: "",
-    });
+    }); // estado para filtrar la lista de productos
+
     const filteredProducts = products.filter((product) => {
         const matchesType = !filters.type || product.type === filters.type;
         const matchesBrand = !filters.brand || product.brand === filters.brand;
         const matchesSupplier = !filters.supplier || product.supplier === filters.supplier;
 
         return matchesType && matchesBrand && matchesSupplier;
-    });
+    }); // lógica para operar el filtrado de productos
 
-    const [sorting, setSorting] = useState<ProductSortingOrder>(null);
+
+    // ---------------------------------
+    // ---- Ordenamiento de productos --
+    // ---------------------------------
+
+    const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedProducts = useMemo(() => {
-        const productsToSort = [...filteredProducts];
+        const productsToSort = [...filteredProducts]; // procura si la tabla ha sido filtrada o no
 
         if (!sorting) {
             return productsToSort;
         }
 
         return productsToSort.sort((leftProduct, rightProduct) => {
-            const leftPrice = Number(leftProduct.precio_dolares_igv ?? 0);
-            const rightPrice = Number(rightProduct.precio_dolares_igv ?? 0);
+            const leftPrice = Number(leftProduct.precio_dolares_igv ?? 0); // precio del row anterior
+            const rightPrice = Number(rightProduct.precio_dolares_igv ?? 0); // precio del row posterior
 
             return sorting === "asc"
-                ? leftPrice - rightPrice
-                : rightPrice - leftPrice;
+                ? leftPrice - rightPrice // ascendente
+                : rightPrice - leftPrice; // descendente
         });
-    }, [filteredProducts, sorting]);
+    }, [filteredProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+
+    // ---------------------------------
+    // ---- Lista de eventos ----
+    // ---------------------------------
 
     async function handleAddProduct(product: ProductFormData) {
         await create(product);
         await refetch();
-    }
+    } // añadir producto
     async function handleUpdateProduct(updatedProduct: Product) {
         const { id, ...productData } = updatedProduct;
         await update(id, productData);
         await refetch();
-    }
+    } // actualizar producto
     async function handleDeleteProduct(productId: string) {
         await remove(productId);
         await refetch();
-    }
+    } // remover producto
+
+    // ---------------------------------
+    // ---- Renderizado condicional ----
+    // ---------------------------------
 
     if (exchangeRateLoading) {
         return (
@@ -78,7 +103,7 @@ export default function ProductsPage() {
             </div>
         </main>
         );
-    }
+    } // en caso se esté cargando la tasa de conversión
     if (exchangeRateError) {
         return (
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
@@ -87,7 +112,7 @@ export default function ProductsPage() {
             </div>
         </main>
         );
-    }
+    } // en caso no haya conexión exitosa con la API
 
     return (
         <PortalShell
@@ -110,13 +135,8 @@ export default function ProductsPage() {
                         onSortingChange={setSorting}
                         />
                     </div>
-                    {/* <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <MassiveUpload
-                        exchangeRate={exchangeRate}
-                        existingProducts={products}
-                        onAddProduct={handleAddProduct}
-                        />
-                    </div> */}
+                    {/* añadir subida masiva*/}
+                    {/* añadir limpieza masiva*/}
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
                         exchangeRate={exchangeRate}
