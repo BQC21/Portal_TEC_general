@@ -29,7 +29,7 @@ import {
     INITIAL_PRODUCT_FORM,
 } from "@/lib/utils/initialValues";
 import { 
-    shouldRenderArraysPerMppt, 
+    // shouldRenderArraysPerMppt, 
     shouldRenderPowerAC,
     shouldRenderDod, 
     shouldRenderMaxPower, 
@@ -285,7 +285,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                     />
                     )}
 
-                    {/* Arreglos por MPPT - Solo Inversor */}
+                    {/* Arreglos por MPPT - Solo Inversor 
                     {shouldRenderArraysPerMppt(form.type) && (
                     <AddProductTextField
                         label="Arreglos por MPPT"
@@ -293,7 +293,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         value={form.arraysPerMppt}
                         onChange={(value) => updateField("arraysPerMppt", value)}
                     />
-                    )}
+                    )} */}
 
                     {/* Potencia AC - Solo Inversor */}
                     {shouldRenderPowerAC(form.type) && (

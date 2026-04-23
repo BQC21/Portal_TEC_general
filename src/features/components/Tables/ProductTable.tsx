@@ -2,38 +2,7 @@ import { Button2Edit } from "@/features/components/Buttons/button2edit";
 import { Button2Trash } from "@/features/components/Buttons/button2trash";
 import type { Product } from "@/lib/types/product-types";
 import { formatDate } from "@/lib/utils/helpers";
-
-const TABLE_HEADERS = [
-    "RUC",
-    "Código Proveedor",
-    "Proveedor",
-    "Código",
-    "Tipo",
-    "Marca",
-    "Descripción",
-    "Tipo de Conexión",
-    "Potencia Máxima (KW)",
-    "Número de MPPT",
-    "DoD (%)",
-    "Beta (%)",
-    "Arrays por MPPT",
-    "Potencia AC (KW)",
-    "VOC (V)",
-    "VMPP (V)",
-    "ISC (A)",
-    "IMPP (A)",
-    "Fuente eléctrica",
-    "Fuente de divisas",
-    "Precio S/.",
-    "Precio $",
-    "Precio S/. con IGV",
-    "Precio $ con IGV",
-    "Fecha creada",
-    "Fecha actualizada",
-    "Estado del equipo",
-    "Fecha estimada de importación",
-    "Acciones",
-];
+import { TABLE_HEADERS } from "@/lib/utils/headers";
 
 type ProductTableProps = {
     products: Product[];
@@ -120,7 +89,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.mpptNumber)}`}>{displayCellValue(product.mpptNumber)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.beta_percent)}`}>{displayCellValue(product.beta_percent)}</td>
-                        <td className={`px-4 py-5 ${getCellTextClass(product.arraysPerMppt)}`}>{displayCellValue(product.arraysPerMppt)}</td>
+                        {/* <td className={`px-4 py-5 ${getCellTextClass(product.arraysPerMppt)}`}>{displayCellValue(product.arraysPerMppt)}</td> */}
                         <td className={`px-4 py-5 ${getCellTextClass(product.potenciaAC)}`}>{displayCellValue(product.potenciaAC)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.voc)}`}>{displayCellValue(product.voc)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.vmpp)}`}>{displayCellValue(product.vmpp)}</td>

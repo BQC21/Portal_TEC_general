@@ -24,13 +24,13 @@ import {
     SUPPLIER_OPTIONS,
     POWER_SOURCE_OPTIONS,
     STATUS_OPTIONS, 
-    PRICE_CURRENCY_OPTIONS,
+    // PRICE_CURRENCY_OPTIONS,
 } from "@/lib/utils/options";
 import {
-    INITIAL_PRODUCT_FORM,
+    // INITIAL_PRODUCT_FORM,
 } from "@/lib/utils/initialValues";
 import { 
-    shouldRenderArraysPerMppt, 
+    // shouldRenderArraysPerMppt, 
     shouldRenderPowerAC,
     shouldRenderDod, 
     shouldRenderMaxPower, 
@@ -272,14 +272,14 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         />
                     )}
 
-                    {shouldRenderArraysPerMppt(form.type) && (
+                    {/*{shouldRenderArraysPerMppt(form.type) && (
                         <AddProductTextField
                             label="Arreglos por MPPT"
                             placeholder="2"
                             value={form.arraysPerMppt}
                             onChange={(value) => updateField("arraysPerMppt", value)}
                         />
-                    )}
+                    )}*/}
 
                     {shouldRenderPowerAC(form.type) && (
                     <AddProductTextField
