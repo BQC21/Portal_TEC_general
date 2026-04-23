@@ -32,9 +32,10 @@ import {
 import { 
     // shouldRenderArraysPerMppt, 
     shouldRenderPowerAC,
-    shouldRenderDod, 
+    // shouldRenderDod, 
     shouldRenderMaxPower, 
     shouldRenderMppt, 
+    // shouldRenderBeta,
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
     shouldRenderConnectionType,
@@ -263,14 +264,24 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         />
                     )}
 
-                    {shouldRenderDod(form.type) && (
+                    {/*{shouldRenderDod(form.type) && (
                         <AddProductTextField
                             label="DoD - Grado de degradación (%)"
                             placeholder="95%"
                             value={form.dod}
                             onChange={(value) => updateField("dod", value)}
                         />
-                    )}
+                    )}*/}
+
+                    {/* {/* Beta - Módulo
+                    {shouldRenderBeta(form.type) && (
+                    <AddProductTextField
+                        label="Beta - Porcentaje de degradación por temperatura (%)"
+                        placeholder="25%"
+                        value={String(form.beta_percent)}
+                        onChange={(value) => updateField("beta_percent", value)}
+                    />
+                    )} */}
 
                     {/*{shouldRenderArraysPerMppt(form.type) && (
                         <AddProductTextField

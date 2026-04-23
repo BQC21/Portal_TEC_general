@@ -31,13 +31,13 @@ import {
 import { 
     // shouldRenderArraysPerMppt, 
     shouldRenderPowerAC,
-    shouldRenderDod, 
+    // shouldRenderDod, 
     shouldRenderMaxPower, 
     shouldRenderMppt, 
     shouldRenderPowerSource, 
     shouldRenderVocVmppIscImpp, 
     shouldRenderConnectionType, 
-    shouldRenderBeta,
+    // shouldRenderBeta,
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
     shouldRender_ProductInfoSelection,
@@ -265,7 +265,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                     />
                     )}
 
-                    {/* DoD - Batería */}
+                    {/* {/* DoD - Batería 
                     {shouldRenderDod(form.type) && (
                     <AddProductTextField
                         label="DoD - Grado de degradación (%)"
@@ -273,9 +273,9 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         value={form.dod}
                         onChange={(value) => updateField("dod", value)}
                     />
-                    )}
+                    )}*/}
 
-                    {/* Beta - Módulo */}
+                    {/* {/* Beta - Módulo
                     {shouldRenderBeta(form.type) && (
                     <AddProductTextField
                         label="Beta - Porcentaje de degradación por temperatura (%)"
@@ -283,7 +283,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         value={String(form.beta_percent)}
                         onChange={(value) => updateField("beta_percent", value)}
                     />
-                    )}
+                    )} */}
 
                     {/* Arreglos por MPPT - Solo Inversor 
                     {shouldRenderArraysPerMppt(form.type) && (
