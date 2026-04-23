@@ -2,8 +2,7 @@
 import { useEffect, useState } from "react";
 import { SunatRate } from "@/lib/types/product-types"; 
 
-export function SunatCard() {
-    const [rate, setRate] = useState<number>(0);
+export function useConverterSunat() {
     const [buyPrice, setBuyPrice] = useState<number>(0);
     const [sellPrice, setSellPrice] = useState<number>(0);
     const [date, setDate] = useState<string>("");
@@ -20,8 +19,8 @@ export function SunatCard() {
                 if (!res.ok) throw new Error("No se pudo obtener el tipo de cambio");
 
                 const data = (await res.json()) as SunatRate;
-                const buy = Number(data.buy_price);
-                const sell = Number(data.sell_price);
+                const buy = Number(data.buy_price); // precio de compra
+                const sell = Number(data.sell_price); // precio de venta
 
                 if (Number.isNaN(buy) || Number.isNaN(sell)) {
                     throw new Error("Respuesta inválida de SUNAT");
@@ -30,7 +29,6 @@ export function SunatCard() {
                 setBuyPrice(buy);
                 setSellPrice(sell);
                 setDate(data.date);
-                setRate(sell);
             } catch (err) {
                 const message = err instanceof Error ? err.message : "Error cargando SUNAT";
                 setError(message);
@@ -43,7 +41,6 @@ export function SunatCard() {
     }, []);
 
     return {
-        rate,
         buyPrice,
         sellPrice,
         date,

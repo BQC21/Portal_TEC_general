@@ -10,7 +10,7 @@ import { PortalShell } from "@/app/components/PortalShell";
 
 import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
-import { SunatCard } from "@/features/hooks/useConverterSunat"; // API SUNAT
+import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, 
     ProductSortingOrder, ProductFilterValues 
@@ -34,10 +34,10 @@ export default function ProductsPage() {
     */}
 
     const {
-        rate: exchangeRate,
+        sellPrice: exchangeRate,
         loading: exchangeRateLoading,
         error: exchangeRateError,
-    } = SunatCard(); // convertir moneda (SUNAT)
+    } = useConverterSunat(); // convertir moneda (SUNAT)
 
     // ---------------------------------
     // ---- Filtrado de productos ------

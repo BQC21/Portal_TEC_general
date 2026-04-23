@@ -63,9 +63,9 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
         const baseUsd = form.priceInputCurrency === "USD" ? form.priceUsd : convertPenToUsd(form.pricePen, exchangeRate);
 
         return computePricesWithIgv(
-        Number.isFinite(basePen) ? basePen : 0,
-        Number.isFinite(baseUsd) ? baseUsd : 0,
-        form.igv,
+            Number.isFinite(basePen) ? basePen : 0,
+            Number.isFinite(baseUsd) ? baseUsd : 0,
+            form.igv,
         );
     }, [exchangeRate, form.igv, form.priceInputCurrency, form.pricePen, form.priceUsd]);
 
