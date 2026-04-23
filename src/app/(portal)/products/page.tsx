@@ -5,11 +5,10 @@ import { useMemo, useState } from "react";
 import { ProductFilters } from "@/features/components/Tables/ProductFilters";
 import { ProductTable } from "@/features/components/Tables/ProductTable";
 import { Sorting_IGV_USD } from "@/features/components/Tables/SortingIGVUSD";
-// import Button2MassiveUpload from "@/features/components/Buttons/Button2MassiveUpload";
 import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
 
-import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
+import { useProducts, useProductMutations } from "@/features/hooks/useRealtimeProducts"; // Supabase
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
 import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
 
@@ -20,14 +19,7 @@ import type { Product, ProductFormData,
 export default function ProductsPage() {
 
     const { products, refetch } = useProducts(); // obtener la lista de proudctos
-    const { create, createBulk, update, remove } = useProductMutations(); // poder hacer mutaciones a la lista
-    const [isMassiveUploading, setIsMassiveUploading] = useState(false);
-    const [massiveUploadSummary, setMassiveUploadSummary] = useState<{
-        inserted: number;
-        failed: number;
-        message: string;
-        isError: boolean;
-    } | null>(null);
+    const { create, update, remove } = useProductMutations(); // obtener funciones de mutación
 
     // ---------------------------------
     // ---- Llamada de API -------------
@@ -93,45 +85,6 @@ export default function ProductsPage() {
     // ---- Lista de eventos ----
     // ---------------------------------
 
-    async function handleMassiveAddProduct(batchProducts: ProductFormData[]) {
-        if (batchProducts.length === 0) {
-            setMassiveUploadSummary({
-                inserted: 0,
-                failed: 0,
-                message: "No se encontraron productos para importar.",
-                isError: true,
-            });
-            return;
-        }
-
-        setIsMassiveUploading(true);
-        setMassiveUploadSummary(null);
-
-        try {
-            const result = await createBulk(batchProducts);
-
-            await refetch();
-
-            setMassiveUploadSummary({
-                inserted: result.inserted,
-                failed: result.failed,
-                message:
-                    result.failed > 0
-                        ? `Subida masiva finalizada: ${result.inserted} productos insertados y ${result.failed} fallidos.`
-                        : `Subida masiva finalizada: ${result.inserted} productos insertados.`,
-                isError: result.failed > 0,
-            });
-        } catch {
-            setMassiveUploadSummary({
-                inserted: 0,
-                failed: batchProducts.length,
-                message: "No se pudo completar la subida masiva. Intenta nuevamente.",
-                isError: true,
-            });
-        } finally {
-            setIsMassiveUploading(false);
-        }
-    } // añadidura masiva de productos
     async function handleAddProduct(product: ProductFormData) {
         await create(product);
         await refetch();
@@ -182,18 +135,6 @@ export default function ProductsPage() {
                         <p className="text-lg text-slate-500">
                         Tasa de cambio actual: S/. {exchangeRate.toFixed(2)} por dólar
                         </p>
-                        {/* {isMassiveUploading ? (
-                        <p className="text-sm text-blue-700">Procesando subida masiva...</p>
-                        ) : null}
-                        {massiveUploadSummary ? (
-                        <p
-                            className={`text-sm ${
-                            massiveUploadSummary.isError ? "text-amber-700" : "text-emerald-700"
-                            }`}
-                        >
-                            {massiveUploadSummary.message}
-                        </p>
-                        ) : null} */}
                     </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
@@ -202,17 +143,6 @@ export default function ProductsPage() {
                         onSortingChange={setSorting}
                         />
                     </div>
-
-                    {/* añadir subida masiva
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <Button2MassiveUpload
-                        onMassiveAddProduct={handleMassiveAddProduct}
-                        isMassiveUploading={isMassiveUploading}
-                        />
-                    </div>*/}
-
-                    {/* añadir limpieza masiva*/}
-
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
