@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { Product, ProductFormData } from "@/lib/types/product-types";
+import { MassiveCreateResult, Product, ProductFormData } from "@/lib/types/product-types";
 import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "../mapping/mapping";
 import { addCurrencyToRow } from "@/lib/utils/namingTolerance";
 import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
@@ -8,6 +8,7 @@ import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
 // ---- Operaciones CRUD ----
 // --------------------------
 
+// crear producto
 export async function createProduct(product: ProductFormData): Promise<Product> {
   const supabase = createClient();
   const baseRow = mapProductToSupabaseRow(product) as Record<string, unknown>;
@@ -26,6 +27,28 @@ export async function createProduct(product: ProductFormData): Promise<Product> 
   return mapSupabaseRowToProduct(data);
 }
 
+export async function createProductsBulk(products: ProductFormData[]): Promise<MassiveCreateResult> {
+  if (products.length === 0) {
+    return {
+      inserted: 0,
+      failed: 0,
+      products: [],
+    };
+  }
+
+  const results = await Promise.allSettled(products.map((product) => createProduct(product)));
+  const createdProducts = results
+    .filter((result): result is PromiseFulfilledResult<Product> => result.status === "fulfilled")
+    .map((result) => result.value);
+
+  return {
+    inserted: createdProducts.length,
+    failed: results.length - createdProducts.length,
+    products: createdProducts,
+  };
+}
+
+// obtener productos
 export async function getProducts(): Promise<Product[]> {
   const supabase = createClient();
 
@@ -40,6 +63,7 @@ export async function getProducts(): Promise<Product[]> {
   return data.map(mapSupabaseRowToProduct);
 }
 
+// obtener producto por id
 export async function getProductById(id: string): Promise<Product> {
   const supabase = createClient();
 
@@ -56,6 +80,7 @@ export async function getProductById(id: string): Promise<Product> {
   return mapSupabaseRowToProduct(data);
 }
 
+// actualizar producto
 export async function updateProduct(id: string, product: ProductFormData): Promise<Product> {
   const supabase = createClient();
   const baseRow = mapProductToSupabaseRow(product) as Record<string, unknown>;
@@ -75,6 +100,7 @@ export async function updateProduct(id: string, product: ProductFormData): Promi
   return mapSupabaseRowToProduct(data);
 }
 
+// borarr producto
 export async function deleteProduct(id: string): Promise<void> {
   const supabase = createClient();
 

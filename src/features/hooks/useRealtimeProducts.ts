@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import {
     createProduct,
+    createProductsBulk,
     deleteProduct,
     getProducts,
     getProductFilterOptions,
@@ -152,6 +153,24 @@ export function useProductMutations(): UseProductMutationsResult {
         }
     }, []);
 
+    // subida masiva de productos
+    const createBulk = useCallback(async (products: ProductFormData[]) => {
+        try {
+            setLoading(true);
+            setError(null);
+
+            return await createProductsBulk(products);
+        } catch (err) {
+            const message =
+                err instanceof Error ? err.message : "Error al crear los productos en lote";
+
+            setError(message);
+            throw err;
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
     // actualizar producto
     const update = useCallback(async (id: string, product: ProductFormData) => {
         try {
@@ -192,6 +211,7 @@ export function useProductMutations(): UseProductMutationsResult {
         loading,
         error,
         create,
+        createBulk,
         update,
         remove,
     };
