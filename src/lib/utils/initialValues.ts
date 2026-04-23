@@ -1,10 +1,10 @@
 import type { 
-	Product,
+	// Product,
 	ProductFormState,
 } from "@/lib/types/product-types";
 
 import {
-	SORTING_OPTIONS,
+	// SORTING_OPTIONS,
 	SUPPLIER_OPTIONS,
 	RUC_OPTIONS,
 	SUPPLIER_CODE_OPTIONS,

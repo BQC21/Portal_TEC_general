@@ -1,64 +1,8 @@
 import { createClient } from "@/lib/supabase/client";
 import { Product, ProductFormData } from "@/lib/types/product-types";
 import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "./mapping";
-
-const PRODUCTS_TABLE = "productos";
-
-// --------------------------
-// ---- Tolerancias de nomenclatura para el atributo de fuente de divisas
-// --------------------------
-
-const CURRENCY_COLUMN_CANDIDATES = [
-  "priceInputCurrency",
-  "price_input_currency",
-  "fuente_divisas",
-  "fuente_divisa",
-  "currency_source",
-  "moneda",
-] as const;
-
-let cachedCurrencyColumnName: string | null | undefined; // memoria caché de la columna asociada a la fuente de divisas
-
-async function resolveCurrencyColumnName(supabase: ReturnType<typeof createClient>): Promise<string | null> {
-  if (cachedCurrencyColumnName !== undefined) {
-    return cachedCurrencyColumnName;
-  }
-
-  for (const columnName of CURRENCY_COLUMN_CANDIDATES) {
-    const { error } = await supabase
-      .from(PRODUCTS_TABLE)
-      .select(columnName)
-      .limit(1);
-
-    if (!error) {
-      cachedCurrencyColumnName = columnName;
-      return columnName;
-    }
-  }
-
-  cachedCurrencyColumnName = null;
-  return null;
-}
-
-// --------------------------
-// ---- Añadir la fuente de divisa
-// --------------------------
-async function addCurrencyToRow(
-  supabase: ReturnType<typeof createClient>,
-  row: Record<string, unknown>,
-  currency: ProductFormData["priceInputCurrency"]
-): Promise<Record<string, unknown>> {
-  const currencyColumnName = await resolveCurrencyColumnName(supabase);
-
-  if (!currencyColumnName) {
-    return row;
-  }
-
-  return {
-    ...row,
-    [currencyColumnName]: currency,
-  };
-}
+import { addCurrencyToRow } from "@/lib/utils/namingTolerance";
+import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
 
 // --------------------------
 // ---- Operaciones CRUD ----
@@ -165,3 +109,11 @@ export async function getProductFilterOptions(): Promise<{
 
   return { types, brands, suppliers };
 }
+
+// --------------------------------
+// ---- Obtener tasa de cambio ----
+// --------------------------------
+
+const BASE_URL = 'https://api.decolecta.com/v1/tipo-cambio/sunat?date=2023-05-01'; // coger link SUNAT
+
+
