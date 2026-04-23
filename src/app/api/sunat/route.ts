@@ -4,7 +4,6 @@ export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
         const dateFromRequest = searchParams.get("date");
-        // condiciona a la fecha actual de Lima, Perú
         const date = dateFromRequest ?? new Intl.DateTimeFormat("en-CA", {
             timeZone: "America/Lima",
         }).format(new Date());
@@ -14,6 +13,7 @@ export async function GET(req: NextRequest) {
             headers: {
                 Authorization: `Bearer ${process.env.SUNAT_API_TOKEN}`,
             },
+            cache: "no-store",
         });
 
         if (!response.ok) {
