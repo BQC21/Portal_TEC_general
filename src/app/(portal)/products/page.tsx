@@ -9,7 +9,8 @@ import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
 
 import { useProductMutations, useProducts } from "@/features/hooks/useRealtimeProducts"; // Supabase
-import { useConverter } from "@/features/hooks/useConverter"; // API
+// import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
+import { SunatCard } from "@/features/hooks/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, 
     ProductSortingOrder, ProductFilterValues 
@@ -23,12 +24,20 @@ export default function ProductsPage() {
     // ---------------------------------
     // ---- Llamada de API -------------
     // ---------------------------------
-
+    
+    {/*}
     const {
         exchangeRate,
         loading: exchangeRateLoading,
         error: exchangeRateError,
-    } = useConverter("USD", "PEN"); // convertir moneda
+    } = useConverter("USD", "PEN"); // convertir moneda (FRANKFURTER)
+    */}
+
+    const {
+        rate: exchangeRate,
+        loading: exchangeRateLoading,
+        error: exchangeRateError,
+    } = SunatCard(); // convertir moneda (SUNAT)
 
     // ---------------------------------
     // ---- Filtrado de productos ------

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { exchange_rate } from "@/features/hooks/API/useAPIFrankfurter";
+import { exchange_rate } from "@/app/API/APIFrankfurterRoute";
 
 export function useConverter(priceBase: string, priceQuote: string) {
     const [exchangeRate, setExchangeRate] = useState<number>(0);
