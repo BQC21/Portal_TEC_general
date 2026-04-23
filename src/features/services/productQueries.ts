@@ -27,6 +27,7 @@ export async function createProduct(product: ProductFormData): Promise<Product> 
   return mapSupabaseRowToProduct(data);
 }
 
+// subida masiva de productos
 export async function createProductsBulk(products: ProductFormData[]): Promise<MassiveCreateResult> {
   if (products.length === 0) {
     return {
