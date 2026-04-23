@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 import { ProductFilters } from "@/features/components/Tables/ProductFilters";
 import { ProductTable } from "@/features/components/Tables/ProductTable";
 import { Sorting_IGV_USD } from "@/features/components/Tables/SortingIGVUSD";
-import Button2MassiveUpload from "@/features/components/Buttons/Button2MassiveUpload";
+// import Button2MassiveUpload from "@/features/components/Buttons/Button2MassiveUpload";
 import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
 
@@ -182,7 +182,7 @@ export default function ProductsPage() {
                         <p className="text-lg text-slate-500">
                         Tasa de cambio actual: S/. {exchangeRate.toFixed(2)} por dólar
                         </p>
-                        {isMassiveUploading ? (
+                        {/* {isMassiveUploading ? (
                         <p className="text-sm text-blue-700">Procesando subida masiva...</p>
                         ) : null}
                         {massiveUploadSummary ? (
@@ -193,7 +193,7 @@ export default function ProductsPage() {
                         >
                             {massiveUploadSummary.message}
                         </p>
-                        ) : null}
+                        ) : null} */}
                     </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
@@ -203,13 +203,13 @@ export default function ProductsPage() {
                         />
                     </div>
 
-                    {/* añadir subida masiva*/}
+                    {/* añadir subida masiva
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2MassiveUpload
                         onMassiveAddProduct={handleMassiveAddProduct}
                         isMassiveUploading={isMassiveUploading}
                         />
-                    </div>                    
+                    </div>*/}
 
                     {/* añadir limpieza masiva*/}
 
