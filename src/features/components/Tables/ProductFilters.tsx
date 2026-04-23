@@ -1,9 +1,12 @@
 import { useMemo } from "react";
 import { FilterIcon } from "@/features/components/Icons/FilterIcon";
-import { SUPPLIER_OPTIONS, 
-    PRODUCT_TYPE_OPTIONS, BRAND_OPTIONS } from "@/lib/utils/helpers"
+import { 
+    SUPPLIER_OPTIONS, 
+    PRODUCT_TYPE_OPTIONS, 
+    BRAND_OPTIONS 
+} from "@/lib/utils/options"
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/renders";
-import { ProductFilterValues, FilterKey } from "@/lib/utils/helpers"
+import { ProductFilterValues, FilterKey } from "@/lib/types/product-types"
 
 const FILTERS = [
     {

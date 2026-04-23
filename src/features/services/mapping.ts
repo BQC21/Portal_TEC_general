@@ -1,5 +1,46 @@
-import { Product, ProductFormData, SupabaseProductRow } from "@/lib/types/product-types";
+import { Product, ProductFormData, ProductFormState, SupabaseProductRow } from "@/lib/types/product-types";
 import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
+
+// enlace con los atributos de Supabase
+export function createProductFormStateFromProduct(product: Product): ProductFormState {
+	return {
+		ruc: product.ruc,
+		supplier: product.supplier,
+		supplierCode: product.supplierCode,
+		code: product.code,
+		type: product.type,
+		brand: product.brand,
+		unit: product.unit,
+		description: product.description,
+    // especificaciones técnicas
+		connectionType: product.connectionType,
+		maxPower: product.maxPower,
+		mpptNumber: product.mpptNumber,
+		dod: product.dod,
+		arraysPerMppt: product.arraysPerMppt,
+		potenciaAC: product.potenciaAC,
+		voc: product.voc,
+		vmpp: product.vmpp,
+		isc: product.isc,
+		impp: product.impp,
+		powerSource: product.powerSource,
+		beta_percent: product.beta_percent,
+    // precios
+		priceInputCurrency: product.priceInputCurrency,
+		pricePen: product.pricePen,
+		priceUsd: product.priceUsd,
+		igv: product.igv,
+		precio_soles_igv: product.precio_soles_igv,
+		precio_dolares_igv: product.precio_dolares_igv,
+    // fechas
+		fecha_creada: product.fecha_creada,
+		fecha_actualizada: product.fecha_actualizada,
+    // estado de importación
+		estado_equipo: product.estado_equipo,
+    fecha_estimada_importacion: 
+			product.estado_equipo === "En importación" ? product.fecha_estimada_importacion : null,
+	};
+}
 
 /**
  * Lectura de la base de datos de Supabase

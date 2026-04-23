@@ -10,21 +10,25 @@ import { AddProductSelectField } from "@/features/components/Form_fields/AddProd
 import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
 import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
-import type { CurrencyCode, Product } from "@/lib/types/product-types";
+import type { CurrencyCode, Product, ProductFormState } from "@/lib/types/product-types";
+import { createProductFormStateFromProduct } from "@/features/services/mapping";
+import {
+    computePricesWithIgv,
+    convertPenToUsd,
+    convertUsdToPen,
+    formatReadonlyCurrency,
+} from "@/lib/utils/helpers";
 import {
     CONNECTION_TYPE_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
     POWER_SOURCE_OPTIONS,
-    computePricesWithIgv,
-    convertPenToUsd,
-    convertUsdToPen,
-    createProductFormStateFromProduct,
-    formatReadonlyCurrency,
-    type ProductFormState,
-    RUC_OPTIONS,
-    STATUS_OPTIONS,
-} from "@/lib/utils/helpers";
+    STATUS_OPTIONS, 
+    PRICE_CURRENCY_OPTIONS,
+} from "@/lib/utils/options";
+import {
+    INITIAL_PRODUCT_FORM,
+} from "@/lib/utils/initialValues";
 import { 
     shouldRenderArraysPerMppt, 
     shouldRenderPowerAC,
