@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { Product, ProductFormData } from "@/lib/types/product-types";
-import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "./mapping";
+import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "../mapping/mapping";
 import { addCurrencyToRow } from "@/lib/utils/namingTolerance";
 import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
 
@@ -109,11 +109,3 @@ export async function getProductFilterOptions(): Promise<{
 
   return { types, brands, suppliers };
 }
-
-// --------------------------------
-// ---- Obtener tasa de cambio ----
-// --------------------------------
-
-const BASE_URL = 'https://api.decolecta.com/v1/tipo-cambio/sunat?date=2023-05-01'; // coger link SUNAT
-
-
