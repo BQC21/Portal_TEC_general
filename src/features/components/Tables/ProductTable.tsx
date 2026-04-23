@@ -87,8 +87,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.connectionType)}`}>{displayCellValue(product.connectionType)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.maxPower)}`}>{displayCellValue(product.maxPower)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.mpptNumber)}`}>{displayCellValue(product.mpptNumber)}</td>
-                        <td className={`px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
-                        <td className={`px-4 py-5 ${getCellTextClass(product.beta_percent)}`}>{displayCellValue(product.beta_percent)}</td>
+                        {/*<td className={`px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
+                        {/* <td className={`px-4 py-5 ${getCellTextClass(product.beta_percent)}`}>{displayCellValue(product.beta_percent)}</td>
                         {/* <td className={`px-4 py-5 ${getCellTextClass(product.arraysPerMppt)}`}>{displayCellValue(product.arraysPerMppt)}</td> */}
                         <td className={`px-4 py-5 ${getCellTextClass(product.potenciaAC)}`}>{displayCellValue(product.potenciaAC)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.voc)}`}>{displayCellValue(product.voc)}</td>
