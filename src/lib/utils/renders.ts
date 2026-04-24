@@ -33,8 +33,12 @@ export function shouldRenderVocVmppIscImpp(productType: string): boolean {
 export function shouldRenderPowerSource(productType: string): boolean {
     return productType === "Cable" || productType === "Protección" || productType === "MC4";
 } // renderizar fuente de energía
-
-
+export function  shouldRenderPanelArray(productType: string): boolean {
+    return productType === "Estructura";
+} // renderizar número de paneles por arreglo
+export function  shouldRenderPanelArea(productType: string): boolean {
+    return productType === "Módulo";
+} // renderizar área por módulo
 
 
 // -----------------------------

@@ -32,6 +32,8 @@ export type SupabaseProductRow = {
     precio_soles_igv?: number;
     precio_dolares_igv?: number;
     igv?: number;
+    panel_array?: number;
+    panel_area?: number;
     fuente_electrica?: string;
     power_source?: string;
     created_at?: Date | string | null;
@@ -74,6 +76,8 @@ export type Product = {
     pricePen: number;
     priceUsd: number;
     igv: number;
+    panel_array: string;
+    panel_area: string;
     powerSource: string;
     beta_percent: string;
     precio_soles_igv: number;

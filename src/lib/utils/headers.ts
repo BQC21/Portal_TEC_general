@@ -17,6 +17,8 @@ export const TABLE_HEADERS = [
     "VMPP (V)",
     "ISC (A)",
     "IMPP (A)",
+    "Nro. paneles por estructura",
+    "Área por módulo",
     "Fuente eléctrica",
     "Fuente de divisas",
     "Precio S/.",

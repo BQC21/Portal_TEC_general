@@ -25,6 +25,8 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
 		impp: product.impp,
 		powerSource: product.powerSource,
 		beta_percent: product.beta_percent,
+		panel_array: product.panel_array,
+		panel_area: product.panel_area,
     // precios
 		priceInputCurrency: product.priceInputCurrency,
 		pricePen: product.pricePen,
@@ -71,7 +73,9 @@ export function mapSupabaseRowToProduct(
     isc: row.isc?.toString() || "",
     impp: row.impp?.toString() || "",
     powerSource: row.fuente_electrica || row.power_source || "",
-    // nomenclatura de la fuente de divisas
+    panel_array: row.panel_array?.toString() || " ",
+    panel_area: row.panel_area?.toString() || " ",
+    // currency source naming
     priceInputCurrency: normalizeCurrencyCode(
       row.priceInputCurrency
         ?? row.price_input_currency
@@ -126,6 +130,8 @@ export function mapProductToSupabaseRow(
     isc: Number(product.isc) || undefined,
     impp: Number(product.impp) || undefined,
     fuente_electrica: product.powerSource,
+    panel_array: Number(product.panel_array) || undefined,
+    panel_area: Number(product.panel_area) || undefined,
     // Precios
     precio_soles: product.pricePen,
     precio_dolares: product.priceUsd,

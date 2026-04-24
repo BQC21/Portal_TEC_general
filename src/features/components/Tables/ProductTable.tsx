@@ -95,6 +95,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <td className={`px-4 py-5 ${getCellTextClass(product.vmpp)}`}>{displayCellValue(product.vmpp)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.isc)}`}>{displayCellValue(product.isc)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.impp)}`}>{displayCellValue(product.impp)}</td>
+                        <td className={`px-4 py-5 ${getCellTextClass(product.panel_array)}`}>{displayCellValue(product.panel_array)}</td>
+                        <td className={`px-4 py-5 ${getCellTextClass(product.panel_area)}`}>{displayCellValue(product.panel_area)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.powerSource)}`}>{displayCellValue(product.powerSource)}</td>
                         <td className={`px-4 py-5 ${getCellTextClass(product.priceInputCurrency)}`}>{displayCellValue(product.priceInputCurrency)}</td>
                         <td className={`px-4 py-5 ${getPriceCellClass(product, product.pricePen)}`}>{formatPen(product.pricePen)}</td>

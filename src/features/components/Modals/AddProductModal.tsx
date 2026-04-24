@@ -38,6 +38,8 @@ import {
     shouldRenderVocVmppIscImpp, 
     shouldRenderConnectionType, 
     // shouldRenderBeta,
+    shouldRenderPanelArray,
+    shouldRenderPanelArea,
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
     shouldRender_ProductInfoSelection,
@@ -348,6 +350,26 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         onChange={(value) => updateField("powerSource", value)}
                     />
                     )}
+
+                    {/* Paneles por estructura - Solo Estructura */}
+                    {shouldRenderPanelArray(form.type) && (
+                    <AddProductTextField
+                        label="Paneles por estructura"
+                        placeholder="4"
+                        value={String(form.panel_array ?? " ")}
+                        onChange={(value) => updateField("panel_array", value)}
+                    />
+                    )}   
+                    {/* Área por módulo - Solo Módulo */}
+                    {shouldRenderPanelArea(form.type) && (
+                    <AddProductTextField
+                        label="Área por módulo"
+                        placeholder="1.6 m²"
+                        value={String(form.panel_area ?? " ")}
+                        onChange={(value) => updateField("panel_area", value)}
+                    />
+                    )}   
+
                 </div>
                 </section>
 
