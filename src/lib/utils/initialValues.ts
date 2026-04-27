@@ -40,6 +40,8 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     impp: "",
     powerSource: POWER_SOURCE_OPTIONS[0],
     beta_percent: "",
+    panel_array: "",
+    panel_area: "",
     // precios
     priceInputCurrency: PRICE_CURRENCY_OPTIONS[0],
     pricePen: 0,
