@@ -57,8 +57,8 @@ function getPriceCellClass(product: Product, priceValue: number): string {
 
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
     return (
-        <section className="space-y-4">
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
+        <section className="space-y-4 w-full">
+        <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
             <div className="overflow-x-auto">
             <table className="min-w-full border-separate border-spacing-0">
                 <thead>
