@@ -27,12 +27,13 @@ export async function middleware(request: NextRequest) {
     } = await supabase.auth.getUser();
 
     const { pathname } = request.nextUrl;
+    const isRootRoute = pathname === "/";
     const isProtectedRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/products");
     const isLoginRoute = pathname.startsWith("/login");
 
 
     // direccionamiento a login
-    if ((isProtectedRoute || "/") && !user) {
+    if ((isProtectedRoute || isRootRoute) && !user) {
         const loginUrl = request.nextUrl.clone();
         loginUrl.pathname = "/login";
         loginUrl.search = "";
