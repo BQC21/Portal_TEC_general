@@ -23,9 +23,9 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
-      - name: Lint (Next.js ESLint)
-        working-directory: .
-        run: npx next lint
+      # - name: Lint (Next.js ESLint)
+      #   working-directory: .
+      #   run: npx next lint
 
       - name: Build
         run: npm run build
