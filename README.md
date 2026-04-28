@@ -1,7 +1,7 @@
 
 
 # Portal_TEC_general
-Se desarrolla un portal corporativo empresarial que consiste en brindar una visualización centralizada de la productividad de la empresa, así como también un almacenamiento de los productos importados y herramientas para agilizar la generación y análisis de informes empresariales.
+Se desarrolla un portal corporativo empresarial que será desplegada en un sitio web con el fin de agilizar el proceso de dimensionamiento y cotización de proyectos diseñados con sistemas solares fotovoltaicos.
 
 ## Características
 - [x] Módulo 1: Base de datos de productos eléctricos importados
@@ -10,71 +10,25 @@ Se desarrolla un portal corporativo empresarial que consiste en brindar una visu
 - [ ] Módulo 4: Estudio y generación de informes de cotización por proyecto
 - [ ] Módulo 5: Estudio y generación de informes financieros por proyecto
 
-En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas.
+<!-- En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas. -->
 
 ## Stack
 1. Supabase: alojamiento de la base de datos
 2. Next.js: framework para desarrollar la plataforma
-3. React.js: librería para gestionar componentes de visualización
+3. React.js: librería de Next.js para gestionar componentes de visualización
 4. PostgreSQL: motor SQL incrustado en Supabase
 5. TailwindCSS: librería para estilización
 6. API de la sunat (https://apis.net.pe/api-tipo-cambio.html): integración del tipo de cambio (USD -> PEN)
+7. Vercel: alojamiento de la apliación desarrollada en Next.js
 
 ## Autenticación
-
-El portal usa Supabase Auth para controlar el acceso a las rutas internas. La entrada pública queda en `/login`, mientras que `/dashboard` y `/products` requieren sesión activa.
+El portal usa Supabase Auth para controlar el acceso a las rutas internas. La entrada pública queda en `/login`, mientras que `/dashboard`,`/products` y el resto de módulos requieren sesión activa.
 
 Variables requeridas en `.env.local`:
 
-- `NEXT_PUBLIC_SUPABASE_URL`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-
-<!-- ## Esquema de la base de datos
-
-### Tabla del módulo 1
-```SQL Tabla Productos {
-
-id int [pk, increment]
-
-// generales
-proveedor varchar [not null]
-
-código varchar [unique, not null]
-tipo varchar [not null]
-
-marca varchar [not null]
-
-// propiedades
-Tipo_conexion varchar // monofásico (220V), trifásico (220V o 380V)
-Pot_maxima float
-MPPT int
-DoD float // en decimal (/100)
-array_MPPT int
-VOC float
-VMPP float
-
-ISC float
-
-IMPP float
-Fuente_electrica varchar // CC, CA, batería, CC/CA
-
-// precios
-unidad varchar [no nulo]
-
-igv float [no nulo] // en decimal (/100)
-
-precio_soles float [no nulo]
-
-precio_dolares float [no nulo]
-
-precio_soles_igv float [no nulo]
-
-precio_dolares_igv float [no nulo]
-
-created_at timestamp [predeterminado: `now()`]
-updated_at timestamp
-}
-``` -->
+- `NEXT_PUBLIC_SUPABASE_URL` -> enlace URL de Supabase correspondiente al proyecto
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` -> clave TOKEN de Supabase correspondiente al proyecto
+- `SUNAT_API_TOKEN` -> TOKEN de la SUNAT, revisar el enlace de https://decolecta.gitbook.io/docs/servicios/integrations 
 
 ---
 
@@ -83,7 +37,7 @@ updated_at timestamp
 - Git
 - Node.js 20+ (incluye npm)
 
-## Instalación
+## Instalación y prueba en desarrollo
 
 1. Clonar el repositorio en el nuevo escritorio:
 
@@ -100,11 +54,8 @@ npm install
 
 3. Crear variables de entorno:
 
-```bash
-cp .env.example .env.local
-```
 
-Si Si el archivo `.env.example` no existe, créelo manualmente y añada las claves necesarias para Supabase (por ejemplo, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+Si `.env.local` no existe, créelo manualmente y añada las claves necesarias para Supabase (por ejemplo, `NEXT_PUBLIC_SUPABASE_URL` y `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
 
 4. Ejecute el servidor de desarrollo:
 
@@ -118,12 +69,24 @@ npm run dev
 http://localhost:3000
 ```
 
-<!-- ### Ejecución de producción opcional
+## Despliegue 
 
-```bash
-npm run build
-npm run start
-``` -->
+1. Dentro del portal principal, hacer click en `Add New` -> `project`
+![1er paso para desplegar](assets/Deploy_1.png)
+
+2. Seleccionar el proyecto alojado en github a importarse, para este caso `Portal_TEC_general`
+![2do paso para desplegar](assets/Deploy_2.png)
+
+3. Configurar el despliegue
+![1er paso para desplegar](assets/Deploy_3.png)
+- `Root Directory` -> se escogió la carpeta raíz
+- `Build command` -> next build
+- `Output Directory` -> Next.js Default
+- `Install Command` -> npm install
+- Variables de entorno
+  - `NEXT_PUBLIC_SUPABASE_URL` 
+  - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+  - `SUNAT_API_TOKEN` 
 
 ---
 
