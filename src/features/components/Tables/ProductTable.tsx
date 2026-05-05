@@ -49,7 +49,7 @@ function isPriceOriginUSD(product: Product): boolean {
 }
 
 function getPriceCellClass(product: Product, priceValue: number): string {
-    const isCellUSD = priceValue === product.priceUsd || priceValue === product.precio_dolares_igv;
+    const isCellUSD = priceValue === product.precio_dolares || priceValue === product.precio_dolares_igv;
     const isHighlighted = isCellUSD ? isPriceOriginUSD(product) : !isPriceOriginUSD(product);
 
     return isHighlighted ? "font-semibold text-slate-950" : "text-slate-700";
@@ -90,37 +90,53 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                     {products.length > 0 ? (
                         products.map((product) => (
                         <tr key={product.id} className="bg-white">
+                            {/* propiedades generales */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.supplierCode, "text-slate-500")}`}>{displayCellValue(product.supplierCode)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.supplier, "text-slate-800")}`}>{displayCellValue(product.supplier)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.code)}`}>{displayCellValue(product.code)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.type)}`}>{displayCellValue(product.type)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.brand)}`}>{displayCellValue(product.brand)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.description)}`}>{displayCellValue(product.description)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.connectionType)}`}>{displayCellValue(product.connectionType)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.maxPower)}`}>{displayCellValue(product.maxPower)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mpptNumber)}`}>{displayCellValue(product.mpptNumber)}</td>
-                            {/*<td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
-                            {/* <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.beta_percent)}`}>{displayCellValue(product.beta_percent)}</td>
-                            {/* <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.arraysPerMppt)}`}>{displayCellValue(product.arraysPerMppt)}</td> */}
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potenciaAC)}`}>{displayCellValue(product.potenciaAC)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.cod_prov, "text-slate-500")}`}>{displayCellValue(product.cod_prov)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.proveedor, "text-slate-800")}`}>{displayCellValue(product.proveedor)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.codigo)}`}>{displayCellValue(product.codigo)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo)}`}>{displayCellValue(product.tipo)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.marca)}`}>{displayCellValue(product.marca)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>
+                            {/* propiedades de la batería */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion_bateria)}`}>{displayCellValue(product.tipo_conexion_bateria)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.amperaje_bateria)}`}>{displayCellValue(product.amperaje_bateria)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voltaje_bateria)}`}>{displayCellValue(product.voltaje_bateria)}</td>
+                            {/* propiedades de la estructura */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.panel_array)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            {/* propiedades del inversor */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion_inversor)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_dc_inversor)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_ac_inversor)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.i_entrada_inversor)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.i_salida_inversor)}`}>{displayCellValue(product.panel_array)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voltaje_maximo_inversor)}`}>{displayCellValue(product.panel_array)}</td>                                                        
+                            {/* propiedades del modulo */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_modulo)}`}>{displayCellValue(product.panel_array)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voc)}`}>{displayCellValue(product.voc)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.vmpp)}`}>{displayCellValue(product.vmpp)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.isc)}`}>{displayCellValue(product.isc)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.impp)}`}>{displayCellValue(product.impp)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.panel_array)}`}>{displayCellValue(product.panel_array)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.panel_area)}`}>{displayCellValue(product.panel_area)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.powerSource)}`}>{displayCellValue(product.powerSource)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.panel_area)}`}>{displayCellValue(product.panel_area)}</td>                                                                                    
+                            {/* propiedades del smart meter */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion_smartmeter)}`}>{displayCellValue(product.panel_area)}</td>                                                                                    
+                            {/* propiedades del cableado */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.fuente_electrica)}`}>{displayCellValue(product.fuente_electrica)}</td>
+                            {/* precios */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.priceInputCurrency)}`}>{displayCellValue(product.priceInputCurrency)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.pricePen)}`}>{formatPen(product.pricePen)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.priceUsd)}`}>{formatUsd(product.priceUsd)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{formatPen(product.precio_soles)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{formatUsd(product.precio_dolares)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{formatPen(product.precio_soles_igv)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{formatUsd(product.precio_dolares_igv)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.fecha_creada)}`}>{formatDate(product.fecha_creada)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.fecha_actualizada)}`}>{formatDate(product.fecha_actualizada)}</td>
+                            {/* fechas */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.created_at)}`}>{formatDate(product.created_at)}</td>
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.updated_at)}`}>{formatDate(product.updated_at)}</td>
+                            {/* estados */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.estado_equipo)}`}>{displayCellValue(product.estado_equipo)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.fecha_estimada_importacion)}`}>{formatDate(product.fecha_estimada_importacion)}</td>
-
+                            {/* acciones */}
                             <td className="border border-slate-200 px-4 py-5">
                                 <div className="flex items-center gap-4 text-slate-500">
                                     <Button2Edit
