@@ -34,7 +34,8 @@ export default function ProductsPage() {
     */}
 
     const {
-        sellPrice: exchangeRate,
+        buyPrice: exchangeRate_buy,
+        sellPrice: exchangeRate, // exchangeRate_sell
         loading: exchangeRateLoading,
         error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
@@ -133,7 +134,10 @@ export default function ProductsPage() {
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-1">
                         <p className="text-lg text-slate-500">
-                        Tasa de cambio actual: S/. {exchangeRate.toFixed(2)} por dólar
+                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(2)} por dólar
+                        </p>
+                        <p className="text-lg text-slate-500">
+                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(2)} por dólar
                         </p>
                     </div>
 
