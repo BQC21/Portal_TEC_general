@@ -120,10 +120,10 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         products.map((product) => (
                         <tr key={product.id} className="bg-white">
                             {/* propiedades generales */}
+                            <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.codigo)}`}>{displayCellValue(product.codigo)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.cod_prov, "text-slate-500")}`}>{displayCellValue(product.cod_prov)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.proveedor, "text-slate-800")}`}>{displayCellValue(product.proveedor)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.codigo)}`}>{displayCellValue(product.codigo)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo)}`}>{displayCellValue(product.tipo)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.marca)}`}>{displayCellValue(product.marca)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>

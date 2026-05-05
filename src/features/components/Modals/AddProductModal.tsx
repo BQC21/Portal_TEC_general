@@ -333,25 +333,31 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                     {shouldRenderModuloProp(form.tipo) && (
                     <>
                         <AddProductTextField
-                            label="VOC (Voltaje máximo) en Voltios"
+                            label="Potencia máxima del panel (kw)"
+                            placeholder="2kw"
+                            value={form.potencia_modulo}
+                            onChange={(value) => updateField("potencia_modulo", value)}
+                        />
+                        <AddProductTextField
+                            label="VOC (Voltaje a circuito abierto) en Voltios"
                             placeholder="550V"
                             value={form.voc}
                             onChange={(value) => updateField("voc", value)}
                         />
                         <AddProductTextField
-                            label="ISC (Corriente máxima entrada) en Amperios"
+                            label="ISC (Corriente a corto circuito) en Amperios"
                             placeholder="12.5A"
                             value={form.isc}
                             onChange={(value) => updateField("isc", value)}
                         />
                         <AddProductTextField
-                            label="VMPP (Voltaje mínimo) en Voltios"
+                            label="VMPP (Voltaje punto de máxima potencia) en Voltios"
                             placeholder="120V"
                             value={form.vmpp}
                             onChange={(value) => updateField("vmpp", value)}
                         />
                         <AddProductTextField
-                            label="IMPP (Corriente máxima salida) en Amperios"
+                            label="IMPP (Corriente punto de máxima potencia) en Amperios"
                             placeholder="11.8A"
                             value={form.impp}
                             onChange={(value) => updateField("impp", value)}

@@ -334,6 +334,12 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     {shouldRenderModuloProp(form.tipo) && (
                     <>
                         <AddProductTextField
+                            label="Potencia máxima del panel (kw)"
+                            placeholder="2kw"
+                            value={form.potencia_modulo}
+                            onChange={(value) => updateField("potencia_modulo", value)}
+                        />
+                        <AddProductTextField
                             label="VOC (Voltaje máximo) en Voltios"
                             placeholder="550V"
                             value={form.voc}

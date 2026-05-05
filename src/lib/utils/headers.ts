@@ -1,9 +1,9 @@
 export const TABLE_HEADERS = [
     // propiedades generales
+    "Código",
     "RUC",
     "Código Proveedor",
     "Proveedor",
-    "Código",
     "Tipo",
     "Marca",
     "Descripción",
