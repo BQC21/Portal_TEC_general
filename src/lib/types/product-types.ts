@@ -10,7 +10,9 @@ export type ProductFormData = Omit<Product, "id">; // usado para las mutaciones 
 
 // Filas correspondientes a la tabla de productos de Supabase
 export type SupabaseProductRow = {
+    // propiedades generales
     id?: number | string;
+    ruc?: string;
     cod_prov?: string;
     proveedor?: string;
     codigo?: string;
@@ -18,75 +20,98 @@ export type SupabaseProductRow = {
     marca?: string;
     unidad?: string;
     descripcion?: string;
-    tipo_conexion?: string;
-    pot_maxima?: number;
-    mppt?: number;
+    // propiedades bateria
+    tipo_conexion_bateria?: string;
     dod?: number;
-    array_mppt?: number;
+    amperaje_bateria?: number;
+    voltaje_bateria?: number;
+    // propiedades estructura
+    panel_array?: number;
+    // propiedades inversor
+    tipo_conexion_inversor?: string;
+    potencia_dc_inversor?: number;
+    potencia_ac_inversor?: number;
+    mppt?: number;
+    i_entrada_inversor?: number;
+    i_salida_inversor?: number;
+    voltaje_maximo_inversor?: number;
+    // propiedades modulo
+    potencia_modulo?: number;
     voc?: number;
     vmpp?: number;
     isc?: number;
     impp?: number;
+    panel_area?: number;
+    // propiedades smart meter
+    tipo_conexion_smartmeter?: string;
+    // propiedades cableado
+    fuente_electrica?: string;
+    // ṕrecios
     precio_soles?: number;
     precio_dolares?: number;
     precio_soles_igv?: number;
     precio_dolares_igv?: number;
     igv?: number;
-    panel_array?: number;
-    panel_area?: number;
-    fuente_electrica?: string;
-    power_source?: string;
+    priceInputCurrency?: string;
+    // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
-    beta_percent?: number;
-    potencia_ac?: number;
-    potenciaAC?: number;
-    ruc?: string;
+    // estado
     estado_equipo?: string;
     fecha_estimada_importacion?: Date | string | null;
-    priceInputCurrency?: string;
-    price_input_currency?: string;
-    fuente_divisas?: string;
-    fuente_divisa?: string;
-    moneda?: string;
-    currency_source?: string;
 };
 
 // Campos para la base de datos para los productos de ProductTable
 export type Product = {
+    // propiedades generales
     id: string;
     ruc: string;
-    supplier: string;
-    supplierCode: string;
-    code: string;
-    type: string;
-    brand: string;
-    unit: string;
-    description: string;
-    connectionType: string;
-    maxPower: string;
-    mpptNumber: string;
+    proveedor: string;
+    cod_prov: string;
+    codigo: string;
+    tipo: string;
+    marca: string;
+    unidad: string;
+    descripcion: string;
+    // propiedades bateria
+    tipo_conexion_bateria: string;
     dod: string;
-    arraysPerMppt: string;
+    amperaje_bateria: string;
+    voltaje_bateria: string;
+    // propiedades estructura
+    panel_array: string;
+    // propiedades inversor
+    tipo_conexion_inversor: string;
+    potencia_dc_inversor: string;
+    potencia_ac_inversor: string;
+    mppt: string;
+    i_entrada_inversor: string;
+    i_salida_inversor: string;
+    voltaje_maximo_inversor: string;
+    // propiedades modulo
+    potencia_modulo: string;
     voc: string;
     vmpp: string;
     isc: string;
     impp: string;
-    priceInputCurrency: CurrencyCode;
-    pricePen: number;
-    priceUsd: number;
-    igv: number;
-    panel_array: string;
     panel_area: string;
-    powerSource: string;
-    beta_percent: string;
+    // propiedades smart meter
+    tipo_conexion_smartmeter: string;
+    // propiedades cableado
+    fuente_electrica: string;
+    // precios
+    priceInputCurrency: CurrencyCode;
+    precio_soles: number;
+    precio_dolares: number;
+    igv: number;
     precio_soles_igv: number;
     precio_dolares_igv: number;
-    fecha_creada: Date;
-    fecha_actualizada: Date;
+    // fechas
+    created_at: Date;
+    updated_at: Date;
+    // estado
     estado_equipo: string;
     fecha_estimada_importacion: Date | null;
-    potenciaAC: string; 
 };
 
 // Estado de la visualización de productos
@@ -104,18 +129,18 @@ export type ProductFilterOptions = {
     suppliers: string[];
 };
 
-export type MassiveCreateResult = {
-    inserted: number;
-    failed: number;
-    products: Product[];
-};
+// export type MassiveCreateResult = {
+//     inserted: number;
+//     failed: number;
+//     products: Product[];
+// };
 
 // Mostrar tabla de productos modificadas
 export type UseProductMutationsResult = {
     loading: boolean;
     error: string | null;
     create: (product: ProductFormData) => Promise<Product>;
-    createBulk: (products: ProductFormData[]) => Promise<MassiveCreateResult>;
+    // createBulk: (products: ProductFormData[]) => Promise<MassiveCreateResult>;
     update: (id: string, product: ProductFormData) => Promise<Product>;
     remove: (id: string) => Promise<void>;
 }
