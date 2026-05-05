@@ -129,12 +129,6 @@ export type ProductFilterOptions = {
     suppliers: string[];
 };
 
-// export type MassiveCreateResult = {
-//     inserted: number;
-//     failed: number;
-//     products: Product[];
-// };
-
 // Mostrar tabla de productos modificadas
 export type UseProductMutationsResult = {
     loading: boolean;
