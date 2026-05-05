@@ -59,15 +59,15 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
     return (
         <section className="space-y-4 w-full">
         <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
-            <div className="overflow-x-auto max-h-[1000px] overflow-y-auto">
+            <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
                 <table className="min-w-full border-separate border-spacing-0">
                     <thead className="sticky top-0 z-10 bg-slate-100">
-                        <tr className="bg-slate-100 text-center">
-                            <th colSpan={7} className="border border-slate-200 px-4 py-5">Propiedades generales</th>
-                            <th colSpan={11} className="border border-slate-200 px-4 py-5">Propiedades eléctricas</th>
-                            <th colSpan={5} className="border border-slate-200 px-4 py-5">Precios</th>
-                            <th colSpan={2} className="border border-slate-200 px-4 py-5">Fechas</th>
-                            <th colSpan={2} className="border border-slate-200 px-4 py-5">Estado del producto</th>
+                        <tr className="bg-slate-200 text-center">
+                            <th colSpan={7} className="border border-slate-300 px-4 py-5">Propiedades generales</th>
+                            <th colSpan={11} className="border border-slate-300 px-4 py-5">Propiedades eléctricas</th>
+                            <th colSpan={5} className="border border-slate-300 px-4 py-5">Precios</th>
+                            <th colSpan={2} className="border border-slate-300 px-4 py-5">Fechas</th>
+                            <th colSpan={2} className="border border-slate-300 px-4 py-5">Estado del producto</th>
                             <th></th>
                         </tr>
                         <tr className="bg-slate-100 text-left">
