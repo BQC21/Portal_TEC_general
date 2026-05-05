@@ -50,9 +50,9 @@ export default function ProductsPage() {
     }); // estado para filtrar la lista de productos
 
     const filteredProducts = products.filter((product) => {
-        const matchesType = !filters.type || product.type === filters.type;
-        const matchesBrand = !filters.brand || product.brand === filters.brand;
-        const matchesSupplier = !filters.supplier || product.supplier === filters.supplier;
+        const matchesType = !filters.type || product.tipo === filters.type;
+        const matchesBrand = !filters.brand || product.marca === filters.brand;
+        const matchesSupplier = !filters.supplier || product.proveedor === filters.supplier;
 
         return matchesType && matchesBrand && matchesSupplier;
     }); // lógica para operar el filtrado de productos
@@ -124,7 +124,7 @@ export default function ProductsPage() {
 
     return (
         <PortalShell
-            title="Base de Productos"
+            title="Base de datos de los equipos y materiales eléctricos"
             subtitle="Gestión de inventario de productos para energía solar fotovoltaica"
             activePath="/products"
         >
@@ -168,11 +168,11 @@ export default function ProductsPage() {
                 </section>
 
                 <ProductTable 
-                products={sortedProducts}
-                totalProducts={products.length}
-                exchangeRate={exchangeRate}
-                onUpdateProduct={handleUpdateProduct}
-                onDeleteProduct={handleDeleteProduct}
+                    products={sortedProducts}
+                    totalProducts={products.length}
+                    exchangeRate={exchangeRate}
+                    onUpdateProduct={handleUpdateProduct}
+                    onDeleteProduct={handleDeleteProduct}
                 />
             </div>
         </main>
