@@ -19,39 +19,51 @@ import {
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
+    // propiedades generales
     ruc: RUC_OPTIONS[0],
-    supplier: SUPPLIER_OPTIONS[0],
-    supplierCode: SUPPLIER_CODE_OPTIONS[0],
-    code: "",
-    type: PRODUCT_TYPE_OPTIONS[0],
-    brand: BRAND_OPTIONS[0],
-    unit: UNIT_OPTIONS[0],
-    description: "",
-    // especificaciones técnicas
-    connectionType: CONNECTION_TYPE_OPTIONS[0],
-    maxPower: "",
-    mpptNumber: "",
+    proveedor: SUPPLIER_OPTIONS[0],
+    cod_prov: SUPPLIER_CODE_OPTIONS[0],
+    codigo: "",
+    tipo: PRODUCT_TYPE_OPTIONS[0],
+    marca: BRAND_OPTIONS[0],
+    unidad: UNIT_OPTIONS[0],
+    descripcion: "",
+    // propiedades bateria
+    tipo_conexion_bateria: CONNECTION_TYPE_OPTIONS[0],
     dod: "",
-    arraysPerMppt: "",
-    potenciaAC: "",
+    amperaje_bateria: "",
+    voltaje_bateria: "",
+    // propiedades estructura
+    panel_array: "",
+    // propiedades inversor
+    tipo_conexion_inversor: CONNECTION_TYPE_OPTIONS[0],
+    potencia_dc_inversor: "",
+    potencia_ac_inversor: "",
+    mppt: "",
+    i_entrada_inversor: "",
+    i_salida_inversor: "",
+    voltaje_maximo_inversor: "",
+    // propiedades modulo
+    potencia_modulo: "",
     voc: "",
     vmpp: "",
     isc: "",
     impp: "",
-    powerSource: POWER_SOURCE_OPTIONS[0],
-    beta_percent: "",
-    panel_array: "",
     panel_area: "",
+    // propiedades smart meter
+    tipo_conexion_smartmeter: CONNECTION_TYPE_OPTIONS[0],
+    // propiedades cableado
+    fuente_electrica: POWER_SOURCE_OPTIONS[0],
     // precios
     priceInputCurrency: PRICE_CURRENCY_OPTIONS[0],
-    pricePen: 0,
-    priceUsd: 0,
+    precio_soles: 0,
+    precio_dolares: 0,
     igv: 18,
     precio_soles_igv: 0,
     precio_dolares_igv: 0,
     // fechas
-    fecha_creada: new Date(),
-    fecha_actualizada: new Date(),
+    created_at: new Date(),
+    updated_at: new Date(),
     // estado de importación
     estado_equipo: STATUS_OPTIONS[0],
     fecha_estimada_importacion: null,
