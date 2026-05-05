@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { MassiveCreateResult, Product, ProductFormData } from "@/lib/types/product-types";
+import { Product, ProductFormData } from "@/lib/types/product-types";
 import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "../mapping/mapping";
 import { addCurrencyToRow } from "@/lib/utils/namingTolerance";
 import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
@@ -25,28 +25,6 @@ export async function createProduct(product: ProductFormData): Promise<Product> 
   }
 
   return mapSupabaseRowToProduct(data);
-}
-
-// subida masiva de productos
-export async function createProductsBulk(products: ProductFormData[]): Promise<MassiveCreateResult> {
-  if (products.length === 0) {
-    return {
-      inserted: 0,
-      failed: 0,
-      products: [],
-    };
-  }
-
-  const results = await Promise.allSettled(products.map((product) => createProduct(product)));
-  const createdProducts = results
-    .filter((result): result is PromiseFulfilledResult<Product> => result.status === "fulfilled")
-    .map((result) => result.value);
-
-  return {
-    inserted: createdProducts.length,
-    failed: results.length - createdProducts.length,
-    products: createdProducts,
-  };
 }
 
 // obtener productos
