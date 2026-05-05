@@ -6,39 +6,41 @@ import { getProductTypeCode, getSupplierInfo } from "./getInfo";
 // --- Funciones auxiliares para mostrar campos según tipo de producto ---
 // -----------------------------
 
-export function shouldRenderConnectionType(productType: string): boolean {
-    return productType === "Inversor" || productType === "Batería" || productType === "Smart Meter";
-} // renderizar tipo de conexióón
-export function shouldRenderPowerAC(productType: string): boolean {
-    return productType === "Inversor";
-} // renderizar potencia AC
-export function shouldRenderMaxPower(productType: string): boolean {
-    return productType === "Inversor" || productType === "Módulo";
-} // renderizar potencia máxima
-export function shouldRenderMppt(productType: string): boolean {
-    return productType === "Inversor";
-} // renderizar MPPT
-export function shouldRenderDod(productType: string): boolean {
+// --- renderizar tipo de conexióón ---
+export function shouldRenderConnectionTypeBattery(productType: string): boolean {
+    return productType === "Batería" 
+} // bateria
+export function shouldRenderConnectionTypeInversor(productType: string): boolean {
+    return productType === "Inversor" 
+} // inversor
+export function shouldRenderConnectionTypeSmartMeter(productType: string): boolean {
+    return productType === "Smart Meter";
+} // smart meter
+
+// --- propiedades bateria ---
+export function shouldRenderBatteryProp(productType: string): boolean {
     return productType === "Batería";
-} // renderizar DOD
-export function shouldRenderBeta(productType: string): boolean {
-    return productType === "Módulo";
-} // renderizar Beta
-export function shouldRenderArraysPerMppt(productType: string): boolean {
-    return productType === "Inversor";
-} // renderizar cantidad de strings por MPPT
-export function shouldRenderVocVmppIscImpp(productType: string): boolean {
-    return productType === "Inversor" || productType === "Módulo" || productType === "Batería";
-} // renderizar Voc, Vmpp, Isc, Impp
+} // renderizar propiedades batería
+
+// --- propiedades inversor ---
+export function shouldRenderInversorProp(productType: string): boolean {
+    return productType === "Inversor" 
+} // renderizar propiedades del inversor
+
+// --- propiedades modulo ---
+export function shouldRenderModuloProp(productType: string): boolean {
+    return productType === "Módulo" 
+} // renderizar propiedades del modulo
+
+// --- propiedades cableado ---
 export function shouldRenderPowerSource(productType: string): boolean {
     return productType === "Cable" || productType === "Protección" || productType === "MC4";
 } // renderizar fuente de energía
+
+// --- propiedades estructura ---
 export function  shouldRenderPanelArray(productType: string): boolean {
     return productType === "Estructura";
 } // renderizar número de paneles por arreglo
-export function  shouldRenderPanelArea(productType: string): boolean {
-    return productType === "Módulo";
-} // renderizar área por módulo
 
 
 // -----------------------------
