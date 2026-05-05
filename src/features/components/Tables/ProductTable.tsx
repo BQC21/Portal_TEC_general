@@ -64,7 +64,12 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                     <thead className="sticky top-0 z-10 bg-slate-100">
                         <tr className="bg-slate-200 text-center">
                             <th colSpan={7} className="border border-slate-300 px-4 py-5">Propiedades generales</th>
-                            <th colSpan={11} className="border border-slate-300 px-4 py-5">Propiedades eléctricas</th>
+                            <th colSpan={4} className="border border-slate-300 px-4 py-5">Propiedades Batería</th>
+                            <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Estructura</th>
+                            <th colSpan={7} className="border border-slate-300 px-4 py-5">Propiedades Inversor</th>
+                            <th colSpan={6} className="border border-slate-300 px-4 py-5">Propiedades Módulo fotovoltaico</th>
+                            <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Smart meter</th>
+                            <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Cableado</th>
                             <th colSpan={5} className="border border-slate-300 px-4 py-5">Precios</th>
                             <th colSpan={2} className="border border-slate-300 px-4 py-5">Fechas</th>
                             <th colSpan={2} className="border border-slate-300 px-4 py-5">Estado del producto</th>
