@@ -16,6 +16,7 @@ export async function GET(req: NextRequest) {
             cache: "no-store",
         });
 
+        // en caso no se establezca una conexión exitosa con la API de SUNAT
         if (!response.ok) {
             return NextResponse.json(
                 { error: "Error consultando la API de SUNAT" },
