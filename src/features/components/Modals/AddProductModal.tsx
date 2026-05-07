@@ -78,30 +78,30 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
     // Actualizar campos del formulario
     function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
         setForm((current) => {
-        const updated = { ...current, [field]: value };
+            const updated = { ...current, [field]: value };
 
-        if (field === "proveedor") {
-            const { RUC, supplierCode } = shouldRender_SupplyInfoSelection(String(value));
-            updated.ruc = RUC;
-            updated.cod_prov = supplierCode;
-        }
-
-        if (field === "tipo") {
-            const { brand_options, unit } = shouldRender_ProductInfoSelection(String(value));
-            if (!brand_options.includes(updated.marca)) {
-                updated.marca = brand_options[0] || "";
+            if (field === "proveedor") {
+                const { RUC, supplierCode } = shouldRender_SupplyInfoSelection(String(value));
+                updated.ruc = RUC;
+                updated.cod_prov = supplierCode;
             }
-            updated.unidad = unit || "";
-        }
 
-        // Establecer connectionType a "BAT" cuando se selecciona Batería
-        if (field === "tipo" && value === "Batería") {
-            updated.tipo_conexion_bateria = "BAT";
-        }
-        if (field === "estado_equipo" && value !== "En importación") {
-            updated.fecha_estimada_importacion = null;
-        }
-        return updated;
+            if (field === "tipo") {
+                const { brand_options, unit } = shouldRender_ProductInfoSelection(String(value));
+                if (!brand_options.includes(updated.marca)) {
+                    updated.marca = brand_options[0] || "";
+                }
+                updated.unidad = unit || "";
+            }
+
+            // Establecer connectionType a "BAT" cuando se selecciona Batería
+            if (field === "tipo" && value === "Batería") {
+                updated.tipo_conexion_bateria = "BAT";
+            }
+            if (field === "estado_equipo" && value !== "En importación") {
+                updated.fecha_estimada_importacion = null;
+            }
+            return updated;
         });
     }
 
@@ -124,12 +124,12 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
         event.preventDefault();
 
         onAddProduct({
-        ...form,
-        codigo: generatedCode || form.codigo,
-        fecha_estimada_importacion:
-            form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
-        precio_soles: Number(computedPrices.pricePen.toFixed(2)),
-        precio_dolares: Number(computedPrices.priceUsd.toFixed(2)),
+            ...form,
+            codigo: generatedCode || form.codigo,
+            fecha_estimada_importacion:
+                form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
+            precio_soles: Number(computedPrices.pricePen.toFixed(2)),
+            precio_dolares: Number(computedPrices.priceUsd.toFixed(2)),
         });
     }
 
