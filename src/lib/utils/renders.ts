@@ -3,10 +3,9 @@ import { getProductTypeCode, getSupplierInfo } from "./getInfo";
 
 
 // -----------------------------
-// --- Funciones auxiliares para mostrar campos según tipo de producto ---
+// --- Funciones auxiliares para renderizar tipo de conexión ---
 // -----------------------------
 
-// --- renderizar tipo de conexióón ---
 export function shouldRenderConnectionTypeBattery(productType: string): boolean {
     return productType === "Batería" 
 } // bateria
@@ -16,6 +15,10 @@ export function shouldRenderConnectionTypeInversor(productType: string): boolean
 export function shouldRenderConnectionTypeSmartMeter(productType: string): boolean {
     return productType === "Smart Meter";
 } // smart meter
+
+// -----------------------------
+// --- Funciones auxiliares para propiedades de los equipos eléctricos ---
+// -----------------------------
 
 // --- propiedades bateria ---
 export function shouldRenderBatteryProp(productType: string): boolean {
@@ -50,6 +53,7 @@ export function  shouldRenderPanelArray(productType: string): boolean {
 export function shouldRenderImportDate(productStatus: string): boolean {
     return productStatus === "En importación"
 } 
+
 // -----------------------------
 // renderizar el código del producto solo si se tiene el tipo de producto y proveedor para asignación automática
 // -----------------------------
