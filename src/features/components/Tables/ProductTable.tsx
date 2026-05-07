@@ -1,8 +1,13 @@
 import { Button2Edit } from "@/features/components/Buttons/button2edit";
 import { Button2Trash } from "@/features/components/Buttons/button2trash";
+
 import type { Product } from "@/lib/types/product-types";
-import { formatDate } from "@/lib/utils/helpers";
+
 import { TABLE_HEADERS } from "@/lib/utils/headers";
+import { formatDate, toSafeNumber, formatPen, formatUsd,
+    isEmptyCellValue, getCellTextClass, displayCellValue, 
+    isPriceOriginUSD, getPriceCellClass
+} from "@/lib/utils/helpers";
 
 type ProductTableProps = {
     products: Product[];
@@ -11,49 +16,6 @@ type ProductTableProps = {
     onUpdateProduct: (product: Product) => void;
     onDeleteProduct: (productId: string) => void;
 };
-
-function toSafeNumber(value: unknown): number {
-    const parsed =
-        typeof value === "number"
-        ? value
-        : typeof value === "string"
-            ? Number(value)
-            : Number.NaN;
-
-    return Number.isFinite(parsed) ? parsed : 0;
-}
-
-function formatPen(value: unknown) {
-    return `S/. ${toSafeNumber(value).toFixed(2)}`;
-}
-
-function formatUsd(value: unknown) {
-    return `$ ${toSafeNumber(value).toFixed(2)}`;
-}
-
-// leer si la celda está vacía
-function isEmptyCellValue(value: unknown): boolean {
-    return value === null || value === undefined || (typeof value === "string" && value.trim() === "");
-}
-// Condicionar el coloreado de la celda
-function getCellTextClass(value: unknown, filledClass = "text-slate-900"): string {
-    return isEmptyCellValue(value) ? "text-slate-600" : filledClass;
-}
-// Mostrar el contenido
-function displayCellValue(value: unknown): string {
-    return isEmptyCellValue(value) ? "---" : String(value);
-}
-
-function isPriceOriginUSD(product: Product): boolean {
-    return product.priceInputCurrency === "USD";
-}
-
-function getPriceCellClass(product: Product, priceValue: number): string {
-    const isCellUSD = priceValue === product.precio_dolares || priceValue === product.precio_dolares_igv;
-    const isHighlighted = isCellUSD ? isPriceOriginUSD(product) : !isPriceOriginUSD(product);
-
-    return isHighlighted ? "font-semibold text-slate-950" : "text-slate-700";
-}
 
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
     return (
