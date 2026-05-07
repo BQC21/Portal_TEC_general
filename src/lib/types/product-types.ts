@@ -1,7 +1,4 @@
-// Codigos de definición 
-export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
-export type ProductSortingOrder = "asc" | "desc" | null; // tipo de ordenamiento
-export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
+import { CurrencyCode, FilterKey } from "@/lib/utils/options";
 
 // Estado del formulario de productos
 export type ProductFormState = Omit<Product, "id">; // DB productos visto desde el componente ProductTable

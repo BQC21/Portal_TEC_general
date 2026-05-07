@@ -6,7 +6,8 @@ import {
     BRAND_OPTIONS 
 } from "@/lib/utils/options"
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/renders";
-import { ProductFilterValues, FilterKey } from "@/lib/types/product-types"
+import { ProductFilterValues } from "@/lib/types/product-types"
+import type { FilterKey } from "@/lib/utils/options"; // Tipados
 
 const FILTERS = [
     {

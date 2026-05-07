@@ -87,3 +87,8 @@ export const UNIT_OPTIONS = ["Unidad", "Metros"]; // unidades
 export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"]; // tipo de conexión 
 export const POWER_SOURCE_OPTIONS = ["---", "DC", "AC", "DC/AC", "BAT"]; // fuentes de conexión
 export const PRICE_CURRENCY_OPTIONS = ["USD", "PEN"] as const; // fuentes de divisas
+
+// Codigos de definición 
+export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
+export type ProductSortingOrder = "asc" | "desc" | null; // tipo de ordenamiento
+export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado

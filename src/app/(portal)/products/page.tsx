@@ -13,8 +13,10 @@ import { useProducts, useProductMutations } from "@/features/hooks/useRealtimePr
 import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, 
-    ProductSortingOrder, ProductFilterValues 
+    ProductFilterValues 
 } from "@/lib/types/product-types"; // Tipados
+
+import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 export default function ProductsPage() {
 

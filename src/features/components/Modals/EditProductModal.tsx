@@ -11,7 +11,9 @@ import { AddProductTextAreaField } from "@/features/components/Form_fields/AddPr
 import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
 import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
 
-import type { CurrencyCode, Product, ProductFormState } from "@/lib/types/product-types";
+import type { Product, ProductFormState } from "@/lib/types/product-types";
+
+import { CurrencyCode } from "@/lib/utils/options";
 
 import { createProductFormStateFromProduct } from "@/features/mapping/mapping";
 
