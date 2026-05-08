@@ -7,8 +7,8 @@ Se desarrolla un portal corporativo empresarial que será desplegada en un sitio
 - [x] Módulo 1: Base de datos de productos eléctricos importados
 - [ ] Módulo 2: Dimensionamiento del sistema solar FV 
 - [ ] Módulo 3: Distribución de costos por proyecto
-- [ ] Módulo 4: Estudio y generación de informes de cotización por proyecto
-- [ ] Módulo 5: Estudio y generación de informes financieros por proyecto
+- [ ] Módulo 4: Generación de informes de cotización por proyecto
+- [ ] Módulo 5: Generación de informes financieros por proyecto
 
 <!-- En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas. -->
 
