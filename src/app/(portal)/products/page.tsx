@@ -12,9 +12,7 @@ import { useProducts, useProductMutations } from "@/features/hooks/useRealtimePr
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
 import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
 
-import type { Product, ProductFormData, 
-    ProductFilterValues 
-} from "@/lib/types/product-types"; // Tipados
+import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/product-types"; // Tipados
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
@@ -136,10 +134,10 @@ export default function ProductsPage() {
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-1">
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(2)} por dólar
+                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
                         </p>
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(2)} por dólar
+                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
                         </p>
                     </div>
 
