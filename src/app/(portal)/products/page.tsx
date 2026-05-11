@@ -16,6 +16,8 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
+import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqeuda
+
 export default function ProductsPage() {
 
     const { products, refetch } = useProducts(); // obtener la lista de proudctos
@@ -44,6 +46,8 @@ export default function ProductsPage() {
     // ---- Filtrado de productos ------
     // ---------------------------------
 
+    const [searchDescription, setSearchDescription] = useState<string>(""); // barra de búsqueda para filtrar por descripción
+
     const [filters, setFilters] = useState<ProductFilterValues>({
         type: "",
         brand: "",
@@ -54,9 +58,11 @@ export default function ProductsPage() {
         const matchesType = !filters.type || product.tipo === filters.type;
         const matchesBrand = !filters.brand || product.marca === filters.brand;
         const matchesSupplier = !filters.supplier || product.proveedor === filters.supplier;
-
-        return matchesType && matchesBrand && matchesSupplier;
+        const matchesDescription = !searchDescription || product.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+        
+        return matchesType && matchesBrand && matchesSupplier && matchesDescription;
     }); // lógica para operar el filtrado de productos
+
 
 
     // ---------------------------------
@@ -140,6 +146,14 @@ export default function ProductsPage() {
                             Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
                         </p>
                     </div>
+
+                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+                        <SearchBar 
+                            value={searchDescription}
+                            onChange={setSearchDescription}
+                            placeholder="Buscar por descripción del producto..."
+                        />
+                    </div>                 
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Sorting_IGV_USD
