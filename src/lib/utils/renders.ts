@@ -123,3 +123,16 @@ export function shouldRender_ProductSortingSelection(currentOrder: "asc" | "desc
 
     return { label: "Ordenar por precio", nextOrder: "asc" as const };
 }
+
+// comparar el ordenamiento según el código del proveedor de forma descendente
+export function sortGroupedByCodeSupplier<T extends Record<string, unknown>>(
+    rows: T[],
+    key: keyof T
+): T[] {
+    return [...rows].sort((a, b) => {
+        const aValue = String(a[key] ?? ""); // fila actual
+        const bValue = String(b[key] ?? ""); // fila siguiente
+
+        return aValue.localeCompare(bValue, "es", { sensitivity: "base" }); // comparación de strings considerando acentos y mayúsculas/minúsculas
+    });
+}
