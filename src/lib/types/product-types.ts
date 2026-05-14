@@ -135,10 +135,3 @@ export type UseProductMutationsResult = {
     update: (id: string, product: ProductFormData) => Promise<Product>;
     remove: (id: string) => Promise<void>;
 }
-
-// tipado para la tasa de cambio emitida por la SUNAT
-export type SunatRate = {
-    buy_price: string;
-    sell_price: string;
-    date: string;
-};
