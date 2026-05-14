@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { Product, ProductFormData } from "@/lib/types/product-types";
-import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "../mapping/mapping";
+import { mapSupabaseRowToProduct, mapProductToSupabaseRow } from "../mapping/product_mapping";
 import { addCurrencyToRow } from "@/lib/utils/namingTolerance";
 import { PRODUCTS_TABLE } from "@/lib/utils/namingTolerance";
 
