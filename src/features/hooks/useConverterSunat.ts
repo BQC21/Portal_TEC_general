@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { SunatRate } from "@/lib/types/product-types"; 
+import { SunatRate } from "@/lib/types/sunat-types"; 
 
 export function useConverterSunat() {
     const [buyPrice, setBuyPrice] = useState<number>(0);
