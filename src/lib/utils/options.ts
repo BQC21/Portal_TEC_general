@@ -5,6 +5,17 @@ export const SORTING_OPTIONS = {
 } as const;
 
 // ----------------------------------------------
+// Opciones para la tabla de proyectos
+// ----------------------------------------------
+export const NAME_PROJECT_OPTIONS = [
+    "CATAPA"
+]
+
+export const STATUS_PROJECT_OPTIONS = [
+    "activo", "pausa", "culminado", "cancelado"
+]
+
+// ----------------------------------------------
 // Opciones para el filtrado y los modals (add y edit)
 // ----------------------------------------------
 

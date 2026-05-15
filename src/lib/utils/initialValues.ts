@@ -3,6 +3,11 @@ import type {
 	ProductFormState,
 } from "@/lib/types/product-types";
 
+import type { 
+	// Project,
+	ProjectFormState,
+} from "@/lib/types/project-types";
+
 import {
 	// SORTING_OPTIONS,
 	SUPPLIER_OPTIONS,
@@ -15,6 +20,8 @@ import {
 	POWER_SOURCE_OPTIONS,
 	PRICE_CURRENCY_OPTIONS,
 	STATUS_OPTIONS,
+    NAME_PROJECT_OPTIONS,
+    STATUS_PROJECT_OPTIONS
 } from "@/lib/utils/options"
 
 // valores iniciales para el estado de form de productos
@@ -68,3 +75,20 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     estado_equipo: STATUS_OPTIONS[0],
     fecha_estimada_importacion: null,
 };
+
+// valores iniciales para el estado de form de proyectos
+export const INITIAL_PROJECT_FORM: ProjectFormState = {
+    // propiedades generales
+    nombre: NAME_PROJECT_OPTIONS[0],
+    descripcion: "",
+    zona_id: "",     
+    zona_info: undefined,           
+    // cálculos de radiación
+    hsp: "",
+    ghi: "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+    // estado
+    estado_proyecto: STATUS_PROJECT_OPTIONS[0],
+}
