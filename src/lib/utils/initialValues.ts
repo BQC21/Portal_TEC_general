@@ -79,7 +79,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
 // valores iniciales para el estado de form de proyectos
 export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // propiedades generales
-    nombre: NAME_PROJECT_OPTIONS[0],
+    nombre: "",
     descripcion: "",
     zona_id: "",     
     zona_info: undefined,           

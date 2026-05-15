@@ -45,34 +45,45 @@ export default function ProjectsPage() {
                     <AddProductSelectField
                         label="Proyecto"
                         required
-                        value={form.nombre}
-                        options={projects.length > 0 ? projects.map((p) => p.nombre) : NAME_PROJECT_OPTIONS}
+                        value={selectedProject?.nombre ?? ""}
+                        options={["Seleccione proyecto", ...(projects.length > 0 ? projects.map((p) => p.nombre) : NAME_PROJECT_OPTIONS)]}
                         onChange={(value) =>{ 
-                            const project = projects.find((p) => p.nombre === value) ?? null;
-                            setSelectedProject(project);
+                            if (value === "Seleccione proyecto") {
+                                setSelectedProject(null);
+                            } else {
+                                const project = projects.find((p) => p.nombre === value) ?? null;
+                                setSelectedProject(project);
+                            }
                         }}
                     />
-                    <p>{form.descripcion}</p>
-                    <AddProductReadonlyField
-                        label="zona del proyecto"
-                        value={form.zona_info?.zona ?? ""}
-                    />
-                    <span>
-                        <AddProductReadonlyField
-                            label="Latitud de la zona"
-                            value={form.zona_info?.latitude ?? ""}
-                        />
-                    </span>
-                    <span>
-                        <AddProductReadonlyField
-                            label="Longitud de la zona"
-                            value={form.zona_info?.longitude ?? ""}
-                        />
-                    </span>
-                    <AddProductReadonlyField
-                        label="Radiación solar anual"
-                        value={form.zona_info?.ghi_respaldo ?? ""}
-                    />
+                    {selectedProject && (
+                        <>
+                            <AddProductReadonlyField
+                                label="Descripción del proyecto"
+                                value={form.descripcion ?? "---"}
+                            />
+                            <AddProductReadonlyField
+                                label="Zona del proyecto"
+                                value={form.zona_info?.zona ?? "---"}
+                            />
+                            <span>
+                                <AddProductReadonlyField
+                                    label="Latitud de la zona"
+                                    value={form.zona_info?.latitude ?? "---"}
+                                />
+                            </span>
+                            <span>
+                                <AddProductReadonlyField
+                                    label="Longitud de la zona"
+                                    value={form.zona_info?.longitude ?? "---"}
+                                />
+                            </span>
+                            <AddProductReadonlyField
+                                label="Radiación solar anual"
+                                value={form.zona_info?.ghi_respaldo ?? "---"}
+                            />
+                        </>
+                    )}
                 </section>
             </div>
         </main>
