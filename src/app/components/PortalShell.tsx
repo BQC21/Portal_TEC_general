@@ -17,6 +17,7 @@ type PortalNavItem = {
 const navigation: PortalNavItem[] = [
     { label: "Dashboard", href: "/dashboard" },
     { label: "Productos", href: "/products" },
+    { label: "Dimensionamiento", href: "/sizing" },
 ];
 
 type PortalShellProps = {
