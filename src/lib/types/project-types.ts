@@ -1,7 +1,7 @@
 import { SupabaseZoneRow, Zone } from './zone-types';
 
 // Estado del formulario de proyectos
-export type ProjectFormState = Omit<Project, "id">; // isto desde el componente ProjectTable
+export type ProjectFormState = Omit<Project, "id">; // visto desde el componente ProjectTable
 export type ProjectFormData = Omit<Project, "id">; // usado para las mutaciones (update || remove)
 
 // Filas correspondientes a la tabla de proyectos de Supabase

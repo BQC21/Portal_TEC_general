@@ -93,6 +93,7 @@ export async function deleteProduct(id: string): Promise<void> {
   }
 }
 
+// búsquedas filtradas
 export async function getProductFilterOptions(): Promise<{
   types: string[];
   brands: string[];
