@@ -1,7 +1,7 @@
 import { SupabaseZoneRow, Zone } from './zone-types';
 
 // Estado del formulario de proyectos
-export type ProjectFormState = Omit<Project, "id">; // DB productos visto desde el componente ProjectTable
+export type ProjectFormState = Omit<Project, "id">; // isto desde el componente ProjectTable
 export type ProjectFormData = Omit<Project, "id">; // usado para las mutaciones (update || remove)
 
 // Filas correspondientes a la tabla de proyectos de Supabase
@@ -22,7 +22,7 @@ export type SupabaseProjectRow = {
     estado_proyecto?: string;
 };
 
-// Campos para la base de datos para los proyectos de ProductTable
+// Campos para la base de datos a visualizarse en el frontend
 export type Project = {
     // propiedades generales
     id: string;
@@ -42,15 +42,15 @@ export type Project = {
 
 
 // Estado de la visualización de proyecos
-export type UseProductsResult = {
+export type UseProjectResult = {
     projects: Project[];
     loading: boolean;
     error: string | null;
     refetch: () => Promise<void>;
 }
 
-// Mostrar tabla de productos modificadas
-export type UseProductMutationsResult = {
+// Mostrar tabla de proyectos modificadas
+export type UseProjecttMutationsResult = {
     loading: boolean;
     error: string | null;
     create: (project: ProjectFormData) => Promise<Project>;
