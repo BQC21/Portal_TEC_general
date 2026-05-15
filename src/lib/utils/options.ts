@@ -8,7 +8,7 @@ export const SORTING_OPTIONS = {
 // Opciones para la tabla de proyectos
 // ----------------------------------------------
 export const NAME_PROJECT_OPTIONS = [
-    "CATAPA"
+    "CATAPA", "IQUITOS", "PUNO"
 ]
 
 export const STATUS_PROJECT_OPTIONS = [
