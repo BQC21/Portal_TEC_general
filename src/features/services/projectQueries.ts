@@ -9,7 +9,7 @@ const PROJECTS_TABLE = "projects";
 // --------------------------
 
 // crear proyecto
-export async function createProduct(project: ProjectFormData): Promise<Project> {
+export async function createProject(project: ProjectFormData): Promise<Project> {
     const supabase = createClient();
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
 

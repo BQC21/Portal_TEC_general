@@ -50,7 +50,7 @@ export type UseProjectResult = {
 }
 
 // Mostrar tabla de proyectos modificadas
-export type UseProjecttMutationsResult = {
+export type UseProjectMutationsResult = {
     loading: boolean;
     error: string | null;
     create: (project: ProjectFormData) => Promise<Project>;
