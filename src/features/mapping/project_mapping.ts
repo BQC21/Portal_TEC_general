@@ -29,7 +29,12 @@ export function mapSupabaseRowToProject(
 		nombre: row.nombre?.toString() || "",
         descripcion: row.descripcion?.toString() || "",
         zona_id: row.zona_id?.toString() || "",
-        zona_info: row.zona_info ? mapSupabaseRowToZone(row.zona_info as SupabaseZoneRow) : undefined,
+        // Supabase may return the related zone under different keys depending on the select: use either 'zona_info' (alias) or 'zonas'
+        zona_info: row.zona_info
+            ? mapSupabaseRowToZone(row.zona_info as SupabaseZoneRow)
+            : row.zonas
+                ? mapSupabaseRowToZone(row.zonas as SupabaseZoneRow)
+                : undefined,
         hsp: row.hsp?.toString() || "",
         ghi: row.ghi?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),

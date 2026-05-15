@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Project, ProjectFormData } from "@/lib/types/project-types";
 import { mapSupabaseRowToProject, mapProjectToSupabaseRow } from "../mapping/project_mapping";
 
-const PROJECTS_TABLE = "projects";
+const PROJECTS_TABLE = "proyectos";
 
 // --------------------------
 // ---- Operaciones CRUD ----
@@ -14,7 +14,9 @@ export async function createProject(project: ProjectFormData): Promise<Project> 
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
 
     const { data, error } = await supabase.from(PROJECTS_TABLE)
-    .insert(baseRow).select().single();
+    .insert(baseRow)
+    .select("*,zonas(*)")
+    .single();
 
     if (error) {
         throw new Error(`Error al crear el proyecto: ${error.message}`);
@@ -27,7 +29,9 @@ export async function createProject(project: ProjectFormData): Promise<Project> 
 export async function getProjects(): Promise<Project[]> {
     const supabase = createClient();
 
-    const { data, error } = await supabase.from(PROJECTS_TABLE).select("*");
+    const { data, error } = await supabase
+        .from(PROJECTS_TABLE)
+        .select("*,zonas(*)");
 
     if (error) {
         throw new Error(`Error al obtener los proyectos: ${error.message}`);
@@ -41,7 +45,9 @@ export async function getProjectById(id: string): Promise<Project> {
     const supabase = createClient();
 
     const { data, error } = await supabase.from(PROJECTS_TABLE)
-    .select("*").eq("id", id).single();
+    .select("*,zonas(*)")
+    .eq("id", id)
+    .single();
 
     if (error) {
         throw new Error(`Error al obtener el producto: ${error.message}`);
@@ -56,7 +62,10 @@ export async function updateProject(id: string, project: ProjectFormData): Promi
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
 
     const { data, error } = await supabase.from(PROJECTS_TABLE)
-    .update(baseRow).eq("id", id).select().single();
+    .update(baseRow)
+    .eq("id", id)
+    .select("*,zonas(*)")
+    .single();
 
     if (error) {
         throw new Error(`Error al actualizar el proyecto: ${error.message}`);

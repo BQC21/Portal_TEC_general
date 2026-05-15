@@ -18,13 +18,13 @@ import { AddProductSelectField } from "@/features/components/Form_fields/AddProd
 import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField";
 
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
+import { NAME_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 
 export default function ProjectsPage() {
 
     const { projects } = useProjects(); // obtener la lista de proyectos
-    // const { create, update, remove } = useProjectMutations(); // obtener funciones de mutación
 
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
@@ -39,14 +39,14 @@ export default function ProjectsPage() {
             activePath="/sizing"
         >        
         
-        <main>
-            <div>
-                <section>
+        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <AddProductSelectField
                         label="Proyecto"
                         required
                         value={form.nombre}
-                        options={projects.map((p) => p.nombre)}
+                        options={projects.length > 0 ? projects.map((p) => p.nombre) : NAME_PROJECT_OPTIONS}
                         onChange={(value) =>{ 
                             const project = projects.find((p) => p.nombre === value) ?? null;
                             setSelectedProject(project);
