@@ -97,7 +97,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
     return{
         ghi,
         hsp,
-        loading, 
+        loading,
         error,
         refetch
     }

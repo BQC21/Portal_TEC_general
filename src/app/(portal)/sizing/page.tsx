@@ -116,12 +116,12 @@ export default function ProjectsPage() {
                             independientemente del valor de ghi (evita falsy con 0) */}
                             {!NRELerror ?  (
                                 <>
-                                    <span>
+                                    {/* <span>
                                         <AddProductReadonlyField
                                                 label="HSP (NREL)"
                                                 value={nrelValue(hsp, "kWh/m²/día")}
                                             />
-                                    </span>
+                                    </span> */}
                                     <span>
                                             <AddProductReadonlyField
                                                 label="GHI estimado (NREL)"
