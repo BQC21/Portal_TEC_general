@@ -67,14 +67,14 @@ export default function ProjectsPage() {
     // })
     
     // Helper para el valor de un campo NREL
-    const nrelValue = (val: number | null, unit: string) => {
+    const nrelValue = (val: number | null) => {
         if (NRELerror)       return `Error: ${NRELerror}`;
         if (NRELloading)     return "Cargando...";
         // if (nasaError)       return `Error: ${nasaError}`;
         // if (nasaLoading)     return "Cargando...";
         // if (SolarCasterror)       return `Error: ${SolarCasterror}`;
         // if (SolarCastloading)     return "Cargando...";
-        if (val !== null)    return `${val} ${unit}`;
+        if (val !== null)    return `${val}`;
         return "Sin datos";
     };
     
@@ -141,8 +141,8 @@ export default function ProjectsPage() {
                                     </span> */}
                                     <span>
                                             <AddProductReadonlyField
-                                                label="GHI estimado (NREL)"
-                                                value={nrelValue(ghi, "kWh/m²")}
+                                                label="GHI (NREL) - kWh/m²/año"
+                                                value={nrelValue(ghi)}
                                             />
                                     </span>
                                 </>
