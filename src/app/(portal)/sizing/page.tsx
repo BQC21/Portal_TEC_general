@@ -22,8 +22,8 @@ import { NAME_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 
-// import { useConverterNasa } from "@/features/hooks/useConverterNasa";
-import { useConverterNREL } from "@/features/hooks/useConverterNREL"
+import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
+// import { useConverterNREL } from "@/features/hooks/api/useConverterNREL"
 
 export default function ProjectsPage() {
 
@@ -35,30 +35,32 @@ export default function ProjectsPage() {
         ? createProjectFormStateFromProject(selectedProject)
         : INITIAL_PROJECT_FORM;
 
-    // // ----------------------------
-    // // ------- NASA POWER API -----
-    // // ----------------------------
-
-    // const { ghi, t2m, date: nasaDate, unit: nasaUnit, loading: nasaLoading, error: nasaError } = useConverterNasa({
-    //     latitude:  form.zona_info?.latitude ?? "",
-    //     longitude: form.zona_info?.longitude ?? "",
-    // });
-
-
     // ----------------------------
-    // ------- NREL API -----
+    // ------- NASA POWER API -----
     // ----------------------------
-    const { ghi, 
-        // hsp, 
-        loading: NRELloading, error: NRELerror } = useConverterNREL({
+
+    const { ghi, loading: nasaLoading, error: nasaError } = useConverterNasa({
         latitude:  form.zona_info?.latitude ?? "",
         longitude: form.zona_info?.longitude ?? "",
-    })
+    });
+
+
+    // // ----------------------------
+    // // ------- NREL API -----
+    // // ----------------------------
+    // const { ghi, 
+    //     // hsp, 
+    //     loading: NRELloading, error: NRELerror } = useConverterNREL({
+    //     latitude:  form.zona_info?.latitude ?? "",
+    //     longitude: form.zona_info?.longitude ?? "",
+    // })
     
     // Helper para el valor de un campo NREL
     const nrelValue = (val: number | null, unit: string) => {
-        if (NRELerror)       return `Error: ${NRELerror}`;
-        if (NRELloading)     return "Cargando...";
+        // if (NRELerror)       return `Error: ${NRELerror}`;
+        // if (NRELloading)     return "Cargando...";
+        if (nasaError)       return `Error: ${nasaError}`;
+        if (nasaLoading)     return "Cargando...";
         if (val !== null)    return `${val} ${unit}`;
         return "Sin datos";
     };
@@ -116,7 +118,7 @@ export default function ProjectsPage() {
 
                             {/* Datos NREL: se muestran siempre que haya proyecto,
                             independientemente del valor de ghi (evita falsy con 0) */}
-                            {!NRELerror ?  (
+                            {!nasaError ?  ( // cambiar dependiendo de la API
                                 <>
                                     {/* <span>
                                         <AddProductReadonlyField
@@ -140,7 +142,7 @@ export default function ProjectsPage() {
                                         />
                                     </span>
                                     <p className="text-sm text-yellow-600">
-                                        En caso haya problemas con la API NREL, los datos han sido
+                                        En caso haya problemas con la API, los datos han sido
                                         registrados según Global Solar ATLAS.
                                     </p>
                                 </>                                

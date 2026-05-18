@@ -9,8 +9,8 @@ import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
 
 import { useProducts, useProductMutations } from "@/features/hooks/useRealtimeProducts"; // Supabase
-// import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
-import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
+// import { useConverter } from "@/features/hooks/api/useConverterFrankfurter"; // API (browser)
+import { useConverterSunat } from "@/features/hooks/api/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/product-types"; // Tipados
 
