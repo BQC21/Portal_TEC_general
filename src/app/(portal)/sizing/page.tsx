@@ -48,7 +48,9 @@ export default function ProjectsPage() {
     // ----------------------------
     // ------- NREL API -----
     // ----------------------------
-    const { ghi, hsp, loading: NRELloading, error: NRELerror } = useConverterNREL({
+    const { ghi, 
+        // hsp, 
+        loading: NRELloading, error: NRELerror } = useConverterNREL({
         latitude:  form.zona_info?.latitude ?? "",
         longitude: form.zona_info?.longitude ?? "",
     })
