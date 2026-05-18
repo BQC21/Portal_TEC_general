@@ -55,7 +55,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
                 setLoading(true);
                 setError(null);
 
-                // Llamar al route handler interno (nunca directo a NREL desde el cliente)
+                // Llamar al route handler interno
                 const params = new URLSearchParams();
                 params.set("latitude",  String(latNum));
                 params.set("longitude", String(lonNum));
