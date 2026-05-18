@@ -10,9 +10,9 @@ const PVWATTS_DEFAULTS = {
     module_type:     "0",
     losses:          "14",
     array_type:      "1",
-    tilt:            "20", // inclinacion de 20° da más cercanía a lo de ATLAS
+    tilt:            "0", 
     azimuth:         "0",
-    dataset:         "nsrdb",
+    dataset:         "nsrdb", // diferirá un poco al de ATLAS (este de SOLARGIS dataset)
 } as const;
 
 export async function GET(req: NextRequest){
