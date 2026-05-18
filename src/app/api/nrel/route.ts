@@ -10,7 +10,7 @@ const PVWATTS_DEFAULTS = {
     module_type:     "0",
     losses:          "14",
     array_type:      "1",
-    tilt:            "10",
+    tilt:            "20", // inclinacion de 20° da más cercanía a lo de ATLAS
     azimuth:         "0",
     dataset:         "nsrdb",
 } as const;
