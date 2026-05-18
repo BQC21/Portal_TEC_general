@@ -22,6 +22,8 @@ import { NAME_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 
+import { useConverterNasa } from "@/features/hooks/useConverterNasa";
+
 export default function ProjectsPage() {
 
     const { projects } = useProjects(); // obtener la lista de proyectos
@@ -31,6 +33,23 @@ export default function ProjectsPage() {
     const form: ProjectFormState = selectedProject
         ? createProjectFormStateFromProject(selectedProject)
         : INITIAL_PROJECT_FORM;
+
+    // ----------------------------
+    // ------- NASA POWER API -----
+    // ----------------------------
+
+    const { ghi, t2m, date: nasaDate, unit: nasaUnit, loading: nasaLoading, error: nasaError } = useConverterNasa({
+        latitude:  form.zona_info?.latitude ?? "",
+        longitude: form.zona_info?.longitude ?? "",
+    });
+
+
+    // // ----------------------------
+    // // ------- NREL API -----
+    // // ----------------------------
+    // const { ghi } = useConverterNREL({
+    
+    // })
 
     return(
         <PortalShell
@@ -78,10 +97,49 @@ export default function ProjectsPage() {
                                     value={form.zona_info?.longitude ?? "---"}
                                 />
                             </span>
-                            <AddProductReadonlyField
-                                label="Radiación solar anual"
-                                value={form.zona_info?.ghi_respaldo ?? "---"}
-                            />
+                            {ghi && (
+                                <>
+                                <span>
+                                    <AddProductReadonlyField
+                                        label="T2M (NASA)"
+                                        value={
+                                            nasaError 
+                                                ? `Error: ${nasaError}` 
+                                                : nasaLoading 
+                                                    ? "Cargando..." 
+                                                    : t2m !== null 
+                                                        ? `${t2m} °${nasaUnit}` 
+                                                        : "Sin datos"
+                                        }
+                                    />
+                                </span>
+                                <span>
+                                    <AddProductReadonlyField
+                                        label="GHI estimado (NASA)"
+                                        value={
+                                            nasaError 
+                                                ? "---" 
+                                                : nasaLoading 
+                                                    ? "Cargando..." 
+                                                    : ghi !== null 
+                                                        ? `${ghi} W/m²` 
+                                                        : "Sin datos"
+                                        }
+                                    />
+                                </span>
+                                </>
+                            )}: {
+                            <>
+                                <span>
+                                    <AddProductReadonlyField
+                                        label="GHI"
+                                        value={form.zona_info?.longitude ?? "---"}
+                                    />
+                                </span>
+                                <p>En caso haya problemas con NASA Power API, los datos han sido registrados según Global Solar ATLAS</p>
+                            </>
+                            }
+                            
                         </>
                     )}
                 </section>
