@@ -5,6 +5,8 @@ export interface NRELInfo {
         lon:             string;       
     }
 
+    errors:   string[];
+
     outputs:{
         solrad_annual:    number;     // kWh/m²/day  ← tu HSP
     }

@@ -1,70 +1,82 @@
 "use client";
 
 import { useState, useEffect } from "react"; 
-import { NRELInfo } from "@/lib/types/nrel-types"; 
+interface NRELRouteResponse {
+    hsp: number;
+    error?: string;
+}
 
-interface UseNasaGHIOptions {
+interface UseConverterNRELOptions {
     latitude?: string;
-    longitude?: string;}
+    longitude?: string;
+}
 
-interface UseNasaGHIResult {
-    ghi: number | null;       // kwh/m² 
-    hsp: number | null;       // kwh/m²/day 
+interface UseConverterNRELResult {
+    ghi:     number | null;   // kWh/m²/año
+    hsp:     number | null;   // kWh/m²/día
     loading: boolean;
-    error: string | null;
+    error:   string | null;
     refetch: () => void;
 }
 
-export function useConverterNREL(options: UseNasaGHIOptions = {}): UseNasaGHIResult{
+export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConverterNRELResult{
     const { latitude, longitude } = options;
 
-    const [ghi, setGhi]       = useState<number | null>(null);
-    const [hsp, setHsp]       = useState<number | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+    const [ghi,     setGhi]     = useState<number | null>(null);
+    const [hsp,     setHsp]     = useState<number | null>(null);
+    const [loading, setLoading] = useState(false); // false hasta que haya coordenadas
+    const [error,   setError]   = useState<string | null>(null);
     const [trigger, setTrigger] = useState<number>(0);
 
     // Permite refetch manual desde la vista
     const refetch = () => setTrigger((n) => n + 1);
 
     useEffect(() =>{
+        // No ejecutar si no hay coordenadas
+        if (!latitude || !longitude) {
+            setGhi(null);
+            setHsp(null);
+            setError(null);
+            setLoading(false);
+            return;
+        }
+
+        // Validar que sean números antes de llamar al servidor
+        const latNum = parseFloat(latitude);
+        const lonNum = parseFloat(longitude);
+
+        if (isNaN(latNum) || isNaN(lonNum)) {
+            setError("Coordenadas inválidas");
+            return;
+        }
+
         const load = async () => {
             try{
                 setLoading(true);
                 setError(null);
 
-                // Validar y parsear coordenadas
-                const latNum = latitude ? parseFloat(latitude) : null;
-                const lonNum = longitude ? parseFloat(longitude) : null;
-                
-                if ((latitude && isNaN(latNum!)) || (longitude && isNaN(lonNum!))) {
-                    throw new Error("Coordenadas inválidas");
-                }
-
-                // enlace con url
+                // Llamar al route handler interno (nunca directo a NREL desde el cliente)
                 const params = new URLSearchParams();
-                params.set("api_key", process.env.NEXT_PUBLIC_NREL_API_KEY ?? "");
-                params.set("lat", latitude!);
-                params.set("lon", longitude!);
-                params.set("dataset", "nsrdb");
-                const res = await fetch(
-                    `https://developer.nrel.gov/api/pvwatts/v8.json?${params.toString()}`,
-                    // `https://developer.nlr.gov/api/pvwatts/v8.json`// desde el 29/5/2026
-                );
+                params.set("latitude",  String(latNum));
+                params.set("longitude", String(lonNum));
+                
+                const res = await fetch(`/api/nrel?${params.toString()}`);
+                // const res = await fetch(`/api/nlr?${params.toString()}`); 
+                // desde el 29/5/2026 el route handler ya apunta a developer.nlr.gov
 
-                if (!res.ok) {
-                    throw new Error(`Error consultando NREL: ${res.status}`);
+                const data = (await res.json()) as NRELRouteResponse;
+
+                if (!res.ok || data.error) {
+                    throw new Error(data.error ?? `Error del servidor: ${res.status}`);
                 }
-
-                const data = (await res.json()) as NRELInfo;
 
                 // obtener hsp (kwh/m²/day) a partir de "data" 
-                const hsp = data.outputs.solrad_annual;
-                setHsp(hsp)
+                const hspValue = data.hsp;
+                setHsp(hspValue)
 
                 // calcular ghi (hsp * 365 days)
-                const ghi = hsp * 365
-                setGhi(ghi)
+                const ghiValue = parseFloat((hspValue * 365).toFixed(2));
+                setGhi(ghiValue)
 
             } catch (err) {
                 const message = 
@@ -72,21 +84,20 @@ export function useConverterNREL(options: UseNasaGHIOptions = {}): UseNasaGHIRes
                         ? err.message 
                         : "Error cargando NASA POWER";
                 setError(message);
+                setHsp(null);
+                setGhi(null);
             } finally {
                 setLoading(false);
             }
         }
 
-        // Solo llamar si hay coordenadas válidas
-        if (latitude && longitude) {
-            void load();
-        }
+        void load();
     }, [latitude, longitude, trigger])
 
     return{
         ghi,
         hsp,
-        loading,
+        loading, 
         error,
         refetch
     }

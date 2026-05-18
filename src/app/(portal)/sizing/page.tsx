@@ -22,7 +22,8 @@ import { NAME_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 
-import { useConverterNasa } from "@/features/hooks/useConverterNasa";
+// import { useConverterNasa } from "@/features/hooks/useConverterNasa";
+import { useConverterNREL } from "@/features/hooks/useConverterNREL"
 
 export default function ProjectsPage() {
 
@@ -34,23 +35,32 @@ export default function ProjectsPage() {
         ? createProjectFormStateFromProject(selectedProject)
         : INITIAL_PROJECT_FORM;
 
-    // ----------------------------
-    // ------- NASA POWER API -----
-    // ----------------------------
+    // // ----------------------------
+    // // ------- NASA POWER API -----
+    // // ----------------------------
 
-    const { ghi, t2m, date: nasaDate, unit: nasaUnit, loading: nasaLoading, error: nasaError } = useConverterNasa({
+    // const { ghi, t2m, date: nasaDate, unit: nasaUnit, loading: nasaLoading, error: nasaError } = useConverterNasa({
+    //     latitude:  form.zona_info?.latitude ?? "",
+    //     longitude: form.zona_info?.longitude ?? "",
+    // });
+
+
+    // ----------------------------
+    // ------- NREL API -----
+    // ----------------------------
+    const { ghi, hsp, loading: NRELloading, error: NRELerror } = useConverterNREL({
         latitude:  form.zona_info?.latitude ?? "",
         longitude: form.zona_info?.longitude ?? "",
-    });
-
-
-    // // ----------------------------
-    // // ------- NREL API -----
-    // // ----------------------------
-    // const { ghi } = useConverterNREL({
+    })
     
-    // })
-
+    // Helper para el valor de un campo NREL
+    const nrelValue = (val: number | null, unit: string) => {
+        if (NRELerror)       return `Error: ${NRELerror}`;
+        if (NRELloading)     return "Cargando...";
+        if (val !== null)    return `${val} ${unit}`;
+        return "Sin datos";
+    };
+    
     return(
         <PortalShell
             title="Ventana para el dimensionamiento de sistemas solares fotovoltaicos"
@@ -61,6 +71,8 @@ export default function ProjectsPage() {
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+
+                    {/* Selector de proyecto */}
                     <AddProductSelectField
                         label="Proyecto"
                         required
@@ -75,6 +87,8 @@ export default function ProjectsPage() {
                             }
                         }}
                     />
+
+                    {/* Campos visibles solo cuando hay proyecto seleccionado */}
                     {selectedProject && (
                         <>
                             <AddProductReadonlyField
@@ -97,49 +111,38 @@ export default function ProjectsPage() {
                                     value={form.zona_info?.longitude ?? "---"}
                                 />
                             </span>
-                            {ghi && (
+
+                            {/* Datos NREL: se muestran siempre que haya proyecto,
+                            independientemente del valor de ghi (evita falsy con 0) */}
+                            {!NRELerror ?  (
                                 <>
-                                <span>
-                                    <AddProductReadonlyField
-                                        label="T2M (NASA)"
-                                        value={
-                                            nasaError 
-                                                ? `Error: ${nasaError}` 
-                                                : nasaLoading 
-                                                    ? "Cargando..." 
-                                                    : t2m !== null 
-                                                        ? `${t2m} °${nasaUnit}` 
-                                                        : "Sin datos"
-                                        }
-                                    />
-                                </span>
-                                <span>
-                                    <AddProductReadonlyField
-                                        label="GHI estimado (NASA)"
-                                        value={
-                                            nasaError 
-                                                ? "---" 
-                                                : nasaLoading 
-                                                    ? "Cargando..." 
-                                                    : ghi !== null 
-                                                        ? `${ghi} W/m²` 
-                                                        : "Sin datos"
-                                        }
-                                    />
-                                </span>
+                                    <span>
+                                        <AddProductReadonlyField
+                                                label="HSP (NREL)"
+                                                value={nrelValue(hsp, "kWh/m²/día")}
+                                            />
+                                    </span>
+                                    <span>
+                                            <AddProductReadonlyField
+                                                label="GHI estimado (NREL)"
+                                                value={nrelValue(ghi, "kWh/m²")}
+                                            />
+                                    </span>
                                 </>
-                            )}: {
-                            <>
-                                <span>
-                                    <AddProductReadonlyField
-                                        label="GHI"
-                                        value={form.zona_info?.longitude ?? "---"}
-                                    />
-                                </span>
-                                <p>En caso haya problemas con NASA Power API, los datos han sido registrados según Global Solar ATLAS</p>
-                            </>
-                            }
-                            
+                            ): (
+                                <>
+                                    <span>
+                                        <AddProductReadonlyField
+                                            label="GHI anual de la zona"
+                                            value={form.zona_info?.ghi_respaldo ?? "---"}
+                                        />
+                                    </span>
+                                    <p className="text-sm text-yellow-600">
+                                        En caso haya problemas con la API NREL, los datos han sido
+                                        registrados según Global Solar ATLAS.
+                                    </p>
+                                </>                                
+                            )}     
                         </>
                     )}
                 </section>
