@@ -31,7 +31,7 @@ export async function GET(req: NextRequest){
         }    
         const parsedLon = parseFloat(longitudeParam);
         const parsedLat = parseFloat(latitudeParam);
-
+        
         if (Number.isNaN(parsedLon) || Number.isNaN(parsedLat)) {
             return NextResponse.json(
                 { error: "Parámetros de coordenadas inválidos" },
