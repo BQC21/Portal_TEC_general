@@ -10,13 +10,19 @@ import type {
     Project, 
     ProjectFormState,
     ProjectFormData,
-} from "@/lib/types/project-types"; // Tipados
+} from "@/lib/types/project-types"; 
+
+import type { 
+    Zone, 
+    ZoneFormState,
+    ZoneFormData,
+} from "@/lib/types/zone-types"; // Tipados
 
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
 import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField"; 
 import { AddProductTextAreaField } from "../../Form_fields/AddProductTextAreaField"; // campos
 
-import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
@@ -24,6 +30,8 @@ import { createProjectFormStateFromProject } from "@/features/mapping/project_ma
 // import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
 // import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
 import { useConverterNREL } from "@/features/hooks/api/useConverterNREL"
+import { useZone } from "@/features/hooks/useRealtimeZones";
+
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -34,7 +42,12 @@ type AddProductModalProps = {
 
 export default function AddProjectModal({ existingProject, onAddProject, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
+    
+    const { zones } = useZone(); // obtener la lista de zonas
+
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
+    const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
+    
 
     // ----------------------------
     // ------- NASA POWER API -----
@@ -119,6 +132,20 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                             placeholder=" "
                             value={form.descripcion}
                             onChange={(value) => updateField("descripcion", value)}
+                        />
+                        {/* Selector de zonas */}
+                        <AddProductSelectField
+                            label="Zona"
+                            required
+                            value={form_zone.zona ?? ""}
+                            options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : NAME_ZONES_OPTIONS)]}
+                            onChange={(value) =>{ 
+                                if (value === "Seleccione zona") {
+                                    setForm_zone(INITIAL_ZONE_FORM);
+                                } else {
+                                    setForm_zone((current) => ({ ...current, zona: value }));
+                                }
+                            }}
                         />
                     </section>
                 </div> 
