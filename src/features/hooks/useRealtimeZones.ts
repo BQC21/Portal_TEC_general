@@ -7,7 +7,7 @@ import { getZones, createZone, updateZone, deleteZone  } from "@/features/servic
 
 const supabase = createClient();
 
-export function useProducts(): UseZoneResult {
+export function useZone(): UseZoneResult {
 	const [zones, setZones] = useState< Zone []>([]); // data
 	const [loading, setLoading] = useState(true); // loading state
 	const [error, setError] = useState<string | null>(null); // error state
