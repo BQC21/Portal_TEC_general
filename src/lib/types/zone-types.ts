@@ -1,3 +1,7 @@
+// Estado del formulario de proyectos
+export type ZoneFormState = Omit<Zone, "id">; // visto desde el componente ProjectTable
+export type ZoneFormData = Omit<Zone, "id">; // usado para las mutaciones (update || remove)
+
 // Filas correspondientes a la tabla de proyectos de Supabase
 export type SupabaseZoneRow = {
     // propiedades generales
@@ -25,3 +29,20 @@ export type Zone = {
     created_at: Date;
     updated_at: Date;
 };
+
+// Estado de la visualización de proyecos
+export type UseZoneResult = {
+    zones: Zone[];
+    loading: boolean;
+    error: string | null;
+    refetch: () => Promise<void>;
+}
+
+// Mostrar tabla de proyectos modificadas
+export type UseZoneMutationsResult = {
+    loading: boolean;
+    error: string | null;
+    create: (project: ZoneFormData) => Promise<Zone>;
+    update: (id: string, project: ZoneFormData) => Promise<Zone>;
+    remove: (id: string) => Promise<void>;
+}
