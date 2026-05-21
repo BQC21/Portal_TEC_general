@@ -24,6 +24,7 @@ import { AddProductTextAreaField } from "../../Form_fields/AddProductTextAreaFie
 
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
+import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 
@@ -47,6 +48,7 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
 
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
+    const selectedZone = form_zone.zona;
     
 
     // ----------------------------
@@ -65,8 +67,8 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
     const { ghi, 
         // hsp, 
         loading: NRELloading, error: NRELerror } = useConverterNREL({
-        latitude:  form.zona_info?.latitude ?? "",
-        longitude: form.zona_info?.longitude ?? "",
+        latitude:  form_zone.latitude ?? "",
+        longitude: form_zone.longitude ?? "",
     })
 
     // Helper para el valor de un campo NREL
@@ -142,13 +144,80 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                             onChange={(value) =>{ 
                                 if (value === "Seleccione zona") {
                                     setForm_zone(INITIAL_ZONE_FORM);
-                                } else {
-                                    setForm_zone((current) => ({ ...current, zona: value }));
+                                } 
+                                const selected = zones.find((zone) => zone.zona === value);
+
+                                if (selected) {
+                                    setForm_zone({
+                                        zona: selected.zona,
+                                        latitude: selected.latitude,
+                                        longitude: selected.longitude,
+                                        ghi_respaldo: selected.ghi_respaldo,
+                                        created_at: selected.created_at,
+                                        updated_at: selected.updated_at,
+                                    });
                                 }
                             }}
                         />
+
+                        {/* Campos visibles solo cuando hay zona seleccionada */}
+                        {selectedZone && (
+                            <>
+                                <span>
+                                    <AddProductReadonlyField
+                                        label="Latitud de la zona"
+                                        value={form_zone.latitude ?? "---"}
+                                    />
+                                </span>
+                                <span>
+                                    <AddProductReadonlyField
+                                        label="Longitud de la zona"
+                                        value={form_zone.longitude ?? "---"}
+                                    />
+                                </span>
+                                {/* Datos NREL: se muestran siempre que haya zona,
+                                independientemente del valor de ghi (evita falsy con 0) */}
+                                {!NRELerror ?  ( // cambiar dependiendo de la API
+                                    <>
+                                        {/* <span>
+                                            <AddProductReadonlyField
+                                                    label="HSP (NREL)"
+                                                    value={nrelValue(hsp, "kWh/m²/día")}
+                                                />
+                                        </span> */}
+                                        <span>
+                                                <AddProductReadonlyField
+                                                    label="GHI (NREL) - kWh/m²/año"
+                                                    value={nrelValue(ghi)}
+                                                />
+                                        </span>
+                                    </>
+                                ): (
+                                    <>
+                                        <span>
+                                            <AddProductReadonlyField
+                                                label="GHI anual de la zona"
+                                                value={form_zone.ghi_respaldo ?? "---"}
+                                            />
+                                        </span>
+                                        <p className="text-sm text-yellow-600">
+                                            En caso haya problemas con la API, los datos han sido
+                                            registrados según Global Solar ATLAS.
+                                        </p>
+                                    </>                                
+                                )}   
+                            </>
+                        )}
+                        <AddProductSelectField
+                            label="Estado del proyecto"
+                            required
+                            value={form.estado_proyecto}
+                            options={STATUS_PROJECT_OPTIONS}
+                            onChange={(value) => updateField("estado_proyecto", value)}
+                        />
                     </section>
                 </div> 
+                
             </div>
         </div>
         </PortalShell>
