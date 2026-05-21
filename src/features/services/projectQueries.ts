@@ -1,8 +1,7 @@
 import { createClient } from "@/lib/supabase/client";
 import { Project, ProjectFormData } from "@/lib/types/project-types";
 import { mapSupabaseRowToProject, mapProjectToSupabaseRow } from "../mapping/project_mapping";
-
-const PROJECTS_TABLE = "proyectos";
+import { PROJECTS_TABLE } from "@/lib/utils/namingTolerance"
 
 // --------------------------
 // ---- Operaciones CRUD ----
