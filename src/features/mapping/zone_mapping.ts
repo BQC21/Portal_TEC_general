@@ -1,7 +1,7 @@
 import {Zone, ZoneFormState, ZoneFormData, SupabaseZoneRow} from "@/lib/types/zone-types"
 import { parseNullableDate } from "@/lib/utils/helpers"
 
-// enlace con los atributos de Supabase
+// Actualización del formulario
 export function createProjectFormStateFromProject(zone: Zone): ZoneFormState {
     return {
         zona: zone.zona,
