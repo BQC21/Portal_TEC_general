@@ -7,8 +7,11 @@ export const SORTING_OPTIONS = {
 // ----------------------------------------------
 // Opciones para la tabla de proyectos
 // ----------------------------------------------
-export const NAME_PROJECT_OPTIONS = [
-    "CATAPA", "IQUITOS", "PUNO"
+export const NAME_ZONES_OPTIONS = [
+    "SATIPO", "SAN BORJA", "CAJAMARCA", "MIRAFLORES", 
+    "IQUITOS", "PUNO", "CHIMBOTE", "LURÍN",
+    "LA VICTORIA", "CHORRILLOS", "CHINCHA BAJA", "HUARMEY",
+    "CHINCHA", "APURÍMAC", "CHICLAYO"
 ]
 
 export const STATUS_PROJECT_OPTIONS = [

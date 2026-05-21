@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/components/Icons/PlusIcon";
-import { AddProjectModal } from "@/features/components/Modals/sizing/AddProjectModal";
+import AddProjectModal  from "@/features/components/Modals/sizing/AddProjectModal";
 import type { Project, ProjectFormData } from "@/lib/types/project-types";
 
 type Button2ModalProps = {
@@ -30,7 +30,7 @@ export default function Button2Modal({ existingProjects, onAddProject }: Button2
             
             {open && (
                 <AddProjectModal
-                    existingProjects={existingProjects}
+                    existingProject={existingProjects}
                     onAddProject={async function (project: ProjectFormData) {
                         await onAddProject(project);
                         setOpen(false);
