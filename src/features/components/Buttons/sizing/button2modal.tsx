@@ -25,7 +25,7 @@ export default function Button2Modal({ existingProjects, onAddProject }: Button2
                 className="inline-flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
                 <PlusIcon />
-                <span>Añadir Producto</span> 
+                <span>Añadir Proyecto</span> 
             </button>
             
             {open && (
