@@ -2,10 +2,12 @@
 
 import { PortalShell } from "@/app/components/PortalShell";
 import { useProducts } from "@/features/hooks/useRealtimeProducts";
+import { useProjects } from "@/features/hooks/useRealtimeProjects";
 
 export default function DashboardPage() {
 
     const { products } = useProducts();
+    const { projects } = useProjects();
 
     const metrics = [
         {
@@ -14,12 +16,12 @@ export default function DashboardPage() {
             accent: "bg-blue-50 text-blue-700",
             icon: "▣",
         },
-        // {
-        //     title: "Proyectos en Curso",
-        //     value: "0", // por condicionarse cuando se tenga el módulo 2
-        //     accent: "bg-emerald-50 text-emerald-700",
-        //     icon: "▣",
-        // },
+        {
+            title: "Proyectos en Curso",
+            value: projects.length, 
+            accent: "bg-emerald-50 text-emerald-700",
+            icon: "▣",
+        },
         // {
         //     title: "Cotizaciones",
         //     value: "0", // por condicionarse cuando se tenga el módulo 2
