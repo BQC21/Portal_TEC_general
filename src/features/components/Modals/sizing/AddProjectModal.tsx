@@ -13,7 +13,8 @@ import type {
 } from "@/lib/types/project-types"; // Tipados
 
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
-import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField"; // campos
+import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField"; 
+import { AddProductTextAreaField } from "../../Form_fields/AddProductTextAreaField"; // campos
 
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
@@ -32,7 +33,7 @@ type AddProductModalProps = {
 };
 
 export default function AddProjectModal({ existingProject, onAddProject, onClose }: AddProductModalProps) {
-
+    const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
 
     // ----------------------------
@@ -66,6 +67,23 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
         return "Sin datos";
     };
 
+    // Actualizar campos del formulario
+    function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
+        setForm((current) => {
+            const updated = { ...current, [field]: value };
+            return updated;
+        });
+    }
+
+    // Aceptar insercion
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        onAddProject({
+            ...form,
+        });
+    }
+
     return(
         <PortalShell
             title="Ventana para el dimensionamiento de sistemas solares fotovoltaicos"
@@ -84,7 +102,26 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                     >
                         <AddProductCloseIcon />
                     </button>
-                </div>        
+                </div>
+                <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        {/* Nombre y descripción del proyecto */}
+                        <AddProductTextAreaField
+                            label="Nombre del proyecto"
+                            required
+                            placeholder=" "
+                            value={form.nombre}
+                            onChange={(value) => updateField("nombre", value)}
+                        />
+                        <AddProductTextAreaField
+                            label="Descripción del proyecto"
+                            required
+                            placeholder=" "
+                            value={form.descripcion}
+                            onChange={(value) => updateField("descripcion", value)}
+                        />
+                    </section>
+                </div> 
             </div>
         </div>
         </PortalShell>
