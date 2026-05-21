@@ -118,106 +118,122 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                         <AddProductCloseIcon />
                     </button>
                 </div>
-                <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                        {/* Nombre y descripción del proyecto */}
-                        <AddProductTextAreaField
-                            label="Nombre del proyecto"
-                            required
-                            placeholder=" "
-                            value={form.nombre}
-                            onChange={(value) => updateField("nombre", value)}
-                        />
-                        <AddProductTextAreaField
-                            label="Descripción del proyecto"
-                            required
-                            placeholder=" "
-                            value={form.descripcion}
-                            onChange={(value) => updateField("descripcion", value)}
-                        />
-                        {/* Selector de zonas */}
-                        <AddProductSelectField
-                            label="Zona"
-                            required
-                            value={form_zone.zona ?? ""}
-                            options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : NAME_ZONES_OPTIONS)]}
-                            onChange={(value) =>{ 
-                                if (value === "Seleccione zona") {
-                                    setForm_zone(INITIAL_ZONE_FORM);
-                                } 
-                                const selected = zones.find((zone) => zone.zona === value);
+                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            {/* Nombre y descripción del proyecto */}
+                            <AddProductTextAreaField
+                                label="Nombre del proyecto"
+                                required
+                                placeholder=" "
+                                value={form.nombre}
+                                onChange={(value) => updateField("nombre", value)}
+                            />
+                            <AddProductTextAreaField
+                                label="Descripción del proyecto"
+                                required
+                                placeholder=" "
+                                value={form.descripcion}
+                                onChange={(value) => updateField("descripcion", value)}
+                            />
+                            {/* Selector de zonas */}
+                            <AddProductSelectField
+                                label="Zona"
+                                required
+                                value={form_zone.zona ?? ""}
+                                options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : NAME_ZONES_OPTIONS)]}
+                                onChange={(value) =>{ 
+                                    if (value === "Seleccione zona") {
+                                        setForm_zone(INITIAL_ZONE_FORM);
+                                    } 
+                                    const selected = zones.find((zone) => zone.zona === value);
 
-                                if (selected) {
-                                    setForm_zone({
-                                        zona: selected.zona,
-                                        latitude: selected.latitude,
-                                        longitude: selected.longitude,
-                                        ghi_respaldo: selected.ghi_respaldo,
-                                        created_at: selected.created_at,
-                                        updated_at: selected.updated_at,
-                                    });
-                                }
-                            }}
-                        />
+                                    if (selected) {
+                                        setForm_zone({
+                                            zona: selected.zona,
+                                            latitude: selected.latitude,
+                                            longitude: selected.longitude,
+                                            ghi_respaldo: selected.ghi_respaldo,
+                                            created_at: selected.created_at,
+                                            updated_at: selected.updated_at,
+                                        });
+                                    }
+                                }}
+                            />
 
-                        {/* Campos visibles solo cuando hay zona seleccionada */}
-                        {selectedZone && (
-                            <>
-                                <span>
-                                    <AddProductReadonlyField
-                                        label="Latitud de la zona"
-                                        value={form_zone.latitude ?? "---"}
-                                    />
-                                </span>
-                                <span>
-                                    <AddProductReadonlyField
-                                        label="Longitud de la zona"
-                                        value={form_zone.longitude ?? "---"}
-                                    />
-                                </span>
-                                {/* Datos NREL: se muestran siempre que haya zona,
-                                independientemente del valor de ghi (evita falsy con 0) */}
-                                {!NRELerror ?  ( // cambiar dependiendo de la API
-                                    <>
-                                        {/* <span>
-                                            <AddProductReadonlyField
-                                                    label="HSP (NREL)"
-                                                    value={nrelValue(hsp, "kWh/m²/día")}
-                                                />
-                                        </span> */}
-                                        <span>
+                            {/* Campos visibles solo cuando hay zona seleccionada */}
+                            {selectedZone && (
+                                <>
+                                    <span>
+                                        <AddProductReadonlyField
+                                            label="Latitud de la zona"
+                                            value={form_zone.latitude ?? "---"}
+                                        />
+                                    </span>
+                                    <span>
+                                        <AddProductReadonlyField
+                                            label="Longitud de la zona"
+                                            value={form_zone.longitude ?? "---"}
+                                        />
+                                    </span>
+                                    {/* Datos NREL: se muestran siempre que haya zona,
+                                    independientemente del valor de ghi (evita falsy con 0) */}
+                                    {!NRELerror ?  ( // cambiar dependiendo de la API
+                                        <>
+                                            {/* <span>
                                                 <AddProductReadonlyField
-                                                    label="GHI (NREL) - kWh/m²/año"
-                                                    value={nrelValue(ghi)}
+                                                        label="HSP (NREL)"
+                                                        value={nrelValue(hsp, "kWh/m²/día")}
+                                                    />
+                                            </span> */}
+                                            <span>
+                                                    <AddProductReadonlyField
+                                                        label="GHI (NREL) - kWh/m²/año"
+                                                        value={nrelValue(ghi)}
+                                                    />
+                                            </span>
+                                        </>
+                                    ): (
+                                        <>
+                                            <span>
+                                                <AddProductReadonlyField
+                                                    label="GHI anual de la zona"
+                                                    value={form_zone.ghi_respaldo ?? "---"}
                                                 />
-                                        </span>
-                                    </>
-                                ): (
-                                    <>
-                                        <span>
-                                            <AddProductReadonlyField
-                                                label="GHI anual de la zona"
-                                                value={form_zone.ghi_respaldo ?? "---"}
-                                            />
-                                        </span>
-                                        <p className="text-sm text-yellow-600">
-                                            En caso haya problemas con la API, los datos han sido
-                                            registrados según Global Solar ATLAS.
-                                        </p>
-                                    </>                                
-                                )}   
-                            </>
-                        )}
-                        <AddProductSelectField
-                            label="Estado del proyecto"
-                            required
-                            value={form.estado_proyecto}
-                            options={STATUS_PROJECT_OPTIONS}
-                            onChange={(value) => updateField("estado_proyecto", value)}
-                        />
-                    </section>
-                </div> 
-                
+                                            </span>
+                                            <p className="text-sm text-yellow-600">
+                                                En caso haya problemas con la API, los datos han sido
+                                                registrados según Global Solar ATLAS.
+                                            </p>
+                                        </>                                
+                                    )}   
+                                </>
+                            )}
+                            <AddProductSelectField
+                                label="Estado del proyecto"
+                                required
+                                value={form.estado_proyecto}
+                                options={STATUS_PROJECT_OPTIONS}
+                                onChange={(value) => updateField("estado_proyecto", value)}
+                            />
+                        </section>
+                    </div> 
+                    <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
+                        <button
+                        type="button"
+                        onClick={onClose}
+                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                        type="submit"
+                        className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                        >
+                            Añadir Proyecto
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
         </PortalShell>
