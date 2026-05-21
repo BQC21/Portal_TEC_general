@@ -38,7 +38,7 @@ export function mapSupabaseRowToZone(
 /*
     Envío de datos a la base de datos de Supabase
 */
-export function mapProjectToSupabaseRow(
+export function mapZoneToSupabaseRow(
     zone: ZoneFormData
 ): SupabaseZoneRow {
     return {
