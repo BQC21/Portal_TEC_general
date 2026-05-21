@@ -48,3 +48,12 @@ export const TABLE_HEADERS = [
     // eventos
     "Acciones",
 ];
+
+export const TABLE_HEADERS_PROJECT = [
+    "Nombre del proyecto",
+    "Descripción del proyecto",
+    "Fecha creada",
+    "Fecha actualizada",
+    "Estado",
+    "Acciones",
+]

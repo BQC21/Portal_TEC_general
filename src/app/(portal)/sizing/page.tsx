@@ -10,8 +10,9 @@ import type { Project,
     ProjectFormData, 
 } from "@/lib/types/project-types"; // Tipados
 
-import { ProjectTable } from "@/features/components/Tables/sizing/ProjectTable"
+import ProjectTable from "@/features/components/Tables/sizing/ProjectTable";
 
+import Button2Modal from "@/features/components/Buttons/sizing/button2modal";
 
 export default function ProjectsPage() {
 
@@ -25,16 +26,16 @@ export default function ProjectsPage() {
     async function handleAddProject(project: ProjectFormData) {
         await create(project);
         await refetch();
-    } // añadir producto
+    } 
     async function handleUpdateProject(updatedProject: Project) {
         const { id, ...projectData } = updatedProject;
         await update(id, projectData);
         await refetch();
-    } // actualizar producto
+    } 
     async function handleDeleteProject(projectId: string) {
         await remove(projectId);
         await refetch();
-    } // remover producto
+    }
 
     return(
         <PortalShell
@@ -49,15 +50,15 @@ export default function ProjectsPage() {
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
                             existingProjects={projects}
-                            onAddProduct={handleAddProject}
+                            onAddProject={handleAddProject}
                         />
                     </div>
                 </section>
                 <ProjectTable 
                     projects={projects}
                     totalProjects={projects.length}
-                    onUpdateProduct={handleUpdateProject}
-                    onDeleteProduct={handleDeleteProject}
+                    onUpdateProject={handleUpdateProject}
+                    onDeleteProject={handleDeleteProject}
                 />
             </div>
         </main>
