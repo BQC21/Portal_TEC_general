@@ -20,9 +20,9 @@ import {
 	POWER_SOURCE_OPTIONS,
 	PRICE_CURRENCY_OPTIONS,
 	STATUS_OPTIONS,
-    NAME_PROJECT_OPTIONS,
     STATUS_PROJECT_OPTIONS
 } from "@/lib/utils/options"
+import { ZoneFormState } from "../types/zone-types";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
@@ -91,4 +91,17 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     updated_at: new Date(),
     // estado
     estado_proyecto: STATUS_PROJECT_OPTIONS[0],
+}
+
+// valores iniciales para el estado de form de zonas
+export const INITIAL_ZONE_FORM: ZoneFormState = {
+    // propiedades generales
+    zona: "",        
+    // cálculos de radiación
+    latitude: "",
+    longitude: "",
+    ghi_respaldo: "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
 }
