@@ -48,7 +48,7 @@ export default function ProjectTable({ projects,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
-                                        {/* <td className="border border-slate-200 px-4 py-5">
+                                        <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit
                                                     product={project}
@@ -58,7 +58,7 @@ export default function ProjectTable({ projects,
                                                     onDeleteProduct={() => onDeleteProject(project.id)}
                                                 />
                                             </div>
-                                        </td> */}
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
