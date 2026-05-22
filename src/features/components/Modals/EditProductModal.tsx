@@ -324,6 +324,12 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                             onChange={(value) => updateField("i_salida_inversor", value)}
                         />
                         <AddProductTextField
+                            label="Voltaje mínimo del inversor"
+                            placeholder=""
+                            value={form.voltaje_minimo_inversor}
+                            onChange={(value) => updateField("voltaje_minimo_inversor", value)}
+                        />
+                        <AddProductTextField
                             label="Voltaje máximo del inversor"
                             placeholder=""
                             value={form.voltaje_maximo_inversor}
