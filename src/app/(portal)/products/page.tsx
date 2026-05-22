@@ -44,7 +44,7 @@ export default function ProductsPage() {
         buyPrice: exchangeRate_buy,
         sellPrice: exchangeRate, // venta
         loading: exchangeRateLoading,
-        // error: exchangeRateError,
+        error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
 
     const [manualSellRate, setManualSellRate] = useState<string>(() => {
