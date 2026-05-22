@@ -122,10 +122,21 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.fuente_electrica)}`}>{displayCellValue(product.fuente_electrica)}</td>
                             {/* precios */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.priceInputCurrency)}`}>{displayCellValue(product.priceInputCurrency)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{formatPen(product.precio_soles)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{formatUsd(product.precio_dolares)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{formatPen(product.precio_soles_igv)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{formatUsd(product.precio_dolares_igv)}</td>
+                            {product.priceInputCurrency === "USD" ? (
+                                <>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{(toSafeNumber(product.precio_dolares)*exchangeRate).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{(toSafeNumber(product.precio_dolares)).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{(toSafeNumber(product.precio_dolares)*exchangeRate*1.18).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{(toSafeNumber(product.precio_dolares)*1.18).toFixed(2)}</td>
+                                </>
+                            ):(
+                                <>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{(toSafeNumber(product.precio_soles)).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{(toSafeNumber(product.precio_soles)/exchangeRate).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{((toSafeNumber(product.precio_soles))*1.18).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{(toSafeNumber(product.precio_soles)/exchangeRate*1.18).toFixed(2)}</td>
+                                </>
+                            )}
                             {/* fechas */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.created_at)}`}>{formatDate(product.created_at)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.updated_at)}`}>{formatDate(product.updated_at)}</td>
