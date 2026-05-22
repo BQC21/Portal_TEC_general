@@ -17,6 +17,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqeuda
+import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
 
 export default function ProductsPage() {
 
@@ -87,13 +88,22 @@ export default function ProductsPage() {
     }); // lógica para operar el filtrado de productos
 
     // ---------------------------------
-    // ---- Ordenamiento de productos --
+    // ---- Ordenamiento de productos (segun codigo) --
+    // ---------------------------------
+
+    const sortedByCodeProducts = useMemo(() => {
+        return sortGroupedByCodeSupplier(filteredProducts, "codigo");
+    }, [filteredProducts]);
+
+
+    // ---------------------------------
+    // ---- Ordenamiento de productos (segun precio) --
     // ---------------------------------
 
     const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedProducts = useMemo(() => {
-        const productsToSort = [...filteredProducts]; // procura si la tabla ha sido filtrada o no
+        const productsToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
 
         if (!sorting) {
             return productsToSort;
@@ -107,7 +117,7 @@ export default function ProductsPage() {
                 ? leftPrice - rightPrice // ascendente
                 : rightPrice - leftPrice; // descendente
         });
-    }, [filteredProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+    }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -223,7 +233,7 @@ export default function ProductsPage() {
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
                         exchangeRate={tasaVenta}
-                        existingProducts={products}
+                        existingProducts={sortedProducts}
                         onAddProduct={handleAddProduct}
                         />
                     </div>

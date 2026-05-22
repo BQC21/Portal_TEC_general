@@ -4,10 +4,7 @@ import { Button2Trash } from "@/features/components/Buttons/button2trash";
 import type { Product } from "@/lib/types/product-types";
 
 import { TABLE_HEADERS } from "@/lib/utils/headers";
-import { formatDate, toSafeNumber, formatPen, formatUsd,
-    isEmptyCellValue, getCellTextClass, displayCellValue, 
-    isPriceOriginUSD, getPriceCellClass
-} from "@/lib/utils/helpers";
+import { formatDate, toSafeNumber, getCellTextClass, displayCellValue, getPriceCellClass } from "@/lib/utils/helpers";
 
 import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
 
@@ -20,8 +17,8 @@ type ProductTableProps = {
 };
 
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
-    // Ordenar productos por código de proveedor
-    const sortedProducts = sortGroupedByCodeSupplier(products, "cod_prov");
+    // Ordenar productos por código del producto
+    const sortedProducts = sortGroupedByCodeSupplier(products, "codigo");
     
     return (
         <section className="space-y-4 w-full">

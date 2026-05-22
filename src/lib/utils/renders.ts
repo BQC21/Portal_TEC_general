@@ -133,6 +133,6 @@ export function sortGroupedByCodeSupplier<T extends Record<string, unknown>>(
         const aValue = String(a[key] ?? ""); // fila actual
         const bValue = String(b[key] ?? ""); // fila siguiente
 
-        return aValue.localeCompare(bValue, "es", { sensitivity: "base" }); // comparación de strings considerando acentos y mayúsculas/minúsculas
+        return aValue.localeCompare(bValue, "es", { sensitivity: "base", numeric: true }); // comparación natural de códigos
     });
 }
