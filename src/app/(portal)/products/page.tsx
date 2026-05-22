@@ -18,6 +18,8 @@ import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqeuda
 
+import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
+
 export default function ProductsPage() {
 
     const { products, refetch } = useProducts(); // obtener la lista de proudctos
@@ -35,9 +37,12 @@ export default function ProductsPage() {
     } = useConverter("USD", "PEN"); // convertir moneda (FRANKFURTER)
     */}
 
+    const exchangeRate_buy_respaldo = 3.501;
+    const exchangeRate_respaldo = 3.388;
+
     const {
         buyPrice: exchangeRate_buy,
-        sellPrice: exchangeRate, // exchangeRate_sell
+        sellPrice: exchangeRate, // venta
         loading: exchangeRateLoading,
         error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
@@ -138,14 +143,26 @@ export default function ProductsPage() {
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="space-y-1">
-                        <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
-                        </p>
-                        <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
-                        </p>
-                    </div>
+                    {(exchangeRate && exchangeRate_buy) ? (
+                        <div className="space-y-1">
+                            <p className="text-lg text-slate-500">
+                                Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
+                            </p>
+                            <p className="text-lg text-slate-500">
+                                Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
+                            </p>
+                        </div>                        
+                        ):(
+                        <div className="space-y-1">
+                            <p className="text-lg text-slate-500">
+                                Tasa de cambio actual (venta): S/. {exchangeRate_respaldo} por dólar
+                            </p>
+                            <p className="text-lg text-slate-500">
+                                Tasa de cambio actual (compra): S/. {exchangeRate_buy_respaldo} por dólar
+                            </p>
+                        </div>                           
+                        )
+                    }
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <SearchBar 
@@ -185,13 +202,23 @@ export default function ProductsPage() {
                     </div>
                 </section>
 
-                <ProductTable 
-                    products={sortedProducts}
-                    totalProducts={products.length}
-                    exchangeRate={exchangeRate}
-                    onUpdateProduct={handleUpdateProduct}
-                    onDeleteProduct={handleDeleteProduct}
-                />
+                {(exchangeRate && exchangeRate_buy) ? (
+                    <ProductTable 
+                        products={sortedProducts}
+                        totalProducts={products.length}
+                        exchangeRate={exchangeRate}
+                        onUpdateProduct={handleUpdateProduct}
+                        onDeleteProduct={handleDeleteProduct}
+                    />
+                ) : (
+                    <ProductTable 
+                        products={sortedProducts}
+                        totalProducts={products.length}
+                        exchangeRate={exchangeRate_respaldo}
+                        onUpdateProduct={handleUpdateProduct}
+                        onDeleteProduct={handleDeleteProduct}
+                    />
+                )}
             </div>
         </main>
 
