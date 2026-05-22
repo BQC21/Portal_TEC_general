@@ -37,14 +37,11 @@ export default function ProductsPage() {
     } = useConverter("USD", "PEN"); // convertir moneda (FRANKFURTER)
     */}
 
-    const exchangeRate_buy_respaldo = 3.501;
-    const exchangeRate_respaldo = 3.388;
-
     const {
         buyPrice: exchangeRate_buy,
         sellPrice: exchangeRate, // venta
         loading: exchangeRateLoading,
-        error: exchangeRateError,
+        // error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
 
     // ---------------------------------
@@ -124,15 +121,24 @@ export default function ProductsPage() {
         </main>
         );
     } // en caso se esté cargando la tasa de conversión
-    if (exchangeRateError) {
-        return (
-        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-            <p className="text-lg text-red-600">{exchangeRateError}</p>
-            </div>
-        </main>
-        );
-    } // en caso no haya conexión exitosa con la API
+    // if (exchangeRateError) {
+    //     return (
+    //     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+    //         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+    //             <p className="text-lg text-red-600">Debido a un error con el API de la SUNAT, 
+    //                 debe ingresar los valores manualmente para la tasa de cambio según el enlace
+    //                 https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias  </p>
+
+                
+    //         </div>
+    //     </main>
+    //     );
+    // } // en caso no haya conexión exitosa con la API
+
+
+
+    const tasaVenta = exchangeRate > 0 ? exchangeRate : 3.501;
+    const tasaCompra = exchangeRate_buy > 0 ? exchangeRate_buy : 3.388;
 
     return (
         <PortalShell
@@ -143,26 +149,14 @@ export default function ProductsPage() {
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    {(exchangeRate && exchangeRate_buy) ? (
-                        <div className="space-y-1">
-                            <p className="text-lg text-slate-500">
-                                Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
-                            </p>
-                            <p className="text-lg text-slate-500">
-                                Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
-                            </p>
-                        </div>                        
-                        ):(
-                        <div className="space-y-1">
-                            <p className="text-lg text-slate-500">
-                                Tasa de cambio actual (venta): S/. {exchangeRate_respaldo} por dólar
-                            </p>
-                            <p className="text-lg text-slate-500">
-                                Tasa de cambio actual (compra): S/. {exchangeRate_buy_respaldo} por dólar
-                            </p>
-                        </div>                           
-                        )
-                    }
+                    <div className="space-y-1">
+                        <p className="text-lg text-slate-500">
+                            Tasa de cambio actual (venta): S/. {tasaVenta} por dólar
+                        </p>
+                        <p className="text-lg text-slate-500">
+                            Tasa de cambio actual (compra): S/. {tasaCompra} por dólar
+                        </p>
+                    </div>                           
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <SearchBar 
@@ -181,7 +175,7 @@ export default function ProductsPage() {
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
-                        exchangeRate={exchangeRate}
+                        exchangeRate={tasaVenta}
                         existingProducts={products}
                         onAddProduct={handleAddProduct}
                         />
@@ -201,24 +195,13 @@ export default function ProductsPage() {
                         />
                     </div>
                 </section>
-
-                {(exchangeRate && exchangeRate_buy) ? (
-                    <ProductTable 
-                        products={sortedProducts}
-                        totalProducts={products.length}
-                        exchangeRate={exchangeRate}
-                        onUpdateProduct={handleUpdateProduct}
-                        onDeleteProduct={handleDeleteProduct}
-                    />
-                ) : (
-                    <ProductTable 
-                        products={sortedProducts}
-                        totalProducts={products.length}
-                        exchangeRate={exchangeRate_respaldo}
-                        onUpdateProduct={handleUpdateProduct}
-                        onDeleteProduct={handleDeleteProduct}
-                    />
-                )}
+                <ProductTable 
+                    products={sortedProducts}
+                    totalProducts={products.length}
+                    exchangeRate={tasaVenta}
+                    onUpdateProduct={handleUpdateProduct}
+                    onDeleteProduct={handleDeleteProduct}
+                />
             </div>
         </main>
 
