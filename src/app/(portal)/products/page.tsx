@@ -18,13 +18,12 @@ import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqeuda
 
-import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
-
 export default function ProductsPage() {
 
     const { products, refetch } = useProducts(); // obtener la lista de proudctos
     const { create, update, remove } = useProductMutations(); // obtener funciones de mutación
 
+    // Valores de respaldo locales
     const exchangeRate_buy_respaldo = 3.501;
     const exchangeRate_respaldo = 3.388;
 
@@ -39,7 +38,7 @@ export default function ProductsPage() {
         error: exchangeRateError,
     } = useConverter("USD", "PEN"); // convertir moneda (FRANKFURTER)
     */}
-
+    
     const {
         buyPrice: exchangeRate_buy,
         sellPrice: exchangeRate, // venta
@@ -47,19 +46,17 @@ export default function ProductsPage() {
         error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
 
-    const [manualSellRate, setManualSellRate] = useState<string>(() => {
-        if (typeof window === "undefined") {
-            return String(exchangeRate_respaldo);
-        }
+    // ---------------------------------
+    // ---- Almacenamiento local --------
+    // ---------------------------------   
 
+    const [manualSellRate, setManualSellRate] = useState<string>(() => {
+        if (typeof window === "undefined") return String(exchangeRate_respaldo);
         return window.localStorage.getItem("products.manualSellRate") ?? String(exchangeRate_respaldo);
     });
 
     const [manualBuyRate, setManualBuyRate] = useState<string>(() => {
-        if (typeof window === "undefined") {
-            return String(exchangeRate_buy_respaldo);
-        }
-
+        if (typeof window === "undefined") return String(exchangeRate_buy_respaldo);
         return window.localStorage.getItem("products.manualBuyRate") ?? String(exchangeRate_buy_respaldo);
     });
 
@@ -88,8 +85,6 @@ export default function ProductsPage() {
         
         return matchesType && matchesBrand && matchesSupplier && matchesDescription;
     }); // lógica para operar el filtrado de productos
-
-
 
     // ---------------------------------
     // ---- Ordenamiento de productos --
@@ -156,15 +151,6 @@ export default function ProductsPage() {
         </main>
         );
     } // en caso se esté cargando la tasa de conversión
-    // if (exchangeRateError) {
-    //     return (
-    //     <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
-    //         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-    //         <p className="text-lg text-red-600">{exchangeRateError}</p>
-    //         </div>
-    //     </main>
-    //     );
-    // } // en caso no haya conexión exitosa con la API
 
     return (
         <PortalShell
@@ -177,8 +163,11 @@ export default function ProductsPage() {
                 {exchangeRateError && (
                     <section className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm">
                         <p className="text-base font-semibold">
-                            No se pudo obtener el tipo de cambio desde SUNAT. Puedes ingresar valores manuales y se guardarán en este navegador.
+                            No se pudo obtener el tipo de cambio desde SUNAT. Puedes ingresar valores manuales a partir de este enlace:
                         </p>
+                        <a href="https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias"> 
+                            https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias
+                        </a>
                         <div className="mt-4 grid gap-4 md:grid-cols-2">
                             <label className="flex flex-col gap-2 text-sm font-medium">
                                 Tasa de compra manual
@@ -209,12 +198,12 @@ export default function ProductsPage() {
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-1">
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
+                            Tasa de cambio actual (venta): S/. {tasaVenta.toFixed(3)} por dólar
                         </p>
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
+                            Tasa de cambio actual (compra): S/. {tasaCompra.toFixed(3)} por dólar
                         </p>
-                    </div>                           
+                    </div>
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <SearchBar 
