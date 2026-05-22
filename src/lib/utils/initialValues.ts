@@ -42,6 +42,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     mppt: "",
     i_entrada_inversor: "",
     i_salida_inversor: "",
+    voltaje_minimo_inversor: "",
     voltaje_maximo_inversor: "",
     // propiedades modulo
     potencia_modulo: "",
