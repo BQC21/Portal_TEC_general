@@ -155,6 +155,11 @@ export default function ProductsPage() {
         );
     } // en caso se esté cargando la tasa de conversión
 
+
+    // ---------------------------------
+    // ---- Renderizado general ----
+    // ---------------------------------
+
     return (
         <PortalShell
             title="Base de datos de los equipos y materiales eléctricos"
