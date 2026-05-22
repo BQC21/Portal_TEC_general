@@ -21,6 +21,7 @@ export const TABLE_HEADERS = [
     "Número de MPPT",
     "Corriente de entrada del inversor (A)",
     "Voltaje de entrada del inversor (V)",
+    "Voltaje mínimo del inveror (V)",
     "Voltaje máximo del inveror (V)",
     // propiedades modulo
     "Potencia del módulo fotovoltaico",

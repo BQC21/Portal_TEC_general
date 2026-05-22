@@ -62,7 +62,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <th colSpan={7} className="border border-slate-300 px-4 py-5">Propiedades generales</th>
                             <th colSpan={4} className="border border-slate-300 px-4 py-5">Propiedades Batería</th>
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Estructura</th>
-                            <th colSpan={7} className="border border-slate-300 px-4 py-5">Propiedades Inversor</th>
+                            <th colSpan={8} className="border border-slate-300 px-4 py-5">Propiedades Inversor</th>
                             <th colSpan={6} className="border border-slate-300 px-4 py-5">Propiedades Módulo fotovoltaico</th>
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Smart meter</th>
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Cableado</th>
@@ -108,6 +108,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt)}`}>{displayCellValue(product.mppt)}</td>                            
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.i_entrada_inversor)}`}>{displayCellValue(product.i_entrada_inversor)}</td>                            
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.i_salida_inversor)}`}>{displayCellValue(product.i_salida_inversor)}</td>                            
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voltaje_minimo_inversor)}`}>{displayCellValue(product.voltaje_minimo_inversor)}</td>                                                        
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voltaje_maximo_inversor)}`}>{displayCellValue(product.voltaje_maximo_inversor)}</td>                                                        
                             {/* propiedades del modulo */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_modulo)}`}>{displayCellValue(product.potencia_modulo)}</td>

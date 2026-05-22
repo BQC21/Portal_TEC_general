@@ -25,6 +25,7 @@ export function createProductFormStateFromProduct(product: Product): ProductForm
     mppt: product.mppt,
     i_entrada_inversor: product.i_entrada_inversor,
     i_salida_inversor: product.i_salida_inversor,
+    voltaje_minimo_inversor: product.voltaje_minimo_inversor,
     voltaje_maximo_inversor: product.voltaje_maximo_inversor,
     // propiedades modulo
     potencia_modulo: product.potencia_modulo,
@@ -85,6 +86,7 @@ export function mapSupabaseRowToProduct(
     mppt: row.mppt?.toString() || "",
     i_entrada_inversor: row.i_entrada_inversor?.toString() || "",
     i_salida_inversor: row.i_salida_inversor?.toString() || "",
+    voltaje_minimo_inversor: row.voltaje_minimo_inversor?.toString() || "",
     voltaje_maximo_inversor: row.voltaje_maximo_inversor?.toString() || "",
     // propiedades de módulo
     potencia_modulo: row.potencia_modulo?.toString() || "",
@@ -147,6 +149,7 @@ export function mapProductToSupabaseRow(
     mppt: Number(product.mppt) || undefined,
     i_entrada_inversor: Number(product.i_entrada_inversor) || undefined,
     i_salida_inversor: Number(product.i_salida_inversor) || undefined,
+    voltaje_minimo_inversor: Number(product.voltaje_minimo_inversor) || undefined,
     voltaje_maximo_inversor: Number(product.voltaje_maximo_inversor) || undefined,
     // propiedades de módulo
     potencia_modulo: Number(product.potencia_modulo) || undefined,

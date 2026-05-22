@@ -31,6 +31,7 @@ export type SupabaseProductRow = {
     mppt?: number;
     i_entrada_inversor?: number;
     i_salida_inversor?: number;
+    voltaje_minimo_inversor?: number;
     voltaje_maximo_inversor?: number;
     // propiedades modulo
     potencia_modulo?: number;
@@ -84,6 +85,7 @@ export type Product = {
     mppt: string;
     i_entrada_inversor: string;
     i_salida_inversor: string;
+    voltaje_minimo_inversor: string;
     voltaje_maximo_inversor: string;
     // propiedades modulo
     potencia_modulo: string;
