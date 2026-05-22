@@ -479,8 +479,6 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                 </section>
             </div>
 
-            {/* Estado */}
-
             <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                 <button
                 type="button"
