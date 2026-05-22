@@ -3,7 +3,7 @@ import { AddProductFieldLabel } from "./AddProductFieldLabel";
 type AddProductNumberFieldProps = {
     label: string;
     required?: boolean;
-    value: number;
+    value: number | "";
     onChange: (value: number) => void;
     step?: string;
     min?: string;
@@ -25,7 +25,7 @@ export function AddProductNumberField({
         <input
             type="number"
             required={required}
-            value={Number.isFinite(value) ? value : 0}
+            value={value === "" ? "" : Number.isFinite(value) ? value : ""}
             onChange={(event) => onChange(Number(event.target.value))}
             step={step}
             min={min}

@@ -428,7 +428,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         <>
                             <AddProductReadonlyField
                                 label="Precio (S/.)"
-                                value={(form.precio_dolares * exchangeRate).toString()}
+                                value={form.precio_dolares > 0 ? (form.precio_dolares * exchangeRate).toString() : ""}
                             /> 
                             <AddProductNumberField
                                 label="Precio ($)"
@@ -436,7 +436,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                                 step="0.01"
                                 min="0.00"
                                 disabled={form.priceInputCurrency !== "USD"}
-                                value={form.precio_dolares}
+                                value={form.precio_dolares > 0 ? form.precio_dolares : ""}
                                 onChange={(value) => updateField("precio_dolares", value)}
                             />
                         </>
@@ -448,12 +448,12 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                                 step="0.01"
                                 min="0.00"
                                 disabled={form.priceInputCurrency !== "PEN"}
-                                value={form.precio_soles}
+                                value={form.precio_soles > 0 ? form.precio_soles : ""}
                                 onChange={(value) => updateField("precio_soles", value)}
                             /> 
                             <AddProductReadonlyField
                                 label="Precio ($)"
-                                value={(form.precio_soles / exchangeRate).toString()}
+                                value={form.precio_soles > 0 ? (form.precio_soles / exchangeRate).toString() : ""}
                             />
                         </>
                     )}
