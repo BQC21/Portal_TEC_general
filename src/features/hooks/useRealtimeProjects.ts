@@ -35,7 +35,7 @@ export function useProjects(): UseProjectResult {
             setProjects(data);
         } catch (err) {
             const message =
-            err instanceof Error ? err.message : "Error al cargar los productos";
+            err instanceof Error ? err.message : "Error al cargar los proyectos";
 
             setError(message);
         } finally {
@@ -51,7 +51,7 @@ export function useProjects(): UseProjectResult {
         previene colision de suscripciones
     */
     useEffect(() => {
-        const channelName = `products-realtime-${Date.now()}-${Math.random().toString(36).slice(2)}`; 
+        const channelName = `projects-realtime-${Date.now()}-${Math.random().toString(36).slice(2)}`; 
         const channel = supabase
             .channel(channelName)
             .on(
@@ -92,12 +92,12 @@ export function useProjects(): UseProjectResult {
     };
 }
 
-// Aplicar mutaciones a la lista de productos
+// Aplicar mutaciones a la lista de proyectos
 export function useProjectMutations(): UseProjectMutationsResult {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // crear productos
+    // crear proyectos
     const create = useCallback(async (project: ProjectFormData) => {
         try {
             setLoading(true);
@@ -115,7 +115,7 @@ export function useProjectMutations(): UseProjectMutationsResult {
         }
     }, []);
 
-    // actualizar producto
+    // actualizar proyecto
     const update = useCallback(async (id: string, project: ProjectFormData) => {
         try {
             setLoading(true);
@@ -133,7 +133,7 @@ export function useProjectMutations(): UseProjectMutationsResult {
         }
     }, []);
 
-    // eliminar producto
+    // eliminar proyecto
     const remove = useCallback(async (id: string) => {
         try {
             setLoading(true);
