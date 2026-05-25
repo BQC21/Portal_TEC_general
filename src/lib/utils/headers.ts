@@ -20,8 +20,9 @@ export const TABLE_HEADERS = [
     "Potencia AC por inversor (KW)",
     "Número de MPPT",
     "Corriente de entrada del inversor (A)",
-    "Voltaje de entrada del inversor (V)",
-    "Voltaje máximo del inveror (V)",
+    "Corriente de salida del inversor (A)",
+    "Voltaje mínimo del inversor (V)",
+    "Voltaje máximo del inversor (V)",
     // propiedades modulo
     "Potencia del módulo fotovoltaico",
     "VOC (V)",

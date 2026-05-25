@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { ProductFilters } from "@/features/components/Tables/ProductFilters";
 import { ProductTable } from "@/features/components/Tables/ProductTable";
@@ -9,17 +9,24 @@ import Button2Modal from "@/features/components/Buttons/button2modal";
 import { PortalShell } from "@/app/components/PortalShell";
 
 import { useProducts, useProductMutations } from "@/features/hooks/useRealtimeProducts"; // Supabase
-// import { useConverter } from "@/features/hooks/api/useConverterFrankfurter"; // API (browser)
+// import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
 import { useConverterSunat } from "@/features/hooks/api/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/product-types"; // Tipados
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
+import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqueda
+import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
+
 export default function ProductsPage() {
 
     const { products, refetch } = useProducts(); // obtener la lista de proudctos
     const { create, update, remove } = useProductMutations(); // obtener funciones de mutación
+
+    // Valores de respaldo locales
+    const exchangeRate_buy_respaldo = 3.501;
+    const exchangeRate_respaldo = 3.388;
 
     // ---------------------------------
     // ---- Llamada de API -------------
@@ -32,17 +39,38 @@ export default function ProductsPage() {
         error: exchangeRateError,
     } = useConverter("USD", "PEN"); // convertir moneda (FRANKFURTER)
     */}
-
+    
     const {
         buyPrice: exchangeRate_buy,
-        sellPrice: exchangeRate, // exchangeRate_sell
+        sellPrice: exchangeRate, // venta
         loading: exchangeRateLoading,
         error: exchangeRateError,
     } = useConverterSunat(); // convertir moneda (SUNAT)
 
     // ---------------------------------
+    // ---- Almacenamiento local --------
+    // ---------------------------------   
+
+    const [manualSellRate, setManualSellRate] = useState<string>(() => {
+        if (typeof window === "undefined") return String(exchangeRate_respaldo);
+        return window.localStorage.getItem("products.manualSellRate") ?? String(exchangeRate_respaldo);
+    });
+
+    const [manualBuyRate, setManualBuyRate] = useState<string>(() => {
+        if (typeof window === "undefined") return String(exchangeRate_buy_respaldo);
+        return window.localStorage.getItem("products.manualBuyRate") ?? String(exchangeRate_buy_respaldo);
+    });
+
+    useEffect(() => {
+        window.localStorage.setItem("products.manualSellRate", manualSellRate);
+        window.localStorage.setItem("products.manualBuyRate", manualBuyRate);
+    }, [manualBuyRate, manualSellRate]);
+
+    // ---------------------------------
     // ---- Filtrado de productos ------
     // ---------------------------------
+
+    const [searchDescription, setSearchDescription] = useState<string>(""); // barra de búsqueda para filtrar por descripción
 
     const [filters, setFilters] = useState<ProductFilterValues>({
         type: "",
@@ -54,19 +82,28 @@ export default function ProductsPage() {
         const matchesType = !filters.type || product.tipo === filters.type;
         const matchesBrand = !filters.brand || product.marca === filters.brand;
         const matchesSupplier = !filters.supplier || product.proveedor === filters.supplier;
-
-        return matchesType && matchesBrand && matchesSupplier;
+        const matchesDescription = !searchDescription || product.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+        
+        return matchesType && matchesBrand && matchesSupplier && matchesDescription;
     }); // lógica para operar el filtrado de productos
+
+    // ---------------------------------
+    // ---- Ordenamiento de productos (segun codigo) --
+    // ---------------------------------
+
+    const sortedByCodeProducts = useMemo(() => {
+        return sortGroupedByCodeSupplier(filteredProducts, "codigo");
+    }, [filteredProducts]);
 
 
     // ---------------------------------
-    // ---- Ordenamiento de productos --
+    // ---- Ordenamiento de productos (segun precio) --
     // ---------------------------------
 
     const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedProducts = useMemo(() => {
-        const productsToSort = [...filteredProducts]; // procura si la tabla ha sido filtrada o no
+        const productsToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
 
         if (!sorting) {
             return productsToSort;
@@ -80,7 +117,7 @@ export default function ProductsPage() {
                 ? leftPrice - rightPrice // ascendente
                 : rightPrice - leftPrice; // descendente
         });
-    }, [filteredProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+    }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -104,6 +141,17 @@ export default function ProductsPage() {
     // ---- Renderizado condicional ----
     // ---------------------------------
 
+    const parsedManualSellRate = Number(manualSellRate);
+    const parsedManualBuyRate = Number(manualBuyRate);
+
+    const tasaVenta = exchangeRateError
+        ? (Number.isFinite(parsedManualSellRate) && parsedManualSellRate > 0 ? parsedManualSellRate : exchangeRate_respaldo)
+        : (Number.isFinite(exchangeRate) && exchangeRate > 0 ? exchangeRate : exchangeRate_respaldo);
+
+    const tasaCompra = exchangeRateError
+        ? (Number.isFinite(parsedManualBuyRate) && parsedManualBuyRate > 0 ? parsedManualBuyRate : exchangeRate_buy_respaldo)
+        : (Number.isFinite(exchangeRate_buy) && exchangeRate_buy > 0 ? exchangeRate_buy : exchangeRate_buy_respaldo);
+
     if (exchangeRateLoading) {
         return (
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
@@ -113,15 +161,6 @@ export default function ProductsPage() {
         </main>
         );
     } // en caso se esté cargando la tasa de conversión
-    if (exchangeRateError) {
-        return (
-        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-            <p className="text-lg text-red-600">{exchangeRateError}</p>
-            </div>
-        </main>
-        );
-    } // en caso no haya conexión exitosa con la API
 
     return (
         <PortalShell
@@ -131,15 +170,58 @@ export default function ProductsPage() {
         >
         <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                {exchangeRateError && (
+                    <section className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm">
+                        <p className="text-base font-semibold">
+                            No se pudo obtener el tipo de cambio desde SUNAT. Puedes ingresar valores manuales a partir de este enlace:
+                        </p>
+                        <a href="https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias"> 
+                            https://e-consulta.sunat.gob.pe/cl-at-ittipcam/tcS01Alias
+                        </a>
+                        <div className="mt-4 grid gap-4 md:grid-cols-2">
+                            <label className="flex flex-col gap-2 text-sm font-medium">
+                                Tasa de compra manual
+                                <input
+                                    type="number"
+                                    step="0.001"
+                                    min="0"
+                                    value={manualBuyRate}
+                                    onChange={(event) => setManualBuyRate(event.target.value)}
+                                    className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-amber-500"
+                                />
+                            </label>
+                            <label className="flex flex-col gap-2 text-sm font-medium">
+                                Tasa de venta manual
+                                <input
+                                    type="number"
+                                    step="0.001"
+                                    min="0"
+                                    value={manualSellRate}
+                                    onChange={(event) => setManualSellRate(event.target.value)}
+                                    className="rounded-xl border border-amber-300 bg-white px-3 py-2 text-slate-900 outline-none transition focus:border-amber-500"
+                                />
+                            </label>
+                        </div>
+                    </section>
+                )}
+
                 <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                     <div className="space-y-1">
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (venta): S/. {exchangeRate.toFixed(3)} por dólar
+                            Tasa de cambio actual (venta): S/. {tasaVenta.toFixed(3)} por dólar
                         </p>
                         <p className="text-lg text-slate-500">
-                            Tasa de cambio actual (compra): S/. {exchangeRate_buy.toFixed(3)} por dólar
+                            Tasa de cambio actual (compra): S/. {tasaCompra.toFixed(3)} por dólar
                         </p>
                     </div>
+
+                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+                        <SearchBar 
+                            value={searchDescription}
+                            onChange={setSearchDescription}
+                            placeholder="Buscar por descripción del producto..."
+                        />
+                    </div>                 
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Sorting_IGV_USD
@@ -150,8 +232,8 @@ export default function ProductsPage() {
 
                     <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                         <Button2Modal
-                        exchangeRate={exchangeRate}
-                        existingProducts={products}
+                        exchangeRate={tasaVenta}
+                        existingProducts={sortedProducts}
                         onAddProduct={handleAddProduct}
                         />
                     </div>
@@ -170,11 +252,10 @@ export default function ProductsPage() {
                         />
                     </div>
                 </section>
-
                 <ProductTable 
                     products={sortedProducts}
                     totalProducts={products.length}
-                    exchangeRate={exchangeRate}
+                    exchangeRate={tasaVenta}
                     onUpdateProduct={handleUpdateProduct}
                     onDeleteProduct={handleDeleteProduct}
                 />

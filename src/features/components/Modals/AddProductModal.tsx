@@ -323,6 +323,12 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                             onChange={(value) => updateField("i_salida_inversor", value)}
                         />
                         <AddProductTextField
+                            label="Voltaje mínimo del inversor"
+                            placeholder=""
+                            value={form.voltaje_minimo_inversor}
+                            onChange={(value) => updateField("voltaje_minimo_inversor", value)}
+                        />
+                        <AddProductTextField
                             label="Voltaje máximo del inversor"
                             placeholder=""
                             value={form.voltaje_maximo_inversor}
@@ -411,37 +417,52 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
                         <div className="flex flex-wrap gap-6">
                             <AddProductRadioField
-                            label="Soles (S/.)"
-                            checked={form.priceInputCurrency === "PEN"}
-                            onChange={() => handleCurrencyModeChange("PEN")}
+                                label="Soles (S/.)"
+                                checked={form.priceInputCurrency === "PEN"}
+                                onChange={() => handleCurrencyModeChange("PEN")}
                             />
                             <AddProductRadioField
-                            label="Dólares ($)"
-                            checked={form.priceInputCurrency === "USD"}
-                            onChange={() => handleCurrencyModeChange("USD")}
+                                label="Dólares ($)"
+                                checked={form.priceInputCurrency === "USD"}
+                                onChange={() => handleCurrencyModeChange("USD")}
                             />
                         </div>
                     </div>
 
                     <div className="grid gap-5 md:grid-cols-2">
-                    <AddProductNumberField
-                        label="Precio (S/.)"
-                        required
-                        step="0.01"
-                        min="0.00"
-                        disabled={form.priceInputCurrency !== "PEN"}
-                        value={form.priceInputCurrency === "PEN" ? form.precio_soles : computedPrices.pricePen}
-                        onChange={(value) => updateField("precio_soles", value)}
-                    />
-                    <AddProductNumberField
-                        label="Precio ($)"
-                        required
-                        step="0.01"
-                        min="0.00"
-                        disabled={form.priceInputCurrency !== "USD"}
-                        value={form.priceInputCurrency === "USD" ? form.precio_dolares : computedPrices.priceUsd}
-                        onChange={(value) => updateField("precio_dolares", value)}
-                    />
+                    {form.priceInputCurrency === "USD" ? (
+                        <>
+                            <AddProductReadonlyField
+                                label="Precio (S/.)"
+                                value={form.precio_dolares > 0 ? (form.precio_dolares * exchangeRate).toString() : ""}
+                            /> 
+                            <AddProductNumberField
+                                label="Precio ($)"
+                                required
+                                step="0.01"
+                                min="0.00"
+                                disabled={form.priceInputCurrency !== "USD"}
+                                value={form.precio_dolares > 0 ? form.precio_dolares : ""}
+                                onChange={(value) => updateField("precio_dolares", value)}
+                            />
+                        </>
+                    ):(
+                        <>
+                            <AddProductNumberField
+                                label="Precio (S/.)"
+                                required
+                                step="0.01"
+                                min="0.00"
+                                disabled={form.priceInputCurrency !== "PEN"}
+                                value={form.precio_soles > 0 ? form.precio_soles : ""}
+                                onChange={(value) => updateField("precio_soles", value)}
+                            /> 
+                            <AddProductReadonlyField
+                                label="Precio ($)"
+                                value={form.precio_soles > 0 ? (form.precio_soles / exchangeRate).toString() : ""}
+                            />
+                        </>
+                    )}
                     <AddProductNumberField
                         label="IGV (%)"
                         required

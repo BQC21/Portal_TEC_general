@@ -24,6 +24,7 @@ import {
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/zone-types";
 
+
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
     // propiedades generales
@@ -49,6 +50,7 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     mppt: "",
     i_entrada_inversor: "",
     i_salida_inversor: "",
+    voltaje_minimo_inversor: "",
     voltaje_maximo_inversor: "",
     // propiedades modulo
     potencia_modulo: "",
