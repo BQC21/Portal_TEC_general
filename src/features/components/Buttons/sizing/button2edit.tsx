@@ -10,11 +10,6 @@ type EditProjectModalProps = {
     onUpdateProject: (project: Project) => void;
 };
 
-// callable interface for the add-project handler
-interface EditProjectHandler {
-    (project: ProjectFormData): Promise<void>;
-}
-
 export default function Button2Edit({ project, onUpdateProject }: EditProjectModalProps) {
     const [open, setOpen] = useState(false);
 
@@ -36,7 +31,7 @@ export default function Button2Edit({ project, onUpdateProject }: EditProjectMod
                         const updatedProject: Project = { ...project, ...formData } as Project;
                         await onUpdateProject(updatedProject);
                         setOpen(false);
-                    } as EditProjectHandler}
+                    }}
                     onClose={() => setOpen(false)}
                 />
             )}
