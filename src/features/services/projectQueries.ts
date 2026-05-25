@@ -12,16 +12,68 @@ export async function createProject(project: ProjectFormData): Promise<Project> 
     const supabase = createClient();
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
 
-    const { data, error } = await supabase.from(PROJECTS_TABLE)
-    .insert(baseRow)
-    .select("*,zonas(*)")
-    .single();
-
-    if (error) {
-        throw new Error(`Error al crear el proyecto: ${error.message}`);
+    // Ensure we don't send an `id` to the insert payload which could collide with the
+    // table primary key (supabase will generate it server-side).
+    if (Object.prototype.hasOwnProperty.call(baseRow, "id")) {
+        delete (baseRow).id;
     }
 
-    return mapSupabaseRowToProject(data);
+    // Debugging aid: log the payload being sent to Supabase so we can inspect
+    // whether an unexpected `id` or other problematic fields are present.
+    // NOTE: remove this log after debugging to avoid leaking sensitive data.
+    // eslint-disable-next-line no-console
+    console.debug("[debug] createProject payload:", baseRow);
+
+    const insertProject = async (row: Record<string, unknown>) => {
+        return supabase
+            .from(PROJECTS_TABLE)
+            .insert(row)
+            .select("*,zonas(*)");
+    };
+
+    let { data, error } = await insertProject(baseRow);
+
+    // Cuando la secuencia del PK quedó desalineada, Supabase devuelve 23505 sobre proyectos_pkey.
+    // En ese caso calculamos el siguiente id disponible y reintentamos con un valor explícito.
+    if (error && (error.code === "23505" || error.message.includes("proyectos_pkey"))) {
+        const { data: lastRows, error: lastError } = await supabase
+            .from(PROJECTS_TABLE)
+            .select("id")
+            .order("id", { ascending: false })
+            .limit(1);
+
+        if (lastError) {
+            throw new Error(
+                `Error al crear el proyecto: ${error.message} - ${JSON.stringify(error)}`
+            );
+        }
+
+        const lastIdRaw = Array.isArray(lastRows) && lastRows.length > 0 ? lastRows[0]?.id : null;
+        const lastId = Number(lastIdRaw);
+
+        if (!Number.isFinite(lastId)) {
+            throw new Error(
+                `Error al crear el proyecto: ${error.message} - ${JSON.stringify(error)}`
+            );
+        }
+
+        const retryRow = { ...baseRow, id: lastId + 1 };
+        console.warn("[debug] Retrying createProject with explicit id:", retryRow.id);
+        ({ data, error } = await insertProject(retryRow));
+    }
+
+    if (error) {
+        // Include the full error payload for easier debugging in logs.
+        throw new Error(`Error al crear el proyecto: ${error.message} - ${JSON.stringify(error)}`);
+    }
+
+    // Supabase may return an array of rows; pick the first one defensively.
+    const created = Array.isArray(data) ? data[0] : data;
+
+    if (!created) {
+        throw new Error("La inserción no devolvió ningún registro.");
+    }
+    return mapSupabaseRowToProject(created);
 }
 
 // obtener proyectos
@@ -49,7 +101,7 @@ export async function getProjectById(id: string): Promise<Project> {
     .single();
 
     if (error) {
-        throw new Error(`Error al obtener el producto: ${error.message}`);
+        throw new Error(`Error al obtener el proyecto: ${error.message}`);
     }
 
     return mapSupabaseRowToProject(data);
@@ -60,17 +112,16 @@ export async function updateProject(id: string, project: ProjectFormData): Promi
     const supabase = createClient();
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
 
-    const { data, error } = await supabase.from(PROJECTS_TABLE)
+    const { error } = await supabase.from(PROJECTS_TABLE)
     .update(baseRow)
     .eq("id", id)
-    .select("*,zonas(*)")
-    .single();
+    ;
 
     if (error) {
         throw new Error(`Error al actualizar el proyecto: ${error.message}`);
     }
 
-    return mapSupabaseRowToProject(data);
+    return await getProjectById(id);
 }
 
 // borrar proyecto
