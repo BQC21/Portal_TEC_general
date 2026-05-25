@@ -2,8 +2,6 @@
 
 import { useState } from "react";
 
-// Modal standalone: no PortalShell wrapper so background shows page table
-
 import { AddProductCloseIcon } from "../../Icons/AddProductCloseIcon";
 
 import type { 

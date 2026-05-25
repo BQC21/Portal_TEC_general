@@ -42,7 +42,7 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                 created_at: existingProject.zona_info.created_at,
                 updated_at: existingProject.zona_info.updated_at,
             }
-            : INITIAL_ZONE_FORM
+            : INITIAL_ZONE_FORM // en caso no haya zona existente o no tenga zona_info
     );
 
     const selectedZone = form_zone.zona;
@@ -137,18 +137,22 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                             {selectedZone && (
                                 <>
                                     <span>
-                                        <AddProductReadonlyField label="Latitud de la zona" value={form_zone.latitude ?? "---"} />
+                                        <AddProductReadonlyField 
+                                            label="Latitud de la zona" value={form_zone.latitude ?? "---"} />
                                     </span>
                                     <span>
-                                        <AddProductReadonlyField label="Longitud de la zona" value={form_zone.longitude ?? "---"} />
+                                        <AddProductReadonlyField 
+                                        label="Longitud de la zona" value={form_zone.longitude ?? "---"} />
                                     </span>
                                     {!useFallbackData ? (
                                         <span>
-                                            <AddProductReadonlyField label="GHI (NASA) - kWh/m²/año" value={nrelValue(ghi_nrel)} />
+                                            <AddProductReadonlyField label="GHI (NREL) - kWh/m²/año" value={nrelValue(ghi_nrel)} />
                                         </span>
                                     ) : (
                                         <>
-                                            <p className="text-sm text-yellow-600">En caso haya problemas con la API, los datos han sido registrados según Global Solar ATLAS.</p>
+                                            <p className="text-sm text-yellow-600">
+                                                En caso haya problemas con la API, los datos han sido registrados según Global Solar ATLAS.
+                                            </p>
                                             <span>
                                                 <AddProductReadonlyField label="GHI anual de la zona" value={form_zone.ghi_respaldo ?? "---"} />
                                             </span>
