@@ -49,14 +49,23 @@ export function mapSupabaseRowToProject(
 export function mapProjectToSupabaseRow(
 	project: ProjectFormData
 ): SupabaseProjectRow {
-	return {
+    const parseNumber = (v: unknown): number | undefined => {
+        if (v === null || v === undefined) return undefined;
+        if (typeof v === "number") return Number.isFinite(v) ? v : undefined;
+        const s = String(v).trim();
+        if (s === "") return undefined;
+        const n = Number(s);
+        return Number.isFinite(n) ? n : undefined;
+    };
+
+    return {
         nombre: project.nombre,
         descripcion: project.descripcion,
         zona_id: project.zona_id,
-        hsp: project.hsp as unknown as number | undefined,
-        ghi: project.ghi as unknown as number | undefined,
+        hsp: parseNumber(project.hsp),
+        ghi: parseNumber(project.ghi),
         created_at: project.created_at,
         updated_at: project.updated_at,
         estado_proyecto: project.estado_proyecto,
-	}
+    };
 }
