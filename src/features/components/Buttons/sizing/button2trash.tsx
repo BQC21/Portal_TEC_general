@@ -1,16 +1,16 @@
 "use client";
 
-import { DeleteProductModal } from "@/features/components/Modals/DeleteProductModal";
+import DeleteProjectModal from "@/features/components/Modals/sizing/DeleteProjectModal";
 import { TrashIcon } from "@/features/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Product } from "@/lib/types/product-types";
+import { Project } from "@/lib/types/project-types";
 
 type DeleteProjectModalProps = {
-    product: Product;
-    onDeleteProduct: (productId: string) => void;
+    project: Project;
+    onDeleteProject: (projectId: string) => void;
 };
 
-export function Button2Trash({ product, onDeleteProduct }: DeleteProductModalProps) {
+export function Button2Trash({ project, onDeleteProject }: DeleteProjectModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -19,16 +19,16 @@ export function Button2Trash({ product, onDeleteProduct }: DeleteProductModalPro
             type="button"
             onClick={() => setOpen(true)}
             className="table-icon-button text-indigo-600"
-            title="Eliminar producto"
+            title="Eliminar proyecto"
         >
             <TrashIcon />
         </button>
 
         {open && (
-            <DeleteProductModal
-                product={product}
-                onDeleteProduct={(productId) => {
-                    onDeleteProduct(productId);
+            <DeleteProjectModal
+                project={project}
+                onDeleteProject={(projectId: string) => {
+                    onDeleteProject(projectId);
                     setOpen(false);
                 }}
                 onClose={() => setOpen(false)}

@@ -1,5 +1,5 @@
-// import { Button2Edit } from "@/features/components/Buttons/sizing/button2edit";
-// import { Button2Trash } from "@/features/components/Buttons/sizing/button2trash";
+import Button2Edit from "@/features/components/Buttons/sizing/button2edit";
+import { Button2Trash } from "@/features/components/Buttons/sizing/button2trash";
 
 import type { Project } from "@/lib/types/project-types";
 
@@ -51,11 +51,12 @@ export default function ProjectTable({ projects,
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit
-                                                    product={project}
-                                                    onUpdateProduct={onUpdateProject}
+                                                    project={project}
+                                                    onUpdateProject={onUpdateProject}
                                                 />
                                                 <Button2Trash
-                                                    onDeleteProduct={() => onDeleteProject(project.id)}
+                                                    project={project}
+                                                    onDeleteProject={() => onDeleteProject(project.id)}
                                                 />
                                             </div>
                                         </td>
