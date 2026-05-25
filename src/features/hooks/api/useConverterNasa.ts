@@ -29,7 +29,8 @@ interface UseNasaGHIOptions {
 }
 
 interface UseNasaGHIResult {
-    ghi: number | null;       // W/m² estimado
+    ghi_nasa: number | null;       // W/m² estimado
+    ghi?: number | null;           // alias por compatibilidad
     t2m: number | null;       // °C crudo de la API
     date: string;
     unit: string;
@@ -41,7 +42,7 @@ interface UseNasaGHIResult {
 export function useConverterNasa(options: UseNasaGHIOptions = {}): UseNasaGHIResult{
     const { latitude, longitude, date } = options;
 
-    const [ghi, setGhi]       = useState<number | null>(null);
+    const [ghi_nasa, setGhi_nasa]       = useState<number | null>(null);
     const [t2m, setT2m]       = useState<number | null>(null);
     const [date_, setDate]    = useState<string>("");
     const [unit, setUnit]     = useState<string>("C");
@@ -101,7 +102,7 @@ export function useConverterNasa(options: UseNasaGHIOptions = {}): UseNasaGHIRes
                 const ghiValue = estimateGHI(t2mValue);
 
                 setT2m(t2mValue);
-                setGhi(ghiValue);
+                setGhi_nasa(ghiValue);
                 setDate(dateKey);
                 setUnit(data.unit ?? "C");
             }
@@ -123,7 +124,9 @@ export function useConverterNasa(options: UseNasaGHIOptions = {}): UseNasaGHIRes
     }, [latitude, longitude, date, trigger]);
 
     return{
-        ghi,
+        ghi_nasa,
+        // Mantener `ghi` como alias para consumidores que esperan esa propiedad
+        ghi: ghi_nasa,
         t2m,
         date: date_,
         unit,
