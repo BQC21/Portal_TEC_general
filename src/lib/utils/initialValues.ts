@@ -88,6 +88,16 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // cálculos de radiación
     hsp: "",
     ghi: "",
+    // inputs generales
+    demanda_electrica:  "",
+    tipo_conexion:  "",
+    cobertura_porcentaje:  "",
+    rendimiento_modulo_porcentaje:  "",
+    relacion_dc_ac:  "",
+    // cálculos de requerimientos
+    energia_requerida:  "",
+    potencia_dc_requerida:  "",
+    potencia_ac_requerida:  "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
