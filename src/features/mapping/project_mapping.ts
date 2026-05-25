@@ -19,11 +19,11 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         tipo_conexion: project.tipo_conexion,
         cobertura_porcentaje: project.cobertura_porcentaje,
         rendimiento_modulo_porcentaje: project.rendimiento_modulo_porcentaje,
-        relacion_DC_AC: project.relacion_DC_AC,
+        relacion_dc_ac: project.relacion_dc_ac,
         // cálculos de requerimientos
         energia_requerida: project.energia_requerida,
-        potencia_DC_requerida: project.potencia_DC_requerida,
-        potencia_AC_requerida: project.potencia_AC_requerida,
+        potencia_dc_requerida: project.potencia_dc_requerida,
+        potencia_ac_requerida: project.potencia_ac_requerida,
         // fechas
         created_at: project.created_at,
         updated_at: project.updated_at,
@@ -55,11 +55,11 @@ export function mapSupabaseRowToProject(
         tipo_conexion: row.tipo_conexion?.toString() || "",
         cobertura_porcentaje: row.cobertura_porcentaje?.toString() || "",
         rendimiento_modulo_porcentaje: row.rendimiento_modulo_porcentaje?.toString() || "",
-        relacion_DC_AC: row.relacion_DC_AC?.toString() || "",
+        relacion_dc_ac: row.relacion_dc_ac?.toString() || "",
         // cálculos de requerimientos
         energia_requerida: row.energia_requerida?.toString() || "",
-        potencia_DC_requerida: row.potencia_DC_requerida?.toString() || "",
-        potencia_AC_requerida: row.potencia_AC_requerida?.toString() || "",
+        potencia_dc_requerida: row.potencia_dc_requerida?.toString() || "",
+        potencia_ac_requerida: row.potencia_ac_requerida?.toString() || "",
         // cálculos de radiación
         hsp: row.hsp?.toString() || "",
         ghi: row.ghi?.toString() || "",
@@ -96,11 +96,11 @@ export function mapProjectToSupabaseRow(
         tipo_conexion: project.tipo_conexion,
         cobertura_porcentaje: parseNumber(project.cobertura_porcentaje),
         rendimiento_modulo_porcentaje: parseNumber(project.rendimiento_modulo_porcentaje),
-        relacion_DC_AC: parseNumber(project.relacion_DC_AC),
+        relacion_dc_ac: parseNumber(project.relacion_dc_ac),
         // cálculos de requerimientos
         energia_requerida: parseNumber(project.energia_requerida),
-        potencia_DC_requerida: parseNumber(project.potencia_DC_requerida),
-        potencia_AC_requerida: parseNumber(project.potencia_AC_requerida),
+        potencia_dc_requerida: parseNumber(project.potencia_dc_requerida),
+        potencia_ac_requerida: parseNumber(project.potencia_ac_requerida),
         // cálculos de radiación
         hsp: parseNumber(project.hsp),
         ghi: parseNumber(project.ghi),

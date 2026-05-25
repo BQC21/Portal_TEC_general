@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 import { AddProductCloseIcon } from "../../Icons/AddProductCloseIcon";
 
@@ -18,14 +18,20 @@ import { AddProductReadonlyField } from "@/features/components/Form_fields/AddPr
 import { AddProductTextAreaField } from "../../Form_fields/AddProductTextAreaField"; // campos
 
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
-import { NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
+import { CONNECTION_TYPE_OPTIONS, NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 // import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
 // import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
 import { useConverterNREL } from "@/features/hooks/api/useConverterNREL"
 import { useZone } from "@/features/hooks/useRealtimeZones";
+import { AddProductNumberField } from "../../Form_fields/AddProductNumberField";
 
+import {
+    computeEnergy,
+    compute_DC_Power,
+    compute_AC_Power
+} from "@/lib/utils/helpers"
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -73,7 +79,23 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
         return "Sin datos";
     };
 
-    // Actualizar campos del formulario
+
+    // ----------------------------------------
+    // ------- Cálculos de requerimientos -----
+    // ----------------------------------------
+    
+    const computedRequirements = useMemo(() => {
+        
+        const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+
+        const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
+        const potenciaDC = String(compute_DC_Power(Number(energia), Number(ghi), Number(form.rendimiento_modulo_porcentaje)));
+        const potenciaAC = String(compute_AC_Power(Number(potenciaDC), Number(form.relacion_dc_ac)));  
+    
+        return { energia, potenciaDC, potenciaAC };
+    }, [form.demanda_electrica, form.cobertura_porcentaje, form.ghi, 
+        form.rendimiento_modulo_porcentaje, form.relacion_dc_ac, form_zone.ghi_respaldo]);
+
     function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
@@ -87,6 +109,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
 
         onAddProject({
             ...form,
+
         });
     }
 
@@ -105,6 +128,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                    {/* Campos geográficos del proyecto */}
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             {/* Nombre y descripción del proyecto */}
@@ -188,7 +212,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                     value={form_zone.ghi_respaldo ?? "---"}
                                                 />
                                             </span>
-                                            <p className="text-sm text-yellow-600">
+                                            <p className="text-sm text-yellow-600 w-50">
                                                 En caso haya problemas con la API, los datos han sido
                                                 registrados según Global Solar ATLAS.
                                             </p>
@@ -205,6 +229,62 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                             />
                         </section>
                     </div> 
+                    {/* Cálculo de potencia DC y AC requerida */}
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div>
+                                    {/* columna 1: campos de entrada */}
+                                    <AddProductNumberField 
+                                        label="Demanda eléctrica anual (kWh)"
+                                        required
+                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
+                                        onChange={(value) => updateField("demanda_electrica", String(value))}
+                                    />
+                                    <AddProductSelectField 
+                                        label="Tipo de instalación"
+                                        required
+                                        value={form.tipo_conexion}
+                                        options={CONNECTION_TYPE_OPTIONS}
+                                        onChange={(value) => updateField("tipo_conexion", value)}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Porcentaje de cobertura (%)"
+                                        required
+                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
+                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Porcentaje de rendimiento del módulo (%)"
+                                        required
+                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
+                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Relación DC/AC"
+                                        required
+                                        value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
+                                        onChange={(value) => updateField("relacion_dc_ac", String(value))}
+                                    />
+                                </div>
+                                <div>
+                                    {/* columna 2: campos de salida */}
+                                    <AddProductReadonlyField
+                                        label="Energía requerida"
+                                        value={computedRequirements.energia}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Potencia DC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Potencia AC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                    />
+                                </div>
+                            </div>                            
+                        </section>
+                    </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button
                         type="button"

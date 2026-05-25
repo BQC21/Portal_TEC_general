@@ -21,11 +21,11 @@ export type SupabaseProjectRow = {
     tipo_conexion?: string;
     cobertura_porcentaje?: number;
     rendimiento_modulo_porcentaje?: number;
-    relacion_DC_AC?: number;
+    relacion_dc_ac?: number;
     // cálculos de requerimientos
     energia_requerida?: number;
-    potencia_DC_requerida?: number;
-    potencia_AC_requerida?: number;
+    potencia_dc_requerida?: number;
+    potencia_ac_requerida?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -49,11 +49,11 @@ export type Project = {
     tipo_conexion: string;
     cobertura_porcentaje: string;
     rendimiento_modulo_porcentaje: string;
-    relacion_DC_AC: string;
+    relacion_dc_ac: string;
     // cálculos de requerimientos
     energia_requerida: string;
-    potencia_DC_requerida: string;
-    potencia_AC_requerida: string;
+    potencia_dc_requerida: string;
+    potencia_ac_requerida: string;
     // fechas
     created_at: Date;
     updated_at: Date;
