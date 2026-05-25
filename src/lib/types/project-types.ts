@@ -16,6 +16,16 @@ export type SupabaseProjectRow = {
     // cálculos de radiación
     hsp?: number;
     ghi?: number;
+    // inputs generales
+    demanda_electrica?: number;
+    tipo_conexion?: string;
+    cobertura_porcentaje?: number;
+    rendimiento_modulo_porcentaje?: number;
+    relacion_DC_AC?: number;
+    // cálculos de requerimientos
+    energia_requerida?: number;
+    potencia_DC_requerida?: number;
+    potencia_AC_requerida?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -34,6 +44,16 @@ export type Project = {
     // cálculos de radiación
     hsp: string;
     ghi: string;
+    // inputs generales
+    demanda_electrica: string;
+    tipo_conexion: string;
+    cobertura_porcentaje: string;
+    rendimiento_modulo_porcentaje: string;
+    relacion_DC_AC: string;
+    // cálculos de requerimientos
+    energia_requerida: string;
+    potencia_DC_requerida: string;
+    potencia_AC_requerida: string;
     // fechas
     created_at: Date;
     updated_at: Date;
