@@ -27,7 +27,7 @@ import {
     computeEnergy,
     compute_DC_Power,
     compute_AC_Power
-} from "@/lib/utils/helpers"
+} from "@/lib/utils/helpers/energy_requirements"
 
 type EditProjectModalProps = {
     existingProject: Project;

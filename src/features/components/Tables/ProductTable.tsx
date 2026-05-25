@@ -4,9 +4,10 @@ import { Button2Trash } from "@/features/components/Buttons/button2trash";
 import type { Product } from "@/lib/types/product-types";
 
 import { TABLE_HEADERS } from "@/lib/utils/headers";
-import { formatDate, toSafeNumber, getCellTextClass, displayCellValue, getPriceCellClass } from "@/lib/utils/helpers";
-
-import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
+import { formatDate } from "@/lib/utils/helpers/date_manage";
+import { toSafeNumber } from "@/lib/utils/helpers/normalization";
+import { getCellTextClass, displayCellValue, getPriceCellClass } from "@/lib/utils/helpers/cell_manage";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting";
 
 type ProductTableProps = {
     products: Product[];

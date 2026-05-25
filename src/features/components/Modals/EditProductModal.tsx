@@ -22,7 +22,7 @@ import {
     convertPenToUsd,
     convertUsdToPen,
     formatReadonlyCurrency,
-} from "@/lib/utils/helpers";
+} from "@/lib/utils/helpers/price_manage";
 
 import {
     CONNECTION_TYPE_OPTIONS,
@@ -47,9 +47,12 @@ import {
     shouldRenderInversorProp,
     shouldRenderModuloProp,
     shouldRenderImportDate,
+} from "@/lib/utils/helpers/renders";
+
+import {
     shouldRender_SupplyInfoSelection,
     shouldRender_ProductInfoSelection,
-} from "@/lib/utils/renders";
+} from "@/lib/utils/helpers/fill_automated";
 
 // --- Tipo de variables ---
 type EditProductModalProps = {

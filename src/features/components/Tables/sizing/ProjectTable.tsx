@@ -7,7 +7,7 @@ import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 
 import{
     formatDate,
-} from "@/lib/utils/helpers"
+} from "@/lib/utils/helpers/date_manage"
 
 type ProjectTableProps = {
     projects: Project[];

@@ -1,6 +1,6 @@
 import {Project, ProjectFormState, ProjectFormData, SupabaseProjectRow} from "@/lib/types/project-types"
 import { SupabaseZoneRow } from "@/lib/types/zone-types"
-import { parseNullableDate } from "@/lib/utils/helpers"
+import { parseNullableDate } from "@/lib/utils/helpers/date_manage"
 import { mapSupabaseRowToZone } from "@/features/mapping/zone_mapping"
 
 // enlace con los atributos de Supabase

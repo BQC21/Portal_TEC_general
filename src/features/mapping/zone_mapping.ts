@@ -1,5 +1,5 @@
 import {Zone, ZoneFormState, ZoneFormData, SupabaseZoneRow} from "@/lib/types/zone-types"
-import { parseNullableDate } from "@/lib/utils/helpers"
+import { parseNullableDate } from "@/lib/utils/helpers/date_manage"
 
 // Actualización del formulario
 export function createProjectFormStateFromProject(zone: Zone): ZoneFormState {
