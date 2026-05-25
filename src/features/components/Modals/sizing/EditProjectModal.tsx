@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { AddProductCloseIcon } from "../../Icons/AddProductCloseIcon";
 
 import type {
@@ -14,13 +14,20 @@ import type { ZoneFormState } from "@/lib/types/zone-types";
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
 import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField";
 import { AddProductTextAreaField } from "../../Form_fields/AddProductTextAreaField";
+import { AddProductNumberField } from "../../Form_fields/AddProductNumberField";
 
 import { INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
-import { NAME_ZONES_OPTIONS, STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
+import { CONNECTION_TYPE_OPTIONS, NAME_ZONES_OPTIONS, STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
 import { useConverterNREL } from "@/features/hooks/api/useConverterNREL";
 import { useZone } from "@/features/hooks/useRealtimeZones";
+
+import {
+    computeEnergy,
+    compute_DC_Power,
+    compute_AC_Power
+} from "@/lib/utils/helpers"
 
 type EditProjectModalProps = {
     existingProject: Project;
@@ -47,17 +54,53 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
 
     const selectedZone = form_zone.zona;
 
+    // // ----------------------------
+    // // ------- NASA POWER API -----
+    // // ----------------------------
+
+    // const { ghi_nasa, loading: nasaLoading, error: nasaError } = useConverterNasa({
+    //     latitude:  form.zona_info?.latitude ?? "",
+    //     longitude: form.zona_info?.longitude ?? "",
+    // });
+    // console.log("Datos de radiación obtenidos de NASA POWER API:", { ghi_nasa, nasaLoading, nasaError });
+
+    // ----------------------------
+    // ------- NREL API -----
+    // ----------------------------
+
     const { ghi_nrel, loading: nrelLoading, error: nrelError } = useConverterNREL({
         latitude: form_zone.latitude ?? "",
         longitude: form_zone.longitude ?? "",
     });
+    console.log("Datos de radiación obtenidos de NREL API:", { ghi_nrel, nrelLoading, nrelError });
 
+    // Helper para el valor de un campo NREL
     const nrelValue = (val: number | null) => {
         if (nrelError) return `Error: ${nrelError}`;
         if (nrelLoading) return "Cargando...";
+        // if (nasaError)       return `Error: ${nasaError}`;
+        // if (nasaLoading)     return "Cargando...";
+
         if (val !== null) return `${val}`;
         return "Sin datos";
     };
+    
+    // ----------------------------------------
+    // ------- Cálculos de requerimientos -----
+    // ----------------------------------------
+    
+    const computedRequirements = useMemo(() => {
+        
+        const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+
+        const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
+        const potenciaDC = String(compute_DC_Power(Number(energia), Number(ghi), Number(form.rendimiento_modulo_porcentaje)));
+        const potenciaAC = String(compute_AC_Power(Number(potenciaDC), Number(form.relacion_dc_ac)));  
+    
+        return { energia, potenciaDC, potenciaAC };
+    }, [form.demanda_electrica, form.cobertura_porcentaje, form.ghi, 
+        form.rendimiento_modulo_porcentaje, form.relacion_dc_ac, form_zone.ghi_respaldo]);
+
 
     const useFallbackData = Boolean(nrelError) && ghi_nrel === null;
 
@@ -86,6 +129,7 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                 </div>
 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                    {/* Campos geográficos del proyecto */}
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <AddProductTextAreaField
@@ -164,7 +208,62 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                             <AddProductSelectField label="Estado del proyecto" required value={form.estado_proyecto} options={STATUS_PROJECT_OPTIONS} onChange={(value) => updateField("estado_proyecto", value)} />
                         </section>
                     </div>
-
+                    {/* Cálculo de potencia DC y AC requerida */}
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div>
+                                    {/* columna 1: campos de entrada */}
+                                    <AddProductNumberField 
+                                        label="Demanda eléctrica anual (kWh)"
+                                        required
+                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
+                                        onChange={(value) => updateField("demanda_electrica", String(value))}
+                                    />
+                                    <AddProductSelectField 
+                                        label="Tipo de instalación"
+                                        required
+                                        value={form.tipo_conexion}
+                                        options={CONNECTION_TYPE_OPTIONS}
+                                        onChange={(value) => updateField("tipo_conexion", value)}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Porcentaje de cobertura (%)"
+                                        required
+                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
+                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Porcentaje de rendimiento del módulo (%)"
+                                        required
+                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
+                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField 
+                                        label="Relación DC/AC (%)"
+                                        required
+                                        value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
+                                        onChange={(value) => updateField("relacion_dc_ac", String(value))}
+                                    />
+                                </div>
+                                <div>
+                                    {/* columna 2: campos de salida */}
+                                    <AddProductReadonlyField
+                                        label="Energía requerida"
+                                        value={computedRequirements.energia}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Potencia DC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Potencia AC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                    />
+                                </div>
+                            </div>                            
+                        </section>
+                    </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button type="button" onClick={onClose} className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50">Cancelar</button>
                         <button type="submit" className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800">Actualizar Proyecto</button>

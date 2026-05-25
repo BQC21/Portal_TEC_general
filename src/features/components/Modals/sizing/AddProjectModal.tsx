@@ -261,7 +261,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                         onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
                                     />
                                     <AddProductNumberField 
-                                        label="Relación DC/AC"
+                                        label="Relación DC/AC (%)"
                                         required
                                         value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
                                         onChange={(value) => updateField("relacion_dc_ac", String(value))}
