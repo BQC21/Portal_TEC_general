@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { NRELInfo } from "@/lib/types/nrel-types";
 
 const NREL_BASE_URL = "https://developer.nrel.gov";
-// const NREL_BASE_URL "https://developer.nlr.gov"; // desde el 29/5/2026
+// const NREL_BASE_URL = "https://developer.nlr.gov"; // desde el 29/5/2026
 
 // Parámetros fijos de PVWatts (requeridos por la API)
 const PVWATTS_DEFAULTS = {
@@ -57,31 +57,52 @@ export async function GET(req: NextRequest){
             url.searchParams.set(key, value);
         }
 
-        const response = await fetch(url.toString(), {cache: "no-store" });
+        console.log("[NREL API] Requesting:", url.toString());
+
+        const response = await fetch(url.toString(), { cache: "no-store" });
 
         if (!response.ok) {
+            console.error("[NREL API] Response not OK", response.status, response.statusText);
             return NextResponse.json(
                 { error: `Error consultando NREL: ${response.status}` },
                 { status: response.status }
             );
         }
 
-        const data = (await response.json()) as NRELInfo;
-        
+        // Leer texto bruto para ayudar a debug cuando la respuesta no sea JSON válido
+        const raw = await response.text();
+        let data: NRELInfo;
+        try {
+            data = JSON.parse(raw) as NRELInfo;
+        } catch (err) {
+            console.error("[NREL API] Failed to parse JSON from NREL:", raw.slice(0, 2000));
+            return NextResponse.json(
+                { error: "Respuesta inválida de NREL" },
+                { status: 502 }
+            );
+        }
+
         // Validar errores en el body (NREL puede responder 200 con errores internos)
         if (data.errors && data.errors.length > 0) {
+            console.error("[NREL API] Body errors:", data.errors);
             return NextResponse.json(
                 { error: data.errors.join(", ") },
                 { status: 422 }
             );
         }
-        
-        // Extraer HSP (kWh/m²/day)
-        const hsp = data.outputs.solrad_annual;
 
-        return NextResponse.json({
-            hsp,    // kWh/m²/day
-        });
+        // Extraer HSP (kWh/m²/day)
+        const hsp = data.outputs?.solrad_annual;
+
+        if (hsp === undefined || hsp === null) {
+            console.error("[NREL API] Missing solrad_annual in response:", JSON.stringify({ outputs: data.outputs }).slice(0,2000));
+            return NextResponse.json(
+                { error: "NREL no retornó datos de radiación" },
+                { status: 502 }
+            );
+        }
+
+        return NextResponse.json({ hsp });
 
     } catch (error) {
         console.error("[NREL API]", error);

@@ -12,7 +12,7 @@ interface UseConverterNRELOptions {
 }
 
 interface UseConverterNRELResult {
-    ghi:     number | null;   // kWh/m²/año
+    ghi_nrel:     number | null;   // kWh/m²/año
     hsp:     number | null;   // kWh/m²/día
     loading: boolean;
     error:   string | null;
@@ -22,7 +22,7 @@ interface UseConverterNRELResult {
 export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConverterNRELResult{
     const { latitude, longitude } = options;
 
-    const [ghi,     setGhi]     = useState<number | null>(null);
+    const [ghi_nrel,     setGhi_nrel]     = useState<number | null>(null);
     const [hsp,     setHsp]     = useState<number | null>(null);
     const [loading, setLoading] = useState(false); // false hasta que haya coordenadas
     const [error,   setError]   = useState<string | null>(null);
@@ -34,7 +34,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
     useEffect(() =>{
         // No ejecutar si no hay coordenadas
         if (!latitude || !longitude) {
-            setGhi(null);
+            setGhi_nrel(null);
             setHsp(null);
             setError(null);
             setLoading(false);
@@ -76,7 +76,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
 
                 // calcular ghi (hsp * 365 days)
                 const ghiValue = parseFloat((hspValue * 365).toFixed(2));
-                setGhi(ghiValue)
+                setGhi_nrel(ghiValue)
 
             } catch (err) {
                 const message = 
@@ -85,7 +85,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
                         : "Error cargando NASA POWER";
                 setError(message);
                 setHsp(null);
-                setGhi(null);
+                setGhi_nrel(null);
             } finally {
                 setLoading(false);
             }
@@ -95,7 +95,7 @@ export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConv
     }, [latitude, longitude, trigger])
 
     return{
-        ghi,
+        ghi_nrel,
         hsp,
         loading,
         error,

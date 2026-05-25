@@ -3,19 +3,13 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/components/Icons/PlusIcon";
 import AddProjectModal  from "@/features/components/Modals/sizing/AddProjectModal";
-import type { Project, ProjectFormData } from "@/lib/types/project-types";
+import type { ProjectFormData } from "@/lib/types/project-types";
 
 type Button2ModalProps = {
-    existingProjects: Project[];
     onAddProject: (project: ProjectFormData) => void;
 };
 
-// callable interface for the add-project handler
-interface AddProjectHandler {
-    (project: ProjectFormData): Promise<void>;
-}
-
-export default function Button2Modal({ existingProjects, onAddProject }: Button2ModalProps) {
+export default function Button2Modal({ onAddProject }: Button2ModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -30,11 +24,10 @@ export default function Button2Modal({ existingProjects, onAddProject }: Button2
             
             {open && (
                 <AddProjectModal
-                    existingProject={existingProjects}
-                    onAddProject={async function (project: ProjectFormData) {
+                    onAddProject={async (project: ProjectFormData) => {
                         await onAddProject(project);
                         setOpen(false);
-                    } as AddProjectHandler}
+                    }}
                     onClose={() => setOpen(false)}
                 />
             )}

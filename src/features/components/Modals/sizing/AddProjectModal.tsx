@@ -2,20 +2,17 @@
 
 import { useState } from "react";
 
-import { PortalShell } from "@/app/components/PortalShell";
+// Modal standalone: no PortalShell wrapper so background shows page table
 
 import { AddProductCloseIcon } from "../../Icons/AddProductCloseIcon";
 
 import type { 
-    Project, 
     ProjectFormState,
     ProjectFormData,
 } from "@/lib/types/project-types"; 
 
 import type { 
-    Zone, 
     ZoneFormState,
-    ZoneFormData,
 } from "@/lib/types/zone-types"; // Tipados
 
 import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
@@ -26,8 +23,6 @@ import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValu
 import { NAME_ZONES_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
-import { createProjectFormStateFromProject } from "@/features/mapping/project_mapping";
-
 // import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
 // import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
 import { useConverterNREL } from "@/features/hooks/api/useConverterNREL"
@@ -36,14 +31,11 @@ import { useZone } from "@/features/hooks/useRealtimeZones";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
-    existingProject: Project[];
     onAddProject: (project: ProjectFormData) => void;
     onClose: () => void;
 };
 
-export default function AddProjectModal({ existingProject, onAddProject, onClose }: AddProductModalProps) {
-    const today = new Date().toISOString().split('T')[0];
-    
+export default function AddProjectModal({ onAddProject, onClose }: AddProductModalProps) {
     const { zones } = useZone(); // obtener la lista de zonas
 
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
@@ -51,25 +43,26 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
     const selectedZone = form_zone.zona;
     
 
-    // ----------------------------
-    // ------- NASA POWER API -----
-    // ----------------------------
+    // // ----------------------------
+    // // ------- NASA POWER API -----
+    // // ----------------------------
 
-    // const { ghi, loading: nasaLoading, error: nasaError } = useConverterNasa({
+    // const { ghi_nasa, loading: nasaLoading, error: nasaError } = useConverterNasa({
     //     latitude:  form.zona_info?.latitude ?? "",
     //     longitude: form.zona_info?.longitude ?? "",
     // });
-
+    // console.log("Datos de radiación obtenidos de NASA POWER API:", { ghi_nasa, nasaLoading, nasaError });
 
     // ----------------------------
     // ------- NREL API -----
     // ----------------------------
-    const { ghi, 
+    const { ghi_nrel, 
         // hsp, 
         loading: NRELloading, error: NRELerror } = useConverterNREL({
         latitude:  form_zone.latitude ?? "",
         longitude: form_zone.longitude ?? "",
     })
+    console.log("Datos de radiación obtenidos de NREL API:", { ghi_nrel, NRELloading, NRELerror });
 
     // Helper para el valor de un campo NREL
     const nrelValue = (val: number | null) => {
@@ -99,12 +92,7 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
         });
     }
 
-    return(
-        <PortalShell
-            title="Ventana para el dimensionamiento de sistemas solares fotovoltaicos"
-            subtitle="Gestión para la selección de equipos y materiales eléctricos"
-            activePath="/sizing"
-        >        
+    return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
             <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
@@ -145,7 +133,13 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                                 onChange={(value) =>{ 
                                     if (value === "Seleccione zona") {
                                         setForm_zone(INITIAL_ZONE_FORM);
+                                        updateField("zona_id", "");
+                                        updateField("zona_info", undefined);
+                                        updateField("hsp", "");
+                                        updateField("ghi", "");
+                                        return;
                                     } 
+                                    // buscar zona seleccionada
                                     const selected = zones.find((zone) => zone.zona === value);
 
                                     if (selected) {
@@ -157,6 +151,8 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                                             created_at: selected.created_at,
                                             updated_at: selected.updated_at,
                                         });
+                                        updateField("zona_id", selected.id);
+                                        updateField("zona_info", selected);
                                     }
                                 }}
                             />
@@ -176,24 +172,17 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                                             value={form_zone.longitude ?? "---"}
                                         />
                                     </span>
-                                    {/* Datos NREL: se muestran siempre que haya zona,
-                                    independientemente del valor de ghi (evita falsy con 0) */}
-                                    {!NRELerror ?  ( // cambiar dependiendo de la API
+                                    {/* Datos de radiación: se muestran solo si la consulta devuelve un valor válido. */}
+                                    {!NRELerror && ghi_nrel !== null ? (
                                         <>
-                                            {/* <span>
-                                                <AddProductReadonlyField
-                                                        label="HSP (NREL)"
-                                                        value={nrelValue(hsp, "kWh/m²/día")}
-                                                    />
-                                            </span> */}
                                             <span>
-                                                    <AddProductReadonlyField
+                                                <AddProductReadonlyField
                                                         label="GHI (NREL) - kWh/m²/año"
-                                                        value={nrelValue(ghi)}
-                                                    />
+                                                        value={nrelValue(ghi_nrel)}
+                                                />
                                             </span>
-                                        </>
-                                    ): (
+                                        </>                                
+                                    ) : (
                                         <>
                                             <span>
                                                 <AddProductReadonlyField
@@ -205,7 +194,7 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                                                 En caso haya problemas con la API, los datos han sido
                                                 registrados según Global Solar ATLAS.
                                             </p>
-                                        </>                                
+                                        </>  
                                     )}   
                                 </>
                             )}
@@ -236,6 +225,5 @@ export default function AddProjectModal({ existingProject, onAddProject, onClose
                 </form>
             </div>
         </div>
-        </PortalShell>
     )
 }
