@@ -16,7 +16,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
-import { SearchBar } from "@/features/components/Tables/SearchBar"; // barra de busqueda
+import { SearchBar } from "@/features/components/Bars/SearchBar"; // barra de busqueda
 import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
 
 export default function ProductsPage() {
