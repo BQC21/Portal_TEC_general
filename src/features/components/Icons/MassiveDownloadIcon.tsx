@@ -2,7 +2,7 @@ export function MassiveDownloadIcon() {
     return (
             <svg
                 aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
+                className="pointer-events-none h-5 w-5 shrink-0 text-current"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -11,7 +11,7 @@ export function MassiveDownloadIcon() {
                 <path
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    d="M12 3v10m0 0 4-4m-4 4-4-4M5 20h14" // trazo
+                    d="M12 3v10m0 0 4-4m-4 4-4-4M5 20h14"
                 />
             </svg>
     )

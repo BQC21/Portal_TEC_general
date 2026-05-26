@@ -4,8 +4,11 @@ import { useEffect, useMemo, useState } from "react";
 
 import { ProductFilters } from "@/features/components/Tables/ProductFilters";
 import { ProductTable } from "@/features/components/Tables/ProductTable";
-import { Sorting_IGV_USD } from "@/features/components/Tables/SortingIGVUSD";
+
+import { Sorting_IGV_USD } from "@/features/components/Buttons/SortingIGVUSD";
 import Button2Modal from "@/features/components/Buttons/button2modal";
+import Button2MassiveDownload from "@/features/components/Buttons/Button2MassiveDownload";
+
 import { PortalShell } from "@/app/components/PortalShell";
 
 import { useProducts, useProductMutations } from "@/features/hooks/useRealtimeProducts"; // Supabase
@@ -205,7 +208,7 @@ export default function ProductsPage() {
                     </section>
                 )}
 
-                <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                <section className="grid gap-4 lg:grid-cols-[1fr_auto] lg:items-start">
                     <div className="space-y-1">
                         <p className="text-lg text-slate-500">
                             Tasa de cambio actual (venta): S/. {tasaVenta.toFixed(3)} por dólar
@@ -214,28 +217,40 @@ export default function ProductsPage() {
                             Tasa de cambio actual (compra): S/. {tasaCompra.toFixed(3)} por dólar
                         </p>
                     </div>
+                </section>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <SearchBar 
-                            value={searchDescription}
-                            onChange={setSearchDescription}
-                            placeholder="Buscar por descripción del producto..."
-                        />
-                    </div>                 
+                <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.7fr)_minmax(180px,1fr)_minmax(170px,1fr)_minmax(220px,1fr)] xl:items-end">
+                        <div className="w-full">
+                            <SearchBar 
+                                value={searchDescription}
+                                onChange={setSearchDescription}
+                                placeholder="Buscar por descripción del producto..."
+                            />
+                        </div>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <Sorting_IGV_USD
-                        value={sorting}
-                        onSortingChange={setSorting}
-                        />
-                    </div>
+                        <div className="flex w-full xl:justify-end">
+                            <Sorting_IGV_USD
+                                value={sorting}
+                                onSortingChange={setSorting}
+                            />
+                        </div>
 
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <Button2Modal
-                        exchangeRate={tasaVenta}
-                        existingProducts={sortedProducts}
-                        onAddProduct={handleAddProduct}
-                        />
+                        <div className="flex w-full xl:justify-end">
+                            <Button2Modal
+                                exchangeRate={tasaVenta}
+                                existingProducts={sortedProducts}
+                                onAddProduct={handleAddProduct}
+                            />
+                        </div>
+
+                        <div className="flex w-full xl:justify-end">
+                            <Button2MassiveDownload
+                                productsToDownload={sortedProducts}
+                                exchangeRate={tasaVenta}
+                                defaultFileName="BaseDatos_productos_TEC"
+                            />
+                        </div>
                     </div>
                 </section>
 

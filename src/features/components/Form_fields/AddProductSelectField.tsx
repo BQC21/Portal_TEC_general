@@ -1,7 +1,7 @@
 import { AddProductFieldLabel } from "./AddProductFieldLabel";
 
 type AddProductSelectFieldProps = {
-  label: string;
+    label: string;
     required?: boolean;
     options: string[];
     value: string;
