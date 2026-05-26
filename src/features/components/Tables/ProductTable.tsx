@@ -6,8 +6,6 @@ import type { Product } from "@/lib/types/product-types";
 import { TABLE_HEADERS } from "@/lib/utils/headers";
 import { formatDate, toSafeNumber, getCellTextClass, displayCellValue, getPriceCellClass } from "@/lib/utils/helpers";
 
-import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
-
 type ProductTableProps = {
     products: Product[];
     totalProducts: number;
@@ -17,9 +15,6 @@ type ProductTableProps = {
 };
 
 export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
-    // Ordenar productos por código del producto
-    const sortedProducts = sortGroupedByCodeSupplier(products, "codigo");
-    
     return (
         <section className="space-y-4 w-full">
         <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -80,8 +75,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         </tr>
                     </thead>
                     <tbody>
-                    {sortedProducts.length > 0 ? (
-                        sortedProducts.map((product) => (
+                    {products.length > 0 ? (
+                        products.map((product) => (
                         <tr key={product.id} className="bg-white">
                             {/* propiedades generales */}
                             <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.codigo)}`}>{displayCellValue(product.codigo)}</td>

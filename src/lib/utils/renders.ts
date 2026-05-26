@@ -114,11 +114,15 @@ export function shouldRender_ProductInfoSelection(productType: string) {
 // ordenamiento
 export function shouldRender_ProductSortingSelection(currentOrder: "asc" | "desc" | null) {
     if (currentOrder === "asc") {
-        return { label: "Orden ascendente", nextOrder: "desc" as const };
+        return { label: "Orden ascendente de precios", nextOrder: "desc" as const };
     }
 
     if (currentOrder === "desc") {
-        return { label: "Orden descendente", nextOrder: "asc" as const };
+        return { label: "Orden descendente de precios", nextOrder: null };
+    }
+
+    if (currentOrder === null) {
+        return { label: "Orden por código", nextOrder: "asc" as const };
     }
 
     return { label: "Ordenar por precio", nextOrder: "asc" as const };
