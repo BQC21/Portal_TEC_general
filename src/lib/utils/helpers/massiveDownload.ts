@@ -1,5 +1,5 @@
 import type { Product, ProductFormData } from "@/lib/types/product-types";
-import * as XLSX from "xlsx";
+import * as XLSX from "xlsx-js-style";
 
 type ExportCellValue = string | number | null;
 
@@ -60,12 +60,43 @@ function formatExportCell(value: unknown): ExportCellValue {
         return "---";
     }
 
+    if (typeof value === "string" && value.trim() === "") {
+        return "---";
+    }
+
     // Si es fecha
     if (value instanceof Date) {
         return value.toISOString().split("T")[0];
     }
 
     return String(value);
+}
+
+function computeColumnWidths(rows: ExportCellValue[][], headers: string[]) {
+    return headers.map((header, columnIndex) => {
+        const maxCellLength = rows.reduce((maxLength, row) => {
+            const cellValue = row[columnIndex];
+            const cellLength = cellValue === null ? 3 : String(cellValue).length;
+            return Math.max(maxLength, cellLength);
+        }, header.length);
+
+        return { wch: Math.min(maxCellLength + 2, 40) };
+    });
+}
+
+function applyHeaderStyle(worksheet: XLSX.WorkSheet, headers: string[]) {
+    headers.forEach((_, columnIndex) => {
+        const cellAddress = XLSX.utils.encode_cell({ r: 0, c: columnIndex });
+        const cell = worksheet[cellAddress];
+
+        if (cell) {
+            cell.s = {
+                fill: { patternType: "solid", fgColor: { rgb: "1F4E78" } },
+                font: { bold: true, color: { rgb: "FFFFFF" } },
+                alignment: { horizontal: "center", vertical: "center" },
+            };
+        }
+    });
 }
 
 /**
@@ -108,11 +139,18 @@ export function generateXLSX(products: Product[], includeHeadersFlag: boolean) {
         : rows;
 
     const worksheet = XLSX.utils.aoa_to_sheet(workbookRows); // convierte a hoja de datos
+
+    if (includeHeadersFlag) {
+        applyHeaderStyle(worksheet, headers.map((column) => column.label));
+    }
+
+    worksheet["!cols"] = computeColumnWidths(rows, headers.map((column) => column.label));
+
     const workbook = XLSX.utils.book_new(); // crea el workbook
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // inserte el worksheet dentro del workbook
 
     // Generar un ArrayBuffer con el libro y convertirlo a Blob
-    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" }) as ArrayBuffer; 
+    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array", cellStyles: true }) as ArrayBuffer;
     return new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 }
 
