@@ -33,7 +33,7 @@ export function MassiveDownloadModal({ productsToDownload, exchangeRate, default
 
     // Estado del form para la descarga masiva
     const [form, setForm] = useState<DownloadFormState>({
-        format: "csv",
+        format: "xlsx",
         fileName: defaultFileName ?? "BaseDatos_productos_TEC",
         includeHeaders: true,
     });
