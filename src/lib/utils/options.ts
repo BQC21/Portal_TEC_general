@@ -94,4 +94,4 @@ export type ProductSortingOrder = "asc" | "desc" | null; // tipo de ordenamiento
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 
 // Formatos de descarga permitidos
-export type FormatFile = "xlsx" | "csv" | "json";
+export type FormatFile = "xlsx" | "csv" ;
