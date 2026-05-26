@@ -1,6 +1,48 @@
-import { Product } from "@/lib/types/product-types";
-import { TABLE_HEADERS } from "@/lib/utils/headers"
+import type { Product, ProductFormData } from "@/lib/types/product-types";
 import * as XLSX from "xlsx";
+
+type ExportCellValue = string | number | null;
+
+const EXPORT_COLUMNS: Array<{ key: keyof ProductFormData; label: string }> = [
+    { key: "ruc", label: "RUC" },
+    { key: "proveedor", label: "Proveedor" },
+    { key: "cod_prov", label: "Código Proveedor" },
+    { key: "codigo", label: "Código" },
+    { key: "tipo", label: "Tipo" },
+    { key: "marca", label: "Marca" },
+    { key: "unidad", label: "Unidad" },
+    { key: "descripcion", label: "Descripción" },
+    { key: "tipo_conexion_bateria", label: "Tipo de conexión de la batería" },
+    { key: "dod", label: "DoD (%)" },
+    { key: "amperaje_bateria", label: "Amperaje de la batería" },
+    { key: "voltaje_bateria", label: "Voltaje de la batería" },
+    { key: "panel_array", label: "Nro. paneles por estructura" },
+    { key: "tipo_conexion_inversor", label: "Tipo de Conexión del inversor" },
+    { key: "potencia_dc_inversor", label: "Potencia DC Máxima del inversor (KW)" },
+    { key: "potencia_ac_inversor", label: "Potencia AC por inversor (KW)" },
+    { key: "mppt", label: "Número de MPPT" },
+    { key: "i_entrada_inversor", label: "Corriente de entrada del inversor (A)" },
+    { key: "i_salida_inversor", label: "Corriente de salida del inversor (A)" },
+    { key: "voltaje_minimo_inversor", label: "Voltaje mínimo del inversor (V)" },
+    { key: "voltaje_maximo_inversor", label: "Voltaje máximo del inversor (V)" },
+    { key: "potencia_modulo", label: "Potencia del módulo fotovoltaico" },
+    { key: "voc", label: "VOC (V)" },
+    { key: "vmpp", label: "VMPP (V)" },
+    { key: "isc", label: "ISC (A)" },
+    { key: "impp", label: "IMPP (A)" },
+    { key: "panel_area", label: "Área por módulo" },
+    { key: "tipo_conexion_smartmeter", label: "Tipo de conexión del smart meter" },
+    { key: "fuente_electrica", label: "Fuente eléctrica" },
+    { key: "priceInputCurrency", label: "Fuente de divisas" },
+    { key: "precio_soles", label: "Precio S/." },
+    { key: "precio_dolares", label: "Precio $" },
+    { key: "precio_soles_igv", label: "Precio S/. con IGV" },
+    { key: "precio_dolares_igv", label: "Precio $ con IGV" },
+    { key: "created_at", label: "Fecha creada" },
+    { key: "updated_at", label: "Fecha actualizada" },
+    { key: "estado_equipo", label: "Estado del equipo" },
+    { key: "fecha_estimada_importacion", label: "Fecha estimada de importación" },
+];
 
 /**
     * Añade la extensión apropiada al nombre de archivo.
@@ -12,56 +54,46 @@ export function addExtension(name: string, fmt: string) {
     return name.toLowerCase().endsWith(ext) ? name : `${name}${ext}`;
 }
 
+function formatExportCell(value: unknown): ExportCellValue {
+    // Si es nulo o indefinido
+    if (value === null || value === undefined || value === "---") {
+        return "---";
+    }
+
+    // Si es fecha
+    if (value instanceof Date) {
+        return value.toISOString().split("T")[0];
+    }
+
+    return String(value);
+}
+
 /**
- * Transforma la lista de productos a filas (array de strings) para CSV
+ * Transforma la lista de productos a filas exportables con los campos reales de ProductFormData.
  */
 export function productsToRows(products: Product[]) {
-    const headers = TABLE_HEADERS as unknown as Array<{ key: keyof Product; label: string }>;
+    const headers = EXPORT_COLUMNS; // encabezados
 
-    // Para CSV: cada fila es un array de valores en el mismo orden que headers
-    const csvRows: string[][] = products.map((p) =>
-        headers.map((h) => {
-            const value = p[h.key] ?? "";
-            // Escape comillas y comas en CSV
-            const escaped = String(value).replace(/"/g, '""');
-            return escaped;
-        })
-    );
+    const rows: ExportCellValue[][] = products.map((product) =>
+        headers.map((column) => formatExportCell(product[column.key]))
+    ); // construir filas
 
-    // Para xlsx: usar valores crudos (no escapados) para mantener tipos
-    const xlsxRows: Array<Array<string | number | null>> = products.map((p) =>
-        headers.map((h) => {
-            const value = p[h.key];
-            if (value === null || value === undefined) return null;
-            // Intenta convertir números donde corresponda
-            const num = Number(value as unknown);
-            return !Number.isNaN(num) && String(value).trim() !== "" ? num : String(value);
-        })
-    );
-
-    return { csvRows, xlsxRows, headers };
+    return { rows, headers };
 }
 
 /**
  * Genera una cadena CSV a partir de las filas. Incluye headers si includeHeaders=true.
  */
 export function generateCSV(products: Product[], includeHeadersFlag: boolean) {
-    const { csvRows, headers } = productsToRows(products);
-    const lines: string[] = [];
+    const { rows, headers } = productsToRows(products);
 
-    if (includeHeadersFlag) {
-        // Encabezado con labels
-        const headerLine = headers.map((h) => `"${String(h.label).replace(/"/g, '""')}"`).join(",");
-        lines.push(headerLine);
-    }
+    // construye la tabla para exportar
+    const aoaRows: ExportCellValue[][] = includeHeadersFlag
+        ? [headers.map((column) => column.label), ...rows]
+        : rows;
 
-    // Construir cada línea escapando valores entre comillas
-    csvRows.forEach((row) => {
-        const line = row.map((val) => `"${val}"`).join(",");
-        lines.push(line);
-    });
-
-    return lines.join("\r\n");
+    const worksheet = XLSX.utils.aoa_to_sheet(aoaRows); // convierte a hoja de datos
+    return XLSX.utils.sheet_to_csv(worksheet); // convierte a CSV
 }
 
 /**
@@ -69,23 +101,18 @@ export function generateCSV(products: Product[], includeHeadersFlag: boolean) {
  */
 
 export function generateXLSX(products: Product[], includeHeadersFlag: boolean) {
-    const { xlsxRows, headers } = productsToRows(products) as {
-        xlsxRows: Array<Array<string | number | null>>;
-        headers: Array<{ key: keyof Product; label: string }>;
-    };
+    const { rows, headers } = productsToRows(products);
 
-    const rows: Array<Array<string | number | null>> = [];
-    if (includeHeadersFlag) {
-        rows.push(headers.map((h) => h.label));
-    }
-    rows.push(...xlsxRows);
+    const workbookRows: ExportCellValue[][] = includeHeadersFlag
+        ? [headers.map((column) => column.label), ...rows]
+        : rows;
 
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const worksheet = XLSX.utils.aoa_to_sheet(workbookRows); // convierte a hoja de datos
+    const workbook = XLSX.utils.book_new(); // crea el workbook
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1"); // inserte el worksheet dentro del workbook
 
     // Generar un ArrayBuffer con el libro y convertirlo a Blob
-    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" }) as ArrayBuffer;
+    const wbout = XLSX.write(workbook, { bookType: "xlsx", type: "array" }) as ArrayBuffer; 
     return new Blob([wbout], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
 }
 
