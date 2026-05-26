@@ -93,3 +93,5 @@ export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
 export type ProductSortingOrder = "asc" | "desc" | null; // tipo de ordenamiento
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 
+// Formatos de descarga permitidos
+export type FormatFile = "xlsx" | "csv" | "json";
