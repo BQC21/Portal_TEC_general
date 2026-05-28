@@ -1,4 +1,4 @@
-import { AddProductFieldLabel } from "./AddProductFieldLabel";
+import { AddProductFieldLabel } from "./AddFieldLabel";
 
 type AddProductSelectFieldProps = {
     label: string;
