@@ -1,6 +1,6 @@
 "use client";
 
-import { MassiveDownloadModal } from "@/features/components/Modals/MassiveDownloadModal";
+import { MassiveDownloadModal } from "@/features/components/Modals/Products/MassiveDownloadModal";
 import { MassiveDownloadIcon } from "@/features/components/Icons/MassiveDownloadIcon";
 import type { Product } from "@/lib/types/product-types";
 import { useState } from "react";

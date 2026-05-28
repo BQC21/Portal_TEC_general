@@ -1,6 +1,6 @@
 "use client";
 
-import { EditProductModal } from "@/features/components/Modals/EditProductModal";
+import { EditProductModal } from "@/features/components/Modals/Products/EditProductModal";
 import { EditIcon } from "@/features/components/Icons/EditIcon";
 import type { Product } from "@/lib/types/product-types";
 import { useState } from "react";

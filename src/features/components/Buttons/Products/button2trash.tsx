@@ -1,6 +1,6 @@
 "use client";
 
-import { DeleteProductModal } from "@/features/components/Modals/DeleteProductModal";
+import { DeleteProductModal } from "@/features/components/Modals/Products/DeleteProductModal";
 import { TrashIcon } from "@/features/components/Icons/TrashIcon";
 import { useState } from "react";
 import { Product } from "@/lib/types/product-types";
