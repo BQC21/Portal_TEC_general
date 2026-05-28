@@ -1,7 +1,7 @@
 "use client";
 
-import { AddProductCloseIcon } from "@/features/components/Icons/AddProductCloseIcon";
-import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField";
+import { AddProductCloseIcon } from "@/features/components/Icons/AddCloseIcon";
+import { AddProductReadonlyField } from "@/features/components/Form_fields/AddReadonlyField";
 import type { Product } from "@/lib/types/product-types";
 
 // --- Tipo de variables ---

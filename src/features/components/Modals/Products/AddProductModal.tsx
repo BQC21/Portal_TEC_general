@@ -1,21 +1,20 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { AddProductCloseIcon } from "@/features/components/Icons/AddProductCloseIcon";
-import { AddProductNumberField } from "@/features/components/Form_fields/AddProductNumberField";
-import { AddProductRadioField } from "@/features/components/Form_fields/AddProductRadioField";
-import { AddProductReadonlyField } from "@/features/components/Form_fields/AddProductReadonlyField";
-import { AddProductSectionTitle } from "@/features/components/Form_fields/AddProductSectionTitle";
-import { AddProductSelectField } from "@/features/components/Form_fields/AddProductSelectField";
-import { AddProductTextAreaField } from "@/features/components/Form_fields/AddProductTextAreaField";
-import { AddProductTextField } from "@/features/components/Form_fields/AddProductTextField";
-import { AddProductDateField } from "@/features/components/Form_fields/AddProductDateField";
+import { useMemo, useState } from "react";
 
-import type { Product, ProductFormState } from "@/lib/types/product-types";
+import { AddProductCloseIcon } from "@/features/components/Icons/AddCloseIcon";
+import { AddProductNumberField } from "@/features/components/Form_fields/AddNumberField";
+import { AddProductRadioField } from "@/features/components/Form_fields/AddRadioField";
+import { AddProductReadonlyField } from "@/features/components/Form_fields/AddReadonlyField";
+import { AddProductSectionTitle } from "@/features/components/Form_fields/AddSectionTitle";
+import { AddProductSelectField } from "@/features/components/Form_fields/AddSelectField";
+import { AddProductTextAreaField } from "@/features/components/Form_fields/AddTextAreaField";
+import { AddProductTextField } from "@/features/components/Form_fields/AddTextField";
+import { AddProductDateField } from "@/features/components/Form_fields/AddDateField";
+
+import type { Product, ProductFormData, ProductFormState } from "@/lib/types/product-types";
 
 import { CurrencyCode } from "@/lib/utils/options";
-
-import { createProductFormStateFromProduct } from "@/features/mapping/mapping";
 
 import {
     computePricesWithIgv,
@@ -30,11 +29,11 @@ import {
     SUPPLIER_OPTIONS,
     POWER_SOURCE_OPTIONS,
     STATUS_OPTIONS, 
-    // PRICE_CURRENCY_OPTIONS,
+    PRICE_CURRENCY_OPTIONS,
 } from "@/lib/utils/options";
 
 import {
-    // INITIAL_PRODUCT_FORM,
+    INITIAL_PRODUCT_FORM,
 } from "@/lib/utils/initialValues";
 
 import { 
@@ -49,23 +48,21 @@ import {
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
     shouldRender_ProductInfoSelection,
-} from "@/lib/utils/renders";
+    shouldRender_CodeProduct,
+    buildProductCode,
+} from "@/lib/utils/helpers/renders";
 
 // --- Tipo de variables ---
-type EditProductModalProps = {
-    product: Product;
+type AddProductModalProps = {
     exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
+    existingProducts: Product[];
+    onAddProduct: (product: ProductFormData) => void;
     onClose: () => void;
 };
 
-export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClose }: EditProductModalProps) {
+export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
-    const [form, setForm] = useState<ProductFormState>(() => createProductFormStateFromProduct(product));
-
-    useEffect(() => {
-        setForm(createProductFormStateFromProduct(product));
-    }, [product]);
+    const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
 
     // Calcular cambios de precios
     const computedPrices = useMemo(() => {
@@ -82,10 +79,7 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
     // Actualizar campos del formulario
     function updateField<K extends keyof ProductFormState>(field: K, value: ProductFormState[K]) {
         setForm((current) => {
-            const updated = {
-                ...current,
-                [field]: value,
-            };
+            const updated = { ...current, [field]: value };
 
             if (field === "proveedor") {
                 const { RUC, supplierCode } = shouldRender_SupplyInfoSelection(String(value));
@@ -101,67 +95,62 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                 updated.unidad = unit || "";
             }
 
-            if (field === "tipo") {
-                if (value === "Batería") {
-                    updated.tipo_conexion_bateria = "BAT";
-                } else if (current.tipo_conexion_bateria === "BAT") {
-                    updated.tipo_conexion_bateria = "";
-                }
+            // Establecer connectionType a "BAT" cuando se selecciona Batería
+            if (field === "tipo" && value === "Batería") {
+                updated.tipo_conexion_bateria = "BAT";
             }
-
             if (field === "estado_equipo" && value !== "En importación") {
                 updated.fecha_estimada_importacion = null;
             }
-
             return updated;
         });
     }
 
     const productInfoSelection = shouldRender_ProductInfoSelection(form.tipo);
+    const supplierProductCount = existingProducts.filter((product) => product.proveedor === form.proveedor).length;
+    const generatedCode = buildProductCode(form.tipo, form.proveedor, supplierProductCount + 1);
 
     // Cambiar la modalidad base de precios
     function handleCurrencyModeChange(currency: CurrencyCode) {
         setForm((current) => ({
-            ...current,
-            priceInputCurrency: currency,
-            pricePen: currency === "PEN" ? current.precio_soles : convertUsdToPen(current.precio_dolares, exchangeRate),
-            priceUsd: currency === "USD" ? current.precio_dolares : convertPenToUsd(current.precio_soles, exchangeRate),
+        ...current,
+        priceInputCurrency: currency,
+        pricePen: currency === "PEN" ? current.precio_soles : convertUsdToPen(current.precio_dolares, exchangeRate),
+        priceUsd: currency === "USD" ? current.precio_dolares : convertPenToUsd(current.precio_soles, exchangeRate),
         }));
     }
 
-    // Aceptar actualizacion
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    // Aceptar insercion
+    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        await onUpdateProduct({
-            id: product.id,
+        onAddProduct({
             ...form,
+            codigo: generatedCode || form.codigo,
             fecha_estimada_importacion:
                 form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
             precio_soles: Number(computedPrices.pricePen.toFixed(2)),
             precio_dolares: Number(computedPrices.priceUsd.toFixed(2)),
         });
-
-        onClose();
     }
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-            <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
             <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                <h2 className="text-2xl font-bold text-slate-900">Editar Producto</h2>
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
-                    aria-label="Cerrar modal"
-                >
-                    <AddProductCloseIcon />
-                </button>
+            <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Producto</h2>
+            <button
+                type="button"
+                onClick={onClose}
+                className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900"
+                aria-label="Cerrar modal"
+            >
+                <AddProductCloseIcon />
+            </button>
             </div>
 
             <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                <div className="space-y-8">
+            <div className="space-y-8">
                 <section className="space-y-5">
                 <AddProductSectionTitle title="Información Básica" />
                 <div className="grid gap-5 md:grid-cols-2">
@@ -187,6 +176,17 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     options={PRODUCT_TYPE_OPTIONS}
                     onChange={(value) => updateField("tipo", value)}
                     />
+                    {shouldRender_CodeProduct(form.tipo, form.proveedor) ? (
+                    <AddProductReadonlyField
+                        label="Código del Producto"
+                        value={generatedCode}
+                    />
+                    ) : (
+                    <AddProductReadonlyField
+                        label="Código del Producto"
+                        value="Selecciona tipo de producto y proveedor"
+                    />
+                    )}
                     <AddProductSelectField
                     label="Marca"
                     required
@@ -348,25 +348,25 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                             onChange={(value) => updateField("potencia_modulo", value)}
                         />
                         <AddProductTextField
-                            label="VOC (Voltaje máximo) en Voltios"
+                            label="VOC (Voltaje a circuito abierto) en Voltios"
                             placeholder="550V"
                             value={form.voc}
                             onChange={(value) => updateField("voc", value)}
                         />
                         <AddProductTextField
-                            label="ISC (Corriente máxima entrada) en Amperios"
+                            label="ISC (Corriente a corto circuito) en Amperios"
                             placeholder="12.5A"
                             value={form.isc}
                             onChange={(value) => updateField("isc", value)}
                         />
                         <AddProductTextField
-                            label="VMPP (Voltaje mínimo) en Voltios"
+                            label="VMPP (Voltaje punto de máxima potencia) en Voltios"
                             placeholder="120V"
                             value={form.vmpp}
                             onChange={(value) => updateField("vmpp", value)}
                         />
                         <AddProductTextField
-                            label="IMPP (Corriente máxima salida) en Amperios"
+                            label="IMPP (Corriente punto de máxima potencia) en Amperios"
                             placeholder="11.8A"
                             value={form.impp}
                             onChange={(value) => updateField("impp", value)}
@@ -403,17 +403,20 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
 
                 </div>
                 </section>
-
+                
+                {/* Precios */}
                 <section className="space-y-5">
-                    <AddProductSectionTitle title="Información de Precios" />
-                    <AddProductReadonlyField
+                <AddProductSectionTitle title="Información de Precios" />
+                <div className="space-y-5">
+                    <AddProductSelectField
                         label="Fuente de tasa de cambio"
                         value={form.priceInputCurrency}
+                        options={[...PRICE_CURRENCY_OPTIONS]}
+                        onChange={(value) => updateField("priceInputCurrency", value as CurrencyCode)}
                     />
-                    <div className="space-y-5">
-                        <div className="space-y-3">
-                            <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
-                            <div className="flex flex-wrap gap-6">
+                    <div className="space-y-3">
+                        <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
+                        <div className="flex flex-wrap gap-6">
                             <AddProductRadioField
                                 label="Soles (S/.)"
                                 checked={form.priceInputCurrency === "PEN"}
@@ -424,15 +427,15 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                                 checked={form.priceInputCurrency === "USD"}
                                 onChange={() => handleCurrencyModeChange("USD")}
                             />
-                            </div>
                         </div>
+                    </div>
 
                     <div className="grid gap-5 md:grid-cols-2">
                     {form.priceInputCurrency === "USD" ? (
                         <>
                             <AddProductReadonlyField
                                 label="Precio (S/.)"
-                                value={form.precio_dolares > 0 ? ((form.precio_dolares * exchangeRate).toFixed(2)).toString() : ""}
+                                value={form.precio_dolares > 0 ? (form.precio_dolares * exchangeRate).toString() : ""}
                             /> 
                             <AddProductNumberField
                                 label="Precio ($)"
@@ -440,7 +443,7 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                                 step="0.01"
                                 min="0.00"
                                 disabled={form.priceInputCurrency !== "USD"}
-                                value={form.precio_dolares > 0 ? Number(form.precio_dolares.toFixed(2)) : ""}
+                                value={form.precio_dolares > 0 ? form.precio_dolares : ""}
                                 onChange={(value) => updateField("precio_dolares", value)}
                             />
                         </>
@@ -452,12 +455,12 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                                 step="0.01"
                                 min="0.00"
                                 disabled={form.priceInputCurrency !== "PEN"}
-                                value={form.precio_soles > 0 ? Number(form.precio_soles.toFixed(2)) : ""}
+                                value={form.precio_soles > 0 ? form.precio_soles : ""}
                                 onChange={(value) => updateField("precio_soles", value)}
                             /> 
                             <AddProductReadonlyField
                                 label="Precio ($)"
-                                value={form.precio_soles > 0 ? ((form.precio_soles / exchangeRate).toFixed(2)).toString() : ""}
+                                value={form.precio_soles > 0 ? (form.precio_soles / exchangeRate).toString() : ""}
                             />
                         </>
                     )}
@@ -481,25 +484,25 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     </div>
                 </div>
                 </section>
-                </div>
-
-                <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
-                <button
-                    type="button"
-                    onClick={onClose}
-                    className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
-                >
-                    Cancelar
-                </button>
-                <button
-                    type="submit"
-                    className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
-                >
-                    Actualizar Producto
-                </button>
-                </div>
-            </form>
             </div>
+
+            <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
+                <button
+                type="button"
+                onClick={onClose}
+                className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                >
+                Cancelar
+                </button>
+                <button
+                type="submit"
+                className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                >
+                Añadir Producto
+                </button>
+            </div>
+            </form>
+        </div>
         </div>
     );
 }

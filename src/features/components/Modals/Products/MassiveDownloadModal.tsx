@@ -6,9 +6,9 @@ import type { Product } from "@/lib/types/product-types";
 
 import { FormatFile_OPTIONS } from "@/lib/utils/options"
 
-import { AddProductCloseIcon } from "@/features/components/Icons/AddProductCloseIcon";
-import { AddProductSelectField } from "../Form_fields/AddProductSelectField";
-import { AddProductTextField } from "../Form_fields/AddProductTextField";
+import { AddProductCloseIcon } from "@/features/components/Icons/AddCloseIcon";
+import { AddProductSelectField } from "../../Form_fields/AddSelectField";
+import { AddProductTextField } from "../../Form_fields/AddTextField";
 
 import { 
     prepareAndDownloadFile,
