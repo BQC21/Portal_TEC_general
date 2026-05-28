@@ -133,7 +133,6 @@ export type UseProductMutationsResult = {
     loading: boolean;
     error: string | null;
     create: (product: ProductFormData) => Promise<Product>;
-    // createBulk: (products: ProductFormData[]) => Promise<MassiveCreateResult>;
     update: (id: string, product: ProductFormData) => Promise<Product>;
     remove: (id: string) => Promise<void>;
 }
