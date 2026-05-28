@@ -3,6 +3,16 @@ import type {
 	ProductFormState,
 } from "@/lib/types/product-types";
 
+import type {
+    // Equipos,
+    EquiposFormState,
+} from "@/lib/types/equipos-types";
+
+import type {
+    // Materiales,
+    MaterialesFormState,
+} from "@/lib/types/materiales-types";
+
 import {
 	// SORTING_OPTIONS,
 	SUPPLIER_OPTIONS,
@@ -68,4 +78,57 @@ export const INITIAL_PRODUCT_FORM: ProductFormState = {
     // estado de importación
     estado_equipo: STATUS_OPTIONS[0],
     fecha_estimada_importacion: null,
+};
+
+// valores iniciales para el estado de form de productos
+export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
+    // propiedades generales
+    cod_prov: SUPPLIER_CODE_OPTIONS[0],
+    proveedor: SUPPLIER_OPTIONS[0],
+    cod_producto: "",
+    tipo_de_producto: PRODUCT_TYPE_OPTIONS[0],
+    marca: BRAND_OPTIONS[0],
+    descripcion: "",
+    // propiedades eléctricas
+    tipo_conexion: CONNECTION_TYPE_OPTIONS[0],
+    potencia_maxima: 0,
+    mppt_dod: 0,
+    potencia_ac: 0,
+    voc_vmax: 0,
+    vmpp_vmin: 0,
+    isc_imax_in: "20/20",
+    impp_imax_out: 0,
+    // precios
+    unidad: UNIT_OPTIONS[0],
+    precio_soles: 0,
+    precio_dolares: 0,
+    igv: 18,
+    precio_soles_igv: 0,
+    precio_dolares_igv: 0,
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+};
+
+// valores iniciales para el estado de form de productos
+export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
+    // propiedades generales
+    cod_prov: SUPPLIER_CODE_OPTIONS[0],
+    proveedor: SUPPLIER_OPTIONS[0],
+    cod_producto: "",
+    tipo_de_producto: PRODUCT_TYPE_OPTIONS[0],
+    marca: BRAND_OPTIONS[0],
+    descripcion: "",
+    // propiedades cableado
+    parte_electrica: POWER_SOURCE_OPTIONS[0],
+    // precios
+    unidad: UNIT_OPTIONS[0],
+    precio_soles: 0,
+    precio_dolares: 0,
+    igv: 18,
+    precio_soles_igv: 0,
+    precio_dolares_igv: 0,
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
 };

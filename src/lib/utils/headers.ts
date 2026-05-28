@@ -1,12 +1,11 @@
 export const TABLE_HEADERS = [
     // propiedades generales
-    "Código",
-    "RUC",
-    "Código Proveedor",
-    "Proveedor",
-    "Tipo",
-    "Marca",
-    "Descripción",
+    "COD PROV",
+    "PROVEEDOR",
+    "COD PRODUCTO",
+    "TIPO DE PRODUCTO",
+    "MARCA",
+    "DESCRIPCIÓN",
     // propieades bateria
     "Tipo de conexión de la batería",
     "DoD (%)",
@@ -35,11 +34,14 @@ export const TABLE_HEADERS = [
     // propiedades de cableado (cable, protección, mc4)
     "Fuente eléctrica",
     // precios
-    "Fuente de divisas",
-    "Precio S/.",
-    "Precio $",
-    "Precio S/. con IGV",
-    "Precio $ con IGV",
+    "UNIDAD",
+    "PRECIO S/",
+    "PRECIO $",
+    "IGV",
+    "PRECIO + IGV S/",
+    "PRECIO + IGV $",
+    // RUC
+    "RUC",
     // fechas
     "Fecha creada",
     "Fecha actualizada",
@@ -48,4 +50,48 @@ export const TABLE_HEADERS = [
     "Fecha estimada de importación",
     // eventos
     "Acciones",
+];
+
+export const EQUIPOS_HEADERS = [
+    // propiedades generales
+    "COD PROV",
+    "PROVEEDOR",
+    "COD PRODUCTO",
+    "TIPO DE PRODUCTO",
+    "MARCA",
+    "DESCRIPCIÓN",
+    // propieades eléctricas
+    "TIPO DE CONEXIÓN",
+    "POTENCIA MÁXIMA",
+    "# DE MPPT/DoD",
+    "POTENCIA AC",
+    "VOC/VMAX",
+    "VMPP/VMIN",
+    "ISC/IMAX IN",
+    "IMPP/IMAX OUT",
+    // precios
+    "UNIDAD",
+    "PRECIO S/",
+    "PRECIO $",
+    "IGV",
+    "PRECIO + IGV S/",
+    "PRECIO + IGV $",
+];
+
+export const MATERIALES_HEADERS = [
+    // propiedades generales
+    "COD PROV",
+    "PROVEEDOR",
+    "COD PRODUCTO",
+    "TIPO DE PRODUCTO",
+    "MARCA",
+    "DESCRIPCIÓN",
+    // propiedades eléctricas
+    "PARTE ELÉCTRICA",
+    "UNIDAD",
+    "PRECIO S/",
+    "PRECIO $",
+    "IGV",
+    "PRECIO + IGV S/",
+    "PRECIO + IGV $",
 ];

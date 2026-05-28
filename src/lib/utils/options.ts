@@ -82,6 +82,31 @@ export const BRAND_OPTIONS = [
     "TENSITE",
     "ABB",
 ]; // marcas 
+
+export const EQUIPOS_TYPE_OPTIONS = [
+    "Accesorio",
+    "Batería",
+    "Controlador",
+    "Convertidor",
+    "Datalogger",
+    "Estructura",
+    "Inversor",
+    "Módulo",
+    "Monitor",
+    "Rack",
+    "Smart Meter",
+]; // tipo de equipos
+
+export const MATERIALES_TYPE_OPTIONS = [
+    "Cable",
+    "Protección",
+    "MC4",
+    "Tablero",
+    "CT",
+    "Fusible",
+    "Portafusible",
+]; // tipo de material
+
 export const STATUS_OPTIONS = ["En stock", "En importación", "Descontinuado"] // estados
 export const UNIT_OPTIONS = ["Unidad", "Metros"]; // unidades
 export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"]; // tipo de conexión 

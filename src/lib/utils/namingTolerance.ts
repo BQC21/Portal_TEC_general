@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/client";
 import { ProductFormData } from "@/lib/types/product-types";
 
 export const PRODUCTS_TABLE = "productos";
+export const EQUIPOS_TABLE = "equipo_principales";
+export const MATERIALES_TABLE = "materiales_electricos";
 
 // --------------------------
 // ---- Tolerancias de nomenclatura para el atributo de fuente de divisas
