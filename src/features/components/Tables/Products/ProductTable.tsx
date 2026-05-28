@@ -1,5 +1,5 @@
-import { Button2Edit } from "@/features/components/Buttons/button2edit";
-import { Button2Trash } from "@/features/components/Buttons/button2trash";
+import { Button2Edit } from "@/features/components/Buttons/Products/button2edit";
+import { Button2Trash } from "@/features/components/Buttons/Products/button2trash";
 
 import type { Product } from "@/lib/types/product-types";
 
@@ -80,7 +80,6 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                         <tr key={product.id} className="bg-white">
                             {/* propiedades generales */}
                             <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.codigo)}`}>{displayCellValue(product.codigo)}</td>
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.cod_prov, "text-slate-500")}`}>{displayCellValue(product.cod_prov)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.proveedor, "text-slate-800")}`}>{displayCellValue(product.proveedor)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo)}`}>{displayCellValue(product.tipo)}</td>
@@ -119,6 +118,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                                 <>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{(toSafeNumber(product.precio_dolares)*exchangeRate).toFixed(2)}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{(toSafeNumber(product.precio_dolares)).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.igv)}`}>{(toSafeNumber(product.igv))}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{(toSafeNumber(product.precio_dolares)*exchangeRate*1.18).toFixed(2)}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{(toSafeNumber(product.precio_dolares)*1.18).toFixed(2)}</td>
                                 </>
@@ -126,10 +126,13 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                                 <>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles)}`}>{(toSafeNumber(product.precio_soles)).toFixed(2)}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares)}`}>{(toSafeNumber(product.precio_soles)/exchangeRate).toFixed(2)}</td>
+                                    <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.igv)}`}>{(toSafeNumber(product.igv))}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_soles_igv)}`}>{((toSafeNumber(product.precio_soles))*1.18).toFixed(2)}</td>
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{(toSafeNumber(product.precio_soles)/exchangeRate*1.18).toFixed(2)}</td>
                                 </>
                             )}
+                            {/* RUC */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
                             {/* fechas */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.created_at)}`}>{formatDate(product.created_at)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.updated_at)}`}>{formatDate(product.updated_at)}</td>
