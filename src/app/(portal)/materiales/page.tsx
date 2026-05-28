@@ -1,0 +1,134 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+import { PortalShell } from "@/app/components/PortalShell";
+
+import { MaterialesFilters } from "@/features/components/Tables/Materiales/MaterialesFilters";
+import { MaterialesTable } from "@/features/components/Tables/Materiales/MaterialesTable";
+
+import { useMateriales } from "@/features/hooks/useRealtimeMateriales";
+
+import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
+
+import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
+
+import { SearchBar } from "@/features/components/Bars/SearchBar";
+import { Sorting_IGV_USD } from "@/features/components/Buttons/Products/SortingIGVUSD";
+
+import Button2MassiveUpload from "@/features/components/Buttons/Materiales/Button2MassiveUpload";
+import Button2MassiveClean from "@/features/components/Buttons/Materiales/Button2MassiveClean";
+
+export default function MaterialesPage() {
+	const { materiales, refetch } = useMateriales();
+
+    // ---------------------------------
+    // ---- Filtrado de productos ------
+    // ---------------------------------
+
+	const [searchDescription, setSearchDescription] = useState<string>("");
+	const [filters, setFilters] = useState<MaterialesFilterValues>({
+		type: "",
+		brand: "",
+		supplier: "",
+	});
+
+	const filteredMateriales = materiales.filter((material) => {
+		const matchesType = !filters.type || material.tipo_de_producto === filters.type;
+		const matchesBrand = !filters.brand || material.marca === filters.brand;
+		const matchesSupplier = !filters.supplier || material.proveedor === filters.supplier;
+		const matchesDescription = !searchDescription || material.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+
+		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
+	});
+
+    // ---------------------------------
+    // ---- Ordenamiento de productos (segun codigo) --
+    // ---------------------------------
+
+	const sortedByCodeProducts = useMemo(() => {
+		return sortGroupedByCodeSupplier(filteredMateriales, "cod_producto");
+	}, [filteredMateriales]);
+
+    // ---------------------------------
+    // ---- Ordenamiento de productos (segun precio) --
+    // ---------------------------------
+
+    const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
+
+    const sortedMateriales = useMemo(() => {
+        const MaterialesToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
+
+        if (!sorting) {
+            return MaterialesToSort;
+        }
+
+        return MaterialesToSort.sort((leftMateriales, rightMateriales) => {
+            const leftPrice = Number(leftMateriales.precio_dolares_igv ?? 0); // precio del row anterior
+            const rightPrice = Number(rightMateriales.precio_dolares_igv ?? 0); // precio del row posterior
+
+            return sorting === "asc"
+                ? leftPrice - rightPrice // ascendente
+                : rightPrice - leftPrice; // descendente
+        });
+    }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+
+	return (
+		<PortalShell
+			title="Materiales eléctricos"
+			subtitle="Gestión de materiales eléctricos desde Supabase"
+			activePath="/materiales"
+		>
+			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.7fr)_minmax(180px,1fr)_minmax(170px,1fr)_minmax(170px,1fr)] xl:items-end">
+                        <div className="w-full">
+                            <SearchBar
+                                value={searchDescription}
+                                onChange={setSearchDescription}
+								placeholder="Buscar por descripción del material..."
+                            />
+                        </div>
+
+                        <div className="flex w-full xl:justify-end">
+                            <Sorting_IGV_USD
+                                value={sorting}
+                                onSortingChange={setSorting}
+                            />
+                        </div>
+
+                        <div className="flex w-full xl:justify-end">
+							<Button2MassiveUpload onSuccess={refetch} />
+                        </div>
+
+                        <div className="flex w-full xl:justify-end">
+							<Button2MassiveClean currentCount={materiales.length} onSuccess={refetch} />
+                        </div>
+                    </div>
+                </section>
+
+					<section className="panel">
+						<div className="space-y-6">
+							<MaterialesFilters
+								values={filters}
+								onFilterChange={(key: string, value: string) =>
+									setFilters((current) => ({
+										...current,
+										[key]: value,
+									}))
+								}
+							/>
+						</div>
+					</section>
+
+					<MaterialesTable
+						products={sortedMateriales}
+						totalProducts={materiales.length}
+					/>
+				</div>
+			</main>
+		</PortalShell>
+	);
+}
