@@ -2,12 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { ProductFilters } from "@/features/components/Tables/ProductFilters";
-import { ProductTable } from "@/features/components/Tables/ProductTable";
+import { ProductFilters } from "@/features/components/Tables/Products/ProductFilters";
+import { ProductTable } from "@/features/components/Tables/Products/ProductTable";
 
-import { Sorting_IGV_USD } from "@/features/components/Buttons/SortingIGVUSD";
-import Button2Modal from "@/features/components/Buttons/button2modal";
-import Button2MassiveDownload from "@/features/components/Buttons/Button2MassiveDownload";
+import { Sorting_IGV_USD } from "@/features/components/Buttons/Products/SortingIGVUSD";
+import Button2Modal from "@/features/components/Buttons/Products/button2modal";
+import Button2MassiveDownload from "@/features/components/Buttons/Products/Button2MassiveDownload";
 
 import { PortalShell } from "@/app/components/PortalShell";
 
@@ -20,7 +20,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/components/Bars/SearchBar"; // barra de busqueda
-import { sortGroupedByCodeSupplier } from "@/lib/utils/renders";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
 
 export default function ProductsPage() {
 

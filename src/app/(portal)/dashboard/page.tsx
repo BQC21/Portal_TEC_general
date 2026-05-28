@@ -2,10 +2,14 @@
 
 import { PortalShell } from "@/app/components/PortalShell";
 import { useProducts } from "@/features/hooks/useRealtimeProducts";
+import { useEquipos } from "@/features/hooks/useRealtimeEquipos";
+import { useMateriales } from "@/features/hooks/useRealtimeMateriales";
 
 export default function DashboardPage() {
 
     const { products } = useProducts();
+    const { equipos } = useEquipos();
+    const { materiales } = useMateriales();
 
     const metrics = [
         {
@@ -14,6 +18,20 @@ export default function DashboardPage() {
             accent: "bg-blue-50 text-blue-700",
             icon: "▣",
         },
+
+        {
+            title: "Equipos eléctricos Activos",
+            value: equipos.length,
+            accent: "bg-blue-50 text-blue-700",
+            icon: "▣",
+        },
+        {
+            title: "Materiales eléctricos Activos",
+            value: materiales.length,
+            accent: "bg-blue-50 text-blue-700",
+            icon: "▣",
+        },
+
         // {
         //     title: "Proyectos en Curso",
         //     value: "0", // por condicionarse cuando se tenga el módulo 2
