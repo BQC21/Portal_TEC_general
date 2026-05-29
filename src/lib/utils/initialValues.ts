@@ -25,7 +25,10 @@ import {
 	POWER_SOURCE_OPTIONS,
 	PRICE_CURRENCY_OPTIONS,
 	STATUS_OPTIONS,
+    STATUS_PROJECT_OPTIONS
 } from "@/lib/utils/options"
+import { ZoneFormState } from "../types/zone-types";
+import { ProjectFormState } from "../types/project-types";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
@@ -132,3 +135,43 @@ export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
     created_at: new Date(),
     updated_at: new Date(),
 };
+
+// valores iniciales para el estado de form de proyectos
+export const INITIAL_PROJECT_FORM: ProjectFormState = {
+    // propiedades generales
+    nombre: "",
+    descripcion: "",
+    zona_id: "",     
+    zona_info: undefined,           
+    // cálculos de radiación
+    hsp: "",
+    ghi: "",
+    // inputs generales
+    demanda_electrica:  "",
+    tipo_conexion:  "",
+    cobertura_porcentaje:  "",
+    rendimiento_modulo_porcentaje:  "",
+    relacion_dc_ac:  "",
+    // cálculos de requerimientos
+    energia_requerida:  "",
+    potencia_dc_requerida:  "",
+    potencia_ac_requerida:  "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+    // estado
+    estado_proyecto: STATUS_PROJECT_OPTIONS[0],
+}
+
+// valores iniciales para el estado de form de zonas
+export const INITIAL_ZONE_FORM: ZoneFormState = {
+    // propiedades generales
+    zona: "",        
+    // cálculos de radiación
+    latitude: "",
+    longitude: "",
+    ghi_respaldo: "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}

@@ -95,3 +95,12 @@ export const MATERIALES_HEADERS = [
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
 ];
+
+export const TABLE_HEADERS_PROJECT = [
+    "Nombre del proyecto",
+    "Descripción del proyecto",
+    "Fecha creada",
+    "Fecha actualizada",
+    "Estado",
+    "Acciones",
+]

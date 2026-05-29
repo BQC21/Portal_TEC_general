@@ -107,6 +107,7 @@ export const MATERIALES_TYPE_OPTIONS = [
     "Portafusible",
 ]; // tipo de material
 
+export const STATUS_PROJECT_OPTIONS = ["activo", "pausa", "culminado", "cancelado"]
 export const STATUS_OPTIONS = ["En stock", "En importación", "Descontinuado"] // estados
 export const UNIT_OPTIONS = ["Unidad", "Metros"]; // unidades
 export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"]; // tipo de conexión 
