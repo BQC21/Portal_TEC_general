@@ -109,6 +109,9 @@ export const TABLE_HEADERS_ZONE = [
     "Nombre de la zona",
     "Latitud",
     "Longitud",
-    "Radiación global horizontal (GHI)",
+    "Radiación horizontal (GHI) anual - (kwh/m²/año)",
+    "Radiación horizontal (GHI) diaria - (kwh/m²/día)",
+    "Radiación inclinada (GTI) anual - (kwh/m²/año)",
+    "Radiación inclinada (GTI) diaria - (kwh/m²/día)",
     "Acciones",
 ]

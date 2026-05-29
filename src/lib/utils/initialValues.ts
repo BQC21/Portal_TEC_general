@@ -171,6 +171,9 @@ export const INITIAL_ZONE_FORM: ZoneFormState = {
     latitude: "",
     longitude: "",
     ghi_respaldo: "",
+    ghi_respaldo_diario: "",
+    gti_respaldo: "",
+    gti_respaldo_diario: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),

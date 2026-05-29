@@ -11,12 +11,15 @@ export type SupabaseZoneRow = {
     latitude?: number;
     longitude?: number;
     ghi_respaldo?: number;
+    ghi_respaldo_diario?: number;
+    gti_respaldo?: number;
+    gti_respaldo_diario?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
 };
 
-// Campos para la base de datos para los proyectos de ProductTable
+// Campos para la base de datos para la visualización de la tabla
 export type Zone = {
     // propiedades generales
     id: string;
@@ -25,6 +28,9 @@ export type Zone = {
     latitude: string;
     longitude: string;
     ghi_respaldo: string;
+    ghi_respaldo_diario: string;
+    gti_respaldo: string;
+    gti_respaldo_diario: string;
     // fechas
     created_at: Date;
     updated_at: Date;

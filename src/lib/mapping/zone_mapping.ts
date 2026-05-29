@@ -9,6 +9,9 @@ export function createZoneFormStateFromZone(zone: Zone): ZoneFormState {
         latitude: zone.latitude,
         longitude: zone.longitude,
         ghi_respaldo: zone.ghi_respaldo,
+        ghi_respaldo_diario: zone.ghi_respaldo_diario,
+        gti_respaldo: zone.gti_respaldo,
+        gti_respaldo_diario: zone.gti_respaldo_diario,
         // fechas
         created_at: zone.created_at,
         updated_at: zone.updated_at,
@@ -29,6 +32,9 @@ export function mapSupabaseRowToZone(
         latitude: row.latitude?.toString()  || "",
         longitude: row.longitude?.toString()  || "",
         ghi_respaldo: row.ghi_respaldo?.toString()  || "",
+        ghi_respaldo_diario: row.ghi_respaldo_diario?.toString()  || "",
+        gti_respaldo: row.gti_respaldo?.toString()  || "",
+        gti_respaldo_diario: row.gti_respaldo_diario?.toString()  || "",
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -47,6 +53,9 @@ export function mapZoneToSupabaseRow(
         latitude: zone.latitude as unknown as number | undefined,
         longitude: zone.longitude as unknown as number | undefined,
         ghi_respaldo: zone.ghi_respaldo as unknown as number | undefined,
+        ghi_respaldo_diario: zone.ghi_respaldo_diario as unknown as number | undefined,
+        gti_respaldo: zone.gti_respaldo as unknown as number | undefined,
+        gti_respaldo_diario: zone.gti_respaldo_diario as unknown as number | undefined,
         // fechas
         created_at: zone.created_at,
         updated_at: zone.updated_at,
