@@ -111,6 +111,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 		setIsUploading(true);
 
 		try {
+			// leer encabezados y filas de la hoja detectada
 			const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
 			const matchedSheet = pickFirstMatchingSheet(workbook, EQUIPOS_HEADERS) as EquipoMatchedSheet | null;
 
@@ -129,8 +130,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 
             const payload = matchedSheet.rows.map((row) => mapRowToEquipo(row, matchedSheet.headerStart));
 
-			// Convert impp_imax_out to numeric for DB insertion while preserving raw string locally
-			// Ensure all numeric fields are numeric (prevent strings like "20/20" reaching the DB)
+			// claves numéricas
 			const numericKeys: Array<keyof EquipoUploadRow> = [
 				"potencia_maxima",
 				"mppt_dod",
@@ -270,14 +270,14 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 					{detectedSheet && (
 						<div className="mt-3 rounded-md bg-slate-50 p-3 text-sm text-slate-700">
 							<p className="font-medium text-slate-900">Hoja detectada: {detectedSheet}</p>
-							{detectedHeaderRow !== null && (
+							{/* {detectedHeaderRow !== null && (
 								<p>Fila de encabezado: {detectedHeaderRow}</p>
 							)}
 							{detectedHeaderStart !== null && (
 								<p>
 									Columna de inicio: {String.fromCharCode(65 + detectedHeaderStart)} (índice {detectedHeaderStart})
 								</p>
-							)}
+							)} */}
 							{detectedHeaders && detectedHeaders.length > 0 && (
 								<p className="mt-1">Encabezados detectados: {detectedHeaders.join(", ")}</p>
 							)}
