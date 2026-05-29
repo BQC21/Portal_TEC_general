@@ -4,12 +4,16 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { useProducts } from "@/features/view/hooks/services/useRealtimeProducts";
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
+import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 
 export default function DashboardPage() {
 
     const { products } = useProducts();
     const { equipos } = useEquipos();
     const { materiales } = useMateriales();
+    const { projects } = useProjects();
+    const { zones } = useZone();
 
     const metrics = [
         {
@@ -32,18 +36,18 @@ export default function DashboardPage() {
             icon: "▣",
         },
 
-        // {
-        //     title: "Proyectos en Curso",
-        //     value: "0", // por condicionarse cuando se tenga el módulo 2
-        //     accent: "bg-emerald-50 text-emerald-700",
-        //     icon: "▣",
-        // },
-        // {
-        //     title: "Cotizaciones",
-        //     value: "0", // por condicionarse cuando se tenga el módulo 2
-        //     accent: "bg-yellow-50 text-yellow-700",
-        //     icon: "▣",
-        // },
+        {
+            title: "Proyectos enlistadas",
+            value: projects.length,
+            accent: "bg-emerald-50 text-emerald-700",
+            icon: "▣",
+        },
+        {
+            title: "Zonas enlistadas",
+            value: zones.length,
+            accent: "bg-emerald-50 text-emerald-700",
+            icon: "▣",
+        },
     ];
 
     return (

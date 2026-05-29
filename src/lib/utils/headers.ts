@@ -104,3 +104,11 @@ export const TABLE_HEADERS_PROJECT = [
     "Estado",
     "Acciones",
 ]
+
+export const TABLE_HEADERS_ZONE = [
+    "Nombre de la zona",
+    "Latitud",
+    "Longitud",
+    "Radiación global horizontal (GHI)",
+    "Acciones",
+]
