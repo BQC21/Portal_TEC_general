@@ -9,7 +9,7 @@ import {
 	getMaterialFilterOptions,
 	getMateriales,
 	updateMaterial,
-} from "@/features/services/materialesQueries";
+} from "@/features/controller/services/materialesQueries";
 import type {
 	Materiales,
 	MaterialesFormData,

@@ -7,7 +7,7 @@ import {
     deleteProject,
     getProjects,
     updateProject,
-} from "@/features/services/projectQueries";
+} from "@/features/controller/services/projectQueries";
 
 import type { 
     Project,

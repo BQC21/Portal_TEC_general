@@ -8,7 +8,7 @@ import {
     getProducts,
     getProductFilterOptions,
     updateProduct,
-} from "@/features/services/productQueries";
+} from "@/features/controller/services/productQueries";
 import type { 
     Product,
     ProductFormData,

@@ -9,7 +9,7 @@ import {
 	getEquipoFilterOptions,
 	getEquipos,
 	updateEquipo,
-} from "@/features/services/equiposQueries";
+} from "@/features/controller/services/equiposQueries";
 import type {
 	Equipos,
 	EquiposFormData,
