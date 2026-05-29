@@ -157,6 +157,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                             latitude: selected.latitude,
                                             longitude: selected.longitude,
                                             ghi_respaldo: selected.ghi_respaldo,
+                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                                            gti_respaldo: selected.gti_respaldo,
+                                            gti_respaldo_diario: selected.gti_respaldo_diario,
                                             created_at: selected.created_at,
                                             updated_at: selected.updated_at,
                                         });

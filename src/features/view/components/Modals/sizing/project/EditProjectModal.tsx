@@ -46,6 +46,9 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                 latitude: existingProject.zona_info.latitude,
                 longitude: existingProject.zona_info.longitude,
                 ghi_respaldo: existingProject.zona_info.ghi_respaldo,
+                ghi_respaldo_diario: existingProject.zona_info.ghi_respaldo_diario,
+                gti_respaldo: existingProject.zona_info.gti_respaldo,
+                gti_respaldo_diario: existingProject.zona_info.gti_respaldo_diario,
                 created_at: existingProject.zona_info.created_at,
                 updated_at: existingProject.zona_info.updated_at,
             }
@@ -159,6 +162,9 @@ export default function EditProjectModal({ existingProject, onUpdateProject, onC
                                             latitude: selected.latitude,
                                             longitude: selected.longitude,
                                             ghi_respaldo: selected.ghi_respaldo,
+                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                                            gti_respaldo: selected.gti_respaldo,
+                                            gti_respaldo_diario: selected.gti_respaldo_diario,
                                             created_at: selected.created_at,
                                             updated_at: selected.updated_at,
                                         });
