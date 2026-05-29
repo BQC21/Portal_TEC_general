@@ -10,7 +10,7 @@ import type {
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
-import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
+import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 
@@ -57,28 +57,28 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             {/* Nombre de la zona */}
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[0]}
                                 required
                                 placeholder=" "
                                 value={form_zone.zona}
                                 onChange={(value) => updateField("zona", value)}
                             />
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[1]}
                                 required
                                 placeholder=" "
                                 value={form_zone.latitude}
                                 onChange={(value) => updateField("latitude", value)}
                             />                           
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[2]}
                                 required
                                 placeholder=" "
                                 value={form_zone.longitude}
                                 onChange={(value) => updateField("longitude", value)}
                             />                            
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[3]}
                                 required
                                 placeholder=" "

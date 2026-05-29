@@ -9,7 +9,7 @@ import type {
     ZoneFormData,
 } from "@/lib/types/zone-types"; 
 
-import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
+import { AddProductTextField } from "@/features/view/components//Form_fields/AddTextField"; // campos
 
 import { INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
@@ -61,28 +61,28 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             {/* Nombre de la zona */}
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[0]}
                                 required
                                 placeholder=" "
                                 value={form_zone.zona}
                                 onChange={(value) => updateField("zona", value)}
                             />
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[1]}
                                 required
                                 placeholder=" "
                                 value={form_zone.latitude}
                                 onChange={(value) => updateField("latitude", value)}
                             />                           
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[2]}
                                 required
                                 placeholder=" "
                                 value={form_zone.longitude}
                                 onChange={(value) => updateField("longitude", value)}
                             />                            
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[3]}
                                 required
                                 placeholder=" "
