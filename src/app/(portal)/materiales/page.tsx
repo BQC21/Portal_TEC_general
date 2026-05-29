@@ -2,23 +2,23 @@
 
 import { useMemo, useState } from "react";
 
-import { PortalShell } from "@/app/components/PortalShell";
+import { PortalShell } from "@/features/view/components/PortalShell";
 
-import { MaterialesFilters } from "@/features/components/Tables/Materiales/MaterialesFilters";
-import { MaterialesTable } from "@/features/components/Tables/Materiales/MaterialesTable";
+import { MaterialesFilters } from "@/features/view/components/Tables/Materiales/MaterialesFilters";
+import { MaterialesTable } from "@/features/view/components/Tables/Materiales/MaterialesTable";
 
-import { useMateriales } from "@/features/hooks/useRealtimeMateriales";
+import { useMateriales } from "@/features/view/hooks/useRealtimeMateriales";
 
 import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
 
-import { SearchBar } from "@/features/components/Bars/SearchBar";
-import { Sorting_IGV_USD } from "@/features/components/Buttons/Products/SortingIGVUSD";
+import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
 
-import Button2MassiveUpload from "@/features/components/Buttons/Materiales/Button2MassiveUpload";
-import Button2MassiveClean from "@/features/components/Buttons/Materiales/Button2MassiveClean";
+import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
+import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();

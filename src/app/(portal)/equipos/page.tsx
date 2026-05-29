@@ -2,23 +2,23 @@
 
 import { useMemo, useState } from "react";
 
-import { PortalShell } from "@/app/components/PortalShell";
+import { PortalShell } from "@/features/view/components/PortalShell";
 
-import { EquiposFilters } from "@/features/components/Tables/Equipos/EquiposFilters";
-import { EquiposTable } from "@/features/components/Tables/Equipos/EquiposTable";
+import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
+import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
 
-import { useEquipos } from "@/features/hooks/useRealtimeEquipos";
+import { useEquipos } from "@/features/view/hooks/useRealtimeEquipos";
 
 import type { EquiposFilterValues } from "@/lib/types/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
 
-import { SearchBar } from "@/features/components/Bars/SearchBar";
-import { Sorting_IGV_USD } from "@/features/components/Buttons/Products/SortingIGVUSD";
+import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
 
-import Button2MassiveUpload from "@/features/components/Buttons/Equipos/Button2MassiveUpload";
-import Button2MassiveClean from "@/features/components/Buttons/Equipos/Button2MassiveClean";
+import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/Button2MassiveUpload";
+import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();

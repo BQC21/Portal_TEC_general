@@ -1,6 +1,6 @@
-import { LoginForm } from "@/app/components/LoginForm";
+import { LoginForm } from "@/features/view/components/LoginForm";
 
-import TECLogo from "@/features/components/Images/TEC_logo";
+import TECLogo from "@/features/view/components/Images/TEC_logo";
 
 export default async function LoginPage() {
 

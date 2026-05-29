@@ -2,24 +2,24 @@
 
 import { useEffect, useMemo, useState } from "react";
 
-import { ProductFilters } from "@/features/components/Tables/Products/ProductFilters";
-import { ProductTable } from "@/features/components/Tables/Products/ProductTable";
+import { ProductFilters } from "@/features/view/components/Tables/Products/ProductFilters";
+import { ProductTable } from "@/features/view/components/Tables/Products/ProductTable";
 
-import { Sorting_IGV_USD } from "@/features/components/Buttons/Products/SortingIGVUSD";
-import Button2Modal from "@/features/components/Buttons/Products/button2modal";
-import Button2MassiveDownload from "@/features/components/Buttons/Products/Button2MassiveDownload";
+import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
+import Button2Modal from "@/features/view/components/Buttons/Products/button2modal";
+import Button2MassiveDownload from "@/features/view/components/Buttons/Products/Button2MassiveDownload";
 
-import { PortalShell } from "@/app/components/PortalShell";
+import { PortalShell } from "@/features/view/components/PortalShell";
 
-import { useProducts, useProductMutations } from "@/features/hooks/useRealtimeProducts"; // Supabase
+import { useProducts, useProductMutations } from "@/features/view/hooks/useRealtimeProducts"; // Supabase
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
-import { useConverterSunat } from "@/features/hooks/useConverterSunat"; // API SUNAT
+import { useConverterSunat } from "@/features/view/hooks/api/useConverterSunat"; // API SUNAT
 
 import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/product-types"; // Tipados
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
-import { SearchBar } from "@/features/components/Bars/SearchBar"; // barra de busqueda
+import { SearchBar } from "@/features/view/components/Bars/SearchBar"; // barra de busqueda
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
 
 export default function ProductsPage() {
