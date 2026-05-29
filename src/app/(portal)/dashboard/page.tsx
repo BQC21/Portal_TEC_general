@@ -1,9 +1,9 @@
 "use client";
 
 import { PortalShell } from "@/features/view/components/PortalShell";
-import { useProducts } from "@/features/view/hooks/useRealtimeProducts";
-import { useEquipos } from "@/features/view/hooks/useRealtimeEquipos";
-import { useMateriales } from "@/features/view/hooks/useRealtimeMateriales";
+import { useProducts } from "@/features/view/hooks/services/useRealtimeProducts";
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
+import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 
 export default function DashboardPage() {
 

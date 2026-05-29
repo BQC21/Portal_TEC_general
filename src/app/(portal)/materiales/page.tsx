@@ -7,7 +7,7 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { MaterialesFilters } from "@/features/view/components/Tables/Materiales/MaterialesFilters";
 import { MaterialesTable } from "@/features/view/components/Tables/Materiales/MaterialesTable";
 
-import { useMateriales } from "@/features/view/hooks/useRealtimeMateriales";
+import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 
 import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
 

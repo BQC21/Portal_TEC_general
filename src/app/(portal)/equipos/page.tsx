@@ -7,7 +7,7 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
 import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
 
-import { useEquipos } from "@/features/view/hooks/useRealtimeEquipos";
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 
 import type { EquiposFilterValues } from "@/lib/types/equipos-types";
 

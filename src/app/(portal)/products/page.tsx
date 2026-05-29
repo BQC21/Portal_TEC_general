@@ -11,7 +11,7 @@ import Button2MassiveDownload from "@/features/view/components/Buttons/Products/
 
 import { PortalShell } from "@/features/view/components/PortalShell";
 
-import { useProducts, useProductMutations } from "@/features/view/hooks/useRealtimeProducts"; // Supabase
+import { useProducts, useProductMutations } from "@/features/view/hooks/services/useRealtimeProducts"; // Supabase
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
 import { useConverterSunat } from "@/features/view/hooks/api/useConverterSunat"; // API SUNAT
 
