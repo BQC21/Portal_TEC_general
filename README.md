@@ -4,11 +4,9 @@
 Se desarrolla un portal corporativo empresarial que será desplegada en un sitio web con el fin de agilizar el proceso de dimensionamiento y cotización de proyectos diseñados con sistemas solares fotovoltaicos.
 
 ## Características
-- [x] Módulo 1: Base de datos de productos eléctricos importados
+- [x] Módulo 1: Base de datos de equipos y materiales eléctricos 
 - [ ] Módulo 2: Dimensionamiento del sistema solar FV 
-- [ ] Módulo 3: Distribución de costos por proyecto
-- [ ] Módulo 4: Generación de informes de cotización por proyecto
-- [ ] Módulo 5: Generación de informes financieros por proyecto
+- [ ] Módulo 3: Generación automatizada de reportes de cotización
 
 <!-- En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas. -->
 
