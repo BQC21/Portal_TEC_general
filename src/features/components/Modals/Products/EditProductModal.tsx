@@ -15,7 +15,7 @@ import type { Product, ProductFormState } from "@/lib/types/product-types";
 
 import { CurrencyCode } from "@/lib/utils/options";
 
-import { createProductFormStateFromProduct } from "@/features/mapping/mapping_product";
+import { createProductFormStateFromProduct } from "@/lib/mapping/mapping_product";
 
 import {
     computePricesWithIgv,

@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { Zone,  ZoneFormData } from "@/lib/types/zone-types";
-import { mapSupabaseRowToZone, mapZoneToSupabaseRow } from "../mapping/zone_mapping";
+import { mapSupabaseRowToZone, mapZoneToSupabaseRow } from "../../lib/mapping/zone_mapping";
 import { ZONE_TABLE } from "@/lib/utils/namingTolerance";
 
 // --------------------------
