@@ -114,183 +114,198 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                         <AddProductCloseIcon />
                     </button>
                 </div>
-                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                    {/* Campos geográficos del proyecto */}
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            {/* Nombre y descripción del proyecto */}
-                            <AddProductTextAreaField
-                                label="Nombre del proyecto"
-                                required
-                                placeholder=" "
-                                value={form.nombre}
-                                onChange={(value) => updateField("nombre", value)}
-                            />
-                            <AddProductTextAreaField
-                                label="Descripción del proyecto"
-                                required
-                                placeholder=" "
-                                value={form.descripcion}
-                                onChange={(value) => updateField("descripcion", value)}
-                            />
-                            {/* Selector de zonas */}
-                            <AddProductSelectField
-                                label="Zona"
-                                required
-                                value={form_zone.zona ?? ""}
-                                options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : zones.map((p) => p.zona))]}
-                                onChange={(value) =>{ 
-                                    if (value === "Seleccione zona") {
-                                        setForm_zone(INITIAL_ZONE_FORM);
-                                        updateField("zona_id", "");
-                                        updateField("zona_info", undefined);
-                                        updateField("hsp", "");
-                                        updateField("ghi", "");
-                                        return;
-                                    } 
-                                    // buscar zona seleccionada
-                                    const selected = zones.find((zone) => zone.zona === value);
+                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                    <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                        {/* Campos geográficos del proyecto */}
+                        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                            <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                                {/* Nombre y descripción del proyecto */}
+                                <AddProductTextAreaField
+                                    label="Nombre del proyecto"
+                                    required
+                                    placeholder=" "
+                                    value={form.nombre}
+                                    onChange={(value) => updateField("nombre", value)}
+                                />
+                                <AddProductTextAreaField
+                                    label="Descripción del proyecto"
+                                    required
+                                    placeholder=" "
+                                    value={form.descripcion}
+                                    onChange={(value) => updateField("descripcion", value)}
+                                />
+                                {/* Selector de zonas */}
+                                <AddProductSelectField
+                                    label="Zona"
+                                    required
+                                    value={form_zone.zona ?? ""}
+                                    options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : zones.map((p) => p.zona))]}
+                                    onChange={(value) =>{ 
+                                        if (value === "Seleccione zona") {
+                                            setForm_zone(INITIAL_ZONE_FORM);
+                                            updateField("zona_id", "");
+                                            updateField("zona_info", undefined);
+                                            updateField("hsp", "");
+                                            updateField("ghi", "");
+                                            return;
+                                        } 
+                                        // buscar zona seleccionada
+                                        const selected = zones.find((zone) => zone.zona === value);
 
-                                    if (selected) {
-                                        setForm_zone({
-                                            zona: selected.zona,
-                                            latitude: selected.latitude,
-                                            longitude: selected.longitude,
-                                            ghi_respaldo: selected.ghi_respaldo,
-                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
-                                            gti_respaldo: selected.gti_respaldo,
-                                            gti_respaldo_diario: selected.gti_respaldo_diario,
-                                            created_at: selected.created_at,
-                                            updated_at: selected.updated_at,
-                                        });
-                                        updateField("zona_id", selected.id);
-                                        updateField("zona_info", selected);
-                                    }
-                                }}
-                            />
+                                        if (selected) {
+                                            setForm_zone({
+                                                zona: selected.zona,
+                                                latitude: selected.latitude,
+                                                longitude: selected.longitude,
+                                                ghi_respaldo: selected.ghi_respaldo,
+                                                ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                                                gti_respaldo: selected.gti_respaldo,
+                                                gti_respaldo_diario: selected.gti_respaldo_diario,
+                                                created_at: selected.created_at,
+                                                updated_at: selected.updated_at,
+                                            });
+                                            updateField("zona_id", selected.id);
+                                            updateField("zona_info", selected);
+                                        }
+                                    }}
+                                />
 
-                            {/* Campos visibles solo cuando hay zona seleccionada */}
-                            {selectedZone && (
-                                <>
-                                    <span>
-                                        <AddProductReadonlyField
-                                            label="Latitud de la zona"
-                                            value={form_zone.latitude ?? "---"}
+                                {/* Campos visibles solo cuando hay zona seleccionada */}
+                                {selectedZone && (
+                                    <>
+                                        <span>
+                                            <AddProductReadonlyField
+                                                label="Latitud de la zona"
+                                                value={form_zone.latitude ?? "---"}
+                                            />
+                                        </span>
+                                        <span>
+                                            <AddProductReadonlyField
+                                                label="Longitud de la zona"
+                                                value={form_zone.longitude ?? "---"}
+                                            />
+                                        </span>
+                                        {/* Datos de radiación: se muestran solo si la consulta devuelve un valor válido. */}
+                                        {!NRELerror && ghi_nrel !== null ? (
+                                            <>
+                                                <span>
+                                                    <AddProductReadonlyField
+                                                            label="GHI (NREL) - kWh/m²/año"
+                                                            value={nrelValue(ghi_nrel)}
+                                                    />
+                                                </span>
+                                            </>                                
+                                        ) : (
+                                            <>
+                                                <span>
+                                                    <AddProductReadonlyField
+                                                        label="GHI anual de la zona"
+                                                        value={form_zone.ghi_respaldo ?? "---"}
+                                                    />
+                                                </span>
+                                                <p className="text-sm text-yellow-600 w-50">
+                                                    En caso haya problemas con la API, los datos han sido
+                                                    registrados según Global Solar ATLAS.
+                                                </p>
+                                            </>  
+                                        )}   
+                                    </>
+                                )}
+                                <AddProductSelectField
+                                    label="Estado del proyecto"
+                                    required
+                                    value={form.estado_proyecto}
+                                    options={STATUS_PROJECT_OPTIONS}
+                                    onChange={(value) => updateField("estado_proyecto", value)}
+                                />
+                            </section>
+                        </div> 
+                        {/* Cálculo de potencia DC y AC requerida */}
+                        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                            <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                    <div>
+                                        {/* columna 1: campos de entrada */}
+                                        <AddProductNumberField 
+                                            label="Demanda eléctrica anual (kWh)"
+                                            required
+                                            value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
+                                            onChange={(value) => updateField("demanda_electrica", String(value))}
                                         />
-                                    </span>
-                                    <span>
-                                        <AddProductReadonlyField
-                                            label="Longitud de la zona"
-                                            value={form_zone.longitude ?? "---"}
+                                        <AddProductSelectField 
+                                            label="Tipo de instalación"
+                                            required
+                                            value={form.tipo_conexion}
+                                            options={CONNECTION_TYPE_OPTIONS}
+                                            onChange={(value) => updateField("tipo_conexion", value)}
                                         />
-                                    </span>
-                                    {/* Datos de radiación: se muestran solo si la consulta devuelve un valor válido. */}
-                                    {!NRELerror && ghi_nrel !== null ? (
-                                        <>
-                                            <span>
-                                                <AddProductReadonlyField
-                                                        label="GHI (NREL) - kWh/m²/año"
-                                                        value={nrelValue(ghi_nrel)}
-                                                />
-                                            </span>
-                                        </>                                
-                                    ) : (
-                                        <>
-                                            <span>
-                                                <AddProductReadonlyField
-                                                    label="GHI anual de la zona"
-                                                    value={form_zone.ghi_respaldo ?? "---"}
-                                                />
-                                            </span>
-                                            <p className="text-sm text-yellow-600 w-50">
-                                                En caso haya problemas con la API, los datos han sido
-                                                registrados según Global Solar ATLAS.
-                                            </p>
-                                        </>  
-                                    )}   
-                                </>
-                            )}
-                            <AddProductSelectField
-                                label="Estado del proyecto"
-                                required
-                                value={form.estado_proyecto}
-                                options={STATUS_PROJECT_OPTIONS}
-                                onChange={(value) => updateField("estado_proyecto", value)}
-                            />
-                        </section>
-                    </div> 
-                    {/* Cálculo de potencia DC y AC requerida */}
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                                <div>
-                                    {/* columna 1: campos de entrada */}
-                                    <AddProductNumberField 
-                                        label="Demanda eléctrica anual (kWh)"
-                                        required
-                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
-                                        onChange={(value) => updateField("demanda_electrica", String(value))}
-                                    />
-                                    <AddProductSelectField 
-                                        label="Tipo de instalación"
-                                        required
-                                        value={form.tipo_conexion}
-                                        options={CONNECTION_TYPE_OPTIONS}
-                                        onChange={(value) => updateField("tipo_conexion", value)}
-                                    />
-                                    <AddProductNumberField 
-                                        label="Porcentaje de cobertura (%)"
-                                        required
-                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
-                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
-                                    />
-                                    <AddProductNumberField 
-                                        label="Porcentaje de rendimiento del módulo (%)"
-                                        required
-                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
-                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
-                                    />
-                                    <AddProductNumberField 
-                                        label="Relación DC/AC (%)"
-                                        required
-                                        value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
-                                        onChange={(value) => updateField("relacion_dc_ac", String(value))}
-                                    />
-                                </div>
-                                <div>
-                                    {/* columna 2: campos de salida */}
-                                    <AddProductReadonlyField
-                                        label="Energía requerida"
-                                        value={computedRequirements.energia}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Potencia DC requerida (KW)"
-                                        value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Potencia AC requerida (KW)"
-                                        value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
-                                    />
-                                </div>
-                            </div>                            
-                        </section>
-                    </div>
-                    <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
-                        <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                        type="submit"
-                        className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
-                        >
-                            Añadir Proyecto
-                        </button>
-                    </div>
-                </form>
+                                        <AddProductNumberField 
+                                            label="Porcentaje de cobertura (%)"
+                                            required
+                                            value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
+                                            onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                        />
+                                        <AddProductNumberField 
+                                            label="Porcentaje de rendimiento del módulo (%)"
+                                            required
+                                            value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
+                                            onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                        />
+                                        <AddProductNumberField 
+                                            label="Relación DC/AC (%)"
+                                            required
+                                            value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
+                                            onChange={(value) => updateField("relacion_dc_ac", String(value))}
+                                        />
+                                    </div>
+                                    <div>
+                                        {/* columna 2: campos de salida */}
+                                        <AddProductReadonlyField
+                                            label="Energía requerida"
+                                            value={computedRequirements.energia}
+                                        />
+                                        <AddProductReadonlyField
+                                            label="Potencia DC requerida (KW)"
+                                            value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                        />
+                                        <AddProductReadonlyField
+                                            label="Potencia AC requerida (KW)"
+                                            value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                        />
+                                    </div>
+                                </div>                            
+                            </section>
+                        </div>
+                    </form>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                    <h2 className="text-2xl font-bold text-slate-900">Cables de protección seleccionados</h2>
+                    <p>Cables ITM AC</p>
+                    <p>Cables ITM DC</p>
+                    <p>Voltaje SPD</p>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                    <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
+                    <p>Módulo</p>
+                    <p>Inversor</p>
+                    <p>Estructura</p>
+                    <p>MC4</p>
+                </div>
+                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                    <button
+                    type="button"
+                    onClick={onClose}
+                    className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                    type="submit"
+                    className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                    >
+                        Añadir Proyecto
+                    </button>
+                </div>
             </div>
         </div>
     )
