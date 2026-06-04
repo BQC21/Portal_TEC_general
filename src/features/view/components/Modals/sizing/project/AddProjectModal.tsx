@@ -33,6 +33,9 @@ import {
     compute_AC_Power
 } from "@/lib/utils/helpers/energy_requirements"
 
+import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
+import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
+
 // --- Tipo de variables ---
 type AddProductModalProps = {
     onAddProject: (project: ProjectFormData) => void;
@@ -41,6 +44,12 @@ type AddProductModalProps = {
 
 export default function AddProjectModal({ onAddProject, onClose }: AddProductModalProps) {
     const { zones } = useZone(); // obtener la lista de zonas
+
+    const { projects_equipos, refetch: refetch_project_equipos } = useProjectEquipos();
+    const { remove: remove_project_equipos } = useProjectEquiposMutations();
+
+    const { projects_materiales, refetch: refetch_project_materiales } = useProjectMateriales();
+    const { remove: remove_project_materiales } = useProjectMaterialesMutations();
 
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
@@ -100,6 +109,69 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
         });
     }
 
+    async function handleDeleteProjectEquipo(projecEquipoId: string) {
+        await remove_project_equipos(projecEquipoId);
+        await refetch_project_equipos();
+    }
+
+    async function handleDeleteProjectMaterial(projecMaterialId: string) {
+        await remove_project_materiales(projecMaterialId);
+        await refetch_project_materiales();
+    }
+
+    const selectionRowStyles = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.35fr)_auto] lg:items-end";
+    const actionButtonStyles = "shrink-0 whitespace-nowrap rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-50";
+
+    type SelectionRowProps = {
+        label: string;
+        buttonLabel: string;
+        value: string;
+        onChange: (value: string) => void;
+    };
+
+    function SelectionRow({ label, buttonLabel, value, onChange }: SelectionRowProps) {
+        return (
+            <div className={selectionRowStyles}>
+                <div className="min-w-0">
+                    <AddProductSelectField
+                        label={label}
+                        required
+                        value={value}
+                        options={CONNECTION_TYPE_OPTIONS}
+                        onChange={onChange}
+                    />
+                </div>
+                <button type="button" className={actionButtonStyles}>
+                    {buttonLabel}
+                </button>
+            </div>
+        );
+    }
+
+    const equipmentRows = [
+        "Accesorio",
+        "Batería",
+        "Controlador",
+        "Convertidor",
+        "Datalogger",
+        "Estructura",
+        "Inversor",
+        "Módulo",
+        "Monitor",
+        "Rack",
+        "Smart Meter",
+    ];
+
+    const materialRows = [
+        "Cable",
+        "Protección",
+        "MC4",
+        "Tablero",
+        "CT",
+        "Fusible",
+        "Portafusible",
+    ];
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
             <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
@@ -114,234 +186,310 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                         <AddProductCloseIcon />
                     </button>
                 </div>
-                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                    <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                        {/* Campos geográficos del proyecto */}
-                        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                            <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                {/* Nombre y descripción del proyecto */}
-                                <AddProductTextAreaField
-                                    label="Nombre del proyecto"
-                                    required
-                                    placeholder=" "
-                                    value={form.nombre}
-                                    onChange={(value) => updateField("nombre", value)}
-                                />
-                                <AddProductTextAreaField
-                                    label="Descripción del proyecto"
-                                    required
-                                    placeholder=" "
-                                    value={form.descripcion}
-                                    onChange={(value) => updateField("descripcion", value)}
-                                />
-                                <AddProductSelectField
-                                    label="Estado del proyecto"
-                                    required
-                                    value={form.estado_proyecto}
-                                    options={STATUS_PROJECT_OPTIONS}
-                                    onChange={(value) => updateField("estado_proyecto", value)}
-                                />
-                                <AddProductSelectField
-                                    label="Tipo de instalación"
-                                    required
-                                    value={form.tipo_instalacion}
-                                    options={INSTALL_TYPE_OPTIONS}
-                                    onChange={(value) => updateField("tipo_instalacion", value)}
-                                />
-                                <AddProductTextAreaField
-                                    label="Enlace al proyecto"
-                                    required
-                                    placeholder=" "
-                                    value={form.enlace}
-                                    onChange={(value) => updateField("enlace", value)}
-                                />
-                            </section>
-                            <section className="flex gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                {/* Selector de zonas */}
-                                <AddProductSelectField
-                                    label="Zona"
-                                    required
-                                    value={form_zone.zona ?? ""}
-                                    options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : zones.map((p) => p.zona))]}
-                                    onChange={(value) =>{ 
-                                        if (value === "Seleccione zona") {
-                                            setForm_zone(INITIAL_ZONE_FORM);
-                                            updateField("zona_id", "");
-                                            updateField("zona_info", undefined);
-                                            updateField("hsp", "");
-                                            updateField("ghi", "");
-                                            return;
-                                        } 
-                                        // buscar zona seleccionada
-                                        const selected = zones.find((zone) => zone.zona === value);
 
-                                        if (selected) {
-                                            setForm_zone({
-                                                zona: selected.zona,
-                                                latitude: selected.latitude,
-                                                longitude: selected.longitude,
-                                                ghi_respaldo: selected.ghi_respaldo,
-                                                ghi_respaldo_diario: selected.ghi_respaldo_diario,
-                                                gti_respaldo: selected.gti_respaldo,
-                                                gti_respaldo_diario: selected.gti_respaldo_diario,
-                                                created_at: selected.created_at,
-                                                updated_at: selected.updated_at,
-                                            });
-                                            updateField("zona_id", selected.id);
-                                            updateField("zona_info", selected);
-                                        }
-                                    }}
-                                />
+                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <AddProductTextAreaField
+                                label="Nombre del proyecto"
+                                required
+                                placeholder=" "
+                                value={form.nombre}
+                                onChange={(value) => updateField("nombre", value)}
+                            />
+                            <AddProductTextAreaField
+                                label="Descripción del proyecto"
+                                required
+                                placeholder=" "
+                                value={form.descripcion}
+                                onChange={(value) => updateField("descripcion", value)}
+                            />
+                            <AddProductSelectField
+                                label="Estado del proyecto"
+                                required
+                                value={form.estado_proyecto}
+                                options={STATUS_PROJECT_OPTIONS}
+                                onChange={(value) => updateField("estado_proyecto", value)}
+                            />
+                            <AddProductSelectField
+                                label="Tipo de instalación"
+                                required
+                                value={form.tipo_instalacion}
+                                options={INSTALL_TYPE_OPTIONS}
+                                onChange={(value) => updateField("tipo_instalacion", value)}
+                            />
+                            <AddProductTextAreaField
+                                label="Enlace al proyecto"
+                                required
+                                placeholder=" "
+                                value={form.enlace}
+                                onChange={(value) => updateField("enlace", value)}
+                            />
+                        </section>
+                    </div>
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <AddProductSelectField
+                                label="Zona"
+                                required
+                                value={form_zone.zona ?? ""}
+                                options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
+                                onChange={(value) => {
+                                    if (value === "Seleccione zona") {
+                                        setForm_zone(INITIAL_ZONE_FORM);
+                                        updateField("zona_id", "");
+                                        updateField("zona_info", undefined);
+                                        updateField("hsp", "");
+                                        updateField("ghi", "");
+                                        return;
+                                    }
 
-                                {/* Campos visibles solo cuando hay zona seleccionada */}
-                                {selectedZone && (
-                                    <>
+                                    const selected = zones.find((zone) => zone.zona === value);
+
+                                    if (selected) {
+                                        setForm_zone({
+                                            zona: selected.zona,
+                                            latitude: selected.latitude,
+                                            longitude: selected.longitude,
+                                            ghi_respaldo: selected.ghi_respaldo,
+                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                                            gti_respaldo: selected.gti_respaldo,
+                                            gti_respaldo_diario: selected.gti_respaldo_diario,
+                                            created_at: selected.created_at,
+                                            updated_at: selected.updated_at,
+                                        });
+                                        updateField("zona_id", selected.id);
+                                        updateField("zona_info", selected);
+                                    }
+                                }}
+                            />
+
+                            {selectedZone && (
+                                <>
+                                    <span>
+                                        <AddProductReadonlyField
+                                            label="Latitud de la zona"
+                                            value={form_zone.latitude ?? "---"}
+                                        />
+                                    </span>
+                                    <span>
+                                        <AddProductReadonlyField
+                                            label="Longitud de la zona"
+                                            value={form_zone.longitude ?? "---"}
+                                        />
+                                    </span>
+                                    {!NRELerror && ghi_nrel !== null ? (
                                         <span>
                                             <AddProductReadonlyField
-                                                label="Latitud de la zona"
-                                                value={form_zone.latitude ?? "---"}
+                                                label="GHI (NREL) - kWh/m²/año"
+                                                value={nrelValue(ghi_nrel)}
                                             />
                                         </span>
-                                        <span>
-                                            <AddProductReadonlyField
-                                                label="Longitud de la zona"
-                                                value={form_zone.longitude ?? "---"}
-                                            />
-                                        </span>
-                                        {/* Datos de radiación: se muestran solo si la consulta devuelve un valor válido. */}
-                                        {!NRELerror && ghi_nrel !== null ? (
-                                            <>
-                                                <span>
-                                                    <AddProductReadonlyField
-                                                            label="GHI (NREL) - kWh/m²/año"
-                                                            value={nrelValue(ghi_nrel)}
-                                                    />
-                                                </span>
-                                            </>                                
-                                        ) : (
-                                            <>
-                                                <span>
-                                                    <AddProductReadonlyField
-                                                        label="GHI anual de la zona"
-                                                        value={form_zone.ghi_respaldo ?? "---"}
-                                                    />
-                                                </span>
-                                                <p className="text-sm text-yellow-600 w-50">
-                                                    En caso haya problemas con la API, los datos han sido
-                                                    registrados según Global Solar ATLAS.
-                                                </p>
-                                            </>  
-                                        )}   
-                                    </>
-                                )}
-                            </section>
-                        </div> 
-                        {/* Cálculo de potencia DC y AC requerida */}
-                        <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                            <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-                                    <div>
-                                        {/* columna 1: campos de entrada */}
-                                        <AddProductNumberField 
-                                            label="Demanda eléctrica anual (kWh)"
-                                            required
-                                            value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
-                                            onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        />
-                                        <AddProductSelectField 
-                                            label="Configuración"
-                                            required
-                                            value={form.configuracion}
-                                            options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("configuracion", value)}
-                                        />
-                                        <AddProductNumberField 
-                                            label="Porcentaje de cobertura (%)"
-                                            required
-                                            value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
-                                            onChange={(value) => updateField("cobertura_porcentaje", String(value))}
-                                        />
-                                        <AddProductNumberField 
-                                            label="Porcentaje de rendimiento del módulo (%)"
-                                            required
-                                            value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
-                                            onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
-                                        />
-                                        <AddProductNumberField 
-                                            label="Relación DC/AC (%)"
-                                            required
-                                            value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
-                                            onChange={(value) => updateField("relacion_dc_ac", String(value))}
-                                        />
-                                    </div>
-                                    <div>
-                                        {/* columna 2: campos de salida */}
-                                        <AddProductReadonlyField
-                                            label="Energía requerida"
-                                            value={computedRequirements.energia}
-                                        />
-                                        <AddProductReadonlyField
-                                            label="Potencia DC requerida (KW)"
-                                            value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
-                                        />
-                                        <AddProductReadonlyField
-                                            label="Potencia AC requerida (KW)"
-                                            value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
-                                        />
-                                    </div>
-                                    {/* columna 3: selección de equipos eléctricos *}
-                                    {/* <div>
-                                        <AddProductSelectField
-                                            label="Inversor"
-                                            required
-                                            value={form.configuracion}
-                                            options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("configuracion", value)}
-                                        />
-                                        <AddProductSelectField
-                                            label="Módulo fotovoltaico"
-                                            required
-                                            value={form.configuracion}
-                                            options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("configuracion", value)}
-                                        />
-                                        {form.tipo_instalacion != "ON-GRID" && 
-                                            <AddProductSelectField
-                                                label="Batería"
-                                                required
+                                    ) : (
+                                        <>
+                                            <span>
+                                                <AddProductReadonlyField
+                                                    label="GHI anual de la zona"
+                                                    value={form_zone.ghi_respaldo ?? "---"}
+                                                />
+                                            </span>
+                                            <p className="w-50 text-sm text-yellow-600">
+                                                En caso haya problemas con la API, los datos han sido registrados según Global Solar ATLAS.
+                                            </p>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </section>
+                    </div>
+
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)_minmax(0,1.4fr)]">
+                                <div>
+                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Requerimientos técnicos</h2>
+                                    <AddProductNumberField
+                                        label="Demanda eléctrica anual (kWh)"
+                                        required
+                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
+                                        onChange={(value) => updateField("demanda_electrica", String(value))}
+                                    />
+                                    <AddProductSelectField
+                                        label="Configuración"
+                                        required
+                                        value={form.configuracion}
+                                        options={CONNECTION_TYPE_OPTIONS}
+                                        onChange={(value) => updateField("configuracion", value)}
+                                    />
+                                    <AddProductNumberField
+                                        label="Porcentaje de cobertura (%)"
+                                        required
+                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
+                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField
+                                        label="Porcentaje de rendimiento del módulo (%)"
+                                        required
+                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
+                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                    />
+                                    <AddProductNumberField
+                                        label="Relación DC/AC (%)"
+                                        required
+                                        value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
+                                        onChange={(value) => updateField("relacion_dc_ac", String(value))}
+                                    />
+                                    <AddProductReadonlyField label="Energía requerida" value={computedRequirements.energia} />
+                                    <AddProductReadonlyField
+                                        label="Potencia DC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Potencia AC requerida (KW)"
+                                        value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                    />
+                                </div>
+
+                                <div>
+                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
+                                    <div className="flex flex-col gap-4">
+                                        {equipmentRows.map((label, index) => (
+                                            <SelectionRow
+                                                key={`equipment-${index}`}
+                                                label={label}
+                                                buttonLabel="Agregar"
                                                 value={form.configuracion}
-                                                options={CONNECTION_TYPE_OPTIONS}
                                                 onChange={(value) => updateField("configuracion", value)}
                                             />
-                                        }
-                                    </div> */}
-                                </div>                            
-                            </section>
-                        </div>
-                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                        <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
+                                    <div className="flex flex-col gap-4">
+                                        {materialRows.map((label, index) => (
+                                            <SelectionRow
+                                                key={`material-${index}`}
+                                                label={label}
+                                                buttonLabel="Agregar"
+                                                value={form.configuracion}
+                                                onChange={(value) => updateField("configuracion", value)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
                     </div>
-                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                        <h2 className="text-2xl font-bold text-slate-900">Materiales eléctricos seleccionados</h2>
+
+                    <div className="space-y-8 border-b border-slate-200 px-6 py-5">
+                        <section className="space-y-4">
+                            <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
+                            <div className="overflow-x-auto rounded-2xl border border-slate-200">
+                                <table className="min-w-full border-separate border-spacing-0">
+                                    <thead className="sticky top-0 z-10 bg-slate-100">
+                                        <tr className="bg-slate-100 text-left">
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Equipo seleccionado
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {projects_equipos.length > 0 ? (
+                                            projects_equipos.map((projectEquipo) => (
+                                                <tr key={projectEquipo.id} className="bg-white">
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {projectEquipo.equipo_info?.descripcion ?? "Sin descripción"}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteProjectEquipo(projectEquipo.id)}
+                                                            className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr className="bg-white">
+                                                <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                                    No hay equipos seleccionados todavía.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section className="space-y-4">
+                            <h2 className="text-2xl font-bold text-slate-900">Materiales eléctricos seleccionados</h2>
+                            <div className="overflow-x-auto rounded-2xl border border-slate-200">
+                                <table className="min-w-full border-separate border-spacing-0">
+                                    <thead className="sticky top-0 z-10 bg-slate-100">
+                                        <tr className="bg-slate-100 text-left">
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Material seleccionado
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Acciones
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {projects_materiales.length > 0 ? (
+                                            projects_materiales.map((projectMaterial) => (
+                                                <tr key={projectMaterial.id} className="bg-white">
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {projectMaterial.material_info?.descripcion ?? "Sin descripción"}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => handleDeleteProjectMaterial(projectMaterial.id)}
+                                                            className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
+                                                        >
+                                                            Eliminar
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        ) : (
+                                            <tr className="bg-white">
+                                                <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                                    No hay materiales seleccionados todavía.
+                                                </td>
+                                            </tr>
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
                     </div>
+
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            type="button"
+                            onClick={onClose}
+                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
                         >
                             Cancelar
                         </button>
                         <button
-                        type="submit"
-                        className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                            type="submit"
+                            className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
                         >
                             Añadir Proyecto
                         </button>
                     </div>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
-    )
+    );
 }
