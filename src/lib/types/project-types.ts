@@ -4,7 +4,7 @@ import { SupabaseZoneRow, Zone } from "@/lib/types/zone-types";
 export type ProjectFormState = Omit<Project, "id">; // visto desde el componente ProjectTable
 export type ProjectFormData = Omit<Project, "id">; // usado para las mutaciones (update || remove)
 
-// Filas correspondientes a la tabla de proyectos de Supabase
+// Columnas correspondientes a la tabla de proyectos de Supabase
 export type SupabaseProjectRow = {
     // propiedades generales
     id?: number | string;
@@ -13,12 +13,13 @@ export type SupabaseProjectRow = {
     zona_id?: number | string;             // FK a zonas.id
     zona_info?: SupabaseZoneRow;           // datos embebidos de la zona 
     zonas?: SupabaseZoneRow;               // alternative embedded relation key returned by Supabase
+    tipo_conexion?: string;
     // cálculos de radiación
     hsp?: number;
     ghi?: number;
     // inputs generales
     demanda_electrica?: number;
-    tipo_conexion?: string;
+    configuracion?: string;
     cobertura_porcentaje?: number;
     rendimiento_modulo_porcentaje?: number;
     relacion_dc_ac?: number;
@@ -31,6 +32,8 @@ export type SupabaseProjectRow = {
     updated_at?: Date | string | null;
     // estado
     estado_proyecto?: string;
+    // enlace
+    enlace?: string;
 };
 
 // Campos para la base de datos a visualizarse en el frontend
@@ -41,12 +44,13 @@ export type Project = {
     descripcion: string;
     zona_id: string;   // id de la zona (1 zona por proyecto)
     zona_info?: Zone;  // datos completos de la zona 
+    tipo_conexion: string;
     // cálculos de radiación
     hsp: string;
     ghi: string;
     // inputs generales
     demanda_electrica: string;
-    tipo_conexion: string;
+    configuracion: string;
     cobertura_porcentaje: string;
     rendimiento_modulo_porcentaje: string;
     relacion_dc_ac: string;
@@ -59,6 +63,8 @@ export type Project = {
     updated_at: Date;
     // estado
     estado_proyecto: string;
+    // enlace
+    enlace: string;
 };
 
 

@@ -11,12 +11,13 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         descripcion: project.descripcion,
         zona_id: project.zona_id,
         zona_info: project.zona_info,
+        tipo_conexion: project.tipo_conexion,
         // cálculos de radiación
         hsp: project.hsp,
         ghi: project.ghi,
         // inputs generales
         demanda_electrica: project.demanda_electrica,
-        tipo_conexion: project.tipo_conexion,
+        configuracion: project.configuracion,
         cobertura_porcentaje: project.cobertura_porcentaje,
         rendimiento_modulo_porcentaje: project.rendimiento_modulo_porcentaje,
         relacion_dc_ac: project.relacion_dc_ac,
@@ -29,6 +30,8 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         updated_at: project.updated_at,
         // estado
         estado_proyecto: project.estado_proyecto,
+        //enlace
+        enlace: project.enlace
     }
 }
 
@@ -44,15 +47,17 @@ export function mapSupabaseRowToProject(
 		nombre: row.nombre?.toString() || "",
         descripcion: row.descripcion?.toString() || "",
         zona_id: row.zona_id?.toString() || "",
-        // -- Supabase may return the related zone under different keys depending on the select: use either 'zona_info' (alias) or 'zonas'
+        // -- Supabase may return the related zone under different keys depending on the select: 
+        // use either 'zona_info' (alias) or 'zonas'
         zona_info: row.zona_info
             ? mapSupabaseRowToZone(row.zona_info as SupabaseZoneRow)
             : row.zonas
                 ? mapSupabaseRowToZone(row.zonas as SupabaseZoneRow)
                 : undefined,
+        tipo_conexion: row.tipo_conexion?.toString() || "",
         // inputs generales
         demanda_electrica: row.demanda_electrica?.toString() || "",
-        tipo_conexion: row.tipo_conexion?.toString() || "",
+        configuracion: row.configuracion?.toString() || "",
         cobertura_porcentaje: row.cobertura_porcentaje?.toString() || "",
         rendimiento_modulo_porcentaje: row.rendimiento_modulo_porcentaje?.toString() || "",
         relacion_dc_ac: row.relacion_dc_ac?.toString() || "",
@@ -68,6 +73,8 @@ export function mapSupabaseRowToProject(
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
         // estado
         estado_proyecto: row.estado_proyecto?.toString() || "",
+        // enlace        
+        enlace: row.enlace?.toString() || "",
     }
 }
 
@@ -91,9 +98,10 @@ export function mapProjectToSupabaseRow(
         nombre: project.nombre,
         descripcion: project.descripcion,
         zona_id: project.zona_id,
+        tipo_conexion: project.tipo_conexion,
         // inputs generales
         demanda_electrica: parseNumber(project.demanda_electrica),
-        tipo_conexion: project.tipo_conexion,
+        configuracion: project.configuracion,
         cobertura_porcentaje: parseNumber(project.cobertura_porcentaje),
         rendimiento_modulo_porcentaje: parseNumber(project.rendimiento_modulo_porcentaje),
         relacion_dc_ac: parseNumber(project.relacion_dc_ac),
@@ -109,5 +117,7 @@ export function mapProjectToSupabaseRow(
         updated_at: project.updated_at,
         // estado
         estado_proyecto: project.estado_proyecto,
+        // enlace
+        enlace: project.enlace,
     };
 }

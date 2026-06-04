@@ -99,9 +99,12 @@ export const MATERIALES_HEADERS = [
 export const TABLE_HEADERS_PROJECT = [
     "Nombre del proyecto",
     "Descripción del proyecto",
+    "Zona seleccionada",
+    "Tipo de instalación",
+    "Enlace del proyecto",
     "Fecha creada",
     "Fecha actualizada",
-    "Estado",
+    "Estado del proyecto",
     "Acciones",
 ]
 
