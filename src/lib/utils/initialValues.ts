@@ -142,13 +142,14 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     nombre: "",
     descripcion: "",
     zona_id: "",     
-    zona_info: undefined,           
+    zona_info: undefined,    
+    tipo_instalacion:  "",       
     // cálculos de radiación
     hsp: "",
     ghi: "",
     // inputs generales
     demanda_electrica:  "",
-    tipo_conexion:  "",
+    configuracion:  "",
     cobertura_porcentaje:  "",
     rendimiento_modulo_porcentaje:  "",
     relacion_dc_ac:  "",
@@ -161,6 +162,8 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     updated_at: new Date(),
     // estado
     estado_proyecto: STATUS_PROJECT_OPTIONS[0],
+    // enlace
+    enlace: ""
 }
 
 // valores iniciales para el estado de form de zonas
