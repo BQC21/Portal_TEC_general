@@ -46,7 +46,7 @@ export default function ProjectTable({ projects,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_conexion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.enlace}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>

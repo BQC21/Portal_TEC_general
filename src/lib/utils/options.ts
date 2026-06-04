@@ -111,6 +111,7 @@ export const STATUS_PROJECT_OPTIONS = ["cotización en proceso", "proyecto pausa
 export const STATUS_OPTIONS = ["En stock", "En importación", "Descontinuado"] // estados
 export const UNIT_OPTIONS = ["Unidad", "Metros"]; // unidades
 export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"]; // tipo de conexión 
+export const INSTALL_TYPE_OPTIONS = ["---", "conexión ON-GRID", "conexión OFF-GRID", "conexión Híbrida"]; // tipo de instalación 
 export const POWER_SOURCE_OPTIONS = ["---", "DC", "AC", "DC/AC", "BAT"]; // fuentes de conexión
 export const PRICE_CURRENCY_OPTIONS = ["USD", "PEN"] as const; // fuentes de divisas
 export const FormatFile_OPTIONS = ["---", "xlsx", "csv"]; // Formatos de descarga permitidos

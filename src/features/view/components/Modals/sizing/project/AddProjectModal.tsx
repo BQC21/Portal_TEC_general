@@ -18,7 +18,7 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
 
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
-import { CONNECTION_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
+import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 // import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
@@ -134,6 +134,29 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                     value={form.descripcion}
                                     onChange={(value) => updateField("descripcion", value)}
                                 />
+                                <AddProductSelectField
+                                    label="Estado del proyecto"
+                                    required
+                                    value={form.estado_proyecto}
+                                    options={STATUS_PROJECT_OPTIONS}
+                                    onChange={(value) => updateField("estado_proyecto", value)}
+                                />
+                                <AddProductSelectField
+                                    label="Tipo de instalación"
+                                    required
+                                    value={form.tipo_instalacion}
+                                    options={INSTALL_TYPE_OPTIONS}
+                                    onChange={(value) => updateField("tipo_instalacion", value)}
+                                />
+                                <AddProductTextAreaField
+                                    label="Enlace al proyecto"
+                                    required
+                                    placeholder=" "
+                                    value={form.enlace}
+                                    onChange={(value) => updateField("enlace", value)}
+                                />
+                            </section>
+                            <section className="flex gap-4 lg:flex-row lg:items-start lg:justify-between">
                                 {/* Selector de zonas */}
                                 <AddProductSelectField
                                     label="Zona"
@@ -211,13 +234,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                         )}   
                                     </>
                                 )}
-                                <AddProductSelectField
-                                    label="Estado del proyecto"
-                                    required
-                                    value={form.estado_proyecto}
-                                    options={STATUS_PROJECT_OPTIONS}
-                                    onChange={(value) => updateField("estado_proyecto", value)}
-                                />
                             </section>
                         </div> 
                         {/* Cálculo de potencia DC y AC requerida */}
@@ -233,11 +249,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                             onChange={(value) => updateField("demanda_electrica", String(value))}
                                         />
                                         <AddProductSelectField 
-                                            label="Tipo de instalación"
+                                            label="Configuración"
                                             required
-                                            value={form.tipo_conexion}
+                                            value={form.configuracion}
                                             options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("tipo_conexion", value)}
+                                            onChange={(value) => updateField("configuracion", value)}
                                         />
                                         <AddProductNumberField 
                                             label="Porcentaje de cobertura (%)"
@@ -276,35 +292,28 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                 </div>                            
                             </section>
                         </div>
+                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                        <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                        <h2 className="text-2xl font-bold text-slate-900">Cables de protección seleccionados</h2>
+                    </div>
+                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                        <button
+                        type="button"
+                        onClick={onClose}
+                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                        >
+                            Cancelar
+                        </button>
+                        <button
+                        type="submit"
+                        className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                        >
+                            Añadir Proyecto
+                        </button>
+                    </div>
                     </form>
-                </div>
-                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                    <h2 className="text-2xl font-bold text-slate-900">Cables de protección seleccionados</h2>
-                    <p>Cables ITM AC</p>
-                    <p>Cables ITM DC</p>
-                    <p>Voltaje SPD</p>
-                </div>
-                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                    <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
-                    <p>Módulo</p>
-                    <p>Inversor</p>
-                    <p>Estructura</p>
-                    <p>MC4</p>
-                </div>
-                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                    <button
-                    type="button"
-                    onClick={onClose}
-                    className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
-                    >
-                        Cancelar
-                    </button>
-                    <button
-                    type="submit"
-                    className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
-                    >
-                        Añadir Proyecto
-                    </button>
                 </div>
             </div>
         </div>

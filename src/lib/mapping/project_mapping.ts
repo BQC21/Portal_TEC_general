@@ -11,7 +11,7 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         descripcion: project.descripcion,
         zona_id: project.zona_id,
         zona_info: project.zona_info,
-        tipo_conexion: project.tipo_conexion,
+        tipo_instalacion: project.tipo_instalacion,
         // cálculos de radiación
         hsp: project.hsp,
         ghi: project.ghi,
@@ -54,7 +54,7 @@ export function mapSupabaseRowToProject(
             : row.zonas
                 ? mapSupabaseRowToZone(row.zonas as SupabaseZoneRow)
                 : undefined,
-        tipo_conexion: row.tipo_conexion?.toString() || "",
+        tipo_instalacion: row.tipo_instalacion?.toString() || "",
         // inputs generales
         demanda_electrica: row.demanda_electrica?.toString() || "",
         configuracion: row.configuracion?.toString() || "",
@@ -98,7 +98,7 @@ export function mapProjectToSupabaseRow(
         nombre: project.nombre,
         descripcion: project.descripcion,
         zona_id: project.zona_id,
-        tipo_conexion: project.tipo_conexion,
+        tipo_instalacion: project.tipo_instalacion,
         // inputs generales
         demanda_electrica: parseNumber(project.demanda_electrica),
         configuracion: project.configuracion,
