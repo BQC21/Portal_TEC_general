@@ -239,7 +239,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                         {/* Cálculo de potencia DC y AC requerida */}
                         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                             <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                                <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
                                     <div>
                                         {/* columna 1: campos de entrada */}
                                         <AddProductNumberField 
@@ -289,6 +289,32 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                             value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
                                         />
                                     </div>
+                                    {/* columna 3: selección de equipos eléctricos *}
+                                    {/* <div>
+                                        <AddProductSelectField
+                                            label="Inversor"
+                                            required
+                                            value={form.configuracion}
+                                            options={CONNECTION_TYPE_OPTIONS}
+                                            onChange={(value) => updateField("configuracion", value)}
+                                        />
+                                        <AddProductSelectField
+                                            label="Módulo fotovoltaico"
+                                            required
+                                            value={form.configuracion}
+                                            options={CONNECTION_TYPE_OPTIONS}
+                                            onChange={(value) => updateField("configuracion", value)}
+                                        />
+                                        {form.tipo_instalacion != "ON-GRID" && 
+                                            <AddProductSelectField
+                                                label="Batería"
+                                                required
+                                                value={form.configuracion}
+                                                options={CONNECTION_TYPE_OPTIONS}
+                                                onChange={(value) => updateField("configuracion", value)}
+                                            />
+                                        }
+                                    </div> */}
                                 </div>                            
                             </section>
                         </div>
@@ -296,7 +322,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                         <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
                     </div>
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                        <h2 className="text-2xl font-bold text-slate-900">Cables de protección seleccionados</h2>
+                        <h2 className="text-2xl font-bold text-slate-900">Materiales eléctricos seleccionados</h2>
                     </div>
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button
