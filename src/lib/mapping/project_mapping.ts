@@ -2,6 +2,7 @@ import {Project, ProjectFormState, ProjectFormData, SupabaseProjectRow} from "@/
 import { SupabaseZoneRow } from "@/lib/types/zone-types"
 import { parseNullableDate } from "@/lib/utils/helpers/date_manage"
 import { mapSupabaseRowToZone } from "@/lib/mapping/zone_mapping"
+import { parseNumber } from "../utils/helpers/parse_number"
 
 // enlace con los atributos de Supabase
 export function createProjectFormStateFromProject(project: Project): ProjectFormState {
@@ -84,15 +85,6 @@ export function mapSupabaseRowToProject(
 export function mapProjectToSupabaseRow(
 	project: ProjectFormData
 ): SupabaseProjectRow {
-    const parseNumber = (v: unknown): number | undefined => {
-        if (v === null || v === undefined) return undefined;
-        if (typeof v === "number") return Number.isFinite(v) ? v : undefined;
-        const s = String(v).trim();
-        if (s === "") return undefined;
-        const n = Number(s);
-        return Number.isFinite(n) ? n : undefined;
-    };
-
     return {
         // propiedades generales
         nombre: project.nombre,
