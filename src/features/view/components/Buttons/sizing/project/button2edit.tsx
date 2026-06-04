@@ -20,7 +20,7 @@ export default function Button2Edit({ project, onUpdateProject }: EditProjectMod
                 className="inline-flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
                 <EditIcon />
-                <span>Actualizar Proyecto</span> 
+                <span>Ver Proyecto</span> 
             </button>
             
             {open && (
