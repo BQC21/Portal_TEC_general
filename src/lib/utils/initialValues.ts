@@ -29,6 +29,8 @@ import {
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/zone-types";
 import { ProjectFormState } from "../types/project-types";
+import { Project_EquiposFormState } from "../types/project_equipos_join";
+import { Project_MaterialesFormState } from "../types/project_materiales_join";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {
@@ -181,3 +183,21 @@ export const INITIAL_ZONE_FORM: ZoneFormState = {
     created_at: new Date(),
     updated_at: new Date(),
 }
+
+export const INITIAL_PROJECT_EQUIPO_FORM: Project_EquiposFormState = {
+    equipo_id: "",
+    equipo_info: undefined,
+    proyecto_id: "",
+    proyecto_info: undefined,
+    fecha_agregado: new Date(),
+    cantidad: ""
+} 
+
+export const INITIAL_PROJECT_MATERIAL_FORM: Project_MaterialesFormState = {
+    material_id: "",
+    material_info: undefined,
+    proyecto_id: "",
+    proyecto_info: undefined,
+    fecha_agregado: new Date(),
+    cantidad: ""
+} 

@@ -17,7 +17,9 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField"; 
 import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
 
-import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_MATERIALES_FORM, INITIAL_PROJECT_FORM, 
+    INITIAL_PROJECT_MATERIAL_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
+
 import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
@@ -33,8 +35,10 @@ import {
     compute_AC_Power
 } from "@/lib/utils/helpers/energy_requirements"
 
-import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
-import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
+import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { Project_MaterialesFormState } from "@/lib/types/project_materiales_join";
+import { MaterialesFormState } from "@/lib/types/materiales-types";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -43,16 +47,25 @@ type AddProductModalProps = {
 };
 
 export default function AddProjectModal({ onAddProject, onClose }: AddProductModalProps) {
-    const { zones } = useZone(); // obtener la lista de zonas
 
-    const { projects_equipos, refetch: refetch_project_equipos } = useProjectEquipos();
-    const { remove: remove_project_equipos } = useProjectEquiposMutations();
+    // ----------------------------
+    // ------- Estados ------------
+    // ----------------------------
+    // usar información de la tabla
+    const { zones } = useZone();
+    const { equipos } = useEquipos();
+    const { materiales } = useMateriales();
 
-    const { projects_materiales, refetch: refetch_project_materiales } = useProjectMateriales();
-    const { remove: remove_project_materiales } = useProjectMaterialesMutations();
-
+    // valores iniciales
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
+    
+    // datos seleccionados
+    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, string>>({});
+    const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, string>>({});
+    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<Array<{ row: string; description: string }>>([]);
+    const [selectedMaterialTable, setSelectedMaterialTable] = useState<Array<{ row: string; description: string }>>([]);
+
     const selectedZone = form_zone.zona;
 
     // ----------------------------
@@ -92,6 +105,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
     }, [form.demanda_electrica, form.cobertura_porcentaje, form.ghi, 
         form.rendimiento_modulo_porcentaje, form.relacion_dc_ac, form_zone.ghi_respaldo]);
 
+    // ----------------------------------------
+    // ------- EVENTOS ------------------------
+    // ----------------------------------------
+
+    // Form
     function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
@@ -99,7 +117,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
         });
     }
 
-    // Aceptar insercion
+    // Tabla
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -109,15 +127,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
         });
     }
 
-    async function handleDeleteProjectEquipo(projecEquipoId: string) {
-        await remove_project_equipos(projecEquipoId);
-        await refetch_project_equipos();
-    }
-
-    async function handleDeleteProjectMaterial(projecMaterialId: string) {
-        await remove_project_materiales(projecMaterialId);
-        await refetch_project_materiales();
-    }
+    // --------------------------------------------------
+    // ------- SELECTOR DE FILAS ------------------------
+    // --------------------------------------------------
 
     const selectionRowStyles = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.35fr)_auto] lg:items-end";
     const actionButtonStyles = "shrink-0 whitespace-nowrap rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-50";
@@ -126,10 +138,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
         label: string;
         buttonLabel: string;
         value: string;
+        options: string[];
         onChange: (value: string) => void;
+        onClick?: () => void;
     };
 
-    function SelectionRow({ label, buttonLabel, value, onChange }: SelectionRowProps) {
+    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick }: SelectionRowProps) {
         return (
             <div className={selectionRowStyles}>
                 <div className="min-w-0">
@@ -137,11 +151,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                         label={label}
                         required
                         value={value}
-                        options={CONNECTION_TYPE_OPTIONS}
+                        options={options}
                         onChange={onChange}
-                    />
+                            />
                 </div>
-                <button type="button" className={actionButtonStyles}>
+                <button type="button" className={actionButtonStyles} onClick={onClick}>
                     {buttonLabel}
                 </button>
             </div>
@@ -149,27 +163,27 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
     }
 
     const equipmentRows = [
-        "Accesorio",
-        "Batería",
-        "Controlador",
-        "Convertidor",
-        "Datalogger",
-        "Estructura",
-        "Inversor",
-        "Módulo",
-        "Monitor",
-        "Rack",
-        "Smart Meter",
+        "ACCESORIO",
+        "BATERÍA",
+        "CONTROLADOR",
+        "CONVERTIDOR",
+        "DATALOGGER",
+        "ESTRUCTURA",
+        "INVERSOR",
+        "MÓDULO",
+        "MONITOR",
+        "RACK",
+        "SMART METER",
     ];
 
     const materialRows = [
-        "Cable",
-        "Protección",
+        "CABLE",
+        "PROTECCIÓN",
         "MC4",
-        "Tablero",
+        "TABLERO",
         "CT",
-        "Fusible",
-        "Portafusible",
+        "FUSIBLE",
+        "PORTAFUSIBLE",
     ];
 
     return (
@@ -358,8 +372,40 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                 key={`equipment-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
-                                                value={form.configuracion}
-                                                onChange={(value) => updateField("configuracion", value)}
+                                                value={selectedEquipmentByRow[label] || `Seleccionar - ${label}`}
+                                                options={[
+                                                    `Seleccionar - ${label}`,
+                                                    ...equipos
+                                                        .map((equipo) => (equipo.tipo_de_producto === label ? equipo.descripcion : null))
+                                                        .filter((descripcion): descripcion is string => Boolean(descripcion)),
+                                                ]}
+                                                onChange={(value) => {
+                                                    if (value === `Seleccionar - ${label}`) {
+                                                        setSelectedEquipmentByRow((current) => ({
+                                                            ...current,
+                                                            [label]: "",
+                                                        }));
+                                                        setSelectedEquipmentTable((current) => current.filter((item) => item.row !== label));
+                                                        return;
+                                                    }
+
+                                                    setSelectedEquipmentByRow((current) => ({
+                                                        ...current,
+                                                        [label]: value,
+                                                    }));
+                                                }}
+                                                onClick={() => {
+                                                    const descripcion = selectedEquipmentByRow[label];
+
+                                                    if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                        return;
+                                                    }
+
+                                                    setSelectedEquipmentTable((current) => {
+                                                        const next = current.filter((item) => item.row !== label);
+                                                        return [...next, { row: label, description: descripcion }];
+                                                    });
+                                                }}
                                             />
                                         ))}
                                     </div>
@@ -373,8 +419,41 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                 key={`material-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
-                                                value={form.configuracion}
-                                                onChange={(value) => updateField("configuracion", value)}
+                                                value={selectedMaterialByRow[label] || `Seleccionar - ${label}`}
+                                                options={[
+                                                    `Seleccionar - ${label}`,
+                                                    ...materiales
+                                                        .map((material) =>
+                                                            material.tipo_de_producto === label ? material.descripcion : null,
+                                                        )
+                                                        .filter((descripcion): descripcion is string => Boolean(descripcion)),
+                                                ]}
+                                                onChange={(value) => {
+                                                    if (value === `Seleccionar - ${label}`) {
+                                                        setSelectedMaterialByRow((current) => ({
+                                                            ...current,
+                                                            [label]: "",
+                                                        }));
+                                                        setSelectedMaterialTable((current) => current.filter((item) => item.row !== label));
+                                                        return;
+                                                    }
+                                                    setSelectedMaterialByRow((current) => ({
+                                                        ...current,
+                                                        [label]: value,
+                                                    }));
+                                                    }}
+                                                onClick={() => {
+                                                    const descripcion = selectedMaterialByRow[label];
+
+                                                    if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                        return;
+                                                    }
+
+                                                    setSelectedMaterialTable((current) => {
+                                                        const next = current.filter((item) => item.row !== label);
+                                                        return [...next, { row: label, description: descripcion }];
+                                                    });
+                                                }}
                                             />
                                         ))}
                                     </div>
@@ -399,16 +478,20 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {projects_equipos.length > 0 ? (
-                                            projects_equipos.map((projectEquipo) => (
-                                                <tr key={projectEquipo.id} className="bg-white">
+                                        {selectedEquipmentTable.length > 0 ? (
+                                            selectedEquipmentTable.map((item) => (
+                                                <tr key={item.row} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {projectEquipo.equipo_info?.descripcion ?? "Sin descripción"}
+                                                        {item.description}
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleDeleteProjectEquipo(projectEquipo.id)}
+                                                            onClick={() => {
+                                                                setSelectedEquipmentTable((current) =>
+                                                                    current.filter((row) => row.row !== item.row),
+                                                                );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
@@ -443,16 +526,20 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {projects_materiales.length > 0 ? (
-                                            projects_materiales.map((projectMaterial) => (
-                                                <tr key={projectMaterial.id} className="bg-white">
+                                        {selectedMaterialTable.length > 0 ? (
+                                            selectedMaterialTable.map((item) => (
+                                                <tr key={item.row} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {projectMaterial.material_info?.descripcion ?? "Sin descripción"}
+                                                        {item.description}
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => handleDeleteProjectMaterial(projectMaterial.id)}
+                                                            onClick={() => {
+                                                                setSelectedMaterialTable((current) =>
+                                                                    current.filter((row) => row.row !== item.row),
+                                                                );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar

@@ -17,7 +17,7 @@ export type SupabaseProject_MaterialesRow = {
 }
 
 export type Project_Materiales = {
-    id: string;
+    id: number | string;
     material_id: string;
     material_info?: Materiales;
     proyecto_id: string;

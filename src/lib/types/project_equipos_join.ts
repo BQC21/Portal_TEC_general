@@ -17,7 +17,7 @@ export type SupabaseProject_EquiposRow = {
 }
 
 export type Project_Equipos = {
-    id: string;
+    id: number | string;
     equipo_id: string;
     equipo_info?: Equipos;
     proyecto_id: string;
