@@ -36,7 +36,7 @@ export function DeleteEquipoModal({ equipo, onDeleteEquipo, onClose }: DeleteEqu
             </div>
             <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                 <p className="text-lg text-slate-500">
-                    ¿Está seguro que desea eliminar el siguiente producto?
+                    ¿Está seguro que desea eliminar el siguiente equipo?
                 </p>
             </div>
             <form onSubmit={handleDeleteProduct} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
