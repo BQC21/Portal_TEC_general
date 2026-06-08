@@ -14,7 +14,6 @@ import { AddProductDateField } from "@/features/view/components/Form_fields/AddD
 import { POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS } from "@/lib/utils/options";
 
 import {
-    CONNECTION_TYPE_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
 } from "@/lib/utils/options";
@@ -24,19 +23,10 @@ import {
 } from "@/lib/utils/initialValues";
 
 import { 
-    shouldRenderConnectionTypeBattery, 
-    shouldRenderConnectionTypeInversor,
-    shouldRenderBatteryProp,
-    shouldRenderInversorProp,
-    shouldRenderModuloProp,
     shouldRender_SupplyInfoSelection,
-    shouldRender_ProductInfoSelection,
-    shouldRender_EquipoInfoSelection,
-    shouldRenderConnectionTypeAccesories,
     shouldRender_MaterialInfoSelection,
 } from "@/lib/utils/helpers/renders";
-import { Equipos, EquiposFormState } from "@/lib/types/equipos-types";
-import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
+
 import { Materiales, MaterialesFormState } from "@/lib/types/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
 
