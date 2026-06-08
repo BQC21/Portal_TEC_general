@@ -26,7 +26,7 @@ export default function EquiposPage() {
 	const { create: create, update: update, remove: remove} = useEquipoMutations();
 
     // ---------------------------------
-    // ---- Filtrado de productos ------
+    // ---- Filtrado -------------------
     // ---------------------------------
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [filters, setFilters] = useState<EquiposFilterValues>({
@@ -45,17 +45,15 @@ export default function EquiposPage() {
 	});
 
     // ---------------------------------
-    // ---- Ordenamiento de productos (segun codigo) --
+    // ---- Ordenamiento ---------------
     // ---------------------------------
 
+	// segun codigo
 	const sortedByCodeProducts = useMemo(() => {
 		return sortGroupedByCodeSupplier(filteredEquipos, "cod_producto");
 	}, [filteredEquipos]);
 
-    // ---------------------------------
-    // ---- Ordenamiento de productos (segun precio) --
-    // ---------------------------------
-
+	// segun precio
     const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedEquipos = useMemo(() => {
@@ -146,8 +144,10 @@ export default function EquiposPage() {
 					</section>
 
 					<EquiposTable
-						products={sortedEquipos}
-						totalProducts={equipos.length}
+						equipos={sortedEquipos}
+						totalEquipos={equipos.length}
+						onUpdateEquipos={handleUpdateEquipos}
+						onDeleteEquipos={handleDeleteEquipos}
 					/>
 				</div>
 			</main>

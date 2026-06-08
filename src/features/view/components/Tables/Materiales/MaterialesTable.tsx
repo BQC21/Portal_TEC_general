@@ -1,13 +1,17 @@
 import type { Materiales } from "@/lib/types/materiales-types";
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass, toSafeNumber } from "@/lib/utils/helpers";
+import { Button2Edit } from "../../Buttons/Materiales/Button2Edit";
+import { Button2Trash } from "../../Buttons/Materiales/Button2Trash";
 
 type MaterialesTableProps = {
-    products: Materiales[];
-    totalProducts: number;
+    materiales: Materiales[];
+    totalMateriales: number;
+    onUpdateMateriales: (material: Materiales) => void;
+    onDeleteMateriales: (materialId: string) => void;
 };
 
-export function MaterialesTable({ products, totalProducts}: MaterialesTableProps) {
+export function MaterialesTable({ materiales, totalMateriales, onUpdateMateriales, onDeleteMateriales}: MaterialesTableProps) {
     return (
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -23,22 +27,35 @@ export function MaterialesTable({ products, totalProducts}: MaterialesTableProps
                             </tr>
                         </thead>
                         <tbody>
-                            {products.length > 0 ? (
-                                products.map((product) => (
-                                    <tr key={product.id} className="bg-white">
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.cod_prov)}`}>{displayCellValue(product.cod_prov)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.proveedor)}`}>{displayCellValue(product.proveedor)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.cod_producto)}`}>{displayCellValue(product.cod_producto)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_de_producto)}`}>{displayCellValue(product.tipo_de_producto)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.marca)}`}>{displayCellValue(product.marca)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.parte_electrica)}`}>{displayCellValue(product.parte_electrica)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.unidad)}`}>{displayCellValue(product.unidad)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles)}`}>{toSafeNumber(product.precio_soles).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares)}`}>{toSafeNumber(product.precio_dolares).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.igv)}`}>{toSafeNumber(product.igv).toFixed(0)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles_igv)}`}>{toSafeNumber(product.precio_soles_igv).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares_igv)}`}>{toSafeNumber(product.precio_dolares_igv).toFixed(2)}</td>
+                            {materiales.length > 0 ? (
+                                materiales.map((material) => (
+                                    <tr key={material.id} className="bg-white">
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(material.cod_prov)}`}>{displayCellValue(material.cod_prov)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.proveedor)}`}>{displayCellValue(material.proveedor)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.cod_producto)}`}>{displayCellValue(material.cod_producto)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.tipo_de_producto)}`}>{displayCellValue(material.tipo_de_producto)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.marca)}`}>{displayCellValue(material.marca)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.descripcion)}`}>{displayCellValue(material.descripcion)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.parte_electrica)}`}>{displayCellValue(material.parte_electrica)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.unidad)}`}>{displayCellValue(material.unidad)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.precio_soles)}`}>{toSafeNumber(material.precio_soles).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.precio_dolares)}`}>{toSafeNumber(material.precio_dolares).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.igv)}`}>{toSafeNumber(material.igv).toFixed(0)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.precio_soles_igv)}`}>{toSafeNumber(material.precio_soles_igv).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.precio_dolares_igv)}`}>{toSafeNumber(material.precio_dolares_igv).toFixed(2)}</td>
+                                        {/* acciones */}
+                                        <td className="border border-slate-200 px-4 py-5">
+                                            <div className="flex items-center gap-4 text-slate-500">
+                                                <Button2Edit
+                                                    material={material}
+                                                    onUpdateMateriales={onUpdateMateriales}
+                                                />
+                                                <Button2Trash 
+                                                    material={material}
+                                                    onDeleteMaterial={onDeleteMateriales}
+                                                />
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
@@ -53,7 +70,10 @@ export function MaterialesTable({ products, totalProducts}: MaterialesTableProps
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {products.length} de {totalProducts} materiales
+                Mostrando {materiales.length} de {totalMateriales} materiales
+            </p>
+            <p className="text-lg text-slate-500">
+                <strong>Nota:</strong> Los campos donde tengan barritas representan que no corresponden según el tipo de producto. 
             </p>
         </section>
     );

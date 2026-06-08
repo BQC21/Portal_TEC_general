@@ -1,13 +1,17 @@
 import type { Equipos } from "@/lib/types/equipos-types";
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass, toSafeNumber } from "@/lib/utils/helpers";
+import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
+import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
 
 type EquiposTableProps = {
-    products: Equipos[];
-    totalProducts: number;
+    equipos: Equipos[];
+    totalEquipos: number;
+    onUpdateEquipos: (equipo: Equipos) => void;
+    onDeleteEquipos: (equipoId: string) => void;
 };
 
-export function EquiposTable({ products, totalProducts }: EquiposTableProps) {
+export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -23,30 +27,43 @@ export function EquiposTable({ products, totalProducts }: EquiposTableProps) {
                             </tr>
                         </thead>
                         <tbody>
-                            {products.length > 0 ? (
-                                products.map((product) => (
-                                    <tr key={product.id} className="bg-white">
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(product.cod_prov)}`}>{displayCellValue(product.cod_prov)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.proveedor)}`}>{displayCellValue(product.proveedor)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.cod_producto)}`}>{displayCellValue(product.cod_producto)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_de_producto)}`}>{displayCellValue(product.tipo_de_producto)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.marca)}`}>{displayCellValue(product.marca)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion)}`}>{displayCellValue(product.tipo_conexion)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_maxima)}`}>{displayCellValue(product.potencia_maxima)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt)}`}>{displayCellValue(product.mppt)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_ac)}`}>{displayCellValue(product.potencia_ac)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod.toFixed(0))}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voc_vmax)}`}>{displayCellValue(product.voc_vmax)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.vmpp_vmin)}`}>{displayCellValue(product.vmpp_vmin)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.impp_i_in)}`}>{displayCellValue(product.impp_i_in)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.isc_i_out)}`}>{displayCellValue(product.isc_i_out)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.unidad)}`}>{displayCellValue(product.unidad)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles)}`}>{toSafeNumber(product.precio_soles).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares)}`}>{toSafeNumber(product.precio_dolares).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.igv)}`}>{toSafeNumber(product.igv).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles_igv)}`}>{toSafeNumber(product.precio_soles_igv).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares_igv)}`}>{toSafeNumber(product.precio_dolares_igv).toFixed(2)}</td>
+                            {equipos.length > 0 ? (
+                                equipos.map((equipo) => (
+                                    <tr key={equipo.id} className="bg-white">
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(equipo.cod_prov)}`}>{displayCellValue(equipo.cod_prov)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.proveedor)}`}>{displayCellValue(equipo.proveedor)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.cod_producto)}`}>{displayCellValue(equipo.cod_producto)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.tipo_de_producto)}`}>{displayCellValue(equipo.tipo_de_producto)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.marca)}`}>{displayCellValue(equipo.marca)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.descripcion)}`}>{displayCellValue(equipo.descripcion)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.tipo_conexion)}`}>{displayCellValue(equipo.tipo_conexion)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_maxima)}`}>{displayCellValue(equipo.potencia_maxima)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.mppt)}`}>{displayCellValue(equipo.mppt)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_ac)}`}>{displayCellValue(equipo.potencia_ac)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.dod)}`}>{displayCellValue(equipo.dod.toFixed(0))}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.voc_vmax)}`}>{displayCellValue(equipo.voc_vmax)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.vmpp_vmin)}`}>{displayCellValue(equipo.vmpp_vmin)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.impp_i_in)}`}>{displayCellValue(equipo.impp_i_in)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.isc_i_out)}`}>{displayCellValue(equipo.isc_i_out)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.unidad)}`}>{displayCellValue(equipo.unidad)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_soles)}`}>{toSafeNumber(equipo.precio_soles).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares)}`}>{toSafeNumber(equipo.precio_dolares).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.igv)}`}>{toSafeNumber(equipo.igv).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_soles_igv)}`}>{toSafeNumber(equipo.precio_soles_igv).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares_igv)}`}>{toSafeNumber(equipo.precio_dolares_igv).toFixed(2)}</td>
+                                        {/* acciones */}
+                                        <td className="border border-slate-200 px-4 py-5">
+                                            <div className="flex items-center gap-4 text-slate-500">
+                                                <Button2Edit
+                                                    equipo={equipo}
+                                                    onUpdateEquipo={onUpdateEquipos}
+                                                />
+                                                <Button2Trash 
+                                                    equipo={equipo}
+                                                    onDeleteEquipo={onDeleteEquipos}
+                                                />
+                                            </div>
+                                        </td>
                                     </tr>
                                 ))
                             ) : (
@@ -61,7 +78,10 @@ export function EquiposTable({ products, totalProducts }: EquiposTableProps) {
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {products.length} de {totalProducts} equipos
+                Mostrando {equipos.length} de {totalEquipos} equipos
+            </p>
+            <p className="text-lg text-slate-500">
+                <strong>Nota:</strong> Los campos donde tengan barritas representan que no corresponden según el tipo de producto. 
             </p>
         </section>
     );

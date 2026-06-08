@@ -7,9 +7,9 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { MaterialesFilters } from "@/features/view/components/Tables/Materiales/MaterialesFilters";
 import { MaterialesTable } from "@/features/view/components/Tables/Materiales/MaterialesTable";
 
-import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { useMateriales, useMaterialMutations } from "@/features/view/hooks/services/useRealtimeMateriales";
 
-import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
+import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
@@ -19,12 +19,14 @@ import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/Sor
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
+import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();
+	const { create: create, update: update, remove: remove} = useMaterialMutations();
 
     // ---------------------------------
-    // ---- Filtrado de productos ------
+    // ---- Filtrado -------------------
     // ---------------------------------
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
@@ -44,17 +46,15 @@ export default function MaterialesPage() {
 	});
 
     // ---------------------------------
-    // ---- Ordenamiento de productos (segun codigo) --
+    // ---- Ordenamiento ---------------
     // ---------------------------------
 
+	// segun codigo
 	const sortedByCodeProducts = useMemo(() => {
 		return sortGroupedByCodeSupplier(filteredMateriales, "cod_producto");
 	}, [filteredMateriales]);
 
-    // ---------------------------------
-    // ---- Ordenamiento de productos (segun precio) --
-    // ---------------------------------
-
+	// segun precio
     const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedMateriales = useMemo(() => {
@@ -74,6 +74,24 @@ export default function MaterialesPage() {
         });
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
+	// ---------------------------------
+	// ---- Lista de eventos -----------
+	// ---------------------------------
+	async function handleAddMateriales(material: MaterialesFormState) {
+		await create(material);
+		await refetch();
+	} // añadir equipo
+	async function handleUpdateMateriales(updatedMateriales: Materiales) {
+		const { id, ... materialData } = updatedMateriales;
+		await update(String(id), materialData);
+		await refetch();
+	} // actualizar equipo
+	async function handleDeleteMateriales(materialId: string) {
+		await remove(materialId);
+		await refetch();
+	} // remover equipo
+
+
 	return (
 		<PortalShell
 			title="Materiales eléctricos"
@@ -83,7 +101,7 @@ export default function MaterialesPage() {
 			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
 				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.7fr)_minmax(180px,1fr)_minmax(170px,1fr)_minmax(170px,1fr)] xl:items-end">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)] xl:items-end">
                         <div className="w-full">
                             <SearchBar
                                 value={searchDescription}
@@ -106,6 +124,10 @@ export default function MaterialesPage() {
                         <div className="flex w-full xl:justify-end">
 							<Button2MassiveClean currentCount={materiales.length} onSuccess={refetch} />
                         </div>
+
+						<div className="flex w-full xl:justify-end">
+							<Button2Modal existingMateriales={materiales} onAddMateriales={handleAddMateriales} />
+						</div>
                     </div>
                 </section>
 
@@ -124,8 +146,10 @@ export default function MaterialesPage() {
 					</section>
 
 					<MaterialesTable
-						products={sortedMateriales}
-						totalProducts={materiales.length}
+						materiales={sortedMateriales}
+						totalMateriales={materiales.length}
+						onUpdateMateriales={handleUpdateMateriales}
+						onDeleteMateriales={handleDeleteMateriales}
 					/>
 				</div>
 			</main>
