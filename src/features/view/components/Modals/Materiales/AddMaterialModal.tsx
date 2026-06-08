@@ -1,32 +1,31 @@
-import { Equipos, EquiposFormData, EquiposFormState } from "@/lib/types/equipos-types";
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
-import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_MATERIALES_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
-import { CONNECTION_TYPE_OPTIONS, PRODUCT_TYPE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
+import { POWER_SOURCE_OPTIONS, PRODUCT_TYPE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
-import { buildProductCode, shouldRender_CodeProduct, shouldRender_EquipoInfoSelection, shouldRender_SupplyInfoSelection, shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, shouldRenderConnectionTypeSmartMeter, shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/renders";
+import { buildProductCode, shouldRender_CodeProduct, shouldRender_MaterialInfoSelection, shouldRender_SupplyInfoSelection, shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, shouldRenderConnectionTypeSmartMeter, shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/renders";
 import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
+import { Materiales, MaterialesFormData, MaterialesFormState } from "@/lib/types/materiales-types";
 
 
 // --- Tipo de variables ---
-type AddEquipoModalProps = {
-    existingEquipos: Equipos[];
-    onAddEquipos: (equipo: EquiposFormData) => void;
+type AddMaterialModalProps = {
+    existingMateriales: Materiales[];
+    onAddMateriales: (material: MaterialesFormData) => void;
     onClose: () => void;
 };
 
 
-export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
-    const today = new Date().toISOString().split('T')[0];
-    const [form, setForm] = useState<EquiposFormState>(INITIAL_EQUIPOS_FORM);
+export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose }: AddMaterialModalProps) {
+    const [form, setForm] = useState<MaterialesFormState>(INITIAL_MATERIALES_FORM);
 
 
     // Actualizar campos del formulario
-    function updateField<K extends keyof EquiposFormState>(field: K, value: EquiposFormState[K]) {
+    function updateField<K extends keyof MaterialesFormState>(field: K, value: MaterialesFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
 
@@ -36,30 +35,32 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
             }
 
             if (field === "tipo_de_producto") {
-                const { brand_options, unit } = shouldRender_EquipoInfoSelection(String(value));
+                const { brand_options, unit } = shouldRender_MaterialInfoSelection(String(value));
                 if (!brand_options.includes(updated.marca)) {
                     updated.marca = brand_options[0] || "";
                 }
                 updated.unidad = unit || "";
             }
 
-            // Establecer connectionType a "BAT" cuando se selecciona Batería
-            if (field === "tipo_de_producto" && value === "Batería") {
-                updated.tipo_conexion = "BAT";
-            }
             return updated;
         });
     }    
 
-    const equipoInfoSelection = shouldRender_EquipoInfoSelection(form.tipo_de_producto);
-    const supplierEquipoCount = existingEquipos.filter((equipo) => equipo.proveedor === form.proveedor).length;
-    const generatedCode = buildProductCode(form.tipo_de_producto, form.proveedor, supplierEquipoCount + 1);
+    const today = new Date().toISOString().split('T')[0];
+
+
+    // almacenar información relacionada al renderizado de la selección de materiales
+    const materialInfoSelection = shouldRender_MaterialInfoSelection(form.tipo_de_producto); 
+    // contar productos con la cantidad de proveedores de interés
+    const supplierProductCount = existingMateriales.filter((material) => material.proveedor === form.proveedor).length;
+    // código generado para el material por asignarse
+    const generatedCode = buildProductCode(form.tipo_de_producto, form.proveedor, supplierProductCount + 1);
 
     // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        onAddEquipos({
+        onAddMateriales({
             ...form,
             cod_producto: generatedCode || form.cod_producto,
         });
@@ -69,7 +70,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
             <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
-                    <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Equipo</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Material</h2>
                     <button
                         type="button"
                         onClick={onClose}
@@ -121,7 +122,8 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                     label="MARCA"
                                     required
                                     value={form.marca}
-                                    options={equipoInfoSelection.brand_options.length > 0 ? equipoInfoSelection.brand_options : [""]}
+                                    options={materialInfoSelection.brand_options.length > 0 
+                                        ? materialInfoSelection.brand_options : [""]}
                                     onChange={(value) => updateField("marca", value)}
                                 />
                                 <AddProductReadonlyField
@@ -133,7 +135,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                 <AddProductTextAreaField
                                     label="Descripción"
                                     required
-                                    placeholder="Descripción detallada del producto"
+                                    placeholder="Descripción detallada del material"
                                     value={form.descripcion}
                                     onChange={(value) => updateField("descripcion", value)}
                                 />
@@ -143,145 +145,14 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                     <section className="space-y-5">
                         <AddProductSectionTitle title="Propiedades Técnicas" />
                         <div className="grid gap-5 md:grid-cols-2">
-                            {/* Batería */}
-                            {shouldRenderConnectionTypeBattery(form.tipo_de_producto) && (
-                                <AddProductSelectField
-                                    label="Tipo de Conexión"
-                                    value={form.tipo_conexion || CONNECTION_TYPE_OPTIONS[0]}
-                                    options={["---", "BAT"]}
-                                    onChange={(value) =>
-                                    updateField("tipo_conexion", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)
-                                    }
-                                />
-                            )}
-                            {shouldRenderBatteryProp(form.tipo_de_producto) && (
-                            <>
-                                <AddProductTextField
-                                    label="DoD (%) degradación"
-                                    placeholder="80"
-                                    value={String(form.dod)}
-                                    onChange={(value) => updateField("dod", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Amperaje de la batería (Ah)"
-                                    placeholder=""
-                                    value={form.impp_i_in}
-                                    onChange={(value) => updateField("impp_i_in", value)}
-                                />
-                                <AddProductTextField
-                                    label="Voltaje de la batería (V)"
-                                    placeholder=""
-                                    value={String(form.vmpp_vmin)}
-                                    onChange={(value) => updateField("vmpp_vmin", Number(value))}
-                                />
-                            </>
-                            )}
-
-                            {/* Inversor */}
-                            {shouldRenderConnectionTypeInversor(form.tipo_de_producto) && (
                             <AddProductSelectField
                                 label="Tipo de Conexión"
-                                value={form.tipo_conexion || CONNECTION_TYPE_OPTIONS[0]}
-                                options={CONNECTION_TYPE_OPTIONS}
+                                value={form.parte_electrica || POWER_SOURCE_OPTIONS[0]}
+                                options={POWER_SOURCE_OPTIONS}
                                 onChange={(value) =>
-                                    updateField("tipo_conexion", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)
+                                    updateField("parte_electrica", value === POWER_SOURCE_OPTIONS[0] ? "" : value)
                                 }
                             />
-                            )}
-                            {shouldRenderInversorProp(form.tipo_de_producto) && (
-                            <>
-                                <AddProductTextField
-                                    label="Potencia máxima(kw)"
-                                    placeholder=""
-                                    value={String(form.potencia_maxima)}
-                                    onChange={(value) => updateField("potencia_maxima", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Número de MPPT"
-                                    placeholder=""
-                                    value={String(form.mppt)}
-                                    onChange={(value) => updateField("mppt", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Potencia AC del inversor (kw)"
-                                    placeholder=""
-                                    value={String(form.potencia_ac)}
-                                    onChange={(value) => updateField("potencia_ac", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Voltaje mínimo del inversor"
-                                    placeholder=""
-                                    value={String(form.vmpp_vmin)}
-                                    onChange={(value) => updateField("vmpp_vmin", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Voltaje máximo del inversor"
-                                    placeholder=""
-                                    value={String(form.voc_vmax)}
-                                    onChange={(value) => updateField("voc_vmax", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="Corriente de entrada"
-                                    placeholder=""
-                                    value={String(form.impp_i_in)}
-                                    onChange={(value) => updateField("impp_i_in", value)}
-                                />
-                                <AddProductTextField
-                                    label="Corriente de salida"
-                                    placeholder=""
-                                    value={String(form.isc_i_out)}
-                                    onChange={(value) => updateField("isc_i_out", Number(value))}
-                                />
-                            </>
-                            )}
-
-                            {/* Módulo */}
-                            {shouldRenderModuloProp(form.tipo_de_producto) && (
-                            <>
-                                <AddProductTextField
-                                    label="Potencia máxima del panel (kw)"
-                                    placeholder=""
-                                    value={String(form.potencia_maxima)}
-                                    onChange={(value) => updateField("potencia_maxima", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="VOC (Voltaje a circuito abierto) [V]"
-                                    placeholder=""
-                                    value={String(form.voc_vmax)}
-                                    onChange={(value) => updateField("voc_vmax", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="ISC (Corriente a corto circuito) [A]"
-                                    placeholder=""
-                                    value={String(form.isc_i_out)}
-                                    onChange={(value) => updateField("isc_i_out", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="VMPP (Voltaje punto de máxima potencia) [V]"
-                                    placeholder=""
-                                    value={String(form.vmpp_vmin)}
-                                    onChange={(value) => updateField("vmpp_vmin", Number(value))}
-                                />
-                                <AddProductTextField
-                                    label="IMPP (Corriente punto de máxima potencia) [A]"
-                                    placeholder=""
-                                    value={String(form.impp_i_in)}
-                                    onChange={(value) => updateField("impp_i_in", value)}
-                                />
-                            </>
-                            )}
-
-                            {/* Accesorio */}
-                            {shouldRenderConnectionTypeAccesories(form.tipo_conexion) && (
-                            <AddProductSelectField
-                                label="Tipo de Conexión"
-                                value={form.tipo_conexion || CONNECTION_TYPE_OPTIONS[0]}
-                                options={CONNECTION_TYPE_OPTIONS}
-                                onChange={(value) =>
-                                    updateField("tipo_conexion", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)
-                                }
-                            />
-                            )}
                         </div>
                     </section>
                     
@@ -382,7 +253,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                     type="submit"
                     className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
                     >
-                    Añadir Equipo
+                    Añadir Material
                     </button>
                 </div>
                 </form>
