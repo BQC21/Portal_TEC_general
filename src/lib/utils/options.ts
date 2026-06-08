@@ -39,33 +39,13 @@ export const SUPPLIER_CODE_OPTIONS = [
     "FELI", 
     "REGE", 
     "COIN", 
-    "PROY"
+    "PROJ",
+    "TISO",
+    "CAVA",
+    "CHOQ",
+    "PESO",
+    "STOF",
 ]; // codigo de proveedor
-export const PRODUCT_TYPE_OPTIONS = [
-    "Accesorio",
-    "Batería",
-    "Controlador",
-    "Convertidor",
-    "Datalogger",
-    "Estructura",
-    "Inversor",
-    "Módulo",
-    "Monitor",
-    "Rack",
-    "Smart Meter",
-    "Cable",
-    "Protección",
-    "MC4",
-    "Tablero",
-    "CT",
-    "Fusible",
-    "Portafusible",
-]; // tipo de producto
-
-
-
-
-
 export const BRAND_OPTIONS = [
     "LIVOLTEK",
     "GOODWE",
@@ -89,6 +69,28 @@ export const BRAND_OPTIONS = [
     "EBASEE",
 ]; // marcas 
 
+
+
+export const PRODUCT_TYPE_OPTIONS = [
+    "Accesorio",
+    "Batería",
+    "Controlador",
+    "Convertidor",
+    "Datalogger",
+    "Estructura",
+    "Inversor",
+    "Módulo",
+    "Monitor",
+    "Rack",
+    "Smart Meter",
+    "Cable",
+    "Protección",
+    "MC4",
+    "Tablero",
+    "CT",
+    "Fusible",
+    "Portafusible",
+]; // tipo de producto
 export const EQUIPOS_TYPE_OPTIONS = [
     "ACCESORIO",
     "BATERíA",
@@ -104,6 +106,10 @@ export const MATERIALES_TYPE_OPTIONS = [
     "CANALIZACIÓN",
     "CONSUMIBLE",
 ]; // tipo de material
+
+
+
+
 
 export const STATUS_PROJECT_OPTIONS = [
     "cotización en proceso", "proyecto pausado", "proyecto cotizado", "proyecto cancelado"
@@ -129,6 +135,12 @@ export const PRICE_CURRENCY_OPTIONS = [
     "USD", "PEN"] as const; // fuentes de divisas
 export const FormatFile_OPTIONS = [
     "---", "xlsx", "csv"]; // Formatos de descarga permitidos
+
+
+
+
+
+
 
 // Codigos de definición 
 export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
