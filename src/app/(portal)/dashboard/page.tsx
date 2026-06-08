@@ -1,7 +1,7 @@
 "use client";
 
 import { PortalShell } from "@/features/view/components/PortalShell";
-import { useProducts } from "@/features/view/hooks/services/useRealtimeProducts";
+// import { useProducts } from "@/features/view/hooks/services/useRealtimeProducts";
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
@@ -9,19 +9,19 @@ import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 
 export default function DashboardPage() {
 
-    const { products } = useProducts();
+    // const { products } = useProducts();
     const { equipos } = useEquipos();
     const { materiales } = useMateriales();
     const { projects } = useProjects();
     const { zones } = useZone();
 
     const metrics = [
-        {
-            title: "Productos Activos",
-            value: products.length,
-            accent: "bg-blue-50 text-blue-700",
-            icon: "▣",
-        },
+        // {
+        //     title: "Productos Activos",
+        //     value: products.length,
+        //     accent: "bg-blue-50 text-blue-700",
+        //     icon: "▣",
+        // },
 
         {
             title: "Equipos eléctricos Activos",
@@ -37,7 +37,7 @@ export default function DashboardPage() {
         },
 
         {
-            title: "Proyectos enlistadas",
+            title: "Proyectos enlistados",
             value: projects.length,
             accent: "bg-emerald-50 text-emerald-700",
             icon: "▣",
