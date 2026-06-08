@@ -19,12 +19,13 @@ export type SupabaseEquiposRow = {
     tipo_de_conexion?: string;
     tipo_conexion?: string;
     potencia_maxima?: number;
-    mppt_dod?: number;
+    mppt?: number;
     potencia_ac?: number;
+    dod?: number;
     voc_vmax?: number;
     vmpp_vmin?: number;
-    isc_imax_in?: string;
-    impp_imax_out?: number;
+    isc_i_out?: number;
+    impp_i_in?: string;
     // ṕrecios
     unidad?: string;
     precio_soles?: number;
@@ -50,12 +51,13 @@ export type Equipos = {
     // propiedades eléctricas
     tipo_conexion: string;
     potencia_maxima: number;
-    mppt_dod: number;
+    mppt: number;
     potencia_ac: number;
+    dod: number;
     voc_vmax: number;
     vmpp_vmin: number;
-    isc_imax_in: string;
-    impp_imax_out: number;
+    isc_i_out: number;
+    impp_i_in: string;
     // ṕrecios
     unidad: string;
     precio_soles: number;

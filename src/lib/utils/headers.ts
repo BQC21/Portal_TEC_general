@@ -63,12 +63,13 @@ export const EQUIPOS_HEADERS = [
     // propieades eléctricas
     "TIPO DE CONEXIÓN",
     "POTENCIA MÁXIMA",
-    "# DE MPPT/DoD",
+    "# DE MPPT",
     "POTENCIA AC",
-    "VOC/VMAX",
+    "DoD",
     "VMPP/VMIN",
-    "ISC/IMAX IN",
-    "IMPP/IMAX OUT",
+    "VOC/VMAX",
+    "IMPP/I IN",
+    "ISC/I OUT",
     // precios
     "UNIDAD",
     "PRECIO S/",
@@ -88,6 +89,7 @@ export const MATERIALES_HEADERS = [
     "DESCRIPCIÓN",
     // propiedades eléctricas
     "PARTE ELÉCTRICA",
+    // precios
     "UNIDAD",
     "PRECIO S/",
     "PRECIO $",
@@ -101,6 +103,8 @@ export const TABLE_HEADERS_PROJECT = [
     "Descripción del proyecto",
     "Zona seleccionada",
     "Tipo de instalación",
+    "Equipos principales seleccionados",
+    "Materiales eléctricos seleccionados",
     "Enlace del proyecto",
     "Fecha creada",
     "Fecha actualizada",

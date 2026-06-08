@@ -61,6 +61,11 @@ export const PRODUCT_TYPE_OPTIONS = [
     "Fusible",
     "Portafusible",
 ]; // tipo de producto
+
+
+
+
+
 export const BRAND_OPTIONS = [
     "LIVOLTEK",
     "GOODWE",
@@ -81,40 +86,49 @@ export const BRAND_OPTIONS = [
     "SCHNEIDER",
     "TENSITE",
     "ABB",
+    "EBASEE",
 ]; // marcas 
 
 export const EQUIPOS_TYPE_OPTIONS = [
-    "Accesorio",
-    "Batería",
-    "Controlador",
-    "Convertidor",
-    "Datalogger",
-    "Estructura",
-    "Inversor",
-    "Módulo",
-    "Monitor",
-    "Rack",
-    "Smart Meter",
+    "ACCESORIO",
+    "BATERíA",
+    "ESTRUCTURA",
+    "INVERSOR",
+    "MÓDULO FV",
 ]; // tipo de equipos
 
 export const MATERIALES_TYPE_OPTIONS = [
-    "Cable",
-    "Protección",
+    "CABLE",
+    "PROTECCIÓN",
     "MC4",
-    "Tablero",
-    "CT",
-    "Fusible",
-    "Portafusible",
+    "CANALIZACIÓN",
+    "CONSUMIBLE",
 ]; // tipo de material
 
-export const STATUS_PROJECT_OPTIONS = ["cotización en proceso", "proyecto pausado", "proyecto cotizado", "proyecto cancelado"]
-export const STATUS_OPTIONS = ["En stock", "En importación", "Descontinuado"] // estados
-export const UNIT_OPTIONS = ["Unidad", "Metros"]; // unidades
-export const CONNECTION_TYPE_OPTIONS = ["---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"]; // tipo de conexión 
-export const INSTALL_TYPE_OPTIONS = ["---", "conexión ON-GRID", "conexión OFF-GRID", "conexión Híbrida"]; // tipo de instalación 
-export const POWER_SOURCE_OPTIONS = ["---", "DC", "AC", "DC/AC", "BAT"]; // fuentes de conexión
-export const PRICE_CURRENCY_OPTIONS = ["USD", "PEN"] as const; // fuentes de divisas
-export const FormatFile_OPTIONS = ["---", "xlsx", "csv"]; // Formatos de descarga permitidos
+export const STATUS_PROJECT_OPTIONS = [
+    "cotización en proceso", "proyecto pausado", "proyecto cotizado", "proyecto cancelado"
+] // estados de proyecto
+export const STATUS_OPTIONS = [
+    "En stock", "En importación", "Descontinuado"
+] // estados de producto
+
+export const UNIT_OPTIONS = [
+    "Unidad", "Metros"
+]; // unidades
+export const CONNECTION_TYPE_OPTIONS = [
+    "---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"
+]; // tipo de conexión 
+export const INSTALL_TYPE_OPTIONS = [
+    "---", "conexión ON-GRID", "conexión OFF-GRID", 
+    "conexión Híbrida", "bombeo", "iluminación",
+]; // tipo de instalación 
+export const POWER_SOURCE_OPTIONS = [
+    "---", "DC", "AC", "DC/AC", "BAT", "MOD"
+]; // fuentes de conexión
+export const PRICE_CURRENCY_OPTIONS = [
+    "USD", "PEN"] as const; // fuentes de divisas
+export const FormatFile_OPTIONS = [
+    "---", "xlsx", "csv"]; // Formatos de descarga permitidos
 
 // Codigos de definición 
 export type CurrencyCode = "PEN" | "USD"; // tipo de cambio

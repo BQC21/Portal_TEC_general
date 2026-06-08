@@ -97,12 +97,13 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     // propiedades eléctricas
     tipo_conexion: CONNECTION_TYPE_OPTIONS[0],
     potencia_maxima: 0,
-    mppt_dod: 0,
+    mppt: 0,
     potencia_ac: 0,
+    dod: 0,
     voc_vmax: 0,
     vmpp_vmin: 0,
-    isc_imax_in: "20/20",
-    impp_imax_out: 0,
+    impp_i_in: "20/20",
+    isc_i_out: 0,
     // precios
     unidad: UNIT_OPTIONS[0],
     precio_soles: 0,

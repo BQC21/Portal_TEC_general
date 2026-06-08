@@ -1,5 +1,5 @@
 import { Equipos, EquiposFormData, EquiposFormState, SupabaseEquiposRow } from "@/lib/types/equipos-types";
-import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
+import { parseNullableDate } from "@/lib/utils/helpers"
 
 // enlace con los atributos de Supabase
 export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormState {
@@ -14,12 +14,13 @@ export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormS
     // propiedades eléctricas
     tipo_conexion: equipo.tipo_conexion,
     potencia_maxima: equipo.potencia_maxima,
-    mppt_dod: equipo.mppt_dod,
+    mppt: equipo.mppt,
+    dod: equipo.dod,
     potencia_ac: equipo.potencia_ac,
     voc_vmax: equipo.voc_vmax,
     vmpp_vmin: equipo.vmpp_vmin,
-    isc_imax_in: equipo.isc_imax_in,
-    impp_imax_out: equipo.impp_imax_out,
+    isc_i_out: equipo.isc_i_out,
+    impp_i_in: equipo.impp_i_in,
     // precios
     unidad: equipo.unidad,
     precio_soles: equipo.precio_soles,
@@ -52,12 +53,13 @@ export function mapSupabaseRowToEquipos(
 
         tipo_conexion: row.tipo_de_conexion || row.tipo_conexion || "",
         potencia_maxima: row.potencia_maxima || 0,
-        mppt_dod: row.mppt_dod || 0,
+        mppt: row.mppt || 0,
+        dod: row.dod || 0,
         potencia_ac: row.potencia_ac || 0,
         voc_vmax: row.voc_vmax || 0,
         vmpp_vmin: row.vmpp_vmin || 0,
-        isc_imax_in: row.isc_imax_in || "",
-        impp_imax_out: row.impp_imax_out || 0,
+        isc_i_out: row.isc_i_out || 0,
+        impp_i_in: row.impp_i_in || "",
         // Precios
         unidad: row.unidad || "",
         precio_soles: row.precio_soles || 0,
@@ -88,12 +90,13 @@ export function mapEquiposToSupabaseRow(
         // propiedades eléctricas
         tipo_de_conexion: equipo.tipo_conexion,
         potencia_maxima: equipo.potencia_maxima,
-        mppt_dod: equipo.mppt_dod,
+        mppt: equipo.mppt,
+        dod: equipo.dod,
         potencia_ac: equipo.potencia_ac,
         voc_vmax: equipo.voc_vmax,
         vmpp_vmin: equipo.vmpp_vmin,
-        isc_imax_in: equipo.isc_imax_in,
-        impp_imax_out: equipo.impp_imax_out,
+        isc_i_out: equipo.isc_i_out,
+        impp_i_in: equipo.impp_i_in,
         // Precios
         unidad: equipo.unidad,
         precio_soles: equipo.precio_soles,
