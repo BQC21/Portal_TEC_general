@@ -40,12 +40,13 @@ type EquipoUploadRow = {
 	descripcion: string;
 	tipo_de_conexion: string;
 	potencia_maxima: number;
-	mppt_dod: number;
+	mppt: number;
 	potencia_ac: number;
+	dod: number;
 	voc_vmax: number;
 	vmpp_vmin: number;
-	isc_imax_in: string;
-	impp_imax_out: number;
+	impp_i_in: string;
+	isc_i_out: number;
 	unidad: string;
 	precio_soles: number;
 	precio_dolares: number;
@@ -64,18 +65,19 @@ function mapRowToEquipo(row: string[], offset = 0): EquipoUploadRow {
 		descripcion: readSpreadsheetText(row, offset + 5),
 		tipo_de_conexion: readSpreadsheetText(row, offset + 6),
 		potencia_maxima: readSpreadsheetNumber(row, offset + 7),
-		mppt_dod: readSpreadsheetNumber(row, offset + 8),
+		mppt: readSpreadsheetNumber(row, offset + 8),
 		potencia_ac: readSpreadsheetNumber(row, offset + 9),
-		voc_vmax: readSpreadsheetNumber(row, offset + 10),
-		vmpp_vmin: readSpreadsheetNumber(row, offset + 11),
-		isc_imax_in: readSpreadsheetText(row, offset + 12),
-		impp_imax_out: readSpreadsheetNumber(row, offset + 13),
-		unidad: readSpreadsheetText(row, offset + 14),
-		precio_soles: readSpreadsheetNumber(row, offset + 15),
-		precio_dolares: readSpreadsheetNumber(row, offset + 16),
-		igv: normalizeSpreadsheetPercent(readSpreadsheetNumber(row, offset + 17)),
-		precio_soles_igv: readSpreadsheetNumber(row, offset + 18),
-		precio_dolares_igv: readSpreadsheetNumber(row, offset + 19),
+		dod: readSpreadsheetNumber(row, offset + 10),
+		voc_vmax: readSpreadsheetNumber(row, offset + 11),
+		vmpp_vmin: readSpreadsheetNumber(row, offset + 12),
+		impp_i_in: readSpreadsheetText(row, offset + 13),
+		isc_i_out: readSpreadsheetNumber(row, offset + 14),
+		unidad: readSpreadsheetText(row, offset + 15),
+		precio_soles: readSpreadsheetNumber(row, offset + 16),
+		precio_dolares: readSpreadsheetNumber(row, offset + 17),
+		igv: normalizeSpreadsheetPercent(readSpreadsheetNumber(row, offset + 18)),
+		precio_soles_igv: readSpreadsheetNumber(row, offset + 19),
+		precio_dolares_igv: readSpreadsheetNumber(row, offset + 20),
 	};
 }
 
@@ -133,11 +135,12 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 			// claves numéricas
 			const numericKeys: Array<keyof EquipoUploadRow> = [
 				"potencia_maxima",
-				"mppt_dod",
+				"mppt",
 				"potencia_ac",
+				"dod",
 				"voc_vmax",
 				"vmpp_vmin",
-				"impp_imax_out",
+				"isc_i_out",
 				"precio_soles",
 				"precio_dolares",
 				"igv",
@@ -188,11 +191,12 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 			dbPayload.forEach((r, idx) => {
 				const checks: Array<keyof EquipoUploadRow> = [
 					"potencia_maxima",
-					"mppt_dod",
+					"mppt",
 					"potencia_ac",
+					"dod",
 					"voc_vmax",
 					"vmpp_vmin",
-					"impp_imax_out",
+					"isc_i_out",
 					"precio_soles",
 					"precio_dolares",
 					"igv",

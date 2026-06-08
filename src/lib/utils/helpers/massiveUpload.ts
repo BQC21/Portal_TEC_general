@@ -15,7 +15,8 @@ export function normalizeSpreadsheetHeader(value: string) {
 }
 
 // leer texto de la celda
-export function readSpreadsheetText(row: SpreadsheetArrayRow | SpreadsheetObjectRow, indexOrKeys: number | readonly string[]) {
+export function readSpreadsheetText(row: SpreadsheetArrayRow | SpreadsheetObjectRow, 
+	indexOrKeys: number | readonly string[]) {
 	if (Array.isArray(row)) {
 		const value = row[indexOrKeys as number];
 
@@ -32,7 +33,8 @@ export function readSpreadsheetText(row: SpreadsheetArrayRow | SpreadsheetObject
 	return "";
 }
 
-export function readSpreadsheetNumber(row: SpreadsheetArrayRow | SpreadsheetObjectRow, indexOrKeys: number | readonly string[]) {
+export function readSpreadsheetNumber(row: SpreadsheetArrayRow | SpreadsheetObjectRow, 
+	indexOrKeys: number | readonly string[]) {
 	if (Array.isArray(row)) {
 		const value = row[indexOrKeys as number];
 
@@ -130,7 +132,8 @@ export function pickFirstMatchingSheet(
 						}
 
 						if (matched) {
-							// Return rows after the header row, and include headerStart, headerRow and the detected header names
+							// Return rows after the header row, and include headerStart, 
+							// headerRow and the detected header names
 							const detected = [] as string[];
 							for (let h = 0; h < expectedHeaders.length; h += 1) {
 								detected.push(String(candidateRow[start + h] ?? ""));
