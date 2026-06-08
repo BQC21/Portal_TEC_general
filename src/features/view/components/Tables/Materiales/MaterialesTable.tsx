@@ -36,7 +36,7 @@ export function MaterialesTable({ products, totalProducts}: MaterialesTableProps
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.unidad)}`}>{displayCellValue(product.unidad)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles)}`}>{toSafeNumber(product.precio_soles).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares)}`}>{toSafeNumber(product.precio_dolares).toFixed(2)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.igv)}`}>{toSafeNumber(product.igv).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.igv)}`}>{toSafeNumber(product.igv).toFixed(0)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles_igv)}`}>{toSafeNumber(product.precio_soles_igv).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares_igv)}`}>{toSafeNumber(product.precio_dolares_igv).toFixed(2)}</td>
                                     </tr>
