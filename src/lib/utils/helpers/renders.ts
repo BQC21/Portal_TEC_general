@@ -7,14 +7,17 @@ import { getProductTypeCode, getSupplierInfo } from "../helpers/getInfo";
 // -----------------------------
 
 export function shouldRenderConnectionTypeBattery(productType: string): boolean {
-    return productType === "Batería" 
+    return productType === "Batería" || productType === "BATERÍA";
 } // bateria
 export function shouldRenderConnectionTypeInversor(productType: string): boolean {
-    return productType === "Inversor" 
+    return productType === "Inversor" || productType === "INVERSOR"; 
 } // inversor
 export function shouldRenderConnectionTypeSmartMeter(productType: string): boolean {
     return productType === "Smart Meter";
 } // smart meter
+export function shouldRenderConnectionTypeAccesories(equipoType: string): boolean{
+    return equipoType === "ACCESORIO";
+}
 
 // -----------------------------
 // --- Funciones auxiliares para propiedades de los equipos eléctricos ---
@@ -22,17 +25,17 @@ export function shouldRenderConnectionTypeSmartMeter(productType: string): boole
 
 // --- propiedades bateria ---
 export function shouldRenderBatteryProp(productType: string): boolean {
-    return productType === "Batería";
+    return productType === "Batería" || productType === "BATERÍA";
 } // renderizar propiedades batería
 
 // --- propiedades inversor ---
 export function shouldRenderInversorProp(productType: string): boolean {
-    return productType === "Inversor" 
+    return productType === "Inversor" || productType === "INVERSOR"; 
 } // renderizar propiedades del inversor
 
 // --- propiedades modulo ---
 export function shouldRenderModuloProp(productType: string): boolean {
-    return productType === "Módulo" 
+    return productType === "Módulo" || productType === "MÓDULO FV"; 
 } // renderizar propiedades del modulo
 
 // --- propiedades cableado ---
