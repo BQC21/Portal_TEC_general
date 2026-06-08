@@ -77,6 +77,8 @@ export const EQUIPOS_HEADERS = [
     "IGV",
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
+    // eventos
+    "Acciones",
 ];
 
 export const MATERIALES_HEADERS = [
@@ -96,6 +98,8 @@ export const MATERIALES_HEADERS = [
     "IGV",
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
+    // eventos
+    "Acciones",
 ];
 
 export const TABLE_HEADERS_PROJECT = [
