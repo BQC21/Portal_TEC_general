@@ -3,6 +3,7 @@
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { Materiales } from "@/lib/types/materiales-types";
 import { useState } from "react";
+import { DeleteMaterialModal } from "../../Modals/Materiales/DeleteMaterialModal";
 
 type DeleteMaterialModalProps = {
     material: Materiales;
@@ -24,7 +25,7 @@ export function Button2Trash({ material, onDeleteMaterial }: DeleteMaterialModal
         </button>
 
         {open && (
-            <DeleteProductModal
+            <DeleteMaterialModal
                 material={material}
                 onDeleteMaterial={(materialId) => {
                     onDeleteMaterial(materialId);
