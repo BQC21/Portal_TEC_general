@@ -113,6 +113,28 @@ export function shouldRender_ProductInfoSelection(productType: string) {
 
     return productMap[productType] || { brand_options: [], unit: "" };
 }
+export function shouldRender_EquipoInfoSelection(productType: string) {
+    const productMap: { [key: string]: { brand_options: string[]; unit: string } } = {
+        "ACCESORIO": { brand_options: ["LIVOLTEK"], unit: "Unidad" },
+        "BATERÍA": { brand_options: ["LIVOLTEK", "TENSITE", "PYLONTECH", "SOLUNA", "FELICITY"], unit: "Unidad" },
+        "ESTRUCTURA": { brand_options: ["TELPERION"], unit: "Unidad" },
+        "INVERSOR": { brand_options: ["LIVOLTEK", "GOODWE", "INVT", "VICTRON", "SOLIS", "FELICITY"], unit: "Unidad" },
+        "MÓDULO FV": { brand_options: ["JA SOLAR", "JINKO", "TRINA"], unit: "Unidad" },
+    };
+
+    return productMap[productType] || { brand_options: [], unit: "" };
+}
+export function shouldRender_MaterialInfoSelection(productType: string) {
+    const productMap: { [key: string]: { brand_options: string[]; unit: string } } = {
+        "CABLE": { brand_options: ["TELPERION", "PYLONTECH", "INDECO"], unit: "Metros" },
+        "PROTECCIÓN": { brand_options: ["SUNTREE", "ABB", "SCHNEIDER"], unit: "Unidad" },
+        "MC4": { brand_options: ["TRINA"], unit: "Unidad" },
+        "CANALIZACIÓN": { brand_options: ["CHINT"], unit: "Unidad" },
+        "CONSUMIBLE": { brand_options: ["CHINT"], unit: "Unidad" },
+    };
+
+    return productMap[productType] || { brand_options: [], unit: "" };
+}
 
 // ordenamiento
 export function shouldRender_ProductSortingSelection(currentOrder: "asc" | "desc" | null) {

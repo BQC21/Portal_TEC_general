@@ -6,8 +6,8 @@ export const EQUIPOS_TABLE = "equipo_principales";
 export const MATERIALES_TABLE = "materiales_electricos";
 export const PROJECTS_TABLE = "proyectos";
 export const ZONE_TABLE = "zonas";
-export const PROJECTS_EQUIPOS_TABLE = "proyectos_equipos";
-export const PROJECTS_MATERIALES_TABLE = "proyectos_materiales";
+export const PROJECTS_EQUIPOS_TABLE = "join_proyecto_equipos";
+export const PROJECTS_MATERIALES_TABLE = "join_proyecto_materiales";
 
 // --------------------------
 // ---- Tolerancias de nomenclatura para el atributo de fuente de divisas

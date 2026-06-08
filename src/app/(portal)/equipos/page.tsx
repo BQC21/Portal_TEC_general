@@ -7,9 +7,9 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
 import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
 
-import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
+import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 
-import type { EquiposFilterValues } from "@/lib/types/equipos-types";
+import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
@@ -19,14 +19,15 @@ import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/Sor
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
+import Button2Modal from "@/features/view/components/Buttons/Equipos/Button2Add";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();
+	const { create: create, update: update, remove: remove} = useEquipoMutations();
 
     // ---------------------------------
     // ---- Filtrado de productos ------
     // ---------------------------------
-
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [filters, setFilters] = useState<EquiposFilterValues>({
 		type: "",
@@ -74,6 +75,23 @@ export default function EquiposPage() {
         });
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
+    // ---------------------------------
+    // ---- Lista de eventos -----------
+    // ---------------------------------
+	async function handleAddEquipos(equipo: EquiposFormData) {
+		await create(equipo);
+		await refetch();
+	} // añadir equipo
+	async function handleUpdateEquipos(updatedEquipo: Equipos) {
+		const { id, ...equipotData } = updatedEquipo;
+		await update(String(id), equipotData);
+		await refetch();
+	} // actualizar equipo
+	async function handleDeleteEquipos(equipoId: string) {
+		await remove(equipoId);
+		await refetch();
+	} // remover equipo
+
 	return (
 		<PortalShell
 			title="Equipos principales"
@@ -83,7 +101,7 @@ export default function EquiposPage() {
 			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
 				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(280px,1.7fr)_minmax(180px,1fr)_minmax(170px,1fr)_minmax(170px,1fr)] xl:items-end">
+                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)] xl:items-end">
                         <div className="flex w-full xl:justify-end">
                             <SearchBar
                                 value={searchDescription}
@@ -106,7 +124,10 @@ export default function EquiposPage() {
                         <div className="flex w-full xl:justify-end">
 							<Button2MassiveClean currentCount={equipos.length} onSuccess={refetch} />
                         </div>
-                    
+
+						<div className="flex w-full xl:justify-end">
+							<Button2Modal existingEquipos={equipos} onAddEquipos={handleAddEquipos} />
+                        </div>
                     </div>
                 </section>
 
