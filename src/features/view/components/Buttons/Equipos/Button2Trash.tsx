@@ -3,6 +3,7 @@
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { Equipos } from "@/lib/types/equipos-types";
 import { useState } from "react";
+import { DeleteEquipoModal } from "../../Modals/Equipos/DeleteEquipoModal";
 
 type DeleteEquipoModalProps = {
     equipo: Equipos;
@@ -24,7 +25,7 @@ export function Button2Trash({ equipo, onDeleteEquipo }: DeleteEquipoModalProps)
         </button>
 
         {open && (
-            <DeleteProductModal
+            <DeleteEquipoModal
                 equipo={equipo}
                 onDeleteEquipo={(equipoId) => {
                     onDeleteEquipo(equipoId);
