@@ -61,7 +61,7 @@ export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveC
 						Registros actuales detectados: <span className="font-semibold text-slate-900">{totalRows}</span>
 					</p>
 					<p className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
-						Confirma solo si deseas vaciar la tabla completa. Esta acción no puede deshacerse desde esta pantalla.
+						Confirma solo si deseas vaciar la tabla completa.
 					</p>
 
 					{error && <p className="text-sm font-medium text-red-600">{error}</p>}
