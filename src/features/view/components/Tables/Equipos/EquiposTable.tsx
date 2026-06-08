@@ -34,12 +34,13 @@ export function EquiposTable({ products, totalProducts }: EquiposTableProps) {
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion)}`}>{displayCellValue(product.tipo_conexion)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_maxima)}`}>{displayCellValue(product.potencia_maxima)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt_dod)}`}>{displayCellValue(product.mppt_dod)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt)}`}>{displayCellValue(product.mppt)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_ac)}`}>{displayCellValue(product.potencia_ac)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voc_vmax)}`}>{displayCellValue(product.voc_vmax)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.vmpp_vmin)}`}>{displayCellValue(product.vmpp_vmin)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.isc_imax_in)}`}>{displayCellValue(product.isc_imax_in)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.impp_imax_out)}`}>{displayCellValue(product.impp_imax_out)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.impp_i_in)}`}>{displayCellValue(product.impp_i_in)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.isc_i_out)}`}>{displayCellValue(product.isc_i_out)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.unidad)}`}>{displayCellValue(product.unidad)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_soles)}`}>{toSafeNumber(product.precio_soles).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.precio_dolares)}`}>{toSafeNumber(product.precio_dolares).toFixed(2)}</td>
