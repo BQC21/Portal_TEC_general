@@ -102,7 +102,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     dod: 0,
     voc_vmax: 0,
     vmpp_vmin: 0,
-    impp_i_in: "20/20",
+    impp_i_in: "40/40/20",
     isc_i_out: 0,
     // precios
     unidad: UNIT_OPTIONS[0],

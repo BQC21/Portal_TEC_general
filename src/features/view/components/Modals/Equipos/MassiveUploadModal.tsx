@@ -174,7 +174,8 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 					const num = toSafeNumber(s);
 					if (!Number.isFinite(num)) {
 						// fallback to 0 and log for debugging
-						console.warn(`MassiveUpload: could not parse numeric field ${String(key)} on row ${rowIdx + 1}, raw='${String(raw)}'`);
+						console.warn(`MassiveUpload: could not parse numeric field ${String(key)} 
+							on row ${rowIdx + 1}, raw='${String(raw)}'`);
 						copy[key] = 0;
 					} else {
 						copy[key] = num;
@@ -217,7 +218,8 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 			if (offending.length > 0) {
 				console.warn("Massive upload blocked due to numeric overflow candidates:", offending);
 				const first = offending[0];
-				throw new Error(`No se pudo completar la subida masiva: numeric field overflow en fila ${first.row} campo ${first.field} valor ${first.value}`);
+				throw new Error(`No se pudo completar la subida masiva: numeric field overflow en fila 
+					${first.row} campo ${first.field} valor ${first.value}`);
 			}
 
 			const { error: insertError } = await supabase.from(EQUIPOS_TABLE).insert(dbPayload);

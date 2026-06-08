@@ -36,7 +36,7 @@ export function EquiposTable({ products, totalProducts }: EquiposTableProps) {
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_maxima)}`}>{displayCellValue(product.potencia_maxima)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.mppt)}`}>{displayCellValue(product.mppt)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.potencia_ac)}`}>{displayCellValue(product.potencia_ac)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod.toFixed(0))}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.voc_vmax)}`}>{displayCellValue(product.voc_vmax)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.vmpp_vmin)}`}>{displayCellValue(product.vmpp_vmin)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.impp_i_in)}`}>{displayCellValue(product.impp_i_in)}</td>

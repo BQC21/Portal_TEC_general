@@ -42,7 +42,8 @@ export function toSafeNumber(value: unknown): number {
 	const MAX_SAFE_UPLOAD_NUMBER = 1_000_000_000; // 1 billion
 	if (Math.abs(parsed) > MAX_SAFE_UPLOAD_NUMBER) {
 		// Keep a bounded value instead of letting DB error on insert
-		console.warn(`toSafeNumber: value '${String(value)}' parsed as ${parsed} exceeds max ${MAX_SAFE_UPLOAD_NUMBER}, capping.`);
+		console.warn(`toSafeNumber: value '${String(value)}' parsed as ${parsed} 
+			exceeds max ${MAX_SAFE_UPLOAD_NUMBER}, capping.`);
 		return Math.sign(parsed) * MAX_SAFE_UPLOAD_NUMBER;
 	}
 
