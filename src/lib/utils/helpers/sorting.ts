@@ -1,5 +1,7 @@
-// ordenamiento
-export function shouldRender_ProductSortingSelection(currentOrder: "asc" | "desc" | null) {
+import { ProductSortingOrder } from "../options";
+
+// ordenamiento según precio y código del proveedor
+export function shouldRender_ProductSortingSelection(currentOrder: ProductSortingOrder) {
     if (currentOrder === "asc") {
         return { label: "Orden ascendente", nextOrder: "desc" as const };
     }
