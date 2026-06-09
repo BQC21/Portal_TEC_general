@@ -155,11 +155,16 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     configuracion:  "",
     cobertura_porcentaje:  "",
     rendimiento_modulo_porcentaje:  "",
-    relacion_dc_ac:  "",
     // cálculos de requerimientos
     energia_requerida:  "",
     potencia_dc_requerida:  "",
     potencia_ac_requerida:  "",
+    strings_min:  "",
+    strings_max:  "",
+    strings:  "",
+    itm_ac_min:  "",
+    itm_dc_min:  "",
+    spd_voltage:  "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
