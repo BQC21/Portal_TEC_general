@@ -1,8 +1,9 @@
 import type { Equipos } from "@/lib/types/equipos-types";
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
-import { displayCellValue, getCellTextClass, toSafeNumber } from "@/lib/utils/helpers";
 import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
 import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
+import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
+import { toSafeNumber } from "@/lib/utils/normalization";
 
 type EquiposTableProps = {
     equipos: Equipos[];

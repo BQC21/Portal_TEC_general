@@ -1,6 +1,7 @@
 import type { Materiales } from "@/lib/types/materiales-types";
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
-import { displayCellValue, getCellTextClass, toSafeNumber } from "@/lib/utils/helpers";
+import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
+import { toSafeNumber } from "@/lib/utils/normalization";
 import { Button2Edit } from "../../Buttons/Materiales/Button2Edit";
 import { Button2Trash } from "../../Buttons/Materiales/Button2Trash";
 

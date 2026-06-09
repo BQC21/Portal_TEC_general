@@ -1,6 +1,5 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
-import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/renders";
 import { 
     SUPPLIER_OPTIONS, 
     MATERIALES_TYPE_OPTIONS, 
@@ -9,6 +8,7 @@ import {
 } from "@/lib/utils/options"
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
 const FILTERS = [
     {
@@ -44,7 +44,7 @@ export function MaterialesFilters({ values, onFilterChange }: MaterialesFiltersP
             return BRAND_OPTIONS;
         }
 
-        const { brand_options } = shouldRender_ProductInfoSelection(values.type);
+        const { brand_options } = shouldRender_MaterialInfoSelection(values.type);
         return brand_options.length > 0 ? brand_options : BRAND_OPTIONS;
     }, [values.type]);
 
@@ -64,7 +64,7 @@ export function MaterialesFilters({ values, onFilterChange }: MaterialesFiltersP
                             if (filter.id === "type") {
                                 onFilterChange("type", nextValue);
 
-                                const { brand_options } = shouldRender_ProductInfoSelection(nextValue);
+                                const { brand_options } = shouldRender_MaterialInfoSelection(nextValue);
                                 if (values.brand && brand_options.length > 0 && !brand_options.includes(values.brand)) {
                                     onFilterChange("brand", "");
                                 }

@@ -1,6 +1,5 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import type { EquiposFilterValues } from "@/lib/types/equipos-types";
-import { shouldRender_EquipoInfoSelection, shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/renders";
 import { 
     SUPPLIER_OPTIONS, 
     EQUIPOS_TYPE_OPTIONS, 
@@ -9,6 +8,7 @@ import {
 } from "@/lib/utils/options"
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
+import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
 const FILTERS = [
     {
@@ -67,7 +67,7 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
                             if (filter.id === "type") {
                                 onFilterChange("type", nextValue);
 
-                                const { brand_options } = shouldRender_ProductInfoSelection(nextValue);
+                                const { brand_options } = shouldRender_EquipoInfoSelection(nextValue);
                                 if (values.brand && brand_options.length > 0 && !brand_options.includes(values.brand)) {
                                     onFilterChange("brand", "");
                                 }

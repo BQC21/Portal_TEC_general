@@ -4,7 +4,9 @@ import { Button2Trash } from "@/features/view/components/Buttons/Products/button
 import type { Product } from "@/lib/types/product-types";
 
 import { TABLE_HEADERS } from "@/lib/utils/headers";
-import { formatDate, toSafeNumber, getCellTextClass, displayCellValue, getPriceCellClass } from "@/lib/utils/helpers";
+import { displayCellValue, getCellTextClass, getPriceCellClass } from "@/lib/utils/helpers/manage_info/cell_manage";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { toSafeNumber } from "@/lib/utils/normalization";
 
 type ProductTableProps = {
     products: Product[];
