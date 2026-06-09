@@ -20,7 +20,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar"; // barra de busqueda
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting";
 
 export default function ProductsPage() {
 

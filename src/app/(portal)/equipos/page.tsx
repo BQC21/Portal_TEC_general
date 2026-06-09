@@ -12,7 +12,7 @@ import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/u
 import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/renders";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
