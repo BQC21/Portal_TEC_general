@@ -20,6 +20,7 @@ import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/Sor
 import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Equipos/Button2Add";
+import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();
@@ -36,10 +37,11 @@ export default function EquiposPage() {
 	});
 
 	const filteredEquipos = equipos.filter((equipo) => {
-		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type;
-		const matchesBrand = !filters.brand || equipo.marca === filters.brand;
-		const matchesSupplier = !filters.supplier || equipo.proveedor === filters.supplier;
-		const matchesDescription = !searchDescription || equipo.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type; // según tipo
+		const matchesBrand = !filters.brand || equipo.marca === filters.brand; // según marca
+		const matchesSupplier = !filters.supplier || equipo.proveedor === filters.supplier; // según proveedor
+		const matchesDescription = !searchDescription || equipo.descripcion.toLowerCase() 
+									.includes(searchDescription.toLowerCase()); // según descripción
 
 		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
 	});
@@ -63,14 +65,7 @@ export default function EquiposPage() {
             return EquiposToSort;
         }
 
-        return EquiposToSort.sort((leftEquipos, rightEquipos) => {
-            const leftPrice = Number(leftEquipos.precio_dolares_igv ?? 0); // precio del row anterior
-            const rightPrice = Number(rightEquipos.precio_dolares_igv ?? 0); // precio del row posterior
-
-            return sorting === "asc"
-                ? leftPrice - rightPrice // ascendente
-                : rightPrice - leftPrice; // descendente
-        });
+        return sortGroupedByPrice(EquiposToSort, sorting);
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
     // ---------------------------------
