@@ -5,8 +5,8 @@ import { Project_Materiales, Project_MaterialesFormData,
     Project_MaterialesFormState, 
     SupabaseProject_MaterialesRow } from "../types/project_materiales_join"
 
-import { parseNullableDate } from "../utils/helpers"
-import { parseNumber } from "../utils/helpers/parse_number"
+import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
+import { parseNumber } from "../utils/normalization";
 
 import { mapSupabaseRowToMateriales } from "./mapping_materiales"
 import { mapSupabaseRowToProject } from "./project_mapping"
@@ -34,7 +34,9 @@ export function mapSupabaseRowToProject_Materiales(
                     ? mapSupabaseRowToMateriales(row.material_info as SupabaseMaterialesRow)
                     : row.materiales
                         ? mapSupabaseRowToMateriales(row.materiales as SupabaseMaterialesRow)
-                        : undefined,
+                        : row.materiales_electricos
+                            ? mapSupabaseRowToMateriales(row.materiales_electricos as SupabaseMaterialesRow)
+                            : undefined,
         proyecto_id: row.proyecto_id?.toString() || "",  
         proyecto_info: row.proyecto_info
                     ? mapSupabaseRowToProject(row.proyecto_info as SupabaseProjectRow)

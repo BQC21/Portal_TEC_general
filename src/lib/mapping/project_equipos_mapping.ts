@@ -5,8 +5,8 @@ import { Project_Equipos, Project_EquiposFormData,
     Project_EquiposFormState, 
     SupabaseProject_EquiposRow } from "../types/project_equipos_join"
 
-import { parseNullableDate } from "../utils/helpers"
-import { parseNumber } from "../utils/helpers/parse_number"
+import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
+import { parseNumber } from "../utils/normalization";
 
 import { mapSupabaseRowToEquipos } from "./mapping_equipos"
 import { mapSupabaseRowToProject } from "./project_mapping"
@@ -34,7 +34,9 @@ export function mapSupabaseRowToProject_Equipos(
                     ? mapSupabaseRowToEquipos(row.equipo_info as SupabaseEquiposRow)
                     : row.equipos
                         ? mapSupabaseRowToEquipos(row.equipos as SupabaseEquiposRow)
-                        : undefined,
+                        : row.equipo_principales
+                            ? mapSupabaseRowToEquipos(row.equipo_principales as SupabaseEquiposRow)
+                            : undefined,
         proyecto_id: row.proyecto_id?.toString() || "",  
         proyecto_info: row.proyecto_info
                     ? mapSupabaseRowToProject(row.proyecto_info as SupabaseProjectRow)

@@ -1,5 +1,5 @@
 import { Equipos, EquiposFormData, EquiposFormState, SupabaseEquiposRow } from "@/lib/types/equipos-types";
-import { parseNullableDate } from "@/lib/utils/helpers"
+import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 
 // enlace con los atributos de Supabase
 export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormState {

@@ -1,5 +1,5 @@
 import { Materiales, MaterialesFormData, MaterialesFormState, SupabaseMaterialesRow } from "@/lib/types/materiales-types";
-import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
+import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 
 // enlace con los atributos de Supabase
 export function createMaterialesFormStateFromMateriales(material: Materiales): MaterialesFormState {

@@ -1,5 +1,6 @@
 import { Product, ProductFormData, ProductFormState, SupabaseProductRow } from "@/lib/types/product-types";
-import { parseNullableDate, normalizeCurrencyCode } from "@/lib/utils/helpers"
+import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
+import { normalizeCurrencyCode } from "../utils/normalization";
 
 // enlace con los atributos de Supabase
 export function createProductFormStateFromProduct(product: Product): ProductFormState {
