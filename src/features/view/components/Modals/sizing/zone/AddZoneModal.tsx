@@ -107,6 +107,13 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                                 value={form_zone.gti_respaldo_diario}
                                 onChange={(value) => updateField("gti_respaldo_diario", value)}
                             />
+                            <AddProductTextField
+                                label={TABLE_HEADERS_ZONE[7]}
+                                required
+                                placeholder=" "
+                                value={String(form_zone.hsp_peor_mes)}
+                                onChange={(value) => updateField("hsp_peor_mes", value)}
+                            />
                         </section>
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">

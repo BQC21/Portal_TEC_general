@@ -180,6 +180,7 @@ export const INITIAL_ZONE_FORM: ZoneFormState = {
     ghi_respaldo_diario: "",
     gti_respaldo: "",
     gti_respaldo_diario: "",
+    hsp_peor_mes: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),

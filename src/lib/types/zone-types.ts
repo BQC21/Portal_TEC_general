@@ -14,6 +14,7 @@ export type SupabaseZoneRow = {
     ghi_respaldo_diario?: number;
     gti_respaldo?: number;
     gti_respaldo_diario?: number;
+    hsp_peor_mes?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -31,6 +32,8 @@ export type Zone = {
     ghi_respaldo_diario: string;
     gti_respaldo: string;
     gti_respaldo_diario: string;
+    hsp_peor_mes?: string;
+
     // fechas
     created_at: Date;
     updated_at: Date;

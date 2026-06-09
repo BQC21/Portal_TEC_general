@@ -12,6 +12,7 @@ export function createZoneFormStateFromZone(zone: Zone): ZoneFormState {
         ghi_respaldo_diario: zone.ghi_respaldo_diario,
         gti_respaldo: zone.gti_respaldo,
         gti_respaldo_diario: zone.gti_respaldo_diario,
+        hsp_peor_mes: zone.hsp_peor_mes,
         // fechas
         created_at: zone.created_at,
         updated_at: zone.updated_at,
@@ -35,6 +36,7 @@ export function mapSupabaseRowToZone(
         ghi_respaldo_diario: row.ghi_respaldo_diario?.toString()  || "",
         gti_respaldo: row.gti_respaldo?.toString()  || "",
         gti_respaldo_diario: row.gti_respaldo_diario?.toString()  || "",
+        hsp_peor_mes: row.hsp_peor_mes?.toString()  || "",
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -56,6 +58,7 @@ export function mapZoneToSupabaseRow(
         ghi_respaldo_diario: zone.ghi_respaldo_diario as unknown as number | undefined,
         gti_respaldo: zone.gti_respaldo as unknown as number | undefined,
         gti_respaldo_diario: zone.gti_respaldo_diario as unknown as number | undefined,
+        hsp_peor_mes: zone.hsp_peor_mes as unknown as number | undefined,
         // fechas
         created_at: zone.created_at,
         updated_at: zone.updated_at,

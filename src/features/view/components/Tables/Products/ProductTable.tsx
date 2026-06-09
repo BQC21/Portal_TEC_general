@@ -62,7 +62,7 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Cableado</th>
                             <th colSpan={5} className="border border-slate-300 px-4 py-5">Precios</th>
                             <th colSpan={2} className="border border-slate-300 px-4 py-5">Fechas</th>
-                            <th colSpan={2} className="border border-slate-300 px-4 py-5">Estado del producto</th>
+                            <th colSpan={3} className="border border-slate-300 px-4 py-5">Estado del producto</th>
                             <th></th>
                         </tr>
                         <tr className="bg-slate-100 text-left">
