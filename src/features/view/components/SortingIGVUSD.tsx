@@ -1,5 +1,5 @@
 import { SortingIcon } from "@/features/view/components/Icons/SortingIcon";
-import { shouldRender_ProductSortingSelection } from "@/lib/utils/helpers/sorting";
+import { shouldRender_ProductSortingSelection } from "@/lib/utils/helpers/sorting/sorting";
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 type ProductSortingProps = {
