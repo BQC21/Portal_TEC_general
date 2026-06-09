@@ -9,15 +9,20 @@ export const SORTING_OPTIONS = {
 // ----------------------------------------------
 
 export const SUPPLIER_OPTIONS = [
-    "Andet S.A.C",
-    "Sigelec S.A.C",
-    "AutoSolar Energía del Perú S.A.C",
-    "Novum Solar S.A.C",
-    "Caral Soluciones Energéticas S.A.C",
-    "Felicitysolar Peru E.I.R.L",
-    "RE & GE Import S.A.C",
-    "Grupo Coinp S.A.C",
-    "Proyect & Quality S.A.C",
+    "Andet S.A.C.",
+    "Sigelec S.A.C.",
+    "AutoSolar Energía del Perú S.A.C.",
+    "Novum Solar S.A.C.",
+    "Caral Soluciones Energéticas S.A.C.",
+    "Felicitysolar Peru E.I.R.L.",
+    "RE & GE Import S.A.C.",
+    "Grupo Coinp S.A.C.",
+    "Proyect & Quality",
+    "Tienda Solar S.A.C.",
+    "Ferretería Choque",
+    "Inversionas Cavasa S.A.C.",
+    "Perú Solar",
+    "Stof Grimme E.I.R.L."
 ]; // proveedores
 export const RUC_OPTIONS = [
     "20601248647",
@@ -98,7 +103,6 @@ export const EQUIPOS_TYPE_OPTIONS = [
     "INVERSOR",
     "MÓDULO FV",
 ]; // tipo de equipos
-
 export const MATERIALES_TYPE_OPTIONS = [
     "CABLE",
     "PROTECCIÓN",
