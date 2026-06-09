@@ -9,6 +9,7 @@ export type SupabaseProject_MaterialesRow = {
     material_id?: number | string;
     material_info?: SupabaseMaterialesRow;
     materiales?: SupabaseMaterialesRow; 
+    materiales_electricos?: SupabaseMaterialesRow;
     proyecto_id: number | string;
     proyecto_info?: SupabaseProjectRow;
     proyectos?: SupabaseProjectRow; 

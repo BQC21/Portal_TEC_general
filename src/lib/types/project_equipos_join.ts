@@ -9,6 +9,7 @@ export type SupabaseProject_EquiposRow = {
     equipo_id?: number | string;
     equipo_info?: SupabaseEquiposRow;
     equipos?: SupabaseEquiposRow; 
+    equipo_principales?: SupabaseEquiposRow;
     proyecto_id: number | string;
     proyecto_info?: SupabaseProjectRow;
     proyectos?: SupabaseProjectRow; 
