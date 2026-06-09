@@ -93,7 +93,7 @@ export const PRODUCT_TYPE_OPTIONS = [
 ]; // tipo de producto
 export const EQUIPOS_TYPE_OPTIONS = [
     "ACCESORIO",
-    "BATERíA",
+    "BATERÍA",
     "ESTRUCTURA",
     "INVERSOR",
     "MÓDULO FV",
