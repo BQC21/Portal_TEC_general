@@ -1,5 +1,5 @@
-import { Product } from "../../types/product-types";
-import { toSafeNumber } from "./normalization";
+import { Product } from "../../../types/product-types";
+import { toSafeNumber } from "../../normalization";
 
 // -------------------------
 // Funciones para el manejo de precios y monedas

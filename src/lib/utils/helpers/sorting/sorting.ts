@@ -1,4 +1,4 @@
-import { ProductSortingOrder } from "../options";
+import { ProductSortingOrder } from "../../options";
 
 // ordenamiento según precio y código del proveedor
 export function shouldRender_ProductSortingSelection(currentOrder: ProductSortingOrder) {

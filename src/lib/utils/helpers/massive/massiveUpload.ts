@@ -1,10 +1,11 @@
 import * as XLSX from "xlsx";
 
-import { toSafeNumber } from "@/lib/utils/helpers";
+import { toSafeNumber } from "@/lib/utils/normalization";
 
 type SpreadsheetArrayRow = string[];
 type SpreadsheetObjectRow = Record<string, unknown>;
 
+// normalizar encabezado
 export function normalizeSpreadsheetHeader(value: string) {
 	return value
 		.normalize("NFD")
@@ -33,6 +34,7 @@ export function readSpreadsheetText(row: SpreadsheetArrayRow | SpreadsheetObject
 	return "";
 }
 
+// leer número de la celda
 export function readSpreadsheetNumber(row: SpreadsheetArrayRow | SpreadsheetObjectRow, 
 	indexOrKeys: number | readonly string[]) {
 	if (Array.isArray(row)) {
@@ -53,6 +55,7 @@ export function readSpreadsheetNumber(row: SpreadsheetArrayRow | SpreadsheetObje
 	return 0;
 }
 
+// Normalizar porcentajes
 export function normalizeSpreadsheetPercent(value: number) {
 	if (!value) {
 		return 0;
@@ -64,6 +67,7 @@ export function normalizeSpreadsheetPercent(value: number) {
 	return value > 1 ? value / 100 : value;
 }
 
+// Booleano para identificar encabezados
 export function sheetHasHeaders(row: SpreadsheetArrayRow | SpreadsheetObjectRow, expected: readonly string[] | Record<string, string[]>) {
 	if (Array.isArray(row) && Array.isArray(expected)) {
 		if (row.length < expected.length) {
@@ -87,7 +91,7 @@ export function sheetHasHeaders(row: SpreadsheetArrayRow | SpreadsheetObjectRow,
 	return false;
 }
 
-
+// Función para encontrar la primera hoja que coincida con los encabezados esperados
 export function pickFirstMatchingSheet(
 	workbook: XLSX.WorkBook,
 	expectedHeaders: readonly string[] | Record<string, string[]>

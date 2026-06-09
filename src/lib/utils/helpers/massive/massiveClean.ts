@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/client";
 
 type RowWithId = { id: string | number };
 
+// dividir un array en partes más pequeñas
 function chunkArray<T>(values: T[], chunkSize: number) {
 	const chunks: T[][] = [];
 
@@ -12,6 +13,7 @@ function chunkArray<T>(values: T[], chunkSize: number) {
 	return chunks;
 }
 
+// limpieza masiva
 export async function bulkDeleteAllRows(tableName: string): Promise<number> {
 	const supabase = createClient();
 	const { data, error } = await supabase.from(tableName).select("id");

@@ -1,5 +1,5 @@
-import { Product } from "../../types/product-types";
-import { isPriceOriginUSD } from "./price_manage";
+import { Product } from "../../../types/product-types";
+import { isPriceOriginUSD } from "../computes/price_manage";
 
 // -------------------------
 // Funciones para el manejo de celdas vacías y formateo de texto en la tabla
