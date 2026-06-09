@@ -27,7 +27,7 @@ export async function getJoinProjectMateriales(): Promise<Project_Materiales[]>{
 
     const { data, error } = await supabase
         .from(PROJECTS_MATERIALES_TABLE)
-        .select("*")
+        .select("*,materiales_electricos(*),proyectos(*)")
     
     if (error) {
         throw new Error(`Error al obtener las relaciones 
