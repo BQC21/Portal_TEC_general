@@ -88,7 +88,7 @@ export default function EquiposPage() {
 	return (
 		<PortalShell
 			title="Equipos principales"
-			subtitle="Gestión de equipos principales desde Supabase"
+			subtitle="Gestión de equipos principales"
 			activePath="/equipos"
 		>
 			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">

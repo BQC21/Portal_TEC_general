@@ -89,7 +89,7 @@ export default function MaterialesPage() {
 	return (
 		<PortalShell
 			title="Materiales eléctricos"
-			subtitle="Gestión de materiales eléctricos desde Supabase"
+			subtitle="Gestión de materiales eléctricos"
 			activePath="/materiales"
 		>
 			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
