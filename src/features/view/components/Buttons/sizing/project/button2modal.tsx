@@ -2,11 +2,15 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import AddProjectModal  from "@/features/view/components/Modals/sizing/project/AddProjectModal";
+import AddProjectModal, { type ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 import type { ProjectFormData } from "@/lib/types/project-types";
 
 type Button2ModalProps = {
-    onAddProject: (project: ProjectFormData) => void;
+    onAddProject: (
+        project: ProjectFormData,
+        selectedEquipos: ProjectSelectionItem[],
+        selectedMateriales: ProjectSelectionItem[],
+    ) => Promise<void> | void;
 };
 
 export default function Button2Modal({ onAddProject }: Button2ModalProps) {
@@ -24,8 +28,8 @@ export default function Button2Modal({ onAddProject }: Button2ModalProps) {
             
             {open && (
                 <AddProjectModal
-                    onAddProject={async (project: ProjectFormData) => {
-                        await onAddProject(project);
+                    onAddProject={async (project, selectedEquipos, selectedMateriales) => {
+                        await onAddProject(project, selectedEquipos, selectedMateriales);
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}

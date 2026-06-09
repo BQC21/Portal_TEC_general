@@ -3,14 +3,24 @@
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import EditProjectModal  from "@/features/view/components/Modals/sizing/project/EditProjectModal";
+import type { ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 import type { Project, ProjectFormData } from "@/lib/types/project-types";
+import { Project_Equipos } from "@/lib/types/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/project_materiales_join";
 
 type EditProjectModalProps = {
     project: Project;
-    onUpdateProject: (project: Project) => void;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
+    onUpdateProject: (
+        project: Project,
+        selectedEquipos: ProjectSelectionItem[],
+        selectedMateriales: ProjectSelectionItem[],
+    ) => Promise<void> | void;
 };
 
-export default function Button2Edit({ project, onUpdateProject }: EditProjectModalProps) {
+export default function Button2Edit({ project, project_equipos, project_materiales,
+    onUpdateProject }: EditProjectModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -26,10 +36,11 @@ export default function Button2Edit({ project, onUpdateProject }: EditProjectMod
             {open && (
                 <EditProjectModal
                     existingProject={project}
-                    onUpdateProject={async function (formData: ProjectFormData) {
-                        // merge the existing project's required fields (like id) with the form data
+                    existingProjectEquipos={project_equipos}
+                    existingProjectMateriales={project_materiales}
+                    onUpdateProject={async function (formData: ProjectFormData, selectedEquipos, selectedMateriales) {
                         const updatedProject: Project = { ...project, ...formData } as Project;
-                        await onUpdateProject(updatedProject);
+                        await onUpdateProject(updatedProject, selectedEquipos, selectedMateriales);
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}
