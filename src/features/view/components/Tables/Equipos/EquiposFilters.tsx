@@ -1,6 +1,6 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import type { EquiposFilterValues } from "@/lib/types/equipos-types";
-import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/renders";
+import { shouldRender_EquipoInfoSelection, shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/renders";
 import { 
     SUPPLIER_OPTIONS, 
     EQUIPOS_TYPE_OPTIONS, 
@@ -8,6 +8,7 @@ import {
     FilterKey
 } from "@/lib/utils/options"
 import { useMemo } from "react";
+import { SelectorIcon } from "../../Icons/SelectorIcon";
 
 const FILTERS = [
     {
@@ -42,7 +43,7 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
             return BRAND_OPTIONS;
         }
 
-        const { brand_options } = shouldRender_ProductInfoSelection(values.type);
+        const { brand_options } = shouldRender_EquipoInfoSelection(values.type);
         return brand_options.length > 0 ? brand_options : BRAND_OPTIONS;
     }, [values.type]);
     
@@ -51,9 +52,12 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
         <div className="grid gap-4 lg:grid-cols-3">
         {FILTERS.map((filter) => (
             <label key={filter.id} className="space-y-2">
+                {/* Texto de encabezado */}
                 <span className="block text-center text-lg font-semibold text-slate-600">{filter.label}</span>
                 <div className="relative">
+                    {/* Ícono inicial */}
                     <FilterIcon />
+                    {/* Selector */}
                     <select
                         className="filter-control h-12 w-full appearance-none pl-11 pr-10"
                         value={values[filter.id as FilterKey] ?? ""}
@@ -73,6 +77,7 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
                             onFilterChange(filter.id as FilterKey, nextValue);
                         }}
                     >
+                        {/* Mostrar opciones */}
                         <option value="">{filter.placeholder}</option>
                         {(filter.id === "brand" ? brandFilterOptions : filter.content).map((item: string) => (
                             <option key={item} value={item}>
@@ -80,16 +85,8 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
                             </option>
                         ))}
                     </select>
-                <svg
-                    aria-hidden="true"
-                    className="pointer-events-none absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="m6 9 6 6 6-6" />
-                </svg>
+                    {/* Ícono final */}
+                    <SelectorIcon/>
                 </div>
             </label>
         ))}
