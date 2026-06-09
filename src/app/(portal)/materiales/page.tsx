@@ -20,6 +20,7 @@ import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/Sor
 import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
+import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();
@@ -64,14 +65,7 @@ export default function MaterialesPage() {
             return MaterialesToSort;
         }
 
-        return MaterialesToSort.sort((leftMateriales, rightMateriales) => {
-            const leftPrice = Number(leftMateriales.precio_dolares_igv ?? 0); // precio del row anterior
-            const rightPrice = Number(rightMateriales.precio_dolares_igv ?? 0); // precio del row posterior
-
-            return sorting === "asc"
-                ? leftPrice - rightPrice // ascendente
-                : rightPrice - leftPrice; // descendente
-        });
+		return sortGroupedByPrice(MaterialesToSort, sorting);
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
 	// ---------------------------------
