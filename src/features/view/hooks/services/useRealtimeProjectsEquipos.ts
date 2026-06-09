@@ -3,6 +3,7 @@
 import { createJoinProjectEquipos, deleteJoinProjectEquipos, getJoinProjectEquipos, updateJoinProjectEquipos } from "@/features/controller/services/projectEquiposQueries";
 import { createClient } from "@/lib/supabase/client";
 import { Project_Equipos, Project_EquiposFormData, useProject_EquiposMutationResult, UseProject_EquiposResult } from "@/lib/types/project_equipos_join";
+import { PROJECTS_EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 import { useCallback, useEffect, useState } from "react";
 
 const supabase = createClient();
@@ -42,21 +43,21 @@ export function useProjectEquipos(): UseProject_EquiposResult{
             .channel(channelName)
             .on(
                 "postgres_changes",
-                { event: "INSERT", schema: "public", table: "join_proyectos_equipos" },
+                { event: "INSERT", schema: "public", table: PROJECTS_EQUIPOS_TABLE },
                 () => {
                     void fetchProjects_Equipos();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "UPDATE", schema: "public", table: "join_proyectos_equipos" },
+                { event: "UPDATE", schema: "public", table: PROJECTS_EQUIPOS_TABLE },
                 () => {
                     void fetchProjects_Equipos();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "DELETE", schema: "public", table: "join_proyectos_equipos" },
+                { event: "DELETE", schema: "public", table: PROJECTS_EQUIPOS_TABLE },
                 () => {
                     void fetchProjects_Equipos();
                 }

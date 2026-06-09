@@ -4,6 +4,7 @@ import { createJoinProjectMateriales, deleteJoinProjectMateriales,
     getJoinProjectMateriales, updateJoinProjectMateriales } from "@/features/controller/services/projectMaterialesQueries";
 import { createClient } from "@/lib/supabase/client";
 import { Project_Materiales, Project_MaterialesFormData, useProject_MaterialesMutationResult, UseProject_MaterialesResult } from "@/lib/types/project_materiales_join";
+import { PROJECTS_MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 import { useCallback, useEffect, useState } from "react";
 
 const supabase = createClient();
@@ -43,21 +44,21 @@ export function useProjectMateriales(): UseProject_MaterialesResult{
             .channel(channelName)
             .on(
                 "postgres_changes",
-                { event: "INSERT", schema: "public", table: "join_proyectos_materiales" },
+                { event: "INSERT", schema: "public", table: PROJECTS_MATERIALES_TABLE },
                 () => {
                     void fetchProjects_Materiales();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "UPDATE", schema: "public", table: "join_proyectos_materiales" },
+                { event: "UPDATE", schema: "public", table: PROJECTS_MATERIALES_TABLE },
                 () => {
                     void fetchProjects_Materiales();
                 }
             )
             .on(
                 "postgres_changes",
-                { event: "DELETE", schema: "public", table: "join_proyectos_materiales" },
+                { event: "DELETE", schema: "public", table: PROJECTS_MATERIALES_TABLE },
                 () => {
                     void fetchProjects_Materiales();
                 }
