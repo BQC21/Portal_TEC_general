@@ -24,11 +24,11 @@ import {
 
 import { 
     shouldRender_SupplyInfoSelection,
-    shouldRender_MaterialInfoSelection,
-} from "@/lib/utils/helpers/renders";
+} from "@/lib/utils/helpers/render/render_modals";
 
 import { Materiales, MaterialesFormState } from "@/lib/types/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
 // --- Tipo de variables ---
 type EditMaterialModalProps = {

@@ -13,8 +13,8 @@ import {
 	pickFirstMatchingSheet,
 	readSpreadsheetNumber,
 	readSpreadsheetText,
-} from "@/lib/utils/helpers/massiveUpload";
-import { toSafeNumber } from "@/lib/utils/helpers";
+} from "@/lib/utils/helpers/massive/massiveUpload";
+import { toSafeNumber } from "@/lib/utils/normalization";
 
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
 

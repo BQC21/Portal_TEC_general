@@ -2,14 +2,19 @@ import { Equipos, EquiposFormData, EquiposFormState } from "@/lib/types/equipos-
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
-import { CONNECTION_TYPE_OPTIONS, PRODUCT_TYPE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
+import { CONNECTION_TYPE_OPTIONS, EQUIPOS_TYPE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
-import { buildProductCode, shouldRender_CodeProduct, shouldRender_EquipoInfoSelection, shouldRender_SupplyInfoSelection, shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, shouldRenderConnectionTypeSmartMeter, shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/renders";
+import { shouldRender_SupplyInfoSelection, 
+    shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, 
+    shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, 
+    shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
+import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 
 
 // --- Tipo de variables ---
@@ -21,7 +26,7 @@ type AddEquipoModalProps = {
 
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
-    const today = new Date().toISOString().split('T')[0];
+    // const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<EquiposFormState>(INITIAL_EQUIPOS_FORM);
 
 
@@ -61,7 +66,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
 
         onAddEquipos({
             ...form,
-            cod_producto: generatedCode || form.cod_producto,
+            cod_producto: generatedCode || form.cod_producto, // añadir código generado
         });
     }
 
@@ -85,12 +90,9 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                     <section className="space-y-5">
                         <AddProductSectionTitle title="Información Básica" />
                             <div className="grid gap-5 md:grid-cols-2">
-                                <AddProductSelectField
+                                <AddProductReadonlyField
                                     label="COD PROV"
-                                    required
                                     value={form.cod_prov}
-                                    options={SUPPLIER_CODE_OPTIONS}
-                                    onChange={(value) => updateField("cod_prov", value)}
                                 />
                                 <AddProductSelectField
                                     label="PROVEEDOR"
@@ -99,7 +101,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                     options={SUPPLIER_OPTIONS}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
-                                {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (
+                                {/* {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (
                                     <AddProductReadonlyField
                                         label="Código del Producto"
                                         value={generatedCode}
@@ -109,19 +111,20 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                         label="Código del Producto"
                                         value="Selecciona tipo de producto y proveedor"
                                     />
-                                )}
+                                )} */}
                                 <AddProductSelectField
                                     label="TIPO DE PRODUCTO"
                                     required
                                     value={form.tipo_de_producto}
-                                    options={PRODUCT_TYPE_OPTIONS}
+                                    options={EQUIPOS_TYPE_OPTIONS}
                                     onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductSelectField
                                     label="MARCA"
                                     required
                                     value={form.marca}
-                                    options={equipoInfoSelection.brand_options.length > 0 ? equipoInfoSelection.brand_options : [""]}
+                                    options={equipoInfoSelection.brand_options.length > 0 
+                                        ? equipoInfoSelection.brand_options : [""]}
                                     onChange={(value) => updateField("marca", value)}
                                 />
                                 <AddProductReadonlyField

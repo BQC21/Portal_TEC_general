@@ -12,7 +12,7 @@ import { AddProductTextField } from "../../Form_fields/AddTextField";
 
 import { 
     prepareAndDownloadFile,
-} from "@/lib/utils/helpers/massiveDownload"
+} from "@/lib/utils/helpers/massive/massiveDownload"
 
 type MassiveDownloadModalProps = {
     productsToDownload?: Product[];

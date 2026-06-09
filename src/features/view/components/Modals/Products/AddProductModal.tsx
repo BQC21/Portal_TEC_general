@@ -17,13 +17,6 @@ import type { Product, ProductFormData, ProductFormState } from "@/lib/types/pro
 import { CurrencyCode } from "@/lib/utils/options";
 
 import {
-    computePricesWithIgv,
-    convertPenToUsd,
-    convertUsdToPen,
-    formatReadonlyCurrency,
-} from "@/lib/utils/helpers";
-
-import {
     CONNECTION_TYPE_OPTIONS,
     PRODUCT_TYPE_OPTIONS,
     SUPPLIER_OPTIONS,
@@ -47,10 +40,12 @@ import {
     shouldRenderModuloProp,
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
-    shouldRender_ProductInfoSelection,
-    shouldRender_CodeProduct,
-    buildProductCode,
-} from "@/lib/utils/helpers/renders";
+} from "@/lib/utils/helpers/render/render_modals";
+import { 
+    computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency 
+} from "@/lib/utils/helpers/computes/price_manage";
+import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { buildProductCode, shouldRender_CodeProduct } from "@/lib/utils/helpers/render/render_codeProduct";
 
 // --- Tipo de variables ---
 type AddProductModalProps = {
@@ -176,7 +171,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                         options={PRODUCT_TYPE_OPTIONS}
                         onChange={(value) => updateField("tipo", value)}
                         />
-                        {shouldRender_CodeProduct(form.tipo, form.proveedor) ? (
+                        {/* {shouldRender_CodeProduct(form.tipo, form.proveedor) ? (
                         <AddProductReadonlyField
                             label="Código del Producto"
                             value={generatedCode}
@@ -186,7 +181,7 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
                             label="Código del Producto"
                             value="Selecciona tipo de producto y proveedor"
                         />
-                        )}
+                        )} */}
                         <AddProductSelectField
                         label="Marca"
                         required

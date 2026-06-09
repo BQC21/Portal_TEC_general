@@ -17,12 +17,9 @@ import { CurrencyCode } from "@/lib/utils/options";
 
 import { createProductFormStateFromProduct } from "@/lib/mapping/mapping_product";
 
-import {
-    computePricesWithIgv,
-    convertPenToUsd,
-    convertUsdToPen,
-    formatReadonlyCurrency,
-} from "@/lib/utils/helpers";
+import { 
+    computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency 
+} from "@/lib/utils/helpers/computes/price_manage";
 
 import {
     CONNECTION_TYPE_OPTIONS,
@@ -48,8 +45,8 @@ import {
     shouldRenderModuloProp,
     shouldRenderImportDate,
     shouldRender_SupplyInfoSelection,
-    shouldRender_ProductInfoSelection,
-} from "@/lib/utils/helpers/renders";
+} from "@/lib/utils/helpers/render/render_modals";
+import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
 // --- Tipo de variables ---
 type EditProductModalProps = {

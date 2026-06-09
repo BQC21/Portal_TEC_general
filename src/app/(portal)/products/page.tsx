@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { ProductFilters } from "@/features/view/components/Tables/Products/ProductFilters";
 import { ProductTable } from "@/features/view/components/Tables/Products/ProductTable";
 
-import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
+import { Sorting_IGV_USD } from "@/features/view/components/SortingIGVUSD";
 import Button2Modal from "@/features/view/components/Buttons/Products/button2modal";
 import Button2MassiveDownload from "@/features/view/components/Buttons/Products/Button2MassiveDownload";
 
@@ -20,7 +20,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar"; // barra de busqueda
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 
 export default function ProductsPage() {
 

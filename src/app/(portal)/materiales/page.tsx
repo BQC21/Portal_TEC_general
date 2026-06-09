@@ -12,15 +12,15 @@ import { useMateriales, useMaterialMutations } from "@/features/view/hooks/servi
 import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting";
+import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
-import { Sorting_IGV_USD } from "@/features/view/components/Buttons/Products/SortingIGVUSD";
+import { Sorting_IGV_USD } from "@/features/view/components/SortingIGVUSD";
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
-import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting";
+import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();

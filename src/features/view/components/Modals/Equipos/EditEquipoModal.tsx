@@ -30,12 +30,11 @@ import {
     shouldRenderInversorProp,
     shouldRenderModuloProp,
     shouldRender_SupplyInfoSelection,
-    shouldRender_ProductInfoSelection,
-    shouldRender_EquipoInfoSelection,
     shouldRenderConnectionTypeAccesories,
-} from "@/lib/utils/helpers/renders";
+} from "@/lib/utils/helpers/render/render_modals";
 import { Equipos, EquiposFormState } from "@/lib/types/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
+import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
 // --- Tipo de variables ---
 type EditEquipoModalProps = {

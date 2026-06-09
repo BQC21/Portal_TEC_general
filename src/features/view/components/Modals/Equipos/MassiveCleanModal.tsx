@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
-import { bulkDeleteAllRows } from "@/lib/utils/helpers/massiveClean";
+import { bulkDeleteAllRows } from "@/lib/utils/helpers/massive/massiveClean";
 
 type MassiveCleanModalProps = {
 	currentCount: number;

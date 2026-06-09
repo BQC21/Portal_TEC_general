@@ -1,15 +1,16 @@
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_MATERIALES_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
-import { POWER_SOURCE_OPTIONS, PRODUCT_TYPE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
+import { MATERIALES_TYPE_OPTIONS, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
-import { buildProductCode, shouldRender_CodeProduct, shouldRender_MaterialInfoSelection, shouldRender_SupplyInfoSelection, shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, shouldRenderConnectionTypeSmartMeter, shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/renders";
-import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
+import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/render_modals";import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
 import { Materiales, MaterialesFormData, MaterialesFormState } from "@/lib/types/materiales-types";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 
 
 // --- Tipo de variables ---
@@ -100,7 +101,7 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                     options={SUPPLIER_OPTIONS}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
-                                {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (
+                                {/* {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (
                                     <AddProductReadonlyField
                                         label="Código del Producto"
                                         value={generatedCode}
@@ -110,12 +111,12 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                         label="Código del Producto"
                                         value="Selecciona tipo de producto y proveedor"
                                     />
-                                )}
+                                )} */}
                                 <AddProductSelectField
                                     label="TIPO DE PRODUCTO"
                                     required
                                     value={form.tipo_de_producto}
-                                    options={PRODUCT_TYPE_OPTIONS}
+                                    options={MATERIALES_TYPE_OPTIONS}
                                     onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductSelectField
