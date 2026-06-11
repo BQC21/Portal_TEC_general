@@ -60,9 +60,9 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <th colSpan={6} className="border border-slate-300 px-4 py-5">Propiedades Módulo fotovoltaico</th>
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Smart meter</th>
                             <th colSpan={1} className="border border-slate-300 px-4 py-5">Propiedades Cableado</th>
-                            <th colSpan={5} className="border border-slate-300 px-4 py-5">Precios</th>
+                            <th colSpan={6} className="border border-slate-300 px-4 py-5">Precios</th>
                             <th colSpan={2} className="border border-slate-300 px-4 py-5">Fechas</th>
-                            <th colSpan={3} className="border border-slate-300 px-4 py-5">Estado del producto</th>
+                            <th colSpan={2} className="border border-slate-300 px-4 py-5">Estado del producto</th>
                             <th></th>
                         </tr>
                         <tr className="bg-slate-100 text-left">
@@ -87,6 +87,8 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo)}`}>{displayCellValue(product.tipo)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.marca)}`}>{displayCellValue(product.marca)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.descripcion)}`}>{displayCellValue(product.descripcion)}</td>
+                            {/* RUC */}
+                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
                             {/* propiedades de la batería */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.tipo_conexion_bateria)}`}>{displayCellValue(product.tipo_conexion_bateria)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.dod)}`}>{displayCellValue(product.dod)}</td>
@@ -133,8 +135,6 @@ export function ProductTable({ products, totalProducts, exchangeRate, onUpdatePr
                                     <td className={`border border-slate-200 px-4 py-5 ${getPriceCellClass(product, product.precio_dolares_igv)}`}>{(toSafeNumber(product.precio_soles)/exchangeRate*1.18).toFixed(2)}</td>
                                 </>
                             )}
-                            {/* RUC */}
-                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.ruc, "text-slate-800")}`}>{displayCellValue(product.ruc)}</td>
                             {/* fechas */}
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.created_at)}`}>{formatDate(product.created_at)}</td>
                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(product.updated_at)}`}>{formatDate(product.updated_at)}</td>

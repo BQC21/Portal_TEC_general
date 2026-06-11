@@ -6,6 +6,8 @@ export const TABLE_HEADERS = [
     "TIPO DE PRODUCTO",
     "MARCA",
     "DESCRIPCIÓN",
+    // RUC
+    "RUC",
     // propieades bateria
     "Tipo de conexión de la batería",
     "DoD (%)",
@@ -40,8 +42,6 @@ export const TABLE_HEADERS = [
     "IGV",
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
-    // RUC
-    "RUC",
     // fechas
     "Fecha creada",
     "Fecha actualizada",
