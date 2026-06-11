@@ -102,8 +102,8 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     mppt: 0,
     potencia_ac: 0,
     dod: 0,
-    voc_vmax: 0,
     vmpp_vmin: 0,
+    voc_vmax: 0,
     impp_i_in: "40/40/20",
     isc_i_out: 0,
     // precios

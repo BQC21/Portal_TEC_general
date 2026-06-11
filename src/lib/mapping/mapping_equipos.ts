@@ -17,8 +17,8 @@ export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormS
     mppt: equipo.mppt,
     dod: equipo.dod,
     potencia_ac: equipo.potencia_ac,
-    voc_vmax: equipo.voc_vmax,
     vmpp_vmin: equipo.vmpp_vmin,
+    voc_vmax: equipo.voc_vmax,
     isc_i_out: equipo.isc_i_out,
     impp_i_in: equipo.impp_i_in,
     // precios
@@ -50,14 +50,13 @@ export function mapSupabaseRowToEquipos(
         marca: row.marca || "",
         descripcion: row.descripcion || "",
         // propiedades eléctricas
-
         tipo_conexion: row.tipo_de_conexion || row.tipo_conexion || "",
         potencia_maxima: row.potencia_maxima || 0,
         mppt: row.mppt || 0,
         dod: row.dod || 0,
         potencia_ac: row.potencia_ac || 0,
-        voc_vmax: row.voc_vmax || 0,
         vmpp_vmin: row.vmpp_vmin || 0,
+        voc_vmax: row.voc_vmax || 0,
         isc_i_out: row.isc_i_out || 0,
         impp_i_in: row.impp_i_in || "",
         // Precios
@@ -93,8 +92,8 @@ export function mapEquiposToSupabaseRow(
         mppt: equipo.mppt,
         dod: equipo.dod,
         potencia_ac: equipo.potencia_ac,
-        voc_vmax: equipo.voc_vmax,
         vmpp_vmin: equipo.vmpp_vmin,
+        voc_vmax: equipo.voc_vmax,
         isc_i_out: equipo.isc_i_out,
         impp_i_in: equipo.impp_i_in,
         // Precios

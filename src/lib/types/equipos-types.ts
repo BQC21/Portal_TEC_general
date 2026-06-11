@@ -22,8 +22,8 @@ export type SupabaseEquiposRow = {
     mppt?: number;
     potencia_ac?: number;
     dod?: number;
-    voc_vmax?: number;
     vmpp_vmin?: number;
+    voc_vmax?: number;
     isc_i_out?: number;
     impp_i_in?: string;
     // ṕrecios
@@ -54,8 +54,8 @@ export type Equipos = {
     mppt: number;
     potencia_ac: number;
     dod: number;
-    voc_vmax: number;
     vmpp_vmin: number;
+    voc_vmax: number;
     isc_i_out: number;
     impp_i_in: string;
     // ṕrecios
