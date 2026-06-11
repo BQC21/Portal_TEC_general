@@ -6,11 +6,11 @@ import { Project_Equipos } from "@/lib/types/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/project_materiales_join";
 
 import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
-import type { ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 
 import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
+import { SelectedEquipmentItem, SelectedMaterialItem } from "../../Modals/sizing/project/AddProjectModal";
 
 type ProjectTableProps = {
     projects: Project[];
@@ -19,8 +19,8 @@ type ProjectTableProps = {
     totalProjects: number;
     onUpdateProject: (
         project: Project,
-        selectedEquipos: ProjectSelectionItem[],
-        selectedMateriales: ProjectSelectionItem[],
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
     ) => Promise<void> | void;
     onDeleteProject: (projectId: string) => void;
     onDeleteProjectEquipos?: (projectEquiposId: string) => void;
@@ -74,7 +74,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
                                             {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.enlace}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-indigo-700`}>{project.enlace}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
