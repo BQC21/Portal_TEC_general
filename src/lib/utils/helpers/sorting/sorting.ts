@@ -7,10 +7,14 @@ export function shouldRender_ProductSortingSelection(currentOrder: ProductSortin
     }
 
     if (currentOrder === "desc") {
-        return { label: "Orden descendente", nextOrder: "asc" as const };
+        return { label: "Orden descendente", nextOrder: "codigo" as const };
     }
 
-    return { label: "Ordenar por precio", nextOrder: "asc" as const };
+    if (currentOrder === "codigo") {
+        return { label: "Ordenar por código del proveedor", nextOrder: "asc" as const };
+    }
+
+    return { label: "Ordenar", nextOrder: "codigo" as const };
 }
 
 // ordenamiento según el código del proveedor de forma descendente

@@ -9,6 +9,8 @@ type ProductSortingProps = {
 
 export function Sorting_IGV_USD({ value, onSortingChange }: ProductSortingProps) {
     const { label, nextOrder } = shouldRender_ProductSortingSelection(value);
+    // console.log("Ancla de ordenamiento", label)
+    // console.log("Siguiente orden", nextOrder)
     const title = `Estado actual: ${label}. Haz clic para cambiar el orden.`;
 
     return (

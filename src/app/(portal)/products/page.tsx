@@ -20,7 +20,7 @@ import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar"; // barra de busqueda
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
+import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 
 export default function ProductsPage() {
 
@@ -100,26 +100,16 @@ export default function ProductsPage() {
 
 
     // ---------------------------------
-    // ---- Ordenamiento de productos (segun precio) --
+    // ---- Ordenamiento de productos --
     // ---------------------------------
 
     const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
 
     const sortedProducts = useMemo(() => {
         const productsToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
-
-        if (!sorting) {
-            return productsToSort;
-        }
-
-        return productsToSort.sort((leftProduct, rightProduct) => {
-            const leftPrice = Number(leftProduct.precio_dolares_igv ?? 0); // precio del row anterior
-            const rightPrice = Number(rightProduct.precio_dolares_igv ?? 0); // precio del row posterior
-
-            return sorting === "asc"
-                ? leftPrice - rightPrice // ascendente
-                : rightPrice - leftPrice; // descendente
-        });
+        return sorting === "codigo" ? productsToSort : 
+            sorting === "asc" ? sortGroupedByPrice(productsToSort, "asc") :
+                sorting === "desc" ? sortGroupedByPrice(productsToSort, "desc") : []
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
 
     // ---------------------------------

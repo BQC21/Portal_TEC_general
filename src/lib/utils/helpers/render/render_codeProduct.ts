@@ -26,12 +26,12 @@ export function shouldRender_CodeProduct({type, supplier, getProductType, getSup
 }
 // construye el código del producto a partir del tipo de producto, proveedor y número de fila
 export function buildProductCode(type: string, supplier: string, rowNumber: number) {
-    const productCode = getProductTypeCode(type);
-    const { supplierCode } = getSupplierInfo(supplier);
+    const productCode = getProductTypeCode(type); // "E" o "M"
+    const { supplierCode } = getSupplierInfo(supplier); // "ANDE", "SIGE", etc.
 
     if (!productCode || !supplierCode || rowNumber < 1) {
         return "";
     }
 
-    return `${productCode}${supplierCode}${String(rowNumber).padStart(5, "0")}`;
+    return `${productCode}${supplierCode}${String(rowNumber).padStart(5, "0")}`;// "EANDE00001"
 }
