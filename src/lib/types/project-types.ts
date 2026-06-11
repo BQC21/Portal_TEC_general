@@ -32,6 +32,7 @@ export type SupabaseProjectRow = {
     itm_dc_min?: number;
     itm_ac_min?: number;
     spd_voltage?: number;
+    mppt_number?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -68,6 +69,7 @@ export type Project = {
     itm_dc_min: string;
     itm_ac_min: string;
     spd_voltage: string;
+    mppt_number: string;
     // fechas
     created_at: Date;
     updated_at: Date;

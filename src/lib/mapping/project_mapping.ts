@@ -31,6 +31,7 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         itm_ac_min: project.itm_ac_min,
         itm_dc_min: project.itm_dc_min,
         spd_voltage: project.spd_voltage,
+        mppt_number: project.mppt_number,
         // fechas
         created_at: project.created_at,
         updated_at: project.updated_at,
@@ -76,6 +77,7 @@ export function mapSupabaseRowToProject(
         itm_ac_min: row.itm_ac_min?.toString() || "",
         itm_dc_min: row.itm_dc_min?.toString() || "",
         spd_voltage: row.spd_voltage?.toString() || "",
+        mppt_number: row.mppt_number?.toString() || "",
         // cálculos de radiación
         hsp: row.hsp?.toString() || "",
         ghi: row.ghi?.toString() || "",
@@ -116,6 +118,7 @@ export function mapProjectToSupabaseRow(
         itm_ac_min: parseNumber(project.itm_ac_min),
         itm_dc_min: parseNumber(project.itm_dc_min),
         spd_voltage: parseNumber(project.spd_voltage),
+        mppt_number: parseNumber(project.mppt_number),
         // cálculos de radiación
         hsp: parseNumber(project.hsp),
         ghi: parseNumber(project.ghi),
