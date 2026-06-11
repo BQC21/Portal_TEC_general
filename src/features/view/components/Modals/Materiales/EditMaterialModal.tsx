@@ -79,6 +79,7 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
         await onUpdateMaterial({
             id: material.id,
             ...form,
+            updated_at: new Date()
         });
 
         onClose();

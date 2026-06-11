@@ -93,6 +93,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
         await onUpdateEquipo({
             id: equipo.id,
             ...form,
+            updated_at: new Date()
         });
 
         onClose();
