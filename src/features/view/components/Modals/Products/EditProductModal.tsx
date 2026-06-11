@@ -176,6 +176,10 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                         value={form.ruc}
                     />
                     <AddProductReadonlyField
+                        label="Código del Producto"
+                        value={form.codigo}
+                    />
+                    <AddProductReadonlyField
                         label="Código del proveedor"
                         value={form.cod_prov}
                     />
