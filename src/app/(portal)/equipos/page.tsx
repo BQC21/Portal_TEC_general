@@ -50,23 +50,19 @@ export default function EquiposPage() {
     // ---- Ordenamiento ---------------
     // ---------------------------------
 
-	// segun codigo
-	const sortedByCodeProducts = useMemo(() => {
-		return sortGroupedByCodeSupplier(filteredEquipos, "cod_producto");
-	}, [filteredEquipos]);
+    const sortedByCodeEquipos = useMemo(() => {
+        return sortGroupedByCodeSupplier(filteredEquipos, "cod_producto");
+    }, [filteredEquipos]);	
 
-	// segun precio
-    const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
+    const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
 
     const sortedEquipos = useMemo(() => {
-        const EquiposToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
-
-        if (!sorting) {
-            return EquiposToSort;
-        }
-
-        return sortGroupedByPrice(EquiposToSort, sorting);
-    }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+        const equiposToSort = [...sortedByCodeEquipos]; // procura si la tabla ha sido filtrada o no
+        return sorting === "codigo" ? equiposToSort : 
+            sorting === "asc" ? sortGroupedByPrice(equiposToSort, "asc") :
+                sorting === "desc" ? sortGroupedByPrice(equiposToSort, "desc") : []
+    }, [sortedByCodeEquipos, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+    console.log("equipos ordenados", sortedEquipos)
 
     // ---------------------------------
     // ---- Lista de eventos -----------

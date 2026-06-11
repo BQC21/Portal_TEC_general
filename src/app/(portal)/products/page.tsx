@@ -91,17 +91,12 @@ export default function ProductsPage() {
     }); // lógica para operar el filtrado de productos
 
     // ---------------------------------
-    // ---- Ordenamiento de productos (segun codigo) --
+    // ---- Ordenamiento --
     // ---------------------------------
 
     const sortedByCodeProducts = useMemo(() => {
         return sortGroupedByCodeSupplier(filteredProducts, "codigo");
     }, [filteredProducts]);
-
-
-    // ---------------------------------
-    // ---- Ordenamiento de productos --
-    // ---------------------------------
 
     const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
 

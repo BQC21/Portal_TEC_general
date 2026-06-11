@@ -50,24 +50,20 @@ export default function MaterialesPage() {
     // ---- Ordenamiento ---------------
     // ---------------------------------
 
-	// segun codigo
-	const sortedByCodeProducts = useMemo(() => {
-		return sortGroupedByCodeSupplier(filteredMateriales, "cod_producto");
-	}, [filteredMateriales]);
+    const sortedByCodeMateriales = useMemo(() => {
+        return sortGroupedByCodeSupplier(filteredMateriales, "cod_producto");
+    }, [filteredMateriales]);	
 
-	// segun precio
-    const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
+    const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
 
     const sortedMateriales = useMemo(() => {
-        const MaterialesToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
-
-        if (!sorting) {
-            return MaterialesToSort;
-        }
-
-		return sortGroupedByPrice(MaterialesToSort, sorting);
-    }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
-
+        const materialesToSort = [...sortedByCodeMateriales]; // procura si la tabla ha sido filtrada o no
+        return sorting === "codigo" ? materialesToSort : 
+            sorting === "asc" ? sortGroupedByPrice(materialesToSort, "asc") :
+                sorting === "desc" ? sortGroupedByPrice(materialesToSort, "desc") : []
+    }, [sortedByCodeMateriales, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+    console.log("equipos ordenados", sortedMateriales)
+	
 	// ---------------------------------
 	// ---- Lista de eventos -----------
 	// ---------------------------------
