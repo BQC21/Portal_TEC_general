@@ -61,7 +61,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                     const materialesDescriptions = projectMateriales
                                         .map((item) => item.material_info?.descripcion)
                                         .filter((description): description is string => Boolean(description));
-
+                                    
                                     return (
                                     <tr key={project.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>

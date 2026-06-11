@@ -3,15 +3,23 @@
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import type { Project } from "@/lib/types/project-types";
+import { Project_Equipos } from "@/lib/types/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/project_materiales_join";
 
 // --- Tipo de variables ---
 type DeleteProjectModalProps = {
     project: Project;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
     onDeleteProject: (projectId: string) => void
+    onDeleteProjectEquipos: (projectsEquiposId: string) => void
+    onDeleteProjectMateriales: (projectsMaterialesId: string) => void
     onClose: () => void;
 };
 
-export function DeleteProjectModal({ project, onDeleteProject, onClose }: DeleteProjectModalProps) {
+export function DeleteProjectModal({ project, project_equipos, project_materiales,
+    onDeleteProject, onDeleteProjectEquipos, onDeleteProjectMateriales,
+    onClose }: DeleteProjectModalProps) {
 
     // Aceptar actualizacion
     async function handleDeleteProduct(event: React.FormEvent<HTMLFormElement>) {

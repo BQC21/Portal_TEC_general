@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useMemo } from "react";
-
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
 import type {
@@ -17,7 +16,7 @@ import type { Equipos } from "@/lib/types/equipos-types";
 
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
+import { AddProductUrlField } from "@/features/view/components/Form_fields/AddUrlField"; // campos
 
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
@@ -43,6 +42,8 @@ import {
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { AddProductTextAreaField } from "../../../Form_fields/AddTextAreaField";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export type SelectedEquipmentItem = {
     row: string;
@@ -96,7 +97,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     const selectedZone = form_zone.zona;
 
     // ----------------------------
-    // ------- NREL API -----
+    // ------- NREL API -----------
     // ----------------------------
     const { ghi_nrel,
         // hsp,
@@ -141,7 +142,16 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         const itm_dc_min = String(ITM_DC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
         const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)))
 
-        return { energia, potenciaDC, potenciaAC, strings_minimos, strings_maximos, itm_ac_min, itm_dc_min, spd_min };
+        return { 
+            energia, 
+            potenciaDC, 
+            potenciaAC, 
+            strings_minimos, 
+            strings_maximos, 
+            itm_ac_min, 
+            itm_dc_min, 
+            spd_min 
+        };
     }, [form.demanda_electrica, 
         form.cobertura_porcentaje, 
         form.ghi,
@@ -151,8 +161,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         form_zone.ghi_respaldo,
         selectedEquipmentTable,
     ]);
-    console.log(form.strings)
-    console.log(form.mppt_number)
 
     function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
         setForm((current) => {
@@ -165,6 +173,13 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
 
         await onAddProject({
             ...form,
+            potencia_ac_requerida: computedRequirements.potenciaAC,
+            potencia_dc_requerida: computedRequirements.potenciaDC,
+            strings_min: computedRequirements.strings_minimos,
+            strings_max: computedRequirements.strings_maximos,
+            itm_ac_min: computedRequirements.itm_ac_min,
+            itm_dc_min: computedRequirements.itm_dc_min,
+            spd_voltage: computedRequirements.spd_min,
         }, selectedEquipmentTable, selectedMaterialTable);
     }
 
@@ -237,20 +252,20 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <AddProductTextAreaField
+                            <AddProductTextField
                                 label="Nombre del proyecto"
                                 required
                                 placeholder=" "
                                 value={form.nombre}
                                 onChange={(value) => updateField("nombre", value)}
                             />
-                            <AddProductTextAreaField
+                            {/* <AddProductTextAreaField
                                 label="Descripción del proyecto"
                                 required
                                 placeholder=" "
                                 value={form.descripcion}
                                 onChange={(value) => updateField("descripcion", value)}
-                            />
+                            /> */}
                             <AddProductSelectField
                                 label="Estado del proyecto"
                                 required
@@ -265,7 +280,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 options={INSTALL_TYPE_OPTIONS}
                                 onChange={(value) => updateField("tipo_instalacion", value)}
                             />
-                            <AddProductTextAreaField
+                            <AddProductUrlField
                                 label="Enlace al proyecto"
                                 placeholder=" "
                                 value={form.enlace}
