@@ -44,7 +44,6 @@ type EditEquipoModalProps = {
 };
 
 export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoModalProps) {
-    const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<EquiposFormState>(() => createEquiposFormStateFromEquipos(equipo));
 
     useEffect(() => {
