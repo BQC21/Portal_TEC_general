@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import AddProjectModal, { type ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
+import AddProjectModal, { SelectedEquipmentItem, SelectedMaterialItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 import type { ProjectFormData } from "@/lib/types/project-types";
 
 type Button2ModalProps = {
     onAddProject: (
         project: ProjectFormData,
-        selectedEquipos: ProjectSelectionItem[],
-        selectedMateriales: ProjectSelectionItem[],
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
     ) => Promise<void> | void;
 };
 

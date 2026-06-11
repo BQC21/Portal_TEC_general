@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import EditProjectModal  from "@/features/view/components/Modals/sizing/project/EditProjectModal";
-import type { ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
+import EditProjectModal, { SelectedEquipmentItem, SelectedMaterialItem }  from "@/features/view/components/Modals/sizing/project/EditProjectModal";
 import type { Project, ProjectFormData } from "@/lib/types/project-types";
 import { Project_Equipos } from "@/lib/types/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/project_materiales_join";
@@ -14,8 +13,8 @@ type EditProjectModalProps = {
     project_materiales: Project_Materiales[];
     onUpdateProject: (
         project: Project,
-        selectedEquipos: ProjectSelectionItem[],
-        selectedMateriales: ProjectSelectionItem[],
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
     ) => Promise<void> | void;
 };
 
