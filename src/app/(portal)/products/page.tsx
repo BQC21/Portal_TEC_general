@@ -103,7 +103,7 @@ export default function ProductsPage() {
     // ---- Ordenamiento de productos --
     // ---------------------------------
 
-    const [sorting, setSorting] = useState<ProductSortingOrder>(null); // estado para ordenar la lista de productos
+    const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
 
     const sortedProducts = useMemo(() => {
         const productsToSort = [...sortedByCodeProducts]; // procura si la tabla ha sido filtrada o no
