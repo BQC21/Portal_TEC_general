@@ -42,8 +42,8 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.mppt)}`}>{displayCellValue(equipo.mppt)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_ac)}`}>{displayCellValue(equipo.potencia_ac)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.dod)}`}>{displayCellValue(equipo.dod.toFixed(0))}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.voc_vmax)}`}>{displayCellValue(equipo.voc_vmax)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.vmpp_vmin)}`}>{displayCellValue(equipo.vmpp_vmin)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.voc_vmax)}`}>{displayCellValue(equipo.voc_vmax)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.impp_i_in)}`}>{displayCellValue(equipo.impp_i_in)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.isc_i_out)}`}>{displayCellValue(equipo.isc_i_out)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.unidad)}`}>{displayCellValue(equipo.unidad)}</td>
