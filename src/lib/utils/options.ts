@@ -129,7 +129,7 @@ export const CONNECTION_TYPE_OPTIONS = [
     "---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"
 ]; // tipo de conexión 
 export const INSTALL_TYPE_OPTIONS = [
-    "---", "conexión ON-GRID", "conexión OFF-GRID"
+    "---", "conexión ON-GRID", "conexión OFF-GRID", "conexión HÍBRIDA"
 ]; // tipo de instalación 
 export const POWER_SOURCE_OPTIONS = [
     "---", "DC", "AC", "DC/AC", "BAT", "MOD"
