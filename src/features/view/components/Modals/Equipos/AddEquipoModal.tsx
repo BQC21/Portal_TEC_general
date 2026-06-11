@@ -26,9 +26,7 @@ type AddEquipoModalProps = {
 
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
-    // const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<EquiposFormState>(INITIAL_EQUIPOS_FORM);
-
 
     // Actualizar campos del formulario
     function updateField<K extends keyof EquiposFormState>(field: K, value: EquiposFormState[K]) {
@@ -58,7 +56,9 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
 
     const equipoInfoSelection = shouldRender_EquipoInfoSelection(form.tipo_de_producto);
     const supplierEquipoCount = existingEquipos.filter((equipo) => equipo.proveedor === form.proveedor).length;
+    console.log("Number of products for supplier:", supplierEquipoCount);
     const generatedCode = buildProductCode(form.tipo_de_producto, form.proveedor, supplierEquipoCount + 1);
+    console.log("Generated Code:", generatedCode);
 
     // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -90,16 +90,16 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                     <section className="space-y-5">
                         <AddProductSectionTitle title="Información Básica" />
                             <div className="grid gap-5 md:grid-cols-2">
-                                <AddProductReadonlyField
-                                    label="COD PROV"
-                                    value={form.cod_prov}
-                                />
                                 <AddProductSelectField
                                     label="PROVEEDOR"
                                     required
                                     value={form.proveedor}
                                     options={SUPPLIER_OPTIONS}
                                     onChange={(value) => updateField("proveedor", value)}
+                                />
+                                <AddProductReadonlyField
+                                    label="COD PROV"
+                                    value={form.cod_prov}
                                 />
                                 {/* {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (
                                     <AddProductReadonlyField
@@ -124,7 +124,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                     required
                                     value={form.marca}
                                     options={equipoInfoSelection.brand_options.length > 0 
-                                        ? equipoInfoSelection.brand_options : [""]}
+                                        ? equipoInfoSelection.brand_options : ["Selecciona Marca"]}
                                     onChange={(value) => updateField("marca", value)}
                                 />
                                 <AddProductReadonlyField

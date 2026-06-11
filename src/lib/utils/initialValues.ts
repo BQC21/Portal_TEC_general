@@ -25,7 +25,9 @@ import {
 	POWER_SOURCE_OPTIONS,
 	PRICE_CURRENCY_OPTIONS,
 	STATUS_OPTIONS,
-    STATUS_PROJECT_OPTIONS
+    STATUS_PROJECT_OPTIONS,
+    EQUIPOS_TYPE_OPTIONS,
+    MATERIALES_TYPE_OPTIONS
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/zone-types";
 import { ProjectFormState } from "../types/project-types";
@@ -91,7 +93,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     cod_prov: SUPPLIER_CODE_OPTIONS[0],
     proveedor: SUPPLIER_OPTIONS[0],
     cod_producto: "",
-    tipo_de_producto: PRODUCT_TYPE_OPTIONS[0],
+    tipo_de_producto: EQUIPOS_TYPE_OPTIONS[0],
     marca: BRAND_OPTIONS[0],
     descripcion: "",
     // propiedades eléctricas
@@ -122,7 +124,7 @@ export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
     cod_prov: SUPPLIER_CODE_OPTIONS[0],
     proveedor: SUPPLIER_OPTIONS[0],
     cod_producto: "",
-    tipo_de_producto: PRODUCT_TYPE_OPTIONS[0],
+    tipo_de_producto: MATERIALES_TYPE_OPTIONS[0],
     marca: BRAND_OPTIONS[0],
     descripcion: "",
     // propiedades cableado
@@ -165,6 +167,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     itm_ac_min:  "",
     itm_dc_min:  "",
     spd_voltage:  "",
+    mppt_number: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
