@@ -59,6 +59,7 @@ type EditProductModalProps = {
 export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClose }: EditProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(() => createProductFormStateFromProduct(product));
+    console.log(form.proveedor)
 
     useEffect(() => {
         setForm(createProductFormStateFromProduct(product));
@@ -137,6 +138,7 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                 form.estado_equipo === "En importación" ? form.fecha_estimada_importacion : null,
             precio_soles: Number(computedPrices.pricePen.toFixed(2)),
             precio_dolares: Number(computedPrices.priceUsd.toFixed(2)),
+            updated_at: new Date()
         });
 
         onClose();

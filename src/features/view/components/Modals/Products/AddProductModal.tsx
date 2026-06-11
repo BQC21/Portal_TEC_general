@@ -58,7 +58,7 @@ type AddProductModalProps = {
 export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
-    console.log(form.proveedor)
+    // console.log(form.proveedor)
 
     // Calcular cambios de precios
     const computedPrices = useMemo(() => {
