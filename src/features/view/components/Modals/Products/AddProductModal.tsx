@@ -58,6 +58,7 @@ type AddProductModalProps = {
 export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
+    console.log(form.proveedor)
 
     // Calcular cambios de precios
     const computedPrices = useMemo(() => {
@@ -102,8 +103,11 @@ export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, 
     }
 
     const productInfoSelection = shouldRender_ProductInfoSelection(form.tipo);
-    const supplierProductCount = existingProducts.filter((product) => product.proveedor === form.proveedor).length;
+    const normalizeSupplier = (value: string) => value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const supplierProductCount = existingProducts.filter((product) => normalizeSupplier(product.proveedor) === normalizeSupplier(form.proveedor)).length;
+    console.log("Number of products for supplier:", supplierProductCount);
     const generatedCode = buildProductCode(form.tipo, form.proveedor, supplierProductCount + 1);
+    console.log("Generated Code:", generatedCode);
 
     // Cambiar la modalidad base de precios
     function handleCurrencyModeChange(currency: CurrencyCode) {

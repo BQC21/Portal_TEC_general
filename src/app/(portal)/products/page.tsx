@@ -111,9 +111,10 @@ export default function ProductsPage() {
             sorting === "asc" ? sortGroupedByPrice(productsToSort, "asc") :
                 sorting === "desc" ? sortGroupedByPrice(productsToSort, "desc") : []
     }, [sortedByCodeProducts, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+    console.log("productos ordenados", sortedProducts)
 
     // ---------------------------------
-    // ---- Lista de eventos ----
+    // ---- Lista de eventos -----------
     // ---------------------------------
 
     async function handleAddProduct(product: ProductFormData) {
@@ -229,7 +230,7 @@ export default function ProductsPage() {
                         <div className="flex w-full xl:justify-end">
                             <Button2Modal
                                 exchangeRate={tasaVenta}
-                                existingProducts={sortedProducts}
+                                existingProducts={products}
                                 onAddProduct={handleAddProduct}
                             />
                         </div>
