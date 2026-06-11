@@ -43,8 +43,8 @@ type EquipoUploadRow = {
 	mppt: number;
 	potencia_ac: number;
 	dod: number;
-	voc_vmax: number;
 	vmpp_vmin: number;
+	voc_vmax: number;
 	impp_i_in: string;
 	isc_i_out: number;
 	unidad: string;
@@ -68,8 +68,8 @@ function mapRowToEquipo(row: string[], offset = 0): EquipoUploadRow {
 		mppt: readSpreadsheetNumber(row, offset + 8),
 		potencia_ac: readSpreadsheetNumber(row, offset + 9),
 		dod: readSpreadsheetNumber(row, offset + 10),
-		voc_vmax: readSpreadsheetNumber(row, offset + 11),
 		vmpp_vmin: readSpreadsheetNumber(row, offset + 12),
+		voc_vmax: readSpreadsheetNumber(row, offset + 11),
 		impp_i_in: readSpreadsheetText(row, offset + 13),
 		isc_i_out: readSpreadsheetNumber(row, offset + 14),
 		unidad: readSpreadsheetText(row, offset + 15),
@@ -115,7 +115,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 		try {
 			// leer encabezados y filas de la hoja detectada
 			const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
-			const matchedSheet = pickFirstMatchingSheet(workbook, EQUIPOS_HEADERS) as EquipoMatchedSheet | null;
+			const matchedSheet = pickFirstMatchingSheet(workbook, EQUIPOS_HEADERS.filter(h => h != "Acciones")) as EquipoMatchedSheet | null;
 
 			if (!matchedSheet) {
 				throw new Error("No se encontraron encabezados válidos para equipos principales.");
@@ -138,8 +138,8 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 				"mppt",
 				"potencia_ac",
 				"dod",
-				"voc_vmax",
 				"vmpp_vmin",
+				"voc_vmax",
 				"isc_i_out",
 				"precio_soles",
 				"precio_dolares",
@@ -195,8 +195,8 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 					"mppt",
 					"potencia_ac",
 					"dod",
-					"voc_vmax",
 					"vmpp_vmin",
+					"voc_vmax",
 					"isc_i_out",
 					"precio_soles",
 					"precio_dolares",

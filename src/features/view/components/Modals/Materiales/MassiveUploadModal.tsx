@@ -98,7 +98,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 
 		try {
 			const workbook = XLSX.read(await file.arrayBuffer(), { type: "array" });
-			const matchedSheet = pickFirstMatchingSheet(workbook, MATERIALES_HEADERS) as MaterialesMatchedSheet | null;
+			const matchedSheet = pickFirstMatchingSheet(workbook, MATERIALES_HEADERS.filter(h => h != "Acciones")) as MaterialesMatchedSheet | null;
 
 			if (!matchedSheet) {
 				throw new Error("No se encontraron encabezados válidos para materiales eléctricos.");
