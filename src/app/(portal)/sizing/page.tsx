@@ -22,7 +22,7 @@ import ZoneTable from "@/features/view/components/Tables/sizing/ZoneTable";
 
 import Button2Modal_zone from "@/features/view/components/Buttons/sizing/zone/button2modal";
 import Button2Modal_project from "@/features/view/components/Buttons/sizing/project/button2modal";
-import type { ProjectSelectionItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
+import type { SelectedEquipmentItem, SelectedMaterialItem } from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 
@@ -60,8 +60,8 @@ export default function ProjectsPage() {
     //----- Agregar
     async function handleAddProject(
         project: ProjectFormData,
-        selectedEquipos: ProjectSelectionItem[] = [],
-        selectedMateriales: ProjectSelectionItem[] = [],
+        selectedEquipos: SelectedEquipmentItem[] = [],
+        selectedMateriales: SelectedMaterialItem[] = [],
     ) {
         const createdProject = await create_project(project);
         await Promise.all(
@@ -96,8 +96,8 @@ export default function ProjectsPage() {
     //----- Actualizar
     async function handleUpdateProject(
         updatedProject: Project,
-        selectedEquipos: ProjectSelectionItem[] = [],
-        selectedMateriales: ProjectSelectionItem[] = [],
+        selectedEquipos: SelectedEquipmentItem[] = [],
+        selectedMateriales: SelectedMaterialItem[] = [],
     ) {
         // actualiza base de datos
         const { id, ...projectData } = updatedProject;

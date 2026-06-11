@@ -4,21 +4,22 @@ import { useState, useMemo } from "react";
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
-import type { 
+import type {
     ProjectFormState,
     ProjectFormData,
-} from "@/lib/types/project-types"; 
+} from "@/lib/types/project-types";
 
-import type { 
+import type {
     ZoneFormState,
 } from "@/lib/types/zone-types"; // Tipados
 
+import type { Equipos } from "@/lib/types/equipos-types";
+
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
-import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField"; 
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
 
-import { INITIAL_MATERIALES_FORM, INITIAL_PROJECT_FORM, 
-    INITIAL_PROJECT_MATERIAL_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
 import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
@@ -32,21 +33,47 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import {
     computeEnergy,
     compute_DC_Power,
-    compute_AC_Power
-} from "@/lib/utils/helpers/energy_requirements"
+    compute_AC_Power,
+    min_strings,
+    max_strings,
+    ITM_DC_MIN,
+    ITM_AC_MIN,
+    SPD_MIN
+} from "@/lib/utils/helpers/computes/energy_requirements"
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { Project_MaterialesFormState } from "@/lib/types/project_materiales_join";
-import { MaterialesFormState } from "@/lib/types/materiales-types";
+
+export type SelectedEquipmentItem = {
+    row: string;
+    id: string;
+    description: string;
+    potencia_maxima: number;
+    mppt: number;
+    potencia_ac: number;
+    voc_vmax: number;
+    vmpp_vmin: number;
+    isc_i_out: number;
+    impp_i_in: string;
+};
+
+export type SelectedMaterialItem = {
+    row: string;
+    id: string;
+    description: string;
+};
 
 // --- Tipo de variables ---
-type AddProductModalProps = {
-    onAddProject: (project: ProjectFormData) => void;
+type AddModalProps = {
+    onAddProject: (
+        project: ProjectFormData,
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
+    ) => Promise<void> | void;
     onClose: () => void;
 };
 
-export default function AddProjectModal({ onAddProject, onClose }: AddProductModalProps) {
+export default function AddProjectModal({ onAddProject, onClose }: AddModalProps) {
 
     // ----------------------------
     // ------- Estados ------------
@@ -59,20 +86,20 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
     // valores iniciales
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
-    
+
     // datos seleccionados
     const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, string>>({});
     const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, string>>({});
-    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<Array<{ row: string; description: string }>>([]);
-    const [selectedMaterialTable, setSelectedMaterialTable] = useState<Array<{ row: string; description: string }>>([]);
+    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
+    const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
 
     const selectedZone = form_zone.zona;
 
     // ----------------------------
     // ------- NREL API -----
     // ----------------------------
-    const { ghi_nrel, 
-        // hsp, 
+    const { ghi_nrel,
+        // hsp,
         loading: NRELloading, error: NRELerror } = useConverterNREL({
         latitude:  form_zone.latitude ?? "",
         longitude: form_zone.longitude ?? "",
@@ -92,39 +119,53 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
     // ----------------------------------------
     // ------- Cálculos de requerimientos -----
     // ----------------------------------------
-    
+
     const computedRequirements = useMemo(() => {
-        
+
         const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+        const selectedEquipment = selectedEquipmentTable.find((item) => item.row === "MÓDULO FV");
+        const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
+
+        console.log(selectedEquipment?.voc_vmax)
 
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
         const potenciaDC = String(compute_DC_Power(Number(energia), Number(ghi), Number(form.rendimiento_modulo_porcentaje)));
-        const potenciaAC = String(compute_AC_Power(Number(potenciaDC), Number(form.relacion_dc_ac)));  
-    
-        return { energia, potenciaDC, potenciaAC };
-    }, [form.demanda_electrica, form.cobertura_porcentaje, form.ghi, 
-        form.rendimiento_modulo_porcentaje, form.relacion_dc_ac, form_zone.ghi_respaldo]);
+        const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
+        // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
+        const strings_minimos = String(min_strings(Number(potenciaDC), 
+                                    Number(selectedEquipment?.potencia_maxima ?? 0)));
+        const strings_maximos = String(max_strings(Number(selectedInverter?.potencia_maxima ?? 0), 
+                                    Number(selectedEquipment?.potencia_maxima ?? 0)));
+        // calcular protecciones
+        const itm_ac_min = String(ITM_AC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)))
+        const itm_dc_min = String(ITM_DC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
+        const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)))
 
-    // ----------------------------------------
-    // ------- EVENTOS ------------------------
-    // ----------------------------------------
+        return { energia, potenciaDC, potenciaAC, strings_minimos, strings_maximos, itm_ac_min, itm_dc_min, spd_min };
+    }, [form.demanda_electrica, 
+        form.cobertura_porcentaje, 
+        form.ghi,
+        form.rendimiento_modulo_porcentaje, 
+        form.mppt_number,
+        form.strings,
+        form_zone.ghi_respaldo,
+        selectedEquipmentTable,
+    ]);
+    console.log(form.strings)
+    console.log(form.mppt_number)
 
-    // Form
     function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
             return updated;
         });
     }
-
-    // Tabla
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
-        onAddProject({
+        await onAddProject({
             ...form,
-
-        });
+        }, selectedEquipmentTable, selectedMaterialTable);
     }
 
     // --------------------------------------------------
@@ -165,25 +206,17 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
     const equipmentRows = [
         "ACCESORIO",
         "BATERÍA",
-        "CONTROLADOR",
-        "CONVERTIDOR",
-        "DATALOGGER",
         "ESTRUCTURA",
         "INVERSOR",
-        "MÓDULO",
-        "MONITOR",
-        "RACK",
-        "SMART METER",
+        "MÓDULO FV",
     ];
 
     const materialRows = [
         "CABLE",
         "PROTECCIÓN",
         "MC4",
-        "TABLERO",
-        "CT",
-        "FUSIBLE",
-        "PORTAFUSIBLE",
+        "CANALIZACIÓN",
+        "CONSUMIBLE",
     ];
 
     return (
@@ -234,7 +267,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                             />
                             <AddProductTextAreaField
                                 label="Enlace al proyecto"
-                                required
                                 placeholder=" "
                                 value={form.enlace}
                                 onChange={(value) => updateField("enlace", value)}
@@ -269,6 +301,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                             ghi_respaldo_diario: selected.ghi_respaldo_diario,
                                             gti_respaldo: selected.gti_respaldo,
                                             gti_respaldo_diario: selected.gti_respaldo_diario,
+                                            hsp_peor_mes: selected.hsp_peor_mes,
                                             created_at: selected.created_at,
                                             updated_at: selected.updated_at,
                                         });
@@ -319,7 +352,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
 
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-6 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.4fr)_minmax(0,1.4fr)]">
+                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,1.0fr)_minmax(0,2.0fr)]">
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Requerimientos técnicos</h2>
                                     <AddProductNumberField
@@ -347,13 +380,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                         value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
                                         onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
                                     />
-                                    <AddProductNumberField
-                                        label="Relación DC/AC (%)"
-                                        required
-                                        value={Number(form.relacion_dc_ac) > 0 ? Number(form.relacion_dc_ac) : ""}
-                                        onChange={(value) => updateField("relacion_dc_ac", String(value))}
+                                    <AddProductReadonlyField
+                                        label="Energía requerida"
+                                        value={computedRequirements.energia}
                                     />
-                                    <AddProductReadonlyField label="Energía requerida" value={computedRequirements.energia} />
                                     <AddProductReadonlyField
                                         label="Potencia DC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
@@ -361,6 +391,38 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                     <AddProductReadonlyField
                                         label="Potencia AC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Mínimo de Strings"
+                                        value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Máximo de Strings"
+                                        value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
+                                    />
+                                    <AddProductNumberField
+                                        label="Número exacto de Strings"
+                                        required
+                                        value={Number(form.strings) > 0 ? Number(form.strings) : ""}
+                                        onChange={(value) => updateField("strings", String(value))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Protección ITM AC mínima"
+                                        value={String(Number(computedRequirements.itm_ac_min).toFixed(0))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Protección ITM DC mínima"
+                                        value={String(Number(computedRequirements.itm_dc_min).toFixed(0))}
+                                    />
+                                    <AddProductNumberField
+                                        label="Número de MPPTs a usarse"
+                                        required
+                                        value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
+                                        onChange={(value) => updateField("mppt_number", String(value))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Protección SPD"
+                                        value={String(Number(computedRequirements.spd_min).toFixed(0))}
                                     />
                                 </div>
 
@@ -385,7 +447,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                             ...current,
                                                             [label]: "",
                                                         }));
-                                                        setSelectedEquipmentTable((current) => current.filter((item) => item.row !== label));
+                                                        setSelectedEquipmentTable((current) =>
+                                                            current.filter((item) => item.row !== label),
+                                                        );
                                                         return;
                                                     }
 
@@ -396,23 +460,39 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                 }}
                                                 onClick={() => {
                                                     const descripcion = selectedEquipmentByRow[label];
-
                                                     if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                        return;
+                                                    }
+
+                                                    const selected = equipos.find((equipo) =>
+                                                        equipo.tipo_de_producto === label &&
+                                                        equipo.descripcion === descripcion,
+                                                    );
+
+                                                    if (!selected) {
                                                         return;
                                                     }
 
                                                     setSelectedEquipmentTable((current) => {
                                                         const next = current.filter((item) => item.row !== label);
-                                                        return [...next, { row: label, description: descripcion }];
+                                                        return [...next, {
+                                                            row: label,
+                                                            id: String(selected.id),
+                                                            description: selected.descripcion ?? "",
+                                                            potencia_maxima: selected.potencia_maxima ?? 0,
+                                                            mppt: selected.mppt ?? 0,
+                                                            potencia_ac: selected.potencia_ac ?? 0,
+                                                            voc_vmax: selected.voc_vmax ?? 0,
+                                                            vmpp_vmin: selected.vmpp_vmin ?? 0,
+                                                            isc_i_out: selected.isc_i_out ?? 0,
+                                                            impp_i_in: selected.impp_i_in ?? "",
+                                                        }];
                                                     });
                                                 }}
                                             />
                                         ))}
                                     </div>
-                                </div>
-
-                                <div>
-                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
+                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
                                     <div className="flex flex-col gap-4">
                                         {materialRows.map((label, index) => (
                                             <SelectionRow
@@ -441,21 +521,36 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                         ...current,
                                                         [label]: value,
                                                     }));
-                                                    }}
+                                                }}
                                                 onClick={() => {
                                                     const descripcion = selectedMaterialByRow[label];
+                                                    const selected = materiales.find((material) =>
+                                                        material.tipo_de_producto === label && material.descripcion === descripcion
+                                                    );
 
-                                                    if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                    if (!selected || !descripcion || descripcion === `Seleccionar - ${label}`) {
                                                         return;
                                                     }
 
                                                     setSelectedMaterialTable((current) => {
                                                         const next = current.filter((item) => item.row !== label);
-                                                        return [...next, { row: label, description: descripcion }];
+                                                        return [...next, {
+                                                            row: label,
+                                                            id: String(selected.id),
+                                                            description: descripcion,
+                                                        }];
                                                     });
                                                 }}
                                             />
                                         ))}
+                                    </div>
+                                    <h4 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Notas adicionales</h4>
+                                    <div className="flex flex-col gap-4">
+                                        <li>Seleccione el inversor y el módulo para calcular el valor máximo y 
+                                            mínimo de strings a poder usarse. Así como también los valores mínimos de Protección 
+                                            ITM AC e ITM DC.</li>
+                                        <li>Ingrese el número exacto de strings y de MPPTs a emplearse para 
+                                            poder visualizar la protección SPD.</li>
                                     </div>
                                 </div>
                             </div>
@@ -487,11 +582,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => {
-                                                                setSelectedEquipmentTable((current) =>
-                                                                    current.filter((row) => row.row !== item.row),
-                                                                );
-                                                            }}
+                                                onClick={() => {
+                                                    setSelectedEquipmentTable((current) =>
+                                                        current.filter((row) => row.row !== item.row),
+                                                    );
+                                                }}
+
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
@@ -535,11 +631,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddProductMod
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => {
-                                                                setSelectedMaterialTable((current) =>
-                                                                    current.filter((row) => row.row !== item.row),
-                                                                );
-                                                            }}
+                                                onClick={() => {
+                                                    setSelectedMaterialTable((current) =>
+                                                        current.filter((row) => row.row !== item.row),
+                                                    );
+                                                }}
+
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
