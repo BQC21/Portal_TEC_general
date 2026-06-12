@@ -36,7 +36,9 @@ import {
     max_strings,
     ITM_AC_MIN,
     ITM_DC_MIN,
-    SPD_MIN
+    SPD_MIN,
+    AH_sistema,
+    N_baterias
 } from "@/lib/utils/helpers/computes/energy_requirements"
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
@@ -47,6 +49,7 @@ import { Project_Equipos } from "@/lib/types/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/project_materiales_join";
 import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
 
 export type SelectedEquipmentItem = {
     row: string;
@@ -54,6 +57,7 @@ export type SelectedEquipmentItem = {
     description: string;
     potencia_maxima: number;
     mppt: number;
+    dod: number;
     potencia_ac: number;
     voc_vmax: number;
     vmpp_vmin: number;
@@ -137,6 +141,7 @@ export default function EditProjectModal({
                 description: item.equipo_info!.descripcion,
                 potencia_maxima: item.equipo_info!.potencia_maxima,
                 mppt: item.equipo_info!.mppt,
+                dod: item.equipo_info!.dod,
                 potencia_ac: item.equipo_info!.potencia_ac,
                 voc_vmax: item.equipo_info!.voc_vmax,
                 vmpp_vmin: item.equipo_info!.vmpp_vmin,
@@ -186,8 +191,7 @@ export default function EditProjectModal({
         const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
         const selectedEquipment = selectedEquipmentTable.find((item) => item.row === "MÓDULO FV");
         const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
-
-        console.log(selectedEquipment?.voc_vmax)
+        const selectedBattery = selectedEquipmentTable.findLast((item) => item.row === "BATERÍA");
 
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
         const potenciaDC = String(compute_DC_Power(Number(energia), Number(ghi), Number(form.rendimiento_modulo_porcentaje)));
@@ -201,6 +205,10 @@ export default function EditProjectModal({
         const itm_ac_min = String(ITM_AC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)))
         const itm_dc_min = String(ITM_DC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
         const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)))
+        // calcular propiedades de la batería
+        const ah_sistema = String(AH_sistema(Number(form.demanda_electrica), Number(form.autonomia), 
+                        Number(selectedBattery?.dod), Number(selectedBattery?.vmpp_vmin)));
+        const num_baterias =String(N_baterias(Number(ah_sistema), Number(selectedBattery?.impp_i_in ?? 0)));
 
         return { 
             energia, 
@@ -210,7 +218,12 @@ export default function EditProjectModal({
             strings_maximos, 
             itm_ac_min, 
             itm_dc_min, 
-            spd_min 
+            spd_min,
+            ah_sistema,
+            num_baterias,
+            selectedEquipment,
+            selectedInverter,
+            selectedBattery
         };
     }, [form.demanda_electrica, 
         form.cobertura_porcentaje, 
@@ -219,7 +232,8 @@ export default function EditProjectModal({
         form.mppt_number,
         form.strings,
         form_zone.ghi_respaldo,
-        selectedEquipmentTable,
+        form.autonomia,
+        selectedEquipmentTable
     ]);
 
     // ----------------------------------------
@@ -247,6 +261,8 @@ export default function EditProjectModal({
             itm_ac_min: computedRequirements.itm_ac_min,
             itm_dc_min: computedRequirements.itm_dc_min,
             spd_voltage: computedRequirements.spd_min,
+            ah_sistema: computedRequirements.ah_sistema,
+            num_baterias: computedRequirements.num_baterias,
             updated_at: new Date(),
         }, selectedEquipmentTable, selectedMaterialTable);
     }
@@ -363,7 +379,7 @@ export default function EditProjectModal({
                                 label="Zona"
                                 required
                                 value={form_zone.zona ?? ""}
-                                options={["Seleccione zona", ...(zones.length > 0 ? zones.map((p) => p.zona) : zones.map((p) => p.zona))]}
+                                options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
                                 onChange={(value) => {
                                     if (value === "Seleccione zona") {
                                         setForm_zone(INITIAL_ZONE_FORM);
@@ -436,9 +452,9 @@ export default function EditProjectModal({
 
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,1.0fr)_minmax(0,2.0fr)]">
+                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)]">
                                 <div>
-                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Requerimientos técnicos</h2>
+                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
                                     <AddProductNumberField
                                         label="Demanda eléctrica anual (kWh)"
                                         required
@@ -464,9 +480,11 @@ export default function EditProjectModal({
                                         value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
                                         onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
                                     />
-                                    <AddProductReadonlyField 
-                                        label="Energía requerida" 
-                                        value={computedRequirements.energia} 
+
+                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
+                                    <AddProductReadonlyField
+                                        label="Energía requerida"
+                                        value={computedRequirements.energia}
                                     />
                                     <AddProductReadonlyField
                                         label="Potencia DC requerida (KW)"
@@ -475,6 +493,28 @@ export default function EditProjectModal({
                                     <AddProductReadonlyField
                                         label="Potencia AC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                    />
+
+                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Configuración del campo fotovoltaico</h2>
+                                    <AddEquipoReadonlyField
+                                        label="VMPP del módulo seleccionado"
+                                        value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="IMPP del módulo seleccionado"
+                                        value={String(Number(computedRequirements.selectedEquipment?.impp_i_in).toFixed(2))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="VOC del módulo seleccionado"
+                                        value={String(Number(computedRequirements.selectedEquipment?.voc_vmax).toFixed(2))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="ISC del módulo seleccionado"
+                                        value={String(Number(computedRequirements.selectedEquipment?.isc_i_out).toFixed(2))}
+                                    />  
+                                    <AddEquipoReadonlyField
+                                        label="Potencia del módulo seleccionado"
+                                        value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(2))}
                                     />
                                     <AddProductReadonlyField
                                         label="Mínimo de Strings"
@@ -490,6 +530,30 @@ export default function EditProjectModal({
                                         value={Number(form.strings) > 0 ? Number(form.strings) : ""}
                                         onChange={(value) => updateField("strings", String(value))}
                                     />
+                                </div>
+
+                                <div>
+                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Protecciones eléctricas</h2>
+                                    <AddEquipoReadonlyField
+                                        label="Potencia DC máxima del inversor seleccionado"
+                                        value={String(Number(computedRequirements.selectedInverter?.potencia_maxima).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Potencia AC del inversor seleccionado"
+                                        value={String(Number(computedRequirements.selectedInverter?.potencia_ac).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Corriente de entrada del inversor"
+                                        value={String(Number(computedRequirements.selectedInverter?.impp_i_in).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Corriente de salida del inversor"
+                                        value={String(Number(computedRequirements.selectedInverter?.isc_i_out).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Voltaje máximo del inversor por MPPT"
+                                        value={String(Number(computedRequirements.selectedInverter?.voc_vmax).toFixed(0))}
+                                    />
                                     <AddProductReadonlyField
                                         label="Protección ITM AC mínima"
                                         value={String(Number(computedRequirements.itm_ac_min).toFixed(0))}
@@ -497,6 +561,10 @@ export default function EditProjectModal({
                                     <AddProductReadonlyField
                                         label="Protección ITM DC mínima"
                                         value={String(Number(computedRequirements.itm_dc_min).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Número máximo de MPPTs a usarse"
+                                        value={String(Number(computedRequirements.selectedInverter?.mppt).toFixed(0))}
                                     />
                                     <AddProductNumberField
                                         label="Número de MPPTs a usarse"
@@ -508,10 +576,54 @@ export default function EditProjectModal({
                                         label="Protección SPD"
                                         value={String(Number(computedRequirements.spd_min).toFixed(0))}
                                     />
-                                </div>
 
+                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
+                                    <AddEquipoReadonlyField
+                                        label="Capacidad de la batería seleccionada"
+                                        value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="Voltaje de la batería seleccionada"
+                                        value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
+                                    />
+                                    <AddEquipoReadonlyField
+                                        label="DoD de la batería seleccionada"
+                                        value={String(Number(computedRequirements.selectedBattery?.dod).toFixed(0))}
+                                    />
+                                    <AddProductNumberField
+                                        label="Días de autonomía"
+                                        required
+                                        value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
+                                        onChange={(value) => updateField("autonomia", String(value))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Capacidad (Ah) del sistema"
+                                        value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
+                                    />
+                                    <AddProductReadonlyField
+                                        label="Número de baterías necesarias"
+                                        value={String(Number(computedRequirements.num_baterias).toFixed(0))}
+                                    />
+
+                                    {/* <h4 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Notas adicionales</h4>
+                                    <div className="flex flex-col gap-4">
+                                        <li>Seleccione el inversor y el módulo para calcular el valor máximo y 
+                                            mínimo de strings a poder usarse. Así como también los valores mínimos de Protección 
+                                            ITM AC e ITM DC.</li>
+                                        <li>Ingrese el número exacto de strings y de MPPTs a emplearse para 
+                                            poder visualizar la protección SPD.</li>
+                                        <li>...</li>
+                                    </div> */}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.0fr)_minmax(0,2.0fr)]">
                                 <div>
-                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
+                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
                                     <div className="flex flex-col gap-4">
                                         {equipmentRows.map((label, index) => (
                                             <SelectionRow
@@ -531,7 +643,9 @@ export default function EditProjectModal({
                                                             ...current,
                                                             [label]: "",
                                                         }));
-                                                        setSelectedEquipmentTable((current) => current.filter((item) => item.row !== label));
+                                                        setSelectedEquipmentTable((current) =>
+                                                            current.filter((item) => item.row !== label),
+                                                        );
                                                         return;
                                                     }
 
@@ -542,11 +656,16 @@ export default function EditProjectModal({
                                                 }}
                                                 onClick={() => {
                                                     const descripcion = selectedEquipmentByRow[label];
+                                                    if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                        return;
+                                                    }
+
                                                     const selected = equipos.find((equipo) =>
-                                                        equipo.tipo_de_producto === label && equipo.descripcion === descripcion
+                                                        equipo.tipo_de_producto === label &&
+                                                        equipo.descripcion === descripcion,
                                                     );
 
-                                                    if (!selected || !descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                    if (!selected) {
                                                         return;
                                                     }
 
@@ -555,21 +674,24 @@ export default function EditProjectModal({
                                                         return [...next, {
                                                             row: label,
                                                             id: String(selected.id),
-                                                            description: descripcion,
-                                                            potencia_maxima: selected.potencia_maxima,
-                                                            mppt: selected.mppt,
-                                                            potencia_ac: selected.potencia_ac,
-                                                            voc_vmax: selected.voc_vmax,
-                                                            vmpp_vmin: selected.vmpp_vmin,
-                                                            isc_i_out: selected.isc_i_out,
-                                                            impp_i_in: selected.impp_i_in,
+                                                            description: selected.descripcion ?? "",
+                                                            potencia_maxima: selected.potencia_maxima ?? 0,
+                                                            mppt: selected.mppt ?? 0,
+                                                            potencia_ac: selected.potencia_ac ?? 0,
+                                                            voc_vmax: selected.voc_vmax ?? 0,
+                                                            vmpp_vmin: selected.vmpp_vmin ?? 0,
+                                                            isc_i_out: selected.isc_i_out ?? 0,
+                                                            impp_i_in: selected.impp_i_in ?? "",
+                                                            dod: selected.dod ?? 0,
                                                         }];
                                                     });
                                                 }}
                                             />
                                         ))}
                                     </div>
+                                </div>
 
+                                <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
                                     <div className="flex flex-col gap-4">
                                         {materialRows.map((label, index) => (
@@ -599,7 +721,7 @@ export default function EditProjectModal({
                                                         ...current,
                                                         [label]: value,
                                                     }));
-                                                    }}
+                                                }}
                                                 onClick={() => {
                                                     const descripcion = selectedMaterialByRow[label];
                                                     const selected = materiales.find((material) =>
@@ -621,14 +743,6 @@ export default function EditProjectModal({
                                                 }}
                                             />
                                         ))}
-                                    </div>
-                                    <h4 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Notas adicionales</h4>
-                                    <div className="flex flex-col gap-4">
-                                        <li>Seleccione el inversor y el módulo para calcular el valor máximo y 
-                                            mínimo de strings a poder usarse. Así como también los valores mínimos de Protección 
-                                            ITM AC e ITM DC.</li>
-                                        <li>Ingrese el número exacto de strings y de MPPTs a emplearse para 
-                                            poder visualizar la protección SPD.</li>
                                     </div>
                                 </div>
                             </div>
@@ -660,11 +774,12 @@ export default function EditProjectModal({
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => {
-                                                                setSelectedEquipmentTable((current) =>
-                                                                    current.filter((row) => row.row !== item.row),
-                                                                );
-                                                            }}
+                                                onClick={() => {
+                                                    setSelectedEquipmentTable((current) =>
+                                                        current.filter((row) => row.row !== item.row),
+                                                    );
+                                                }}
+
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
@@ -708,11 +823,12 @@ export default function EditProjectModal({
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                            onClick={() => {
-                                                                setSelectedMaterialTable((current) =>
-                                                                    current.filter((row) => row.row !== item.row),
-                                                                );
-                                                            }}
+                                                onClick={() => {
+                                                    setSelectedMaterialTable((current) =>
+                                                        current.filter((row) => row.row !== item.row),
+                                                    );
+                                                }}
+
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
