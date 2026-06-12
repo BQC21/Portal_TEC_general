@@ -49,7 +49,7 @@ export function SPD_MIN(string_number: number, voc_mod: number,
 
 export function AH_sistema(demanda: number, autonomía: number, 
 	dod: number, voltaje_bateria: number){
-	return (demanda*autonomía)/(dod*voltaje_bateria)
+	return (demanda*autonomía)/((dod/100)*voltaje_bateria)
 }
 
 export function N_baterias(ah_sistema: number, ah_bateria: number){
