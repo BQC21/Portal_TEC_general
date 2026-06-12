@@ -152,22 +152,28 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // cálculos de radiación
     hsp: "",
     ghi: "",
-    // inputs generales
+    // datos del sistema
     demanda_electrica:  "",
     configuracion:  "",
     cobertura_porcentaje:  "",
     rendimiento_modulo_porcentaje:  "",
-    // cálculos de requerimientos
+    // requerimientos energéticos
     energia_requerida:  "",
     potencia_dc_requerida:  "",
     potencia_ac_requerida:  "",
+    // campo fotovoltaico
     strings_min:  "",
     strings_max:  "",
     strings:  "",
+    // protecciones eléctricas
     itm_ac_min:  "",
     itm_dc_min:  "",
     spd_voltage:  "",
     mppt_number: "",
+    // almacenamiento energético
+    autonomía: "",
+    ah_sistema: "",
+    num_baterias: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
