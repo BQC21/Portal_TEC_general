@@ -50,6 +50,7 @@ import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 
 type EditProjectModalProps = {
     existingProject: Project;
@@ -441,13 +442,15 @@ export default function EditProjectModal({
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
                                     />
-                                    <AddProductSelectField
-                                        label="Configuración"
-                                        required
-                                        value={form.configuracion}
-                                        options={CONNECTION_TYPE_OPTIONS}
-                                        onChange={(value) => updateField("configuracion", value)}
-                                    />
+                                    {shouldRender_M2_configuration(form.tipo_instalacion) && (
+                                        <AddProductSelectField
+                                            label="Configuración"
+                                            required
+                                            value={form.configuracion}
+                                            options={CONNECTION_TYPE_OPTIONS}
+                                            onChange={(value) => updateField("configuracion", value)}
+                                        />
+                                    )}
                                     <AddProductNumberField
                                         label="Porcentaje de cobertura (%)"
                                         required
@@ -557,33 +560,37 @@ export default function EditProjectModal({
                                         value={String(Number(computedRequirements.spd_min).toFixed(0))}
                                     />
 
-                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
-                                    <AddEquipoReadonlyField
-                                        label="Capacidad de la batería seleccionada"
-                                        value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
-                                    />
-                                    <AddEquipoReadonlyField
-                                        label="Voltaje de la batería seleccionada"
-                                        value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
-                                    />
-                                    <AddEquipoReadonlyField
-                                        label="DoD de la batería seleccionada"
-                                        value={String(Number(computedRequirements.selectedBattery?.dod).toFixed(0))}
-                                    />
-                                    <AddProductNumberField
-                                        label="Días de autonomía"
-                                        required
-                                        value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
-                                        onChange={(value) => updateField("autonomia", String(value))}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Capacidad (Ah) del sistema"
-                                        value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Número de baterías necesarias"
-                                        value={String(Number(computedRequirements.num_baterias).toFixed(0))}
-                                    />
+                                    {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
+                                        <>
+                                            <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
+                                            <AddEquipoReadonlyField
+                                                label="Capacidad de la batería seleccionada"
+                                                value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
+                                            />
+                                            <AddEquipoReadonlyField
+                                                label="Voltaje de la batería seleccionada"
+                                                value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
+                                            />
+                                            <AddEquipoReadonlyField
+                                                label="DoD de la batería seleccionada"
+                                                value={String(Number(computedRequirements.selectedBattery?.dod).toFixed(0))}
+                                            />
+                                            <AddProductNumberField
+                                                label="Días de autonomía"
+                                                required
+                                                value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
+                                                onChange={(value) => updateField("autonomia", String(value))}
+                                            />
+                                            <AddProductReadonlyField
+                                                label="Capacidad (Ah) del sistema"
+                                                value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
+                                            />
+                                            <AddProductReadonlyField
+                                                label="Número de baterías necesarias"
+                                                value={String(Number(computedRequirements.num_baterias).toFixed(0))}
+                                            />
+                                    </>
+                                )}
 
                                     {/* <h4 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Notas adicionales</h4>
                                     <div className="flex flex-col gap-4">
