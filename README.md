@@ -1,7 +1,7 @@
 
 
 # Portal_TEC_general
-Se desarrolla un portal corporativo empresarial que será desplegada en un sitio web con el fin de agilizar el proceso de dimensionamiento y cotización de proyectos diseñados con sistemas solares fotovoltaicos.
+Se desarrolla un portal corporativo empresarial que será desplegado en un sitio web con el fin de agilizar el proceso de dimensionamiento y cotización de proyectos diseñados con sistemas solares fotovoltaicos.
 
 ## Características
 - [x] Módulo 1: Base de datos de equipos y materiales eléctricos 
