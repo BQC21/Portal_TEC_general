@@ -171,7 +171,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     spd_voltage:  "",
     mppt_number: "",
     // almacenamiento energético
-    autonomía: "",
+    autonomia: "",
     ah_sistema: "",
     num_baterias: "",
     // fechas

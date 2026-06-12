@@ -36,7 +36,7 @@ export type SupabaseProjectRow = {
     spd_voltage?: number;
     mppt_number?: number;
     // almacenamiento energético
-    autonomía?: number;
+    autonomia?: number;
     ah_sistema?: number;
     num_baterias?: number;
     // fechas
@@ -79,7 +79,7 @@ export type Project = {
     spd_voltage: string;
     mppt_number: string;
     // almacenamiento energético
-    autonomía: string;
+    autonomia: string;
     ah_sistema: string;
     num_baterias: string;
     // fechas

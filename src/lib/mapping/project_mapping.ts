@@ -35,7 +35,7 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         spd_voltage: project.spd_voltage,
         mppt_number: project.mppt_number,
         // almacenamiento energético
-        autonomía: project.autonomía,
+        autonomia: project.autonomia,
         ah_sistema: project.ah_sistema,
         num_baterias: project.num_baterias,
         // fechas
@@ -87,7 +87,7 @@ export function mapSupabaseRowToProject(
         spd_voltage: row.spd_voltage?.toString() || "",
         mppt_number: row.mppt_number?.toString() || "",
         // almacenamiento energético
-        autonomía: row.autonomía?.toString() || "",
+        autonomia: row.autonomia?.toString() || "",
         ah_sistema: row.ah_sistema?.toString() || "",
         num_baterias: row.num_baterias?.toString() || "",
         // cálculos de radiación
@@ -137,7 +137,7 @@ export function mapProjectToSupabaseRow(
         spd_voltage: parseNumber(project.spd_voltage),
         mppt_number: parseNumber(project.mppt_number),
         // almacenamiento energético
-        autonomía: parseNumber(project.autonomía),
+        autonomia: parseNumber(project.autonomia),
         ah_sistema: parseNumber(project.ah_sistema),
         num_baterias: parseNumber(project.num_baterias),
         // fechas
