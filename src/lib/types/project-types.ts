@@ -17,22 +17,28 @@ export type SupabaseProjectRow = {
     // cálculos de radiación
     hsp?: number;
     ghi?: number;
-    // inputs generales
+    // datos del sistema
     demanda_electrica?: number;
     configuracion?: string;
     cobertura_porcentaje?: number;
     rendimiento_modulo_porcentaje?: number;
-    // cálculos de requerimientos
+    // requerimientos energéticos
     energia_requerida?: number;
     potencia_dc_requerida?: number;
     potencia_ac_requerida?: number;
+    // campo fotovoltaico
     strings_min?: number;
     strings_max?: number;
     strings?: number;
+    // protecciones eléctricas
     itm_dc_min?: number;
     itm_ac_min?: number;
     spd_voltage?: number;
     mppt_number?: number;
+    // almacenamiento energético
+    autonomía?: number;
+    ah_sistema?: number;
+    num_baterias?: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -54,22 +60,28 @@ export type Project = {
     // cálculos de radiación
     hsp: string;
     ghi: string;
-    // inputs generales
+    // datos del sistema
     demanda_electrica: string;
     configuracion: string;
     cobertura_porcentaje: string;
     rendimiento_modulo_porcentaje: string;
-    // cálculos de requerimientos
+    // requerimientos energéticos
     energia_requerida: string;
     potencia_dc_requerida: string;
     potencia_ac_requerida: string;
+    // campo fotovoltaico
     strings_min: string;
     strings_max: string;
     strings: string;
+    // protecciones eléctricas
     itm_dc_min: string;
     itm_ac_min: string;
     spd_voltage: string;
     mppt_number: string;
+    // almacenamiento energético
+    autonomía: string;
+    ah_sistema: string;
+    num_baterias: string;
     // fechas
     created_at: Date;
     updated_at: Date;

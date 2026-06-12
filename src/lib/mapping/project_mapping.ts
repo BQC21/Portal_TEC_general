@@ -16,22 +16,28 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         // cálculos de radiación
         hsp: project.hsp,
         ghi: project.ghi,
-        // inputs generales
+        // datos del sistema
         demanda_electrica: project.demanda_electrica,
         configuracion: project.configuracion,
         cobertura_porcentaje: project.cobertura_porcentaje,
         rendimiento_modulo_porcentaje: project.rendimiento_modulo_porcentaje,
-        // cálculos de requerimientos
+        // requerimientos energéticos
         energia_requerida: project.energia_requerida,
         potencia_dc_requerida: project.potencia_dc_requerida,
         potencia_ac_requerida: project.potencia_ac_requerida,
+        // campo fotovoltaico   
         strings_min: project.strings_min,
         strings_max: project.strings_max,
         strings: project.strings,
+        // protecciones eléctricas
         itm_ac_min: project.itm_ac_min,
         itm_dc_min: project.itm_dc_min,
         spd_voltage: project.spd_voltage,
         mppt_number: project.mppt_number,
+        // almacenamiento energético
+        autonomía: project.autonomía,
+        ah_sistema: project.ah_sistema,
+        num_baterias: project.num_baterias,
         // fechas
         created_at: project.created_at,
         updated_at: project.updated_at,
@@ -62,22 +68,28 @@ export function mapSupabaseRowToProject(
                 ? mapSupabaseRowToZone(row.zonas as SupabaseZoneRow)
                 : undefined,
         tipo_instalacion: row.tipo_instalacion?.toString() || "",
-        // inputs generales
+        // datos del sistema
         demanda_electrica: row.demanda_electrica?.toString() || "",
         configuracion: row.configuracion?.toString() || "",
         cobertura_porcentaje: row.cobertura_porcentaje?.toString() || "",
         rendimiento_modulo_porcentaje: row.rendimiento_modulo_porcentaje?.toString() || "",
-        // cálculos de requerimientos
+        // requerimientos energéticos
         energia_requerida: row.energia_requerida?.toString() || "",
         potencia_dc_requerida: row.potencia_dc_requerida?.toString() || "",
         potencia_ac_requerida: row.potencia_ac_requerida?.toString() || "",
+        // campo fotovoltaico
         strings_min: row.strings_min?.toString() || "",
         strings_max: row.strings_max?.toString() || "",
         strings: row.strings?.toString() || "",
+        // protecciones eléctricas
         itm_ac_min: row.itm_ac_min?.toString() || "",
         itm_dc_min: row.itm_dc_min?.toString() || "",
         spd_voltage: row.spd_voltage?.toString() || "",
         mppt_number: row.mppt_number?.toString() || "",
+        // almacenamiento energético
+        autonomía: row.autonomía?.toString() || "",
+        ah_sistema: row.ah_sistema?.toString() || "",
+        num_baterias: row.num_baterias?.toString() || "",
         // cálculos de radiación
         hsp: row.hsp?.toString() || "",
         ghi: row.ghi?.toString() || "",
@@ -103,25 +115,31 @@ export function mapProjectToSupabaseRow(
         descripcion: project.descripcion,
         zona_id: project.zona_id,
         tipo_instalacion: project.tipo_instalacion,
-        // inputs generales
+        // cálculos de radiación
+        hsp: parseNumber(project.hsp),
+        ghi: parseNumber(project.ghi),
+        // datos del sistema
         demanda_electrica: parseNumber(project.demanda_electrica),
         configuracion: project.configuracion,
         cobertura_porcentaje: parseNumber(project.cobertura_porcentaje),
         rendimiento_modulo_porcentaje: parseNumber(project.rendimiento_modulo_porcentaje),
-        // cálculos de requerimientos
+        // requerimientos energéticos
         energia_requerida: parseNumber(project.energia_requerida),
         potencia_dc_requerida: parseNumber(project.potencia_dc_requerida),
         potencia_ac_requerida: parseNumber(project.potencia_ac_requerida),
+        // campo fotovoltaico
         strings_min: parseNumber(project.strings_min),
         strings_max: parseNumber(project.strings_max),
         strings: parseNumber(project.strings),
+        // protecciones eléctricas
         itm_ac_min: parseNumber(project.itm_ac_min),
         itm_dc_min: parseNumber(project.itm_dc_min),
         spd_voltage: parseNumber(project.spd_voltage),
         mppt_number: parseNumber(project.mppt_number),
-        // cálculos de radiación
-        hsp: parseNumber(project.hsp),
-        ghi: parseNumber(project.ghi),
+        // almacenamiento energético
+        autonomía: parseNumber(project.autonomía),
+        ah_sistema: parseNumber(project.ah_sistema),
+        num_baterias: parseNumber(project.num_baterias),
         // fechas
         created_at: project.created_at,
         updated_at: project.updated_at,
