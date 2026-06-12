@@ -5,6 +5,27 @@ export type ProductFormState = Omit<Product, "id">; // DB productos visto desde 
 export type ProductFilterValues = Record<FilterKey, string>; // ProductTable con los filtros de búsqueda activados
 export type ProductFormData = Omit<Product, "id">; // usado para las mutaciones (update || remove)
 
+// Equipo seleccionado
+export type SelectedEquipmentItem = {
+    row: string;
+    id: string;
+    description: string;
+    potencia_maxima: number;
+    mppt: number;
+    dod: number;
+    potencia_ac: number;
+    voc_vmax: number;
+    vmpp_vmin: number;
+    isc_i_out: number;
+    impp_i_in: string;
+};
+// Material seleccionado
+export type SelectedMaterialItem = {
+    row: string;
+    id: string;
+    description: string;
+};
+
 // Filas correspondientes a la tabla de productos de Supabase
 export type SupabaseProductRow = {
     // propiedades generales

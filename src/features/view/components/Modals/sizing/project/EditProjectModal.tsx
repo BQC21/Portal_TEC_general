@@ -14,7 +14,6 @@ import type {
 
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { AddProductTextAreaField } from "@/features/view/components//Form_fields/AddTextAreaField"; // campos
 
 import { INITIAL_PROJECT_FORM,
     INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
@@ -50,26 +49,7 @@ import { Project_Materiales } from "@/lib/types/project_materiales_join";
 import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
-
-export type SelectedEquipmentItem = {
-    row: string;
-    id: string;
-    description: string;
-    potencia_maxima: number;
-    mppt: number;
-    dod: number;
-    potencia_ac: number;
-    voc_vmax: number;
-    vmpp_vmin: number;
-    isc_i_out: number;
-    impp_i_in: string;
-};
-
-export type SelectedMaterialItem = {
-    row: string;
-    id: string;
-    description: string;
-};
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
 
 type EditProjectModalProps = {
     existingProject: Project;

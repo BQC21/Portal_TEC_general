@@ -46,26 +46,7 @@ import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
-
-export type SelectedEquipmentItem = {
-    row: string;
-    id: string;
-    description: string;
-    potencia_maxima: number;
-    mppt: number;
-    dod: number;
-    potencia_ac: number;
-    voc_vmax: number;
-    vmpp_vmin: number;
-    isc_i_out: number;
-    impp_i_in: string;
-};
-
-export type SelectedMaterialItem = {
-    row: string;
-    id: string;
-    description: string;
-};
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
 
 // --- Tipo de variables ---
 type AddModalProps = {

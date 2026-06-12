@@ -10,7 +10,7 @@ import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
-import { SelectedEquipmentItem, SelectedMaterialItem } from "../../Modals/sizing/project/AddProjectModal";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
 
 type ProjectTableProps = {
     projects: Project[];
