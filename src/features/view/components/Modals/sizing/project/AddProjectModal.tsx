@@ -540,69 +540,103 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
                                     <div className="flex flex-col gap-4">
-                                        {equipmentRows.map((label, index) => (
-                                            <SelectionRow
-                                                key={`equipment-${index}`}
-                                                label={label}
-                                                buttonLabel="Agregar"
-                                                value={selectedEquipmentByRow[label] || `Seleccionar - ${label}`}
-                                                options={[
-                                                    `Seleccionar - ${label}`,
-                                                    ...equipos
-                                                        .map((equipo) => (equipo.tipo_de_producto === label ? equipo.descripcion : null))
-                                                        .filter((descripcion): descripcion is string => Boolean(descripcion)),
-                                                ]}
-                                                onChange={(value) => {
-                                                    if (value === `Seleccionar - ${label}`) {
+                                        {equipmentRows.map((label, index) => {
+                                            const filteredOptions = [
+                                                `Seleccionar - ${label}`,
+                                                ...equipos
+                                                    .map((equipo) => (equipo.tipo_de_producto === label ? equipo.descripcion : null))
+                                                    .filter((descripcion): descripcion is string => Boolean(descripcion)),
+                                            ];
+
+                                            // // Para inversores, filtrar por potencia AC requerida
+                                            // if (label === "INVERSOR" && computedRequirements.potenciaAC) {
+                                            //     const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                                            //     filteredOptions = [
+                                            //         `Seleccionar - ${label}`,
+                                            //         ...equipos
+                                            //             .filter((equipo) => {
+                                            //                 if (equipo.tipo_de_producto !== label) return false;
+                                            //                 const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                                            //                 return inverterPowerAC >= requiredPowerAC;
+                                            //             })
+                                            //             .map((equipo) => equipo.descripcion),
+                                            //     ];
+                                            // }
+
+                                            // // Para módulos FV, filtrar por potencia DC requerida
+                                            // if (label === "MÓDULO FV" && computedRequirements.potenciaDC) {
+                                            //     const requiredPowerDC = parseFloat(computedRequirements.potenciaDC);
+                                            //     filteredOptions = [
+                                            //         `Seleccionar - ${label}`,
+                                            //         ...equipos
+                                            //             .filter((equipo) => {
+                                            //                 if (equipo.tipo_de_producto !== label) return false;
+                                            //                 const modulePowerDC = parseFloat(equipo.potencia_maxima?.toString() || "0");
+                                            //                 return modulePowerDC >= requiredPowerDC;
+                                            //             })
+                                            //             .map((equipo) => equipo.descripcion),
+                                            //     ];
+                                            // }
+
+                                            return (
+                                                <SelectionRow
+                                                    key={`equipment-${index}`}
+                                                    label={label}
+                                                    buttonLabel="Agregar"
+                                                    value={selectedEquipmentByRow[label] || `Seleccionar - ${label}`}
+                                                    options={filteredOptions}
+                                                    onChange={(value) => {
+                                                        if (value === `Seleccionar - ${label}`) {
+                                                            setSelectedEquipmentByRow((current) => ({
+                                                                ...current,
+                                                                [label]: "",
+                                                            }));
+                                                            setSelectedEquipmentTable((current) =>
+                                                                current.filter((item) => item.row !== label),
+                                                            );
+                                                            return;
+                                                        }
+
                                                         setSelectedEquipmentByRow((current) => ({
                                                             ...current,
-                                                            [label]: "",
+                                                            [label]: value,
                                                         }));
-                                                        setSelectedEquipmentTable((current) =>
-                                                            current.filter((item) => item.row !== label),
+                                                    }}
+                                                    onClick={() => {
+                                                        const descripcion = selectedEquipmentByRow[label];
+                                                        if (!descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                            return;
+                                                        }
+
+                                                        const selected = equipos.find((equipo) =>
+                                                            equipo.tipo_de_producto === label &&
+                                                            equipo.descripcion === descripcion,
                                                         );
-                                                        return;
-                                                    }
 
-                                                    setSelectedEquipmentByRow((current) => ({
-                                                        ...current,
-                                                        [label]: value,
-                                                    }));
-                                                }}
-                                                onClick={() => {
-                                                    const descripcion = selectedEquipmentByRow[label];
-                                                    if (!descripcion || descripcion === `Seleccionar - ${label}`) {
-                                                        return;
-                                                    }
+                                                        if (!selected) {
+                                                            return;
+                                                        }
 
-                                                    const selected = equipos.find((equipo) =>
-                                                        equipo.tipo_de_producto === label &&
-                                                        equipo.descripcion === descripcion,
-                                                    );
-
-                                                    if (!selected) {
-                                                        return;
-                                                    }
-
-                                                    setSelectedEquipmentTable((current) => {
-                                                        const next = current.filter((item) => item.row !== label);
-                                                        return [...next, {
-                                                            row: label,
-                                                            id: String(selected.id),
-                                                            description: selected.descripcion ?? "",
-                                                            potencia_maxima: selected.potencia_maxima ?? 0,
-                                                            mppt: selected.mppt ?? 0,
-                                                            potencia_ac: selected.potencia_ac ?? 0,
-                                                            voc_vmax: selected.voc_vmax ?? 0,
-                                                            vmpp_vmin: selected.vmpp_vmin ?? 0,
-                                                            isc_i_out: selected.isc_i_out ?? 0,
-                                                            impp_i_in: selected.impp_i_in ?? "",
-                                                            dod: selected.dod ?? 0,
-                                                        }];
-                                                    });
-                                                }}
-                                            />
-                                        ))}
+                                                        setSelectedEquipmentTable((current) => {
+                                                            const next = current.filter((item) => item.row !== label);
+                                                            return [...next, {
+                                                                row: label,
+                                                                id: String(selected.id),
+                                                                description: selected.descripcion ?? "",
+                                                                potencia_maxima: selected.potencia_maxima ?? 0,
+                                                                mppt: selected.mppt ?? 0,
+                                                                potencia_ac: selected.potencia_ac ?? 0,
+                                                                voc_vmax: selected.voc_vmax ?? 0,
+                                                                vmpp_vmin: selected.vmpp_vmin ?? 0,
+                                                                isc_i_out: selected.isc_i_out ?? 0,
+                                                                impp_i_in: selected.impp_i_in ?? "",
+                                                                dod: selected.dod ?? 0,
+                                                            }];
+                                                        });
+                                                    }}
+                                                />
+                                            );
+                                        })}
                                     </div>
                                 </div>
 
