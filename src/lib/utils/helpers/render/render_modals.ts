@@ -1,8 +1,9 @@
 import { getSupplierInfo } from "../manage_info/getInfo";
 
+// MODULO 1
 
 // -----------------------------
-// --- Triggers auxiliares para renderizar tipo de conexión ---
+// --- Triggers para renderizar tipo de conexión ---
 // -----------------------------
 
 export function shouldRenderConnectionTypeBattery(type: string): boolean {
@@ -19,7 +20,7 @@ export function shouldRenderConnectionTypeAccesories(type: string): boolean{
 }
 
 // -----------------------------
-// --- Triggers auxiliares para renderizar propiedades ---
+// --- Triggers para renderizar propiedades ---
 // -----------------------------
 
 // --- propiedades bateria ---
@@ -62,4 +63,18 @@ export function shouldRenderImportDate(productStatus: string): boolean {
 
 export function shouldRender_SupplyInfoSelection(supplier: string) {
     return getSupplierInfo(supplier);
+}
+
+// MODULO 1
+
+// -----------------------------
+// renderizar selectores en las ventanas de dimensionamiento
+// -----------------------------
+
+export function shouldRender_M2_configuration(tipo_instalacion: string){
+    return tipo_instalacion != "conexión OFF-GRID"
+}
+
+export function shouldRender_M2_battery_properties(tipo_instalacion: string){
+    return tipo_instalacion != "conexión ON-GRID"
 }
