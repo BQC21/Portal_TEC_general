@@ -541,43 +541,36 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
                                     <div className="flex flex-col gap-4">
                                         {equipmentRows.map((label, index) => {
-                                            const filteredOptions = [
-                                                `Seleccionar - ${label}`,
-                                                ...equipos
-                                                    .map((equipo) => (equipo.tipo_de_producto === label ? equipo.descripcion : null))
-                                                    .filter((descripcion): descripcion is string => Boolean(descripcion)),
-                                            ];
+                                            let filteredOptions: string[] = [`Seleccionar - ${label}`];
 
-                                            // // Para inversores, filtrar por potencia AC requerida
-                                            // if (label === "INVERSOR" && computedRequirements.potenciaAC) {
-                                            //     const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
-                                            //     filteredOptions = [
-                                            //         `Seleccionar - ${label}`,
-                                            //         ...equipos
-                                            //             .filter((equipo) => {
-                                            //                 if (equipo.tipo_de_producto !== label) return false;
-                                            //                 const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                            //                 return inverterPowerAC >= requiredPowerAC;
-                                            //             })
-                                            //             .map((equipo) => equipo.descripcion),
-                                            //     ];
-                                            // }
-
-                                            // // Para módulos FV, filtrar por potencia DC requerida
-                                            // if (label === "MÓDULO FV" && computedRequirements.potenciaDC) {
-                                            //     const requiredPowerDC = parseFloat(computedRequirements.potenciaDC);
-                                            //     filteredOptions = [
-                                            //         `Seleccionar - ${label}`,
-                                            //         ...equipos
-                                            //             .filter((equipo) => {
-                                            //                 if (equipo.tipo_de_producto !== label) return false;
-                                            //                 const modulePowerDC = parseFloat(equipo.potencia_maxima?.toString() || "0");
-                                            //                 return modulePowerDC >= requiredPowerDC;
-                                            //             })
-                                            //             .map((equipo) => equipo.descripcion),
-                                            //     ];
-                                            // }
-
+                                            if (label === "INVERSOR") {
+                                                const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                                                filteredOptions = [
+                                                    `Seleccionar - ${label}`,
+                                                    ...equipos
+                                                        .filter((equipo) => {
+                                                            if (equipo.tipo_de_producto !== label) return false;
+                                                            const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                                                            if (inverterPowerAC <= requiredPowerAC) return false;
+                                                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                                                            equipo.tipo_conexion !== form.configuracion) return false;
+                                                            return true;
+                                                        })
+                                                        .map((equipo) => equipo.descripcion)
+                                                ];
+                                            } else {
+                                                filteredOptions = [
+                                                    `Seleccionar - ${label}`,
+                                                    ...equipos
+                                                        .filter((equipo) => {
+                                                            if (equipo.tipo_de_producto !== label) return false;
+                                                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                                                            equipo.tipo_conexion !== form.configuracion) return false;
+                                                            return true;
+                                                        })
+                                                        .map((equipo) => equipo.descripcion)
+                                                ];
+                                            }
                                             return (
                                                 <SelectionRow
                                                     key={`equipment-${index}`}
