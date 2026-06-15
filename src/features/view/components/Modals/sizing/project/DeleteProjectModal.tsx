@@ -50,7 +50,7 @@ export function DeleteProjectModal({ project, project_equipos, project_materiale
             <form onSubmit={handleDeleteProduct} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                 <AddProductReadonlyField
                     label="Descripción del proyecto"
-                    value={project.descripcion} 
+                    value={project.nombre} 
                 />
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                     <button
