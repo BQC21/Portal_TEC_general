@@ -635,8 +635,6 @@ export default function EditProjectModal({
                                                     ...equipos
                                                         .filter((equipo) => {
                                                             if (equipo.tipo_de_producto !== label) return false;
-                                                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
-                                                            equipo.tipo_conexion !== form.configuracion) return false;
                                                             return true;
                                                         })
                                                         .map((equipo) => equipo.descripcion)
