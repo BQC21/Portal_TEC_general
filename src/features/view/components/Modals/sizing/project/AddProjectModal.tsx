@@ -74,7 +74,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
 
     // datos seleccionados
-    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, string>>({});
+    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>({});
     const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, string>>({});
     const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
     const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
@@ -636,49 +636,79 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <div className="flex flex-col gap-4">
                                         {materialRows.map((label, index) => (
                                             <SelectionRow
-                                                key={`material-${index}`}
+                                                key={`material-row-${label}-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
-                                                value={selectedMaterialByRow[label] || `Seleccionar - ${label}`}
+                                                value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                 options={[
                                                     `Seleccionar - ${label}`,
                                                     ...materiales
-                                                        .map((material) =>
-                                                            material.tipo_de_producto === label ? material.descripcion : null,
-                                                        )
-                                                        .filter((descripcion): descripcion is string => Boolean(descripcion)),
+                                                        .filter((material) => {
+                                                            if (material.tipo_de_producto !== label) return false;
+                                                            // Check if this material is already selected in the table
+                                                            const isAlreadySelected = selectedMaterialTable.some(
+                                                                (item) => item.id === String(material.id)
+                                                            );
+                                                            return !isAlreadySelected; // retiene en el selector los no seleccionados
+                                                        })
+                                                        .map((material) => material.descripcion),
                                                 ]}
                                                 onChange={(value) => {
+                                                    // Handle clearing the selection
                                                     if (value === `Seleccionar - ${label}`) {
-                                                        setSelectedMaterialByRow((current) => ({
-                                                            ...current,
-                                                            [label]: "",
-                                                        }));
-                                                        setSelectedMaterialTable((current) => current.filter((item) => item.row !== label));
+                                                        setSelectedMaterialByRow((prev) => {
+                                                            const newState = { ...prev };
+                                                            delete newState[`${label}-${index}`];
+                                                            return newState;
+                                                        });
                                                         return;
                                                     }
-                                                    setSelectedMaterialByRow((current) => ({
-                                                        ...current,
-                                                        [label]: value,
-                                                    }));
+                                                    
+                                                    // Find the selected material
+                                                    const selected = materiales.find((material) =>
+                                                        material.tipo_de_producto === label && material.descripcion === value
+                                                    );
+                                                    
+                                                    // Update the selection state if found
+                                                    if (selected) {
+                                                        setSelectedMaterialByRow((prev) => ({
+                                                            ...prev,
+                                                            [`${label}-${index}`]: {
+                                                                materialId: String(selected.id),
+                                                                description: value,
+                                                            },
+                                                        }));
+                                                    }
                                                 }}
                                                 onClick={() => {
-                                                    const descripcion = selectedMaterialByRow[label];
-                                                    const selected = materiales.find((material) =>
-                                                        material.tipo_de_producto === label && material.descripcion === descripcion
-                                                    );
-
-                                                    if (!selected || !descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                    const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
+                                                    
+                                                    // Check if we have a valid selection
+                                                    if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
                                                         return;
                                                     }
-
-                                                    setSelectedMaterialTable((current) => {
-                                                        const next = current.filter((item) => item.row !== label);
-                                                        return [...next, {
-                                                            row: label,
-                                                            id: String(selected.id),
-                                                            description: descripcion,
-                                                        }];
+                                                    
+                                                    // Add to the table if not already there
+                                                    const isAlreadyAdded = selectedMaterialTable.some(
+                                                        (item) => item.id === selectedMaterial.materialId
+                                                    );
+                                                    
+                                                    if (!isAlreadyAdded) {
+                                                        setSelectedMaterialTable((prev) => [
+                                                            ...prev,
+                                                            {
+                                                                row: label,
+                                                                id: selectedMaterial.materialId,
+                                                                description: selectedMaterial.description,
+                                                            }
+                                                        ]);
+                                                    }
+                                                    
+                                                    // Clear the selection after adding
+                                                    setSelectedMaterialByRow((prev) => {
+                                                        const newState = { ...prev };
+                                                        delete newState[`${label}-${index}`];
+                                                        return newState;
                                                     });
                                                 }}
                                             />
@@ -756,7 +786,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <tbody>
                                         {selectedMaterialTable.length > 0 ? (
                                             selectedMaterialTable.map((item) => (
-                                                <tr key={item.row} className="bg-white">
+                                                <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
                                                     </td>
@@ -765,7 +795,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             type="button"
                                                 onClick={() => {
                                                     setSelectedMaterialTable((current) =>
-                                                        current.filter((row) => row.row !== item.row),
+                                                        current.filter((row) => row.id !== item.id),
                                                     );
                                                 }}
 
