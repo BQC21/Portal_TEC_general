@@ -99,18 +99,30 @@ export default function EditProjectModal({
     );
 
     // datos seleccionados
-    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, string>>(() =>
+    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>(() =>
         Object.fromEntries(
             existingProjectMateriales
                 .filter((item) => item.material_info?.tipo_de_producto && item.material_info?.descripcion)
-                .map((item) => [item.material_info!.tipo_de_producto, item.material_info!.descripcion]),
+                .map((item) => [
+                    item.material_info!.tipo_de_producto,
+                    {
+                        materialId: String(item.material_id),
+                        description: item.material_info!.descripcion,
+                    },
+                ]),
         ),
     );
-    const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, string>>(() =>
+    const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, { equipoId: string; description: string }>>(() =>
         Object.fromEntries(
             existingProjectEquipos
                 .filter((item) => item.equipo_info?.tipo_de_producto && item.equipo_info?.descripcion)
-                .map((item) => [item.equipo_info!.tipo_de_producto, item.equipo_info!.descripcion]),
+                .map((item) => [
+                    item.equipo_info!.tipo_de_producto,
+                    {
+                        equipoId: String(item.equipo_id),
+                        description: item.equipo_info!.descripcion,
+                    },
+                ]),
         ),
     );
     const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>(() =>
@@ -590,16 +602,6 @@ export default function EditProjectModal({
                                             />
                                     </>
                                 )}
-
-                                    {/* <h4 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Notas adicionales</h4>
-                                    <div className="flex flex-col gap-4">
-                                        <li>Seleccione el inversor y el módulo para calcular el valor máximo y 
-                                            mínimo de strings a poder usarse. Así como también los valores mínimos de Protección 
-                                            ITM AC e ITM DC.</li>
-                                        <li>Ingrese el número exacto de strings y de MPPTs a emplearse para 
-                                            poder visualizar la protección SPD.</li>
-                                        <li>...</li>
-                                    </div> */}
                                 </div>
                             </div>
                         </section>
@@ -615,86 +617,158 @@ export default function EditProjectModal({
                                             let filteredOptions: string[] = [`Seleccionar - ${label}`];
 
                                             if (label === "INVERSOR") {
-                                                const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
-                                                filteredOptions = [
-                                                    `Seleccionar - ${label}`,
-                                                    ...equipos
-                                                        .filter((equipo) => {
-                                                            if (equipo.tipo_de_producto !== label) return false;
-                                                            const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                                            if (inverterPowerAC <= requiredPowerAC) return false;
-                                                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
-                                                            equipo.tipo_conexion !== form.configuracion) return false;
-                                                            return true;
-                                                        })
-                                                        .map((equipo) => equipo.descripcion)
-                                                ];
+                                                // Check if an inverter is already selected
+                                                const isInverterAlreadySelected = selectedEquipmentTable.some(
+                                                    (item) => item.row === label
+                                                );
+                                                
+                                                if (isInverterAlreadySelected) {
+                                                    // If an inverter is already selected, show empty options
+                                                    filteredOptions = [`Seleccionar - ${label}`];
+                                                } else {
+                                                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                                                    filteredOptions = [
+                                                        `Seleccionar - ${label}`,
+                                                        ...equipos
+                                                            .filter((equipo) => {
+                                                                if (equipo.tipo_de_producto !== label) return false;
+                                                                const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                                                                if (inverterPowerAC <= requiredPowerAC) return false;
+                                                                if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                                                                equipo.tipo_conexion !== form.configuracion) return false;
+                                                                return true;
+                                                            })
+                                                            .map((equipo) => equipo.descripcion)
+                                                    ];
+                                                }
+                                            } else if (label === "BATERÍA") {
+                                                // Only show battery options for non-ON-GRID installations
+                                                if (form.tipo_instalacion === "conexión ON-GRID") {
+                                                    filteredOptions = [`Seleccionar - ${label}`]; // Empty options for ON-GRID
+                                                } else {
+                                                    // Check if a battery is already selected
+                                                    const isBatteryAlreadySelected = selectedEquipmentTable.some(
+                                                        (item) => item.row === label
+                                                    );
+                                                    
+                                                    if (isBatteryAlreadySelected) {
+                                                        // If a battery is already selected, show empty options
+                                                        filteredOptions = [`Seleccionar - ${label}`];
+                                                    } else {
+                                                        filteredOptions = [
+                                                            `Seleccionar - ${label}`,
+                                                            ...equipos
+                                                                .filter((equipo) => {
+                                                                    return equipo.tipo_de_producto === label;
+                                                                })
+                                                                .map((equipo) => equipo.descripcion)
+                                                        ];
+                                                    }
+                                                }
                                             } else {
-                                                filteredOptions = [
-                                                    `Seleccionar - ${label}`,
-                                                    ...equipos
-                                                        .filter((equipo) => {
-                                                            if (equipo.tipo_de_producto !== label) return false;
-                                                            return true;
-                                                        })
-                                                        .map((equipo) => equipo.descripcion)
-                                                ];
+                                                // For non-ACCESORIO types, only show options if none of this type have been added yet
+                                                const isTypeAlreadySelected = selectedEquipmentTable.some(
+                                                    (item) => item.row === label
+                                                );
+                                                
+                                                if (isTypeAlreadySelected) {
+                                                    // If an item of this type is already selected, show empty options
+                                                    filteredOptions = [`Seleccionar - ${label}`];
+                                                } else {
+                                                    filteredOptions = [
+                                                        `Seleccionar - ${label}`,
+                                                        ...equipos
+                                                            .filter((equipo) => {
+                                                                if (equipo.tipo_de_producto !== label) return false;
+                                                                return true;
+                                                            })
+                                                            .map((equipo) => equipo.descripcion)
+                                                    ];
+                                                }
                                             }
+
                                             return (
                                                 <SelectionRow
                                                     key={`equipment-${index}`}
                                                     label={label}
                                                     buttonLabel="Agregar"
-                                                    value={selectedEquipmentByRow[label] || `Seleccionar - ${label}`}
+                                                    value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                     options={filteredOptions}
                                                     onChange={(value) => {
                                                         if (value === `Seleccionar - ${label}`) {
-                                                            setSelectedEquipmentByRow((current) => ({
-                                                                ...current,
-                                                                [label]: "",
-                                                            }));
-                                                            setSelectedEquipmentTable((current) =>
-                                                                current.filter((item) => item.row !== label),
-                                                            );
+                                                            setSelectedEquipmentByRow((prev) => {
+                                                                const newState = { ...prev };
+                                                                delete newState[`${label}-${index}`];
+                                                                return newState;
+                                                            });
                                                             return;
                                                         }
 
-                                                        setSelectedEquipmentByRow((current) => ({
-                                                            ...current,
-                                                            [label]: value,
-                                                        }));
-                                                    }}
-                                                    onClick={() => {
-                                                        const descripcion = selectedEquipmentByRow[label];
-                                                        if (!descripcion || descripcion === `Seleccionar - ${label}`) {
-                                                            return;
-                                                        }
-
+                                                        // Find the selected equipment
                                                         const selected = equipos.find((equipo) =>
-                                                            equipo.tipo_de_producto === label &&
-                                                            equipo.descripcion === descripcion,
+                                                            equipo.tipo_de_producto === label && equipo.descripcion === value
                                                         );
 
-                                                        if (!selected) {
+                                                        // Update the selection state if found
+                                                        if (selected) {
+                                                            setSelectedEquipmentByRow((prev) => ({
+                                                                ...prev,
+                                                                [`${label}-${index}`]: {
+                                                                    equipoId: String(selected.id),
+                                                                    description: value,
+                                                                },
+                                                            }));
+                                                        }                                               
+                                                    }}
+                                                    onClick={() => {
+                                                        const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
+                                                    
+                                                        // Check if we have a valid selection
+                                                        if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
                                                             return;
                                                         }
 
-                                                        setSelectedEquipmentTable((current) => {
-                                                            const next = current.filter((item) => item.row !== label);
-                                                            return [...next, {
-                                                                row: label,
-                                                                id: String(selected.id),
-                                                                description: selected.descripcion ?? "",
-                                                                potencia_maxima: selected.potencia_maxima ?? 0,
-                                                                mppt: selected.mppt ?? 0,
-                                                                potencia_ac: selected.potencia_ac ?? 0,
-                                                                voc_vmax: selected.voc_vmax ?? 0,
-                                                                vmpp_vmin: selected.vmpp_vmin ?? 0,
-                                                                isc_i_out: selected.isc_i_out ?? 0,
-                                                                impp_i_in: selected.impp_i_in ?? "",
-                                                                dod: selected.dod ?? 0,
-                                                            }];
-                                                        });
+                                                        // For ACCESORIO, we allow multiple selections of the same item
+                                                        // For other types, we check if an item of the same type is already added
+                                                        let isAlreadyAdded = false;
+                                                        if (label !== "ACCESORIO") {
+                                                            isAlreadyAdded = selectedEquipmentTable.some(
+                                                                (item) => item.row === label
+                                                            );
+                                                        }
+
+                                                        const equipoDetails = equipos.find(
+                                                            (equipo) => String(equipo.id) === selectedEquipo.equipoId
+                                                        );
+
+                                                        if (!isAlreadyAdded && equipoDetails) {
+                                                            setSelectedEquipmentTable((prev) => [
+                                                                ...prev,
+                                                                {
+                                                                    row: label,
+                                                                    id: String(equipoDetails.id),
+                                                                    description: selectedEquipo.description,
+                                                                    potencia_maxima: equipoDetails.potencia_maxima,
+                                                                    mppt: equipoDetails.mppt,
+                                                                    dod: equipoDetails.dod,
+                                                                    potencia_ac: equipoDetails.potencia_ac,
+                                                                    voc_vmax: equipoDetails.voc_vmax,
+                                                                    vmpp_vmin: equipoDetails.vmpp_vmin,
+                                                                    isc_i_out: equipoDetails.isc_i_out,
+                                                                    impp_i_in: equipoDetails.impp_i_in,
+                                                                }
+                                                            ]);
+                                                        }
+
+                                                        // Clear the selection after adding (but only for non-ACCESORIO types)
+                                                        // For ACCESORIO, keep the selection so user can add the same item multiple times
+                                                        if (label !== "ACCESORIO") {
+                                                            setSelectedEquipmentByRow((prev) => {
+                                                                const newState = { ...prev };
+                                                                delete newState[`${label}-${index}`];
+                                                                return newState;
+                                                            });
+                                                        }
                                                     }}
                                                 />
                                             );
@@ -710,46 +784,76 @@ export default function EditProjectModal({
                                                 key={`material-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
-                                                value={selectedMaterialByRow[label] || `Seleccionar - ${label}`}
+                                                value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                 options={[
                                                     `Seleccionar - ${label}`,
                                                     ...materiales
-                                                        .map((material) =>
-                                                            material.tipo_de_producto === label ? material.descripcion : null,
-                                                        )
-                                                        .filter((descripcion): descripcion is string => Boolean(descripcion)),
+                                                        .filter((material) => {
+                                                            if (material.tipo_de_producto !== label) return false;
+                                                            // Check if this material is already selected in the table
+                                                            const isAlreadySelected = selectedMaterialTable.some(
+                                                                (item) => item.id === String(material.id)
+                                                            );
+                                                            return !isAlreadySelected; // retiene en el selector los no seleccionados
+                                                        })
+                                                        .map((material) => material.descripcion),
                                                 ]}
                                                 onChange={(value) => {
+                                                    // Handle clearing the selection
                                                     if (value === `Seleccionar - ${label}`) {
-                                                        setSelectedMaterialByRow((current) => ({
-                                                            ...current,
-                                                            [label]: "",
-                                                        }));
-                                                        setSelectedMaterialTable((current) => current.filter((item) => item.row !== label));
+                                                        setSelectedMaterialByRow((prev) => {
+                                                            const newState = { ...prev };
+                                                            delete newState[`${label}-${index}`];
+                                                            return newState;
+                                                        });
                                                         return;
                                                     }
-                                                    setSelectedMaterialByRow((current) => ({
-                                                        ...current,
-                                                        [label]: value,
-                                                    }));
+                                                    
+                                                    // Find the selected material
+                                                    const selected = materiales.find((material) =>
+                                                        material.tipo_de_producto === label && material.descripcion === value
+                                                    );
+                                                    
+                                                    // Update the selection state if found
+                                                    if (selected) {
+                                                        setSelectedMaterialByRow((prev) => ({
+                                                            ...prev,
+                                                            [`${label}-${index}`]: {
+                                                                materialId: String(selected.id),
+                                                                description: value,
+                                                            },
+                                                        }));
+                                                    }
                                                 }}
                                                 onClick={() => {
-                                                    const descripcion = selectedMaterialByRow[label];
-                                                    const selected = materiales.find((material) =>
-                                                        material.tipo_de_producto === label && material.descripcion === descripcion
-                                                    );
-
-                                                    if (!selected || !descripcion || descripcion === `Seleccionar - ${label}`) {
+                                                    const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
+                                                    
+                                                    // Check if we have a valid selection
+                                                    if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
                                                         return;
                                                     }
-
-                                                    setSelectedMaterialTable((current) => {
-                                                        const next = current.filter((item) => item.row !== label);
-                                                        return [...next, {
-                                                            row: label,
-                                                            id: String(selected.id),
-                                                            description: descripcion,
-                                                        }];
+                                                    
+                                                    // Add to the table if not already there
+                                                    const isAlreadyAdded = selectedMaterialTable.some(
+                                                        (item) => item.id === selectedMaterial.materialId
+                                                    );
+                                                    
+                                                    if (!isAlreadyAdded) {
+                                                        setSelectedMaterialTable((prev) => [
+                                                            ...prev,
+                                                            {
+                                                                row: label,
+                                                                id: selectedMaterial.materialId,
+                                                                description: selectedMaterial.description,
+                                                            }
+                                                        ]);
+                                                    }
+                                                    
+                                                    // Clear the selection after adding
+                                                    setSelectedMaterialByRow((prev) => {
+                                                        const newState = { ...prev };
+                                                        delete newState[`${label}-${index}`];
+                                                        return newState;
                                                     });
                                                 }}
                                             />
