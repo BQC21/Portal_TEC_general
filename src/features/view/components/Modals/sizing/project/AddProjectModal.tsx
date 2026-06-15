@@ -535,48 +535,74 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             let filteredOptions: string[] = [`Seleccionar - ${label}`];
 
                                             if (label === "INVERSOR") {
-                                                const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
-                                                filteredOptions = [
-                                                    `Seleccionar - ${label}`,
-                                                    ...equipos
-                                                        .filter((equipo) => {
-                                                            if (equipo.tipo_de_producto !== label) return false;
-                                                            const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                                            if (inverterPowerAC <= requiredPowerAC) return false;
-                                                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
-                                                            equipo.tipo_conexion !== form.configuracion) return false;
-                                                            return true;
-                                                        })
-                                                        .map((equipo) => equipo.descripcion)
-                                                ];
+                                                // Check if an inverter is already selected
+                                                const isInverterAlreadySelected = selectedEquipmentTable.some(
+                                                    (item) => item.row === label
+                                                );
+                                                
+                                                if (isInverterAlreadySelected) {
+                                                    // If an inverter is already selected, show empty options
+                                                    filteredOptions = [`Seleccionar - ${label}`];
+                                                } else {
+                                                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                                                    filteredOptions = [
+                                                        `Seleccionar - ${label}`,
+                                                        ...equipos
+                                                            .filter((equipo) => {
+                                                                if (equipo.tipo_de_producto !== label) return false;
+                                                                const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                                                                if (inverterPowerAC <= requiredPowerAC) return false;
+                                                                if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                                                                equipo.tipo_conexion !== form.configuracion) return false;
+                                                                return true;
+                                                            })
+                                                            .map((equipo) => equipo.descripcion)
+                                                    ];
+                                                }
                                             } else if (label === "BATERÍA") {
                                                 // Only show battery options for non-ON-GRID installations
                                                 if (form.tipo_instalacion === "conexión ON-GRID") {
                                                     filteredOptions = [`Seleccionar - ${label}`]; // Empty options for ON-GRID
                                                 } else {
+                                                    // Check if a battery is already selected
+                                                    const isBatteryAlreadySelected = selectedEquipmentTable.some(
+                                                        (item) => item.row === label
+                                                    );
+                                                    
+                                                    if (isBatteryAlreadySelected) {
+                                                        // If a battery is already selected, show empty options
+                                                        filteredOptions = [`Seleccionar - ${label}`];
+                                                    } else {
+                                                        filteredOptions = [
+                                                            `Seleccionar - ${label}`,
+                                                            ...equipos
+                                                                .filter((equipo) => {
+                                                                    return equipo.tipo_de_producto === label;
+                                                                })
+                                                                .map((equipo) => equipo.descripcion)
+                                                        ];
+                                                    }
+                                                }
+                                            } else {
+                                                // For non-ACCESORIO types, only show options if none of this type have been added yet
+                                                const isTypeAlreadySelected = selectedEquipmentTable.some(
+                                                    (item) => item.row === label
+                                                );
+                                                
+                                                if (isTypeAlreadySelected) {
+                                                    // If an item of this type is already selected, show empty options
+                                                    filteredOptions = [`Seleccionar - ${label}`];
+                                                } else {
                                                     filteredOptions = [
                                                         `Seleccionar - ${label}`,
                                                         ...equipos
                                                             .filter((equipo) => {
-                                                                return equipo.tipo_de_producto === label;
+                                                                if (equipo.tipo_de_producto !== label) return false;
+                                                                return true;
                                                             })
                                                             .map((equipo) => equipo.descripcion)
                                                     ];
                                                 }
-                                            } else {
-                                                filteredOptions = [
-                                                    `Seleccionar - ${label}`,
-                                                    ...equipos
-                                                        .filter((equipo) => {
-                                                            if (equipo.tipo_de_producto !== label) return false;
-                                                            // For non-ACCESORIO types, hide already selected items
-                                                            const isAlreadySelected = selectedEquipmentTable.some(
-                                                                (item) => item.id === String(equipo.id) && item.row === label
-                                                            );
-                                                            return !isAlreadySelected;
-                                                        })
-                                                        .map((equipo) => equipo.descripcion)
-                                                ];
                                             }
 
                                             return (
@@ -620,9 +646,14 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             return;
                                                         }
 
-                                                        const isAlreadyAdded = selectedEquipmentTable.some(
-                                                            (item) => item.id === selectedEquipo.equipoId && item.row === label
-                                                        );
+                                                        // For ACCESORIO, we allow multiple selections of the same item
+                                                        // For other types, we check if an item of the same type is already added
+                                                        let isAlreadyAdded = false;
+                                                        if (label !== "ACCESORIO") {
+                                                            isAlreadyAdded = selectedEquipmentTable.some(
+                                                                (item) => item.row === label
+                                                            );
+                                                        }
 
                                                         const equipoDetails = equipos.find(
                                                             (equipo) => String(equipo.id) === selectedEquipo.equipoId
@@ -646,11 +677,16 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                                 }
                                                             ]);
                                                         }
-                                                        setSelectedEquipmentByRow((prev) => {
-                                                            const newState = { ...prev };
-                                                            delete newState[`${label}-${index}`];
-                                                            return newState;
-                                                        });                                                    
+
+                                                        // Clear the selection after adding (but only for non-ACCESORIO types)
+                                                        // For ACCESORIO, keep the selection so user can add the same item multiple times
+                                                        if (label !== "ACCESORIO") {
+                                                            setSelectedEquipmentByRow((prev) => {
+                                                                const newState = { ...prev };
+                                                                delete newState[`${label}-${index}`];
+                                                                return newState;
+                                                            });
+                                                        }
                                                     }}
                                                 />
                                             );
