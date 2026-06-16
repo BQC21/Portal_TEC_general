@@ -97,19 +97,22 @@ export default function EditProjectModal({
     );
 
     // datos seleccionados
-    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>(() =>
-        Object.fromEntries(
-            existingProjectMateriales
-                .filter((item) => item.material_info?.tipo_de_producto && item.material_info?.descripcion)
-                .map((item) => [
-                    item.material_info!.tipo_de_producto,
-                    {
-                        materialId: String(item.material_id),
-                        description: item.material_info!.descripcion,
-                    },
-                ]),
-        ),
-    );
+    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>(() => {
+        const map: Record<string, { materialId: string; description: string }> = {};
+        const rows = ["CABLE", "PROTECCIÓN", "MC4", "CANALIZACIÓN", "CONSUMIBLE"];
+        rows.forEach((label, idx) => {
+            const found = existingProjectMateriales.find(
+                (item) => item.material_info?.tipo_de_producto === label && item.material_info?.descripcion
+            );
+            if (found) {
+                map[`${label}-${idx}`] = {
+                    materialId: String(found.material_id),
+                    description: found.material_info!.descripcion,
+                };
+            }
+        });
+        return map;
+    });
     const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, { equipoId: string; description: string }>>(() =>
         Object.fromEntries(
             existingProjectEquipos
@@ -909,7 +912,7 @@ export default function EditProjectModal({
                                                 key={`material-${label}-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
-                                                value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
+                                                value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                 options={material_filteredOptions}
                                                 onChange={(value) => {
                                                     if (value === `Seleccionar - ${label}`) {
@@ -997,12 +1000,11 @@ export default function EditProjectModal({
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                onClick={() => {
-                                                    setSelectedEquipmentTable((current) =>
-                                                        current.filter((row) => row.row !== item.row),
-                                                    );
-                                                }}
-
+                                                            onClick={() => {
+                                                                setSelectedEquipmentTable((current) =>
+                                                                    current.filter((row) => row.row !== item.row),
+                                                                );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
@@ -1046,12 +1048,11 @@ export default function EditProjectModal({
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                onClick={() => {
-                                                    setSelectedMaterialTable((current) =>
-                                                        current.filter((row) => row.row !== item.row),
-                                                    );
-                                                }}
-
+                                                            onClick={() => {
+                                                                setSelectedMaterialTable((current) =>
+                                                                        current.filter((row) => !(row.row === item.row && row.id === item.id)),
+                                                                    );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
