@@ -276,6 +276,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
+                            if (computedRequirements.num_baterias &&
+                                equipo.descripcion.includes("baterías") &&
+                                Number(computedRequirements.num_baterias) <= 
+                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                            if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
+                                Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
                             return true;
                         })
                         .map((equipo) => equipo.descripcion)
@@ -611,8 +617,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                 Math.floor(Number(computedRequirements.strings_minimos)) : 0
                                         }
                                         step={1}
-                                        max={Math.floor(Number(computedRequirements.strings_minimos)) > 0 ?
-                                                Math.floor(Number(computedRequirements.strings_minimos)) : 0
+                                        max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
+                                                Math.floor(Number(computedRequirements.strings_maximos)) : 0
                                         }
                                     />
                                 </div>
