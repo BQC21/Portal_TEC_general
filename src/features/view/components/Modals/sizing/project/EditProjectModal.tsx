@@ -411,6 +411,26 @@ export default function EditProjectModal({
         return filteredOptions;
     }    
 
+    // ---------------------------------------
+    // ----- Condicionar coloreado -----------
+    // ---------------------------------------
+    const getDarkSilverColorClass = (value: string | number | null | undefined) => {
+        if (value === "NaN" || value === "Infinity" || value === null || 
+                value === undefined || value === "" || value === "0" || value === 0) return "bg-[#BFAC7E]"; 
+        return "bg-slate-400"; // Default color
+    };
+
+    const getLightSilverColorClass = (value: string | number | null | undefined) => {
+        if (value === "NaN" || value === "Infinity" || value === null || 
+                value === undefined || value === "" || value === 0 || value === "0") return "bg-[#F0B746]"; 
+        return "bg-slate-200"; // Default color
+    };
+
+    const isEquipmentTypeSelected = (type: string) => {
+        return selectedEquipmentTable.some(item => item.row === type);
+    };
+
+
     // --------------------------------------------------
     // ------- SELECTOR DE FILAS ------------------------
     // --------------------------------------------------
@@ -425,9 +445,10 @@ export default function EditProjectModal({
         options: string[];
         onChange: (value: string) => void;
         onClick?: () => void;
+        customSelectClass?: string;
     };
 
-    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick }: SelectionRowProps) {
+    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick, customSelectClass }: SelectionRowProps) {
         return (
             <div className={selectionRowStyles}>
                 <div className="min-w-0">
@@ -437,6 +458,7 @@ export default function EditProjectModal({
                         value={value}
                         options={options}
                         onChange={onChange}
+                        customClass={customSelectClass}
                             />
                 </div>
                 <button type="button" className={actionButtonStyles} onClick={onClick}>
