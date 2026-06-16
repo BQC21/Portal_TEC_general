@@ -753,6 +753,10 @@ export default function EditProjectModal({
                                         colorClass={getLightSilverColorClass(computedRequirements.spd_min)}
                                     />
 
+
+
+
+
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
@@ -812,7 +816,7 @@ export default function EditProjectModal({
 
                                             return (
                                                 <SelectionRow
-                                                    key={`equipment-${index}`}
+                                                    key={`equipment-${label}-${index}`}
                                                     label={label}
                                                     buttonLabel="Agregar"
                                                     value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
@@ -902,7 +906,7 @@ export default function EditProjectModal({
                                             
                                             return (
                                             <SelectionRow
-                                                key={`material-${index}`}
+                                                key={`material-${label}-${index}`}
                                                 label={label}
                                                 buttonLabel="Agregar"
                                                 value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
@@ -986,7 +990,7 @@ export default function EditProjectModal({
                                     <tbody>
                                         {selectedEquipmentTable.length > 0 ? (
                                             selectedEquipmentTable.map((item) => (
-                                                <tr key={item.row} className="bg-white">
+                                                <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
                                                     </td>
@@ -1035,7 +1039,7 @@ export default function EditProjectModal({
                                     <tbody>
                                         {selectedMaterialTable.length > 0 ? (
                                             selectedMaterialTable.map((item) => (
-                                                <tr key={item.row} className="bg-white">
+                                                <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
                                                     </td>
