@@ -795,6 +795,10 @@ export default function EditProjectModal({
                                         {equipmentRows.map((label, index) => {
                                             const equipment_filteredOptions = handle_selectors_equipment(label);
                                             
+                                            const isSelected = isEquipmentTypeSelected(label);
+                                            const customSelectClass = isSelected && label !== "ACCESORIO"
+                                                ? "bg-[#B5D18A] border-[#DE8BFC] text-black" : "";
+
                                             return (
                                                 <SelectionRow
                                                     key={`equipment-${index}`}
@@ -802,6 +806,7 @@ export default function EditProjectModal({
                                                     buttonLabel="Agregar"
                                                     value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                     options={equipment_filteredOptions}
+                                                    customSelectClass={customSelectClass}
                                                     onChange={(value) => {
                                                         if (value === `Seleccionar - ${label}`) {
                                                             setSelectedEquipmentByRow((prev) => {
@@ -812,12 +817,10 @@ export default function EditProjectModal({
                                                             return;
                                                         }
 
-                                                        // Find the selected equipment
                                                         const selected = equipos.find((equipo) =>
                                                             equipo.tipo_de_producto === label && equipo.descripcion === value
                                                         );
 
-                                                        // Update the selection state if found
                                                         if (selected) {
                                                             setSelectedEquipmentByRow((prev) => ({
                                                                 ...prev,
@@ -831,13 +834,10 @@ export default function EditProjectModal({
                                                     onClick={() => {
                                                         const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
                                                     
-                                                        // Check if we have a valid selection
                                                         if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
                                                             return;
                                                         }
 
-                                                        // For ACCESORIO, we allow multiple selections of the same item
-                                                        // For other types, we check if an item of the same type is already added
                                                         let isAlreadyAdded = false;
                                                         if (label !== "ACCESORIO") {
                                                             isAlreadyAdded = selectedEquipmentTable.some(
@@ -854,6 +854,7 @@ export default function EditProjectModal({
                                                                 ...prev,
                                                                 {
                                                                     row: label,
+                                                                    // id: String(equipoDetails.id),
                                                                     id: String(equipoDetails.id),
                                                                     description: selectedEquipo.description,
                                                                     potencia_maxima: equipoDetails.potencia_maxima,
@@ -868,8 +869,6 @@ export default function EditProjectModal({
                                                             ]);
                                                         }
 
-                                                        // Clear the selection after adding (but only for non-ACCESORIO types)
-                                                        // For ACCESORIO, keep the selection so user can add the same item multiple times
                                                         if (label !== "ACCESORIO") {
                                                             setSelectedEquipmentByRow((prev) => {
                                                                 const newState = { ...prev };
@@ -898,7 +897,6 @@ export default function EditProjectModal({
                                                 value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                 options={material_filteredOptions}
                                                 onChange={(value) => {
-                                                    // Handle clearing the selection
                                                     if (value === `Seleccionar - ${label}`) {
                                                         setSelectedMaterialByRow((prev) => {
                                                             const newState = { ...prev };
@@ -908,12 +906,10 @@ export default function EditProjectModal({
                                                         return;
                                                     }
                                                     
-                                                    // Find the selected material
                                                     const selected = materiales.find((material) =>
                                                         material.tipo_de_producto === label && material.descripcion === value
                                                     );
                                                     
-                                                    // Update the selection state if found
                                                     if (selected) {
                                                         setSelectedMaterialByRow((prev) => ({
                                                             ...prev,
@@ -927,12 +923,10 @@ export default function EditProjectModal({
                                                 onClick={() => {
                                                     const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
                                                     
-                                                    // Check if we have a valid selection
                                                     if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
                                                         return;
                                                     }
                                                     
-                                                    // Add to the table if not already there
                                                     const isAlreadyAdded = selectedMaterialTable.some(
                                                         (item) => item.id === selectedMaterial.materialId
                                                     );
@@ -948,7 +942,6 @@ export default function EditProjectModal({
                                                         ]);
                                                     }
                                                     
-                                                    // Clear the selection after adding
                                                     setSelectedMaterialByRow((prev) => {
                                                         const newState = { ...prev };
                                                         delete newState[`${label}-${index}`];
