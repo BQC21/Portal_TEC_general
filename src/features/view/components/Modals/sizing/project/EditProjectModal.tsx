@@ -15,14 +15,12 @@ import type {
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 
-import { INITIAL_PROJECT_FORM,
+import {
     INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
 import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
-// import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
-// import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
 import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
@@ -260,6 +258,37 @@ export default function EditProjectModal({
         }, selectedEquipmentTable, selectedMaterialTable);
     }
 
+// Agregar zona
+    function handleZoneSelection(value: string) {
+        if (value === "Seleccione zona") {
+            setForm_zone(INITIAL_ZONE_FORM);
+            updateField("zona_id", "");
+            updateField("zona_info", undefined);
+            updateField("hsp", "");
+            updateField("ghi", "");
+            return;
+        }
+
+        const selected = zones.find((zone) => zone.zona === value);
+
+        if (selected) {
+            setForm_zone({
+                zona: selected.zona,
+                latitude: selected.latitude,
+                longitude: selected.longitude,
+                ghi_respaldo: selected.ghi_respaldo,
+                ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                gti_respaldo: selected.gti_respaldo,
+                gti_respaldo_diario: selected.gti_respaldo_diario,
+                hsp_peor_mes: selected.hsp_peor_mes,
+                created_at: selected.created_at,
+                updated_at: selected.updated_at,
+            });
+            updateField("zona_id", selected.id);
+            updateField("zona_info", selected);
+        }
+    }
+
     // --------------------------------------------------
     // ------- SELECTOR DE FILAS ------------------------
     // --------------------------------------------------
@@ -372,35 +401,7 @@ export default function EditProjectModal({
                                 required
                                 value={form_zone.zona ?? ""}
                                 options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
-                                onChange={(value) => {
-                                    if (value === "Seleccione zona") {
-                                        setForm_zone(INITIAL_ZONE_FORM);
-                                        updateField("zona_id", "");
-                                        updateField("zona_info", undefined);
-                                        updateField("hsp", "");
-                                        updateField("ghi", "");
-                                        return;
-                                    }
-
-                                    const selected = zones.find((zone) => zone.zona === value);
-
-                                    if (selected) {
-                                        setForm_zone({
-                                            zona: selected.zona,
-                                            latitude: selected.latitude,
-                                            longitude: selected.longitude,
-                                            ghi_respaldo: selected.ghi_respaldo,
-                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
-                                            gti_respaldo: selected.gti_respaldo,
-                                            gti_respaldo_diario: selected.gti_respaldo_diario,
-                                            hsp_peor_mes: selected.hsp_peor_mes,
-                                            created_at: selected.created_at,
-                                            updated_at: selected.updated_at,
-                                        });
-                                        updateField("zona_id", selected.id);
-                                        updateField("zona_info", selected);
-                                    }
-                                }}
+                                onChange={(value) => {handleZoneSelection(value)}}
                             />
 
                             {selectedZone && (
