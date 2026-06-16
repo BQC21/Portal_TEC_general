@@ -624,50 +624,67 @@ export default function EditProjectModal({
                                     <AddProductReadonlyField
                                         label="Energía requerida"
                                         value={computedRequirements.energia}
+                                        colorClass={getLightSilverColorClass(computedRequirements.energia)}
                                     />
                                     <AddProductReadonlyField
                                         label="Potencia DC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.potenciaDC)}                                    
                                     />
                                     <AddProductReadonlyField
                                         label="Potencia AC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.potenciaAC)}
                                     />
 
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Configuración del campo fotovoltaico</h2>
                                     <AddEquipoReadonlyField
                                         label="VMPP del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.vmpp_vmin)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="IMPP del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.impp_i_in).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.impp_i_in)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="VOC del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.voc_vmax).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.voc_vmax)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="ISC del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.isc_i_out).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.isc_i_out)}
                                     />  
                                     <AddEquipoReadonlyField
                                         label="Potencia del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.potencia_maxima)}
                                     />
                                     <AddProductReadonlyField
                                         label="Mínimo de Strings"
                                         value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.strings_minimos)}
                                     />
                                     <AddProductReadonlyField
                                         label="Máximo de Strings"
                                         value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.strings_maximos)}
                                     />
                                     <AddProductNumberField
                                         label="Número exacto de Strings"
                                         required
                                         value={Number(form.strings) > 0 ? Number(form.strings) : ""}
                                         onChange={(value) => updateField("strings", String(value))}
+                                        min={Math.floor(Number(computedRequirements.strings_minimos)) > 0 ?
+                                                Math.floor(Number(computedRequirements.strings_minimos)) : 0
+                                        }
+                                        step={1}
+                                        max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
+                                                Math.floor(Number(computedRequirements.strings_maximos)) : 0
+                                        }
                                     />
                                 </div>
 
@@ -676,44 +693,56 @@ export default function EditProjectModal({
                                     <AddEquipoReadonlyField
                                         label="Potencia DC máxima del inversor seleccionado"
                                         value={String(Number(computedRequirements.selectedInverter?.potencia_maxima).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.potencia_maxima)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Potencia AC del inversor seleccionado"
                                         value={String(Number(computedRequirements.selectedInverter?.potencia_ac).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.potencia_ac)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Corriente de entrada del inversor"
                                         value={String(Number(computedRequirements.selectedInverter?.impp_i_in).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.impp_i_in)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Corriente de salida del inversor"
                                         value={String(Number(computedRequirements.selectedInverter?.isc_i_out).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.isc_i_out)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Voltaje máximo del inversor por MPPT"
                                         value={String(Number(computedRequirements.selectedInverter?.voc_vmax).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.voc_vmax)}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección ITM AC mínima"
                                         value={String(Number(computedRequirements.itm_ac_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.itm_ac_min)}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección ITM DC mínima"
                                         value={String(Number(computedRequirements.itm_dc_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.itm_dc_min)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Número máximo de MPPTs a usarse"
                                         value={String(Number(computedRequirements.selectedInverter?.mppt).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.selectedInverter?.mppt)}
                                     />
                                     <AddProductNumberField
                                         label="Número de MPPTs a usarse"
                                         required
                                         value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
                                         onChange={(value) => updateField("mppt_number", String(value))}
+                                        min={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 1 : 0}                                        step={1}
+                                        max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
+                                                Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección SPD"
                                         value={String(Number(computedRequirements.spd_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.spd_min)}
                                     />
 
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
@@ -722,14 +751,17 @@ export default function EditProjectModal({
                                             <AddEquipoReadonlyField
                                                 label="Capacidad de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.impp_i_in)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Voltaje de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.vmpp_vmin)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="DoD de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.dod).toFixed(0))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.dod)}
                                             />
                                             <AddProductNumberField
                                                 label="Días de autonomía"
@@ -740,10 +772,12 @@ export default function EditProjectModal({
                                             <AddProductReadonlyField
                                                 label="Capacidad (Ah) del sistema"
                                                 value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
+                                                colorClass={getLightSilverColorClass(computedRequirements.ah_sistema)}
                                             />
                                             <AddProductReadonlyField
                                                 label="Número de baterías necesarias"
                                                 value={String(Number(computedRequirements.num_baterias).toFixed(0))}
+                                                colorClass={getLightSilverColorClass(computedRequirements.num_baterias)}
                                             />
                                     </>
                                 )}
