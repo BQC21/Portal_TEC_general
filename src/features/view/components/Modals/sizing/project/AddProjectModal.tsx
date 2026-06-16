@@ -521,7 +521,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        step={100}
                                         min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
@@ -689,7 +688,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
 
 
 
-                                    
+
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>

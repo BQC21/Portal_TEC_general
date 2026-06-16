@@ -600,7 +600,6 @@ export default function EditProjectModal({
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        step={100}
                                         min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
