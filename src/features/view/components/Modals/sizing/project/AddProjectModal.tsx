@@ -276,10 +276,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
+                            // según baterías
                             if (computedRequirements.num_baterias &&
                                 equipo.descripcion.includes("baterías") &&
                                 Number(computedRequirements.num_baterias) <= 
                                 parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                            // según strings
                             if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
                                 Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
                             return true;
