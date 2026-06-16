@@ -33,10 +33,14 @@ export default function ProjectsPage() {
     // ---- Usar Base de datos ---------
     // ---------------------------------    
     const { projects, refetch: refetch_project } = useProjects(); // obtener la lista de proyectos
-    const { create: create_project, update: update_project, remove: remove_project } = useProjectMutations(); // obtener funciones de mutación
+    const { create: create_project, 
+        update: update_project, 
+        remove: remove_project } = useProjectMutations(); // obtener funciones de mutación
 
     const { zones, refetch: refetch_zone } = useZone(); // obtener la lista de zonas
-    const { create: create_zone, update: update_zone, remove: remove_zone } = useZoneMutations(); // obtener funciones de mutación
+    const { create: create_zone, 
+        update: update_zone, 
+        remove: remove_zone } = useZoneMutations(); // obtener funciones de mutación
 
     // JOIN EQUIPOS <---> PROYECTOS
     const { projects_equipos: project_equipos,

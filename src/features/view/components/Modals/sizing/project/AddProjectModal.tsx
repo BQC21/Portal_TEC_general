@@ -79,6 +79,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
     const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
 
+    // zona seleccionada
     const selectedZone = form_zone.zona;
 
     // ----------------------------
@@ -156,12 +157,19 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         selectedEquipmentTable,
     ]);
 
+    // ----------------------------------------
+    // ------- EVENTOS ------------------------
+    // ----------------------------------------
+
+    // Form
     function updateField<K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
             return updated;
         });
     }
+
+    // Aceptar inserción
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -178,6 +186,136 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             num_baterias: computedRequirements.num_baterias,
         }, selectedEquipmentTable, selectedMaterialTable);
     }
+
+    // Agregar zona
+    function handleZoneSelection(value: string) {
+        if (value === "Seleccione zona") {
+            setForm_zone(INITIAL_ZONE_FORM);
+            updateField("zona_id", "");
+            updateField("zona_info", undefined);
+            updateField("hsp", "");
+            updateField("ghi", "");
+            return;
+        }
+
+        const selected = zones.find((zone) => zone.zona === value);
+
+        if (selected) {
+            setForm_zone({
+                zona: selected.zona,
+                latitude: selected.latitude,
+                longitude: selected.longitude,
+                ghi_respaldo: selected.ghi_respaldo,
+                ghi_respaldo_diario: selected.ghi_respaldo_diario,
+                gti_respaldo: selected.gti_respaldo,
+                gti_respaldo_diario: selected.gti_respaldo_diario,
+                hsp_peor_mes: selected.hsp_peor_mes,
+                created_at: selected.created_at,
+                updated_at: selected.updated_at,
+            });
+            updateField("zona_id", selected.id);
+            updateField("zona_info", selected);
+        }
+    }
+
+    // Comportamiento de los selectores
+    function handle_selectors_equipment(label: string): string[] {
+        let filteredOptions: string[] = [`Seleccionar - ${label}`];
+                                            
+        const isTypeAlreadySelected = selectedEquipmentTable.some(
+                (item) => item.row === label
+        );
+
+        if (label === "INVERSOR") {
+            if (isTypeAlreadySelected) {
+                filteredOptions = [`Seleccionar - ${label}`];
+            } else {
+                const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                            if (inverterPowerAC < requiredPowerAC) return false;
+                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                            equipo.tipo_conexion !== form.configuracion) return false;
+                            return true;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
+            }
+        } else if (label === "BATERÍA") {
+            if (form.tipo_instalacion === "conexión ON-GRID" || isTypeAlreadySelected) {
+                filteredOptions = [`Seleccionar - ${label}`];
+            } else {
+                    filteredOptions = [
+                        `Seleccionar - ${label}`,
+                        ...equipos
+                            .filter((equipo) => {
+                                return equipo.tipo_de_producto === label;
+                            })
+                            .map((equipo) => equipo.descripcion)
+                    ];
+            }
+        } else if (label === "MÓDULO FV") {                                        
+            if (isTypeAlreadySelected) {
+                filteredOptions = [`Seleccionar - ${label}`];
+            } else {
+                filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            return true;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
+            }
+        } else if (label === "ESTRUCTURA") {                                        
+            if (isTypeAlreadySelected) {
+                filteredOptions = [`Seleccionar - ${label}`];
+            } else {
+                filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            return true;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
+            }
+        } else {
+            filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            return true;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
+        }
+
+        return filteredOptions;
+    }
+    function handle_selectors_material (label: string): string[] {
+        const filteredOptions = [
+                `Seleccionar - ${label}`,
+                ...materiales
+                    .filter((material) => {
+                        if (material.tipo_de_producto !== label) return false;
+                        // Check if this material is already selected in the table
+                        const isAlreadySelected = selectedMaterialTable.some(
+                            (item) => item.id === String(material.id)
+                        );
+                        return !isAlreadySelected; // retiene en el selector los no seleccionados
+                    })
+                    .map((material) => material.descripcion),
+            ]
+        return filteredOptions;
+    }    
 
     // --------------------------------------------------
     // ------- SELECTOR DE FILAS ------------------------
@@ -291,35 +429,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 required
                                 value={form_zone.zona ?? ""}
                                 options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
-                                onChange={(value) => {
-                                    if (value === "Seleccione zona") {
-                                        setForm_zone(INITIAL_ZONE_FORM);
-                                        updateField("zona_id", "");
-                                        updateField("zona_info", undefined);
-                                        updateField("hsp", "");
-                                        updateField("ghi", "");
-                                        return;
-                                    }
-
-                                    const selected = zones.find((zone) => zone.zona === value);
-
-                                    if (selected) {
-                                        setForm_zone({
-                                            zona: selected.zona,
-                                            latitude: selected.latitude,
-                                            longitude: selected.longitude,
-                                            ghi_respaldo: selected.ghi_respaldo,
-                                            ghi_respaldo_diario: selected.ghi_respaldo_diario,
-                                            gti_respaldo: selected.gti_respaldo,
-                                            gti_respaldo_diario: selected.gti_respaldo_diario,
-                                            hsp_peor_mes: selected.hsp_peor_mes,
-                                            created_at: selected.created_at,
-                                            updated_at: selected.updated_at,
-                                        });
-                                        updateField("zona_id", selected.id);
-                                        updateField("zona_info", selected);
-                                    }
-                                }}
+                                onChange={(value) => {handleZoneSelection(value)}}
                             />
 
                             {selectedZone && (
@@ -532,87 +642,16 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
                                     <div className="flex flex-col gap-4">
                                     {equipmentRows.map((label, index) => {
-                                            let filteredOptions: string[] = [`Seleccionar - ${label}`];
-
-                                            if (label === "INVERSOR") {
-                                                // Check if an inverter is already selected
-                                                const isInverterAlreadySelected = selectedEquipmentTable.some(
-                                                    (item) => item.row === label
-                                                );
-                                                
-                                                if (isInverterAlreadySelected) {
-                                                    // If an inverter is already selected, show empty options
-                                                    filteredOptions = [`Seleccionar - ${label}`];
-                                                } else {
-                                                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
-                                                    filteredOptions = [
-                                                        `Seleccionar - ${label}`,
-                                                        ...equipos
-                                                            .filter((equipo) => {
-                                                                if (equipo.tipo_de_producto !== label) return false;
-                                                                const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                                                if (inverterPowerAC <= requiredPowerAC) return false;
-                                                                if (form.tipo_instalacion !== "conexión OFF-GRID" && 
-                                                                equipo.tipo_conexion !== form.configuracion) return false;
-                                                                return true;
-                                                            })
-                                                            .map((equipo) => equipo.descripcion)
-                                                    ];
-                                                }
-                                            } else if (label === "BATERÍA") {
-                                                // Only show battery options for non-ON-GRID installations
-                                                if (form.tipo_instalacion === "conexión ON-GRID") {
-                                                    filteredOptions = [`Seleccionar - ${label}`]; // Empty options for ON-GRID
-                                                } else {
-                                                    // Check if a battery is already selected
-                                                    const isBatteryAlreadySelected = selectedEquipmentTable.some(
-                                                        (item) => item.row === label
-                                                    );
-                                                    
-                                                    if (isBatteryAlreadySelected) {
-                                                        // If a battery is already selected, show empty options
-                                                        filteredOptions = [`Seleccionar - ${label}`];
-                                                    } else {
-                                                        filteredOptions = [
-                                                            `Seleccionar - ${label}`,
-                                                            ...equipos
-                                                                .filter((equipo) => {
-                                                                    return equipo.tipo_de_producto === label;
-                                                                })
-                                                                .map((equipo) => equipo.descripcion)
-                                                        ];
-                                                    }
-                                                }
-                                            } else {
-                                                // For non-ACCESORIO types, only show options if none of this type have been added yet
-                                                const isTypeAlreadySelected = selectedEquipmentTable.some(
-                                                    (item) => item.row === label
-                                                );
-                                                
-                                                if (isTypeAlreadySelected) {
-                                                    // If an item of this type is already selected, show empty options
-                                                    filteredOptions = [`Seleccionar - ${label}`];
-                                                } else {
-                                                    filteredOptions = [
-                                                        `Seleccionar - ${label}`,
-                                                        ...equipos
-                                                            .filter((equipo) => {
-                                                                if (equipo.tipo_de_producto !== label) return false;
-                                                                return true;
-                                                            })
-                                                            .map((equipo) => equipo.descripcion)
-                                                    ];
-                                                }
-                                            }
-
+                                            const equipment_filteredOptions = handle_selectors_equipment(label);
                                             return (
                                                 <SelectionRow
                                                     key={`equipment-${label}-${index}`}
                                                     label={label}
                                                     buttonLabel="Agregar"
                                                     value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
-                                                    options={filteredOptions}
+                                                    options={equipment_filteredOptions}
                                                     onChange={(value) => {
+                                                        // limpiar el selector
                                                         if (value === `Seleccionar - ${label}`) {
                                                             setSelectedEquipmentByRow((prev) => {
                                                                 const newState = { ...prev };
@@ -622,12 +661,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             return;
                                                         }
 
-                                                        // Find the selected equipment
+                                                        // Búsqueda
                                                         const selected = equipos.find((equipo) =>
                                                             equipo.tipo_de_producto === label && equipo.descripcion === value
                                                         );
 
-                                                        // Update the selection state if found
+                                                        // Actualizar el estado del selector
                                                         if (selected) {
                                                             setSelectedEquipmentByRow((prev) => ({
                                                                 ...prev,
@@ -697,85 +736,77 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
                                     <div className="flex flex-col gap-4">
-                                        {materialRows.map((label, index) => (
-                                            <SelectionRow
-                                                key={`material-row-${label}-${index}`}
-                                                label={label}
-                                                buttonLabel="Agregar"
-                                                value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
-                                                options={[
-                                                    `Seleccionar - ${label}`,
-                                                    ...materiales
-                                                        .filter((material) => {
-                                                            if (material.tipo_de_producto !== label) return false;
-                                                            // Check if this material is already selected in the table
-                                                            const isAlreadySelected = selectedMaterialTable.some(
-                                                                (item) => item.id === String(material.id)
-                                                            );
-                                                            return !isAlreadySelected; // retiene en el selector los no seleccionados
-                                                        })
-                                                        .map((material) => material.descripcion),
-                                                ]}
-                                                onChange={(value) => {
-                                                    // Handle clearing the selection
-                                                    if (value === `Seleccionar - ${label}`) {
+                                        {materialRows.map((label, index) => {
+                                            const material_filteredOptions = handle_selectors_material(label);
+
+                                            return (
+                                                <SelectionRow
+                                                    key={`material-row-${label}-${index}`}
+                                                    label={label}
+                                                    buttonLabel="Agregar"
+                                                    value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
+                                                    options={material_filteredOptions}
+                                                    onChange={(value) => {
+                                                        // Handle clearing the selection
+                                                        if (value === `Seleccionar - ${label}`) {
+                                                            setSelectedMaterialByRow((prev) => {
+                                                                const newState = { ...prev };
+                                                                delete newState[`${label}-${index}`];
+                                                                return newState;
+                                                            });
+                                                            return;
+                                                        }
+                                                        
+                                                        // Find the selected material
+                                                        const selected = materiales.find((material) =>
+                                                            material.tipo_de_producto === label && material.descripcion === value
+                                                        );
+                                                        
+                                                        // Update the selection state if found
+                                                        if (selected) {
+                                                            setSelectedMaterialByRow((prev) => ({
+                                                                ...prev,
+                                                                [`${label}-${index}`]: {
+                                                                    materialId: String(selected.id),
+                                                                    description: value,
+                                                                },
+                                                            }));
+                                                        }
+                                                    }}
+                                                    onClick={() => {
+                                                        const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
+                                                        
+                                                        // Check if we have a valid selection
+                                                        if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
+                                                            return;
+                                                        }
+                                                        
+                                                        // Add to the table if not already there
+                                                        const isAlreadyAdded = selectedMaterialTable.some(
+                                                            (item) => item.id === selectedMaterial.materialId
+                                                        );
+                                                        
+                                                        if (!isAlreadyAdded) {
+                                                            setSelectedMaterialTable((prev) => [
+                                                                ...prev,
+                                                                {
+                                                                    row: label,
+                                                                    id: selectedMaterial.materialId,
+                                                                    description: selectedMaterial.description,
+                                                                }
+                                                            ]);
+                                                        }
+                                                        
+                                                        // Clear the selection after adding
                                                         setSelectedMaterialByRow((prev) => {
                                                             const newState = { ...prev };
                                                             delete newState[`${label}-${index}`];
                                                             return newState;
                                                         });
-                                                        return;
-                                                    }
-                                                    
-                                                    // Find the selected material
-                                                    const selected = materiales.find((material) =>
-                                                        material.tipo_de_producto === label && material.descripcion === value
-                                                    );
-                                                    
-                                                    // Update the selection state if found
-                                                    if (selected) {
-                                                        setSelectedMaterialByRow((prev) => ({
-                                                            ...prev,
-                                                            [`${label}-${index}`]: {
-                                                                materialId: String(selected.id),
-                                                                description: value,
-                                                            },
-                                                        }));
-                                                    }
-                                                }}
-                                                onClick={() => {
-                                                    const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
-                                                    
-                                                    // Check if we have a valid selection
-                                                    if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
-                                                        return;
-                                                    }
-                                                    
-                                                    // Add to the table if not already there
-                                                    const isAlreadyAdded = selectedMaterialTable.some(
-                                                        (item) => item.id === selectedMaterial.materialId
-                                                    );
-                                                    
-                                                    if (!isAlreadyAdded) {
-                                                        setSelectedMaterialTable((prev) => [
-                                                            ...prev,
-                                                            {
-                                                                row: label,
-                                                                id: selectedMaterial.materialId,
-                                                                description: selectedMaterial.description,
-                                                            }
-                                                        ]);
-                                                    }
-                                                    
-                                                    // Clear the selection after adding
-                                                    setSelectedMaterialByRow((prev) => {
-                                                        const newState = { ...prev };
-                                                        delete newState[`${label}-${index}`];
-                                                        return newState;
-                                                    });
-                                                }}
-                                            />
-                                        ))}
+                                                    }}
+                                                />
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>
