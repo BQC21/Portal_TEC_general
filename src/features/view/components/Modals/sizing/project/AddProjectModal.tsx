@@ -685,6 +685,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         value={String(Number(computedRequirements.spd_min).toFixed(0))}
                                         colorClass={getLightSilverColorClass(computedRequirements.spd_min)}
                                     />
+
+
+
+
+                                    
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
