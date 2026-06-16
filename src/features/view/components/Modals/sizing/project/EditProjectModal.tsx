@@ -597,6 +597,8 @@ export default function EditProjectModal({
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
+                                        step={100}
+                                        min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
                                         <AddProductSelectField
@@ -612,12 +614,18 @@ export default function EditProjectModal({
                                         required
                                         value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
                                         onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                        step={5}
+                                        min={30}
+                                        max={50}
                                     />
                                     <AddProductNumberField
                                         label="Porcentaje de rendimiento del módulo (%)"
                                         required
                                         value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
                                         onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                        step={5}
+                                        min={75}
+                                        max={95}
                                     />
 
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
@@ -768,6 +776,9 @@ export default function EditProjectModal({
                                                 required
                                                 value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
                                                 onChange={(value) => updateField("autonomia", String(value))}
+                                                min={0}
+                                                step={1}
+                                                max={3}
                                             />
                                             <AddProductReadonlyField
                                                 label="Capacidad (Ah) del sistema"
