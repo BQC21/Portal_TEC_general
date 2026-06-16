@@ -12,8 +12,6 @@ import type {
     ZoneFormState,
 } from "@/lib/types/zone-types"; // Tipados
 
-import type { Equipos } from "@/lib/types/equipos-types";
-
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductUrlField } from "@/features/view/components/Form_fields/AddUrlField"; // campos
@@ -23,8 +21,6 @@ import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValu
 import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
-// import { useConverterSolarcast } from "@/features/hooks/api/useConverterSolarcast";
-// import { useConverterNasa } from "@/features/hooks/api/useConverterNasa";
 import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
@@ -101,7 +97,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         if (val !== null)    return `${val}`;
         return "Sin datos";
     };
-
 
     // ----------------------------------------
     // ------- Cálculos de requerimientos -----
@@ -286,13 +281,29 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                         .map((equipo) => equipo.descripcion)
                 ];
             }
+        } else if (label === "ACCESORIO") {
+            filteredOptions = [
+                `Seleccionar - ${label}`,
+                ...equipos
+                    .filter((equipo) => {
+                        if (equipo.tipo_de_producto !== label) return false;
+                        const isAlreadySelected = selectedEquipmentTable.some(
+                            (item) => item.id === String(equipo.id)
+                        );
+                        return !isAlreadySelected;
+                    })
+                    .map((equipo) => equipo.descripcion)
+            ];
         } else {
             filteredOptions = [
                     `Seleccionar - ${label}`,
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
-                            return true;
+                            const isAlreadySelected = selectedEquipmentTable.some(
+                                (item) => item.id === String(equipo.id)
+                            );
+                        return !isAlreadySelected;
                         })
                         .map((equipo) => equipo.descripcion)
                 ];
@@ -306,7 +317,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 ...materiales
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
-                        // Check if this material is already selected in the table
                         const isAlreadySelected = selectedMaterialTable.some(
                             (item) => item.id === String(material.id)
                         );
@@ -316,6 +326,26 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             ]
         return filteredOptions;
     }    
+
+    // ---------------------------------------
+    // ----- Condicionar coloreado -----------
+    // ---------------------------------------
+    const getDarkSilverColorClass = (value: string | number | null | undefined) => {
+        if (value === "NaN" || value === "Infinity" || value === null || 
+                value === undefined || value === "" || value === "0" || value === 0) return "bg-[#BFAC7E]"; 
+        return "bg-slate-400"; // Default color
+    };
+
+    const getLightSilverColorClass = (value: string | number | null | undefined) => {
+        if (value === "NaN" || value === "Infinity" || value === null || 
+                value === undefined || value === "" || value === 0 || value === "0") return "bg-[#F0B746]"; 
+        return "bg-slate-200"; // Default color
+    };
+
+    const isEquipmentTypeSelected = (type: string) => {
+        return selectedEquipmentTable.some(item => item.row === type);
+    };
+
 
     // --------------------------------------------------
     // ------- SELECTOR DE FILAS ------------------------
@@ -331,9 +361,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         options: string[];
         onChange: (value: string) => void;
         onClick?: () => void;
+        customSelectClass?: string; // Optional custom class for select styling
     };
 
-    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick }: SelectionRowProps) {
+    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick, customSelectClass }: SelectionRowProps) {
         return (
             <div className={selectionRowStyles}>
                 <div className="min-w-0">
@@ -343,7 +374,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                         value={value}
                         options={options}
                         onChange={onChange}
-                            />
+                        customClass={customSelectClass}
+                    />
                 </div>
                 <button type="button" className={actionButtonStyles} onClick={onClick}>
                     {buttonLabel}
@@ -367,7 +399,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         "CANALIZACIÓN",
         "CONSUMIBLE",
     ];
-
+    
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
             <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
@@ -481,6 +513,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
+                                        step={100}
+                                        min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
                                         <AddProductSelectField
@@ -496,108 +530,152 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         required
                                         value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
                                         onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                        step={5}
+                                        min={30}
+                                        max={50}
                                     />
                                     <AddProductNumberField
                                         label="Porcentaje de rendimiento del módulo (%)"
                                         required
                                         value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
                                         onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
+                                        step={5}
+                                        min={75}
+                                        max={95}
                                     />
 
+
+
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
-                                    <AddProductReadonlyField
+                                    <AddEquipoReadonlyField
                                         label="Energía requerida"
                                         value={computedRequirements.energia}
+                                        colorClass={getLightSilverColorClass(computedRequirements.energia)}
                                     />
-                                    <AddProductReadonlyField
+                                    <AddEquipoReadonlyField
                                         label="Potencia DC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.potenciaDC)}
                                     />
-                                    <AddProductReadonlyField
+                                    <AddEquipoReadonlyField
                                         label="Potencia AC requerida (KW)"
                                         value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.potenciaAC)}
                                     />
+
+
+
 
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Configuración del campo fotovoltaico</h2>
                                     <AddEquipoReadonlyField
                                         label="VMPP del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.vmpp_vmin)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="IMPP del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.impp_i_in).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.impp_i_in)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="VOC del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.voc_vmax).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.voc_vmax)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="ISC del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.isc_i_out).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.isc_i_out)}
                                     />  
                                     <AddEquipoReadonlyField
                                         label="Potencia del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(2))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedEquipment?.potencia_maxima)}
                                     />
-                                    <AddProductReadonlyField
+                                    <AddEquipoReadonlyField
                                         label="Mínimo de Strings"
                                         value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.strings_minimos)}
                                     />
-                                    <AddProductReadonlyField
+                                    <AddEquipoReadonlyField
                                         label="Máximo de Strings"
                                         value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.strings_maximos)}
                                     />
                                     <AddProductNumberField
                                         label="Número exacto de Strings"
                                         required
                                         value={Number(form.strings) > 0 ? Number(form.strings) : ""}
                                         onChange={(value) => updateField("strings", String(value))}
+                                        min={Math.floor(Number(computedRequirements.strings_minimos)) > 0 ?
+                                                Math.floor(Number(computedRequirements.strings_minimos)) : 0
+                                        }
+                                        step={1}
+                                        max={Math.floor(Number(computedRequirements.strings_minimos)) > 0 ?
+                                                Math.floor(Number(computedRequirements.strings_minimos)) : 0
+                                        }
                                     />
                                 </div>
+
+
+
+
 
                                 <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Protecciones eléctricas</h2>
                                     <AddEquipoReadonlyField
                                         label="Potencia DC máxima del inversor seleccionado"
                                         value={String(Number(computedRequirements.selectedInverter?.potencia_maxima).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.potencia_maxima)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Potencia AC del inversor seleccionado"
                                         value={String(Number(computedRequirements.selectedInverter?.potencia_ac).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.potencia_ac)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Corriente de entrada del inversor"
                                         value={String(Number(computedRequirements.selectedInverter?.impp_i_in).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.impp_i_in)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Corriente de salida del inversor"
                                         value={String(Number(computedRequirements.selectedInverter?.isc_i_out).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.isc_i_out)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Voltaje máximo del inversor por MPPT"
                                         value={String(Number(computedRequirements.selectedInverter?.voc_vmax).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.voc_vmax)}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección ITM AC mínima"
                                         value={String(Number(computedRequirements.itm_ac_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.itm_ac_min)}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección ITM DC mínima"
                                         value={String(Number(computedRequirements.itm_dc_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.itm_dc_min)}
                                     />
                                     <AddEquipoReadonlyField
                                         label="Número máximo de MPPTs a usarse"
                                         value={String(Number(computedRequirements.selectedInverter?.mppt).toFixed(0))}
+                                        colorClass={getDarkSilverColorClass(computedRequirements.selectedInverter?.mppt ?? 0)}
                                     />
                                     <AddProductNumberField
                                         label="Número de MPPTs a usarse"
                                         required
                                         value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
                                         onChange={(value) => updateField("mppt_number", String(value))}
+                                        min={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 1 : 0}                                        step={1}
+                                        max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
+                                                Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
                                     />
                                     <AddProductReadonlyField
                                         label="Protección SPD"
                                         value={String(Number(computedRequirements.spd_min).toFixed(0))}
+                                        colorClass={getLightSilverColorClass(computedRequirements.spd_min)}
                                     />
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
@@ -605,28 +683,36 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             <AddEquipoReadonlyField
                                                 label="Capacidad de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.impp_i_in)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Voltaje de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.vmpp_vmin)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="DoD de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.dod).toFixed(0))}
+                                                colorClass={getDarkSilverColorClass(computedRequirements.selectedBattery?.dod)}
                                             />
                                             <AddProductNumberField
                                                 label="Días de autonomía"
                                                 required
                                                 value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
                                                 onChange={(value) => updateField("autonomia", String(value))}
+                                                min={0}
+                                                step={1}
+                                                max={3}
                                             />
                                             <AddProductReadonlyField
                                                 label="Capacidad (Ah) del sistema"
                                                 value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
+                                                colorClass={getLightSilverColorClass(computedRequirements.ah_sistema)}
                                             />
                                             <AddProductReadonlyField
                                                 label="Número de baterías necesarias"
                                                 value={String(Number(computedRequirements.num_baterias).toFixed(0))}
+                                                colorClass={getLightSilverColorClass(computedRequirements.num_baterias)}
                                             />
                                     </>
                                 )}
@@ -643,6 +729,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <div className="flex flex-col gap-4">
                                     {equipmentRows.map((label, index) => {
                                             const equipment_filteredOptions = handle_selectors_equipment(label);
+
+                                            const isSelected = isEquipmentTypeSelected(label);
+                                            const customSelectClass = isSelected && label !== "ACCESORIO"
+                                                ? "bg-[#B5D18A] border-[#DE8BFC] text-black" : "";
+                                            
                                             return (
                                                 <SelectionRow
                                                     key={`equipment-${label}-${index}`}
@@ -650,6 +741,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                     buttonLabel="Agregar"
                                                     value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                     options={equipment_filteredOptions}
+                                                    customSelectClass={customSelectClass}
                                                     onChange={(value) => {
                                                         // limpiar el selector
                                                         if (value === `Seleccionar - ${label}`) {
@@ -678,15 +770,15 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                         }                                               
                                                     }}
                                                     onClick={() => {
+                                                        // Almacena lo seleccionado
                                                         const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
                                                     
-                                                        // Check if we have a valid selection
+                                                        // Valida la selección
                                                         if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
                                                             return;
                                                         }
 
-                                                        // For ACCESORIO, we allow multiple selections of the same item
-                                                        // For other types, we check if an item of the same type is already added
+                                                        // Revisa si existe en la tabla (no para "ACCESORIO")
                                                         let isAlreadyAdded = false;
                                                         if (label !== "ACCESORIO") {
                                                             isAlreadyAdded = selectedEquipmentTable.some(
@@ -697,13 +789,13 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                         const equipoDetails = equipos.find(
                                                             (equipo) => String(equipo.id) === selectedEquipo.equipoId
                                                         );
-
                                                         if (!isAlreadyAdded && equipoDetails) {
                                                             setSelectedEquipmentTable((prev) => [
                                                                 ...prev,
                                                                 {
                                                                     row: label,
-                                                                    id: String(equipoDetails.id),
+                                                                    // id: String(equipoDetails.id),
+                                                                    id: selectedEquipo.equipoId,
                                                                     description: selectedEquipo.description,
                                                                     potencia_maxima: equipoDetails.potencia_maxima,
                                                                     mppt: equipoDetails.mppt,
@@ -717,15 +809,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             ]);
                                                         }
 
-                                                        // Clear the selection after adding (but only for non-ACCESORIO types)
-                                                        // For ACCESORIO, keep the selection so user can add the same item multiple times
-                                                        if (label !== "ACCESORIO") {
-                                                            setSelectedEquipmentByRow((prev) => {
-                                                                const newState = { ...prev };
-                                                                delete newState[`${label}-${index}`];
-                                                                return newState;
-                                                            });
-                                                        }
+                                                        // Limpiar el selector luego de añadir el equipo seleccionado a la tabla
+                                                        setSelectedEquipmentByRow((prev) => {
+                                                            const newState = { ...prev };
+                                                            delete newState[`${label}-${index}`];
+                                                            return newState;
+                                                        });
                                                     }}
                                                 />
                                             );
@@ -757,12 +846,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             return;
                                                         }
                                                         
-                                                        // Find the selected material
                                                         const selected = materiales.find((material) =>
                                                             material.tipo_de_producto === label && material.descripcion === value
                                                         );
                                                         
-                                                        // Update the selection state if found
                                                         if (selected) {
                                                             setSelectedMaterialByRow((prev) => ({
                                                                 ...prev,
@@ -776,12 +863,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                     onClick={() => {
                                                         const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
                                                         
-                                                        // Check if we have a valid selection
                                                         if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
                                                             return;
                                                         }
                                                         
-                                                        // Add to the table if not already there
                                                         const isAlreadyAdded = selectedMaterialTable.some(
                                                             (item) => item.id === selectedMaterial.materialId
                                                         );
@@ -797,7 +882,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                             ]);
                                                         }
                                                         
-                                                        // Clear the selection after adding
                                                         setSelectedMaterialByRow((prev) => {
                                                             const newState = { ...prev };
                                                             delete newState[`${label}-${index}`];
@@ -838,12 +922,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                onClick={() => {
-                                                    setSelectedEquipmentTable((current) =>
-                                                        current.filter((row) => !(row.row === item.row && row.id === item.id)),
-                                                    );
-                                                }}
-
+                                                            onClick={() => {
+                                                                setSelectedEquipmentTable((current) =>
+                                                                    current.filter((row) => !(row.row === item.row && row.id === item.id)),
+                                                                );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
@@ -887,12 +970,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
                                                             type="button"
-                                                onClick={() => {
-                                                    setSelectedMaterialTable((current) =>
-                                                        current.filter((row) => row.id !== item.id),
-                                                    );
-                                                }}
-
+                                                            onClick={() => {
+                                                                setSelectedMaterialTable((current) =>
+                                                                    current.filter((row) => row.id !== item.id),
+                                                                );
+                                                            }}
                                                             className="rounded-xl bg-indigo-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-800"
                                                         >
                                                             Eliminar
