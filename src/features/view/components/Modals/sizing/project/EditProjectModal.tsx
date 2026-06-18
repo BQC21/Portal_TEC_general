@@ -21,7 +21,7 @@ import {
 import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
-import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
+// import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 
@@ -133,6 +133,7 @@ export default function EditProjectModal({
                 row: item.equipo_info!.tipo_de_producto,
                 id: item.equipo_id,
                 description: item.equipo_info!.descripcion,
+                marca: item.equipo_info!.marca,
                 potencia_maxima: item.equipo_info!.potencia_maxima,
                 mppt: item.equipo_info!.mppt,
                 dod: item.equipo_info!.dod,
@@ -679,7 +680,16 @@ export default function EditProjectModal({
                                         colorClass={getLightSilverColorClass(computedRequirements.potenciaAC)}
                                     />
 
+
+
+
+
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Configuración del campo fotovoltaico</h2>
+                                    <AddEquipoReadonlyField
+                                        label="Marca del módulo seleccionado"
+                                        value={computedRequirements.selectedEquipment?.marca ?? ""}
+                                        colorClass={"bg-[#7CC3CC]"}
+                                    />
                                     <AddEquipoReadonlyField
                                         label="VMPP del módulo seleccionado"
                                         value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
@@ -730,8 +740,17 @@ export default function EditProjectModal({
                                     />
                                 </div>
 
+
+
+
+
                                 <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Protecciones eléctricas</h2>
+                                    <AddEquipoReadonlyField
+                                        label="Marca del inversor seleccionado"
+                                        value={computedRequirements.selectedInverter?.marca ?? ""}
+                                        colorClass={"bg-[#7CC3CC]"}
+                                    />                                    
                                     <AddEquipoReadonlyField
                                         label="Potencia DC máxima del inversor seleccionado"
                                         value={String(Number(computedRequirements.selectedInverter?.potencia_maxima).toFixed(0))}
@@ -794,6 +813,11 @@ export default function EditProjectModal({
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
+                                            <AddEquipoReadonlyField
+                                                label="Marca de la batería seleccionado"
+                                                value={computedRequirements.selectedBattery?.marca ?? ""}
+                                                colorClass={"bg-[#7CC3CC]"}
+                                            />
                                             <AddEquipoReadonlyField
                                                 label="Capacidad de la batería seleccionada"
                                                 value={String(Number(computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
@@ -906,6 +930,7 @@ export default function EditProjectModal({
                                                                     // id: String(equipoDetails.id),
                                                                     id: String(equipoDetails.id),
                                                                     description: selectedEquipo.description,
+                                                                    marca: equipoDetails.marca,
                                                                     potencia_maxima: equipoDetails.potencia_maxima,
                                                                     mppt: equipoDetails.mppt,
                                                                     dod: equipoDetails.dod,
