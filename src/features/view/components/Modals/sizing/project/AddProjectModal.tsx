@@ -18,7 +18,7 @@ import { AddProductUrlField } from "@/features/view/components/Form_fields/AddUr
 
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
-import { CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
+import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 
 import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
@@ -78,25 +78,28 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     // zona seleccionada
     const selectedZone = form_zone.zona;
 
-    // ----------------------------
-    // ------- NREL API -----------
-    // ----------------------------
-    const { ghi_nrel,
-        // hsp,
-        loading: NRELloading, error: NRELerror } = useConverterNREL({
-        latitude:  form_zone.latitude ?? "",
-        longitude: form_zone.longitude ?? "",
-    })
-    console.log("Datos de radiación obtenidos de NREL API:", { ghi_nrel, NRELloading, NRELerror });
+    // ángulo seleccionado
+    const selectedAngle = form.angulo;
 
-    // Helper para el valor de un campo NREL
-    const nrelValue = (val: number | null) => {
-        if (NRELerror)       return `Error: ${NRELerror}`;
-        if (NRELloading)     return "Cargando...";
+    // // ----------------------------
+    // // ------- NREL API -----------
+    // // ----------------------------
+    // const { ghi_nrel,
+    //     // hsp,
+    //     loading: NRELloading, error: NRELerror } = useConverterNREL({
+    //     latitude:  form_zone.latitude ?? "",
+    //     longitude: form_zone.longitude ?? "",
+    // })
+    // console.log("Datos de radiación obtenidos de NREL API:", { ghi_nrel, NRELloading, NRELerror });
 
-        if (val !== null)    return `${val}`;
-        return "Sin datos";
-    };
+    // // Helper para el valor de un campo NREL
+    // const nrelValue = (val: number | null) => {
+    //     if (NRELerror)       return `Error: ${NRELerror}`;
+    //     if (NRELloading)     return "Cargando...";
+
+    //     if (val !== null)    return `${val}`;
+    //     return "Sin datos";
+    // };
 
     // ----------------------------------------
     // ------- Cálculos de requerimientos -----
@@ -471,6 +474,13 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
                                 onChange={(value) => {handleZoneSelection(value)}}
                             />
+                            <AddProductSelectField
+                                label="Orientación de la radiación"
+                                required
+                                value={String(form.angulo)}
+                                options={ANGLE_OPTIONS}
+                                onChange={(value) => updateField("angulo", value)}
+                            />
 
                             {selectedZone && (
                                 <>
@@ -486,6 +496,22 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             value={form_zone.longitude ?? "---"}
                                         />
                                     </span>
+                                    {selectedAngle == "Coplanar" ? (
+                                        <span>
+                                        <AddProductReadonlyField
+                                            label="GHI anual de la zona"
+                                            value={form_zone.ghi_respaldo ?? "---"}
+                                        />
+                                    </span>
+                                    ) : (
+                                        <span>
+                                        <AddProductReadonlyField
+                                            label="GTI anual de la zona"
+                                            value={form_zone.gti_respaldo ?? "---"}
+                                        />
+                                    </span>
+                                    )}
+                                    {/* <span>
                                     {!NRELerror && ghi_nrel !== null ? (
                                         <span>
                                             <AddProductReadonlyField
@@ -506,6 +532,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             </p>
                                         </>
                                     )}
+                                    </span> */}
                                 </>
                             )}
                         </section>
