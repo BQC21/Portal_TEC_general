@@ -138,7 +138,9 @@ export const PRICE_CURRENCY_OPTIONS = [
     "USD", "PEN"] as const; // fuentes de divisas
 export const FormatFile_OPTIONS = [
     "---", "xlsx", "csv"]; // Formatos de descarga permitidos
-
+export const ANGLE_OPTIONS = [
+    "Coplanar", "Inclinado"
+] // Ángulos de orientación
 
 
 
