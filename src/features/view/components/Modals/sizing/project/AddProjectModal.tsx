@@ -163,6 +163,15 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     ]);
 
     // ----------------------------------------
+    // ------- Condicionar renderizado de selectores ------------------------
+    // ----------------------------------------
+
+    const showModuleSelector = Number(computedRequirements.potenciaDC) > 0 && computedRequirements.potenciaDC != "Infinity";
+    const showInverterSelector = Number(computedRequirements.potenciaAC) > 0 && computedRequirements.potenciaDC != "Infinity";
+    const showStructureSelector = Boolean(form.strings) && Number(form.strings) > 0;
+    const isNotOnGrid = form.tipo_instalacion !== "conexión ON-GRID";
+
+    // ----------------------------------------
     // ------- EVENTOS ------------------------
     // ----------------------------------------
 
@@ -223,97 +232,86 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         }
     }
 
-    // Comportamiento de los selectores
-    function handle_selectors_equipment(label: string): string[] {
+    // Opciones a mostrar en los selectores
+    function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL"): string[]{
         let filteredOptions: string[] = [`Seleccionar - ${label}`];
-                                            
-        const isTypeAlreadySelected = selectedEquipmentTable.some(
-                (item) => item.row === label
-        );
 
-        if (label === "INVERSOR") {
-            if (isTypeAlreadySelected) {
-                filteredOptions = [`Seleccionar - ${label}`];
-            } else {
-                const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
-                filteredOptions = [
-                    `Seleccionar - ${label}`,
-                    ...equipos
-                        .filter((equipo) => {
-                            if (equipo.tipo_de_producto !== label) return false;
-                            const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                            if (inverterPowerAC < requiredPowerAC) return false;
-                            if (form.tipo_instalacion !== "conexión OFF-GRID" && 
-                            equipo.tipo_conexion !== form.configuracion) return false;
-                            return true;
-                        })
-                        .map((equipo) => equipo.descripcion)
-                ];
-            }
-        } else if (label === "BATERÍA") {
-            if (form.tipo_instalacion === "conexión ON-GRID" || isTypeAlreadySelected) {
-                filteredOptions = [`Seleccionar - ${label}`];
-            } else {
+        if (product_type === "EQUIPO") {
+
+            const isTypeAlreadySelected = selectedEquipmentTable.some(
+                    (item) => item.row === label
+            );
+
+            if (label === "INVERSOR") {
+                if (isTypeAlreadySelected) {
+                    filteredOptions = [`Seleccionar - ${label}`];
+                } else {
+                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
                     filteredOptions = [
                         `Seleccionar - ${label}`,
                         ...equipos
                             .filter((equipo) => {
-                                return equipo.tipo_de_producto === label;
+                                if (equipo.tipo_de_producto !== label) return false;
+                                const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
+                                if (inverterPowerAC < requiredPowerAC) return false;
+                                if (form.tipo_instalacion !== "conexión OFF-GRID" && 
+                                equipo.tipo_conexion !== form.configuracion) return false;
+                                return true;
                             })
                             .map((equipo) => equipo.descripcion)
                     ];
-            }
-        } else if (label === "MÓDULO FV") {                                        
-            if (isTypeAlreadySelected) {
-                filteredOptions = [`Seleccionar - ${label}`];
-            } else {
+                }
+            } else if (label === "BATERÍA") {
+                if (form.tipo_instalacion === "conexión ON-GRID" || isTypeAlreadySelected) {
+                    filteredOptions = [`Seleccionar - ${label}`];
+                } else {
+                        filteredOptions = [
+                            `Seleccionar - ${label}`,
+                            ...equipos
+                                .filter((equipo) => {
+                                    return equipo.tipo_de_producto === label;
+                                })
+                                .map((equipo) => equipo.descripcion)
+                        ];
+                }
+            } else if (label === "MÓDULO FV") {                                        
+                if (isTypeAlreadySelected) {
+                    filteredOptions = [`Seleccionar - ${label}`];
+                } else {
+                    filteredOptions = [
+                        `Seleccionar - ${label}`,
+                        ...equipos
+                            .filter((equipo) => {
+                                if (equipo.tipo_de_producto !== label) return false;
+                                return true;
+                            })
+                            .map((equipo) => equipo.descripcion)
+                    ];
+                }
+            } else if (label === "ESTRUCTURA") {                                        
+                if (isTypeAlreadySelected) {
+                    filteredOptions = [`Seleccionar - ${label}`];
+                } else {
+                    filteredOptions = [
+                        `Seleccionar - ${label}`,
+                        ...equipos
+                            .filter((equipo) => {
+                                if (equipo.tipo_de_producto !== label) return false;
+                                // según baterías
+                                if (computedRequirements.num_baterias &&
+                                    equipo.descripcion.includes("baterías") &&
+                                    Number(computedRequirements.num_baterias) <= 
+                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                                // según strings
+                                if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
+                                    Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                                return true;
+                            })
+                            .map((equipo) => equipo.descripcion)
+                    ];
+                }
+            } else if (label === "ACCESORIO") {
                 filteredOptions = [
-                    `Seleccionar - ${label}`,
-                    ...equipos
-                        .filter((equipo) => {
-                            if (equipo.tipo_de_producto !== label) return false;
-                            return true;
-                        })
-                        .map((equipo) => equipo.descripcion)
-                ];
-            }
-        } else if (label === "ESTRUCTURA") {                                        
-            if (isTypeAlreadySelected) {
-                filteredOptions = [`Seleccionar - ${label}`];
-            } else {
-                filteredOptions = [
-                    `Seleccionar - ${label}`,
-                    ...equipos
-                        .filter((equipo) => {
-                            if (equipo.tipo_de_producto !== label) return false;
-                            // según baterías
-                            if (computedRequirements.num_baterias &&
-                                equipo.descripcion.includes("baterías") &&
-                                Number(computedRequirements.num_baterias) <= 
-                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
-                            // según strings
-                            if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
-                                Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
-                            return true;
-                        })
-                        .map((equipo) => equipo.descripcion)
-                ];
-            }
-        } else if (label === "ACCESORIO") {
-            filteredOptions = [
-                `Seleccionar - ${label}`,
-                ...equipos
-                    .filter((equipo) => {
-                        if (equipo.tipo_de_producto !== label) return false;
-                        const isAlreadySelected = selectedEquipmentTable.some(
-                            (item) => item.id === String(equipo.id)
-                        );
-                        return !isAlreadySelected;
-                    })
-                    .map((equipo) => equipo.descripcion)
-            ];
-        } else {
-            filteredOptions = [
                     `Seleccionar - ${label}`,
                     ...equipos
                         .filter((equipo) => {
@@ -321,16 +319,17 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                             const isAlreadySelected = selectedEquipmentTable.some(
                                 (item) => item.id === String(equipo.id)
                             );
-                        return !isAlreadySelected;
+                            return !isAlreadySelected;
                         })
                         .map((equipo) => equipo.descripcion)
                 ];
-        }
 
-        return filteredOptions;
-    }
-    function handle_selectors_material (label: string): string[] {
-        const filteredOptions = [
+                return filteredOptions;
+            } 
+
+            return filteredOptions;
+        } else if (product_type === "MATERIAL") {
+            filteredOptions = [
                 `Seleccionar - ${label}`,
                 ...materiales
                     .filter((material) => {
@@ -342,8 +341,147 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                     })
                     .map((material) => material.descripcion),
             ]
+            return filteredOptions;
+        }
+
         return filteredOptions;
-    }    
+    } 
+
+    // Manipular cambios en los selectores
+    function handle_onChange(value: string, label: string, 
+        index: string | number, product_type: string){
+            if (product_type === "EQUIPO") {
+                // limpiar el selector
+                if (value === `Seleccionar - ${label}`) {
+                    setSelectedEquipmentByRow((prev) => {
+                        const newState = { ...prev };
+                        delete newState[`${label}-${index}`];
+                        return newState;
+                    });
+                    return;
+                }
+
+                // Búsqueda
+                const selected = equipos.find((equipo) =>
+                    equipo.tipo_de_producto === label && equipo.descripcion === value
+                );
+
+                // Actualizar el estado del selector
+                if (selected) {
+                    setSelectedEquipmentByRow((prev) => ({
+                        ...prev,
+                        [`${label}-${index}`]: {
+                            equipoId: String(selected.id),
+                            description: value,
+                        },
+                    }));
+                }   
+            } else if (product_type === "MATERIAL") {
+                // limpiar el selector
+                if (value === `Seleccionar - ${label}`) {
+                    setSelectedMaterialByRow((prev) => {
+                        const newState = { ...prev };
+                        delete newState[`${label}-${index}`];
+                        return newState;
+                    });
+                    return;
+                }
+
+                // Búsqueda
+                const selected = materiales.find((material) =>
+                    material.tipo_de_producto === label && material.descripcion === value
+                );
+
+                // Actualizar el estado del selector
+                if (selected) {
+                    setSelectedMaterialByRow((prev) => ({
+                        ...prev,
+                        [`${label}-${index}`]: {
+                            materialId: String(selected.id),
+                            description: value,
+                        },
+                    }));
+                }     
+            }                                           
+    }
+
+    function handle_click(label: string, index: string | number, product_type: string){
+        if (product_type === "EQUIPO"){
+            // Almacena lo seleccionado
+            const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
+
+            // Valida la selección
+            if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
+                return;
+            }
+
+            // Revisa si existe en la tabla (no para "ACCESORIO")
+            let isAlreadyAdded = false;
+            if (label !== "ACCESORIO") {
+                isAlreadyAdded = selectedEquipmentTable.some(
+                    (item) => item.row === label
+                );
+            }
+
+            const equipoDetails = equipos.find(
+                (equipo) => String(equipo.id) === selectedEquipo.equipoId
+            );
+            if (!isAlreadyAdded && equipoDetails) {
+                setSelectedEquipmentTable((prev) => [
+                    ...prev,
+                    {
+                        row: label,
+                        // id: String(equipoDetails.id),
+                        id: selectedEquipo.equipoId,
+                        description: selectedEquipo.description,
+                        marca: equipoDetails.marca,
+                        potencia_maxima: equipoDetails.potencia_maxima,
+                        mppt: equipoDetails.mppt,
+                        dod: equipoDetails.dod,
+                        potencia_ac: equipoDetails.potencia_ac,
+                        voc_vmax: equipoDetails.voc_vmax,
+                        vmpp_vmin: equipoDetails.vmpp_vmin,
+                        isc_i_out: equipoDetails.isc_i_out,
+                        impp_i_in: equipoDetails.impp_i_in,
+                    }
+                ]);
+            }
+
+            // Limpiar el selector luego de añadir el equipo seleccionado a la tabla
+            setSelectedEquipmentByRow((prev) => {
+                const newState = { ...prev };
+                delete newState[`${label}-${index}`];
+                return newState;
+            });
+        } else if (product_type === "MATERIAL"){
+            const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
+                    
+            if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
+                return;
+            }
+            
+            const isAlreadyAdded = selectedMaterialTable.some(
+                (item) => item.id === selectedMaterial.materialId
+            );
+            
+            if (!isAlreadyAdded) {
+                setSelectedMaterialTable((prev) => [
+                    ...prev,
+                    {
+                        row: label,
+                        id: selectedMaterial.materialId,
+                        description: selectedMaterial.description,
+                    }
+                ]);
+            }
+            
+            setSelectedMaterialByRow((prev) => {
+                const newState = { ...prev };
+                delete newState[`${label}-${index}`];
+                return newState;
+            });
+        }
+    }
 
     // ---------------------------------------
     // ----- Condicionar coloreado -----------
@@ -789,97 +927,32 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
                                     <div className="flex flex-col gap-4">
                                     {equipmentRows.map((label, index) => {
-                                            const equipment_filteredOptions = handle_selectors_equipment(label);
+                                        const equipment_filteredOptions = handlerSelector(label, "EQUIPO");
+                                        const isSelected = isEquipmentTypeSelected(label);
+                                        const customSelectClass = isSelected && label !== "ACCESORIO"
+                                            ? "bg-[#B5D18A] border-[#DE8BFC] text-black"
+                                            : "";
 
-                                            const isSelected = isEquipmentTypeSelected(label);
-                                            const customSelectClass = isSelected && label !== "ACCESORIO"
-                                                ? "bg-[#B5D18A] border-[#DE8BFC] text-black" : "";
-                                            
-                                            return (
-                                                <SelectionRow
-                                                    key={`equipment-${label}-${index}`}
-                                                    label={label}
-                                                    buttonLabel="Agregar"
-                                                    value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
-                                                    options={equipment_filteredOptions}
-                                                    customSelectClass={customSelectClass}
-                                                    onChange={(value) => {
-                                                        // limpiar el selector
-                                                        if (value === `Seleccionar - ${label}`) {
-                                                            setSelectedEquipmentByRow((prev) => {
-                                                                const newState = { ...prev };
-                                                                delete newState[`${label}-${index}`];
-                                                                return newState;
-                                                            });
-                                                            return;
-                                                        }
+                                        const shouldRender =
+                                            label === "MÓDULO FV" ? showModuleSelector :
+                                            label === "INVERSOR" ? showInverterSelector :
+                                            label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
+                                            true; // other rows (ACCESORIO, BATERÍA, etc.) always show
 
-                                                        // Búsqueda
-                                                        const selected = equipos.find((equipo) =>
-                                                            equipo.tipo_de_producto === label && equipo.descripcion === value
-                                                        );
+                                        if (!shouldRender) return null;
 
-                                                        // Actualizar el estado del selector
-                                                        if (selected) {
-                                                            setSelectedEquipmentByRow((prev) => ({
-                                                                ...prev,
-                                                                [`${label}-${index}`]: {
-                                                                    equipoId: String(selected.id),
-                                                                    description: value,
-                                                                },
-                                                            }));
-                                                        }                                               
-                                                    }}
-                                                    onClick={() => {
-                                                        // Almacena lo seleccionado
-                                                        const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
-                                                    
-                                                        // Valida la selección
-                                                        if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
-                                                            return;
-                                                        }
-
-                                                        // Revisa si existe en la tabla (no para "ACCESORIO")
-                                                        let isAlreadyAdded = false;
-                                                        if (label !== "ACCESORIO") {
-                                                            isAlreadyAdded = selectedEquipmentTable.some(
-                                                                (item) => item.row === label
-                                                            );
-                                                        }
-
-                                                        const equipoDetails = equipos.find(
-                                                            (equipo) => String(equipo.id) === selectedEquipo.equipoId
-                                                        );
-                                                        if (!isAlreadyAdded && equipoDetails) {
-                                                            setSelectedEquipmentTable((prev) => [
-                                                                ...prev,
-                                                                {
-                                                                    row: label,
-                                                                    // id: String(equipoDetails.id),
-                                                                    id: selectedEquipo.equipoId,
-                                                                    description: selectedEquipo.description,
-                                                                    marca: equipoDetails.marca,
-                                                                    potencia_maxima: equipoDetails.potencia_maxima,
-                                                                    mppt: equipoDetails.mppt,
-                                                                    dod: equipoDetails.dod,
-                                                                    potencia_ac: equipoDetails.potencia_ac,
-                                                                    voc_vmax: equipoDetails.voc_vmax,
-                                                                    vmpp_vmin: equipoDetails.vmpp_vmin,
-                                                                    isc_i_out: equipoDetails.isc_i_out,
-                                                                    impp_i_in: equipoDetails.impp_i_in,
-                                                                }
-                                                            ]);
-                                                        }
-
-                                                        // Limpiar el selector luego de añadir el equipo seleccionado a la tabla
-                                                        setSelectedEquipmentByRow((prev) => {
-                                                            const newState = { ...prev };
-                                                            delete newState[`${label}-${index}`];
-                                                            return newState;
-                                                        });
-                                                    }}
-                                                />
-                                            );
+                                        return (
+                                            <SelectionRow
+                                            key={`equipment-${label}-${index}`}
+                                            label={label}
+                                            buttonLabel="Agregar"
+                                            value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
+                                            options={equipment_filteredOptions}
+                                            customSelectClass={customSelectClass}
+                                            onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
+                                            onClick={() => handle_click(label, index, "EQUIPO")}
+                                            />
+                                        );
                                         })}
                                     </div>
                                 </div>
@@ -888,7 +961,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
                                     <div className="flex flex-col gap-4">
                                         {materialRows.map((label, index) => {
-                                            const material_filteredOptions = handle_selectors_material(label);
+                                            const material_filteredOptions = handlerSelector(label, "MATERIAL");
 
                                             return (
                                                 <SelectionRow
@@ -897,59 +970,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                     buttonLabel="Agregar"
                                                     value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
                                                     options={material_filteredOptions}
-                                                    onChange={(value) => {
-                                                        // Handle clearing the selection
-                                                        if (value === `Seleccionar - ${label}`) {
-                                                            setSelectedMaterialByRow((prev) => {
-                                                                const newState = { ...prev };
-                                                                delete newState[`${label}-${index}`];
-                                                                return newState;
-                                                            });
-                                                            return;
-                                                        }
-                                                        
-                                                        const selected = materiales.find((material) =>
-                                                            material.tipo_de_producto === label && material.descripcion === value
-                                                        );
-                                                        
-                                                        if (selected) {
-                                                            setSelectedMaterialByRow((prev) => ({
-                                                                ...prev,
-                                                                [`${label}-${index}`]: {
-                                                                    materialId: String(selected.id),
-                                                                    description: value,
-                                                                },
-                                                            }));
-                                                        }
-                                                    }}
-                                                    onClick={() => {
-                                                        const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
-                                                        
-                                                        if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
-                                                            return;
-                                                        }
-                                                        
-                                                        const isAlreadyAdded = selectedMaterialTable.some(
-                                                            (item) => item.id === selectedMaterial.materialId
-                                                        );
-                                                        
-                                                        if (!isAlreadyAdded) {
-                                                            setSelectedMaterialTable((prev) => [
-                                                                ...prev,
-                                                                {
-                                                                    row: label,
-                                                                    id: selectedMaterial.materialId,
-                                                                    description: selectedMaterial.description,
-                                                                }
-                                                            ]);
-                                                        }
-                                                        
-                                                        setSelectedMaterialByRow((prev) => {
-                                                            const newState = { ...prev };
-                                                            delete newState[`${label}-${index}`];
-                                                            return newState;
-                                                        });
-                                                    }}
+                                                    onChange={(value) => {handle_onChange(value, label, index, "MATERIAL")}}
+                                                    onClick={() => handle_click(label, index, "MATERIAL")}
                                                 />
                                             );
                                         })}
