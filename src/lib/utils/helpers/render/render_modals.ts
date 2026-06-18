@@ -65,10 +65,10 @@ export function shouldRender_SupplyInfoSelection(supplier: string) {
     return getSupplierInfo(supplier);
 }
 
-// MODULO 1
+// MODULO 2
 
 // -----------------------------
-// renderizar selectores en las ventanas de dimensionamiento
+// renderizar la visión de campos en las ventanas de dimensionamiento
 // -----------------------------
 
 export function shouldRender_M2_configuration(tipo_instalacion: string){
