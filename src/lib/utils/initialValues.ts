@@ -147,7 +147,8 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     nombre: "",
     descripcion: "",
     zona_id: "",     
-    zona_info: undefined,    
+    zona_info: undefined,   
+    angulo: "", 
     tipo_instalacion:  "",       
     // cálculos de radiación
     hsp: "",

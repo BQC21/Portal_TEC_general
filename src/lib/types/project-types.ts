@@ -13,6 +13,7 @@ export type SupabaseProjectRow = {
     zona_id?: number | string;             // FK a zonas.id
     zona_info?: SupabaseZoneRow;           // datos embebidos de la zona 
     zonas?: SupabaseZoneRow;               // alternative embedded relation key returned by Supabase
+    angulo?: string;
     tipo_instalacion?: string;
     // cálculos de radiación
     hsp?: number;
@@ -56,6 +57,7 @@ export type Project = {
     descripcion: string;
     zona_id: string;   // id de la zona (1 zona por proyecto)
     zona_info?: Zone;  // datos completos de la zona 
+    angulo?: string;
     tipo_instalacion: string;
     // cálculos de radiación
     hsp: string;
