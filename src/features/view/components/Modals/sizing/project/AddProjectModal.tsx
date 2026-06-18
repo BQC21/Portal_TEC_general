@@ -107,13 +107,19 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
 
     const computedRequirements = useMemo(() => {
 
-        const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+        // const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+        // const gti = form.gti ? Number(form.gti) : form_zone.gti_respaldo ? Number(form_zone.gti_respaldo) : null;
+        const ghi = form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
+        const gti = form_zone.gti_respaldo ? Number(form_zone.gti_respaldo) : null;
+        
         const selectedEquipment = selectedEquipmentTable.find((item) => item.row === "MÓDULO FV");
         const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
         const selectedBattery = selectedEquipmentTable.findLast((item) => item.row === "BATERÍA");
 
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
-        const potenciaDC = String(compute_DC_Power(Number(energia), Number(ghi), Number(form.rendimiento_modulo_porcentaje)));
+        const potenciaDC = selectedAngle === "Coplanar" ? String(compute_DC_Power(Number(energia), 
+                            Number(ghi), Number(form.rendimiento_modulo_porcentaje))) : 
+                            String(compute_DC_Power(Number(energia), Number(gti), Number(form.rendimiento_modulo_porcentaje)))
         const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
         // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
         const strings_minimos = String(min_strings(Number(potenciaDC), 
@@ -146,11 +152,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         };
     }, [form.demanda_electrica, 
         form.cobertura_porcentaje, 
-        form.ghi,
         form.rendimiento_modulo_porcentaje, 
         form.mppt_number,
         form.strings,
         form_zone.ghi_respaldo,
+        form_zone.gti_respaldo,
+        selectedAngle,
         form.autonomia,
         selectedEquipmentTable,
     ]);
