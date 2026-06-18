@@ -10,6 +10,7 @@ export type SelectedEquipmentItem = {
     row: string;
     id: string;
     description: string;
+    marca:string;
     potencia_maxima: number;
     mppt: number;
     dod: number;
