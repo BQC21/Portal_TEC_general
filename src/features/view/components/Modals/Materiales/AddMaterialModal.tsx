@@ -187,8 +187,8 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                 <AddProductNumberField
                                     label="Precio ($)"
                                     // required
-                                    step="0.01"
-                                    min="0.00"
+                                    step={0.01}
+                                    min={0.00}
                                     // disabled={form.priceInputCurrency !== "USD"}
                                     value={form.precio_dolares > 0 ? form.precio_dolares : ""}
                                     onChange={(value) => updateField("precio_dolares", value)}
@@ -196,8 +196,8 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                 <AddProductNumberField
                                     label="Precio (S/.)"
                                     // required
-                                    step="0.01"
-                                    min="0.00"
+                                    step={0.01}
+                                    min={0.00}
                                     // disabled={form.priceInputCurrency !== "PEN"}
                                     value={form.precio_soles > 0 ? form.precio_soles : ""}
                                     onChange={(value) => updateField("precio_soles", value)}
@@ -205,8 +205,8 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                 <AddProductNumberField
                                     label="IGV (%)"
                                     required
-                                    step="1"
-                                    min="0"
+                                    step={1}
+                                    min={0}
                                     value={form.igv}
                                     onChange={(value) => updateField("igv", value)}
                                 />
@@ -218,8 +218,8 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                     <AddProductNumberField
                                         label="Precio ($) + IGV"
                                         // required
-                                        step="0.01"
-                                        min="0.00"
+                                        step={0.01}
+                                        min={0.00}
                                         // disabled={form.priceInputCurrency !== "PEN"}
                                         value={form.precio_dolares_igv > 0 ? form.precio_dolares_igv : ""}
                                         onChange={(value) => updateField("precio_dolares_igv", value)}
@@ -231,8 +231,8 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                     <AddProductNumberField
                                         label="Precio (S/.) + IGV"
                                         // required
-                                        step="0.01"
-                                        min="0.00"
+                                        step={0.01}
+                                        min={0.00}
                                         // disabled={form.priceInputCurrency !== "PEN"}
                                         value={form.precio_soles_igv > 0 ? form.precio_soles_igv : ""}
                                         onChange={(value) => updateField("precio_soles_igv", value)}

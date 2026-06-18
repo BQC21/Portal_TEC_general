@@ -440,8 +440,8 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                             <AddProductNumberField
                                 label="Precio ($)"
                                 required
-                                step="0.01"
-                                min="0.00"
+                                step={0.01}
+                                min={0.00}
                                 disabled={form.priceInputCurrency !== "USD"}
                                 value={form.precio_dolares > 0 ? Number(form.precio_dolares.toFixed(2)) : ""}
                                 onChange={(value) => updateField("precio_dolares", value)}
@@ -452,8 +452,8 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                             <AddProductNumberField
                                 label="Precio (S/.)"
                                 required
-                                step="0.01"
-                                min="0.00"
+                                step={0.01}
+                                min={0.00}
                                 disabled={form.priceInputCurrency !== "PEN"}
                                 value={form.precio_soles > 0 ? Number(form.precio_soles.toFixed(2)) : ""}
                                 onChange={(value) => updateField("precio_soles", value)}
@@ -467,8 +467,8 @@ export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClo
                     <AddProductNumberField
                         label="IGV (%)"
                         required
-                        step="1"
-                        min="0"
+                        step={1}
+                        min={0}
                         value={form.igv}
                         onChange={(value) => updateField("igv", value)}
                     />
