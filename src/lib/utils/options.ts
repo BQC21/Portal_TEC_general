@@ -115,9 +115,18 @@ export const MATERIALES_TYPE_OPTIONS = [
 
 
 
-export const STATUS_PROJECT_OPTIONS = [
-    "cotización en proceso", "proyecto pausado", "proyecto cotizado", "proyecto cancelado"
+export const STATUS_PROJECT_OPTIONS_ADD = [
+    "Dimensionamiento iniciado",
+    "Dimensionamiento en proceso",
+    "Dimensionamiento cancelado",
+    "Dimensionamiento finalizado"
 ] // estados de proyecto
+export const STATUS_PROJECT_OPTIONS_EDIT = [
+    "Dimensionamiento en proceso",
+    "Dimensionamiento cancelado",
+    "Dimensionamiento finalizado"
+] // estados de proyecto
+
 export const STATUS_OPTIONS = [
     "En stock", "En importación", "Descontinuado"
 ] // estados de producto
