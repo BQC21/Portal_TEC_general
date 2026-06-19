@@ -188,6 +188,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
 
         await onAddProject({
             ...form,
+            rendimiento_modulo_porcentaje: String(80),
             potencia_ac_requerida: computedRequirements.potenciaAC,
             potencia_dc_requerida: computedRequirements.potenciaDC,
             strings_min: computedRequirements.strings_minimos,
@@ -580,13 +581,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 value={form.nombre}
                                 onChange={(value) => updateField("nombre", value)}
                             />
-                            {/* <AddProductTextAreaField
-                                label="Descripción del proyecto"
-                                required
-                                placeholder=" "
-                                value={form.descripcion}
-                                onChange={(value) => updateField("descripcion", value)}
-                            /> */}
                             <AddProductSelectField
                                 label="Estado del proyecto"
                                 required
@@ -692,6 +686,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
+                                        step={1000}
                                         min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
@@ -710,18 +705,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         onChange={(value) => updateField("cobertura_porcentaje", String(value))}
                                         step={5}
                                         min={30}
-                                        max={50}
+                                        max={40}
                                     />
-                                    <AddProductNumberField
+                                    <AddProductReadonlyField
                                         label="Porcentaje de rendimiento del módulo (%)"
-                                        required
-                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
-                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
-                                        step={5}
-                                        min={75}
-                                        max={95}
+                                        value="80"
                                     />
-
 
 
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
