@@ -27,7 +27,7 @@ export function sortGroupedByCodeSupplier<T extends Record<string, unknown>>(
         const aValue = String(a[key] ?? ""); // fila actual
         const bValue = String(b[key] ?? ""); // fila siguiente
 
-        // comparación de valaores
+        // comparación de valores
         return aValue.localeCompare(bValue, "es", { sensitivity: "base", numeric: true }); // comparación natural de códigos
     });
 }
@@ -45,4 +45,18 @@ export function sortGroupedByPrice<T extends Record<string, unknown>>(
             ? leftPrice - rightPrice // ascendente
             : rightPrice - leftPrice; // descendente
     });
+}
+
+// Ordenamiento de las zonas alfabéticamente
+export function sortZones<T extends Record<string, unknown>>(
+    rows: T[],
+    key: keyof T
+): T[] {
+    return [...rows].sort((a, b) =>{
+        const zone_1 = String(a[key] ?? "");
+        const zone_2 = String(b[key] ?? "");
+
+    // comparación de valaores
+    return zone_1.localeCompare(zone_2, "es", { sensitivity: "base", numeric: true });
+    })
 }
