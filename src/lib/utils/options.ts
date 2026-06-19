@@ -143,7 +143,7 @@ export const PRICE_CURRENCY_OPTIONS = [
 export const FormatFile_OPTIONS = [
     "---", "xlsx", "csv"]; // Formatos de descarga permitidos
 export const ANGLE_OPTIONS = [
-    "Coplanar", "Inclinado"
+    "---", "Coplanar", "Inclinado"
 ] // Ángulos de orientación
 
 
