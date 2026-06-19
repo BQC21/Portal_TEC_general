@@ -203,8 +203,8 @@ export default function EditProjectModal({
         const strings_maximos = String(max_strings(Number(selectedInverter?.potencia_maxima ?? 0), 
                                     Number(selectedEquipment?.potencia_maxima ?? 0)));
         // calcular protecciones
-        const itm_ac_min = String(ITM_AC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)))
-        const itm_dc_min = String(ITM_DC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
+        const itm_ac_min = String(ITM_AC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
+        const itm_dc_min = String(ITM_DC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)))
         const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)))
         // calcular propiedades de la batería
         const ah_sistema = String(AH_sistema(Number(form.demanda_electrica), Number(form.autonomia), 
@@ -520,13 +520,6 @@ export default function EditProjectModal({
                                 value={form.nombre}
                                 onChange={(value) => updateField("nombre", value)}
                             />
-                            {/* <AddProductTextAreaField
-                                label="Descripción del proyecto"
-                                required
-                                placeholder=" "
-                                value={form.descripcion}
-                                onChange={(value) => updateField("descripcion", value)}
-                            /> */}
                             <AddProductSelectField
                                 label="Estado del proyecto"
                                 required
@@ -790,7 +783,7 @@ export default function EditProjectModal({
                                         required
                                         value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
                                         onChange={(value) => updateField("mppt_number", String(value))}
-                                        min={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 1 : 0}                                        step={1}
+                                        min={0}  step={1}
                                         max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
                                                 Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
                                     />
@@ -829,12 +822,11 @@ export default function EditProjectModal({
                                             />
                                             <AddProductNumberField
                                                 label="Días de autonomía"
-                                                required
                                                 value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
                                                 onChange={(value) => updateField("autonomia", String(value))}
                                                 min={0}
                                                 step={1}
-                                                max={3}
+                                                max={2}
                                             />
                                             <AddProductReadonlyField
                                                 label="Capacidad (Ah) del sistema"
