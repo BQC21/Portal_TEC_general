@@ -11,6 +11,7 @@ export type SelectedEquipmentItem = {
     id: string;
     description: string;
     marca:string;
+    codigo: string;
     potencia_maxima: number;
     mppt: number;
     dod: number;
