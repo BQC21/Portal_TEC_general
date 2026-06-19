@@ -25,6 +25,8 @@ import Button2Modal_project from "@/features/view/components/Buttons/sizing/proj
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
+import { useMemo } from "react";
+import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 
 
 export default function ProjectsPage() {
@@ -56,6 +58,15 @@ export default function ProjectsPage() {
     const {create: create_project_material,
         remove: remove_project_material
     } = useProjectMaterialesMutations();
+
+    // ---------------------------------
+    // ---- Ordenamiento ---------------
+    // ---------------------------------
+
+    const sortedZones = useMemo(() => {
+        return zones.length > 0 ? sortZones(zones, "zona") : [];
+    }, [zones]);
+    console.log("zonas ordenadas", sortedZones);
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -209,8 +220,8 @@ export default function ProjectsPage() {
                     </div>
                 </section>
                 <ZoneTable
-                    zones={zones}
-                    totalZones={zones.length}
+                    zones={sortedZones}
+                    totalZones={sortedZones.length}
                     onUpdateZone={handleUpdateZone}
                     onDeleteZone={handleDeleteZone}
                 />
