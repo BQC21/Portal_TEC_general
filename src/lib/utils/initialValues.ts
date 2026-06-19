@@ -27,7 +27,8 @@ import {
 	STATUS_OPTIONS,
     STATUS_PROJECT_OPTIONS,
     EQUIPOS_TYPE_OPTIONS,
-    MATERIALES_TYPE_OPTIONS
+    MATERIALES_TYPE_OPTIONS,
+    FILL_OPTIONS
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/zone-types";
 import { ProjectFormState } from "../types/project-types";
@@ -183,7 +184,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // enlace
     enlace: "",
     // llenado
-    opcion_llenado: "",
+    opcion_llenado: FILL_OPTIONS[0],
 }
 
 // valores iniciales para el estado de form de zonas
