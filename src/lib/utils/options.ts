@@ -115,13 +115,8 @@ export const MATERIALES_TYPE_OPTIONS = [
 
 
 
-export const STATUS_PROJECT_OPTIONS_ADD = [
+export const STATUS_PROJECT_OPTIONS = [
     "Dimensionamiento iniciado",
-    "Dimensionamiento en proceso",
-    "Dimensionamiento cancelado",
-    "Dimensionamiento finalizado"
-] // estados de proyecto
-export const STATUS_PROJECT_OPTIONS_EDIT = [
     "Dimensionamiento en proceso",
     "Dimensionamiento cancelado",
     "Dimensionamiento finalizado"
