@@ -650,16 +650,11 @@ export default function EditProjectModal({
                                         onChange={(value) => updateField("cobertura_porcentaje", String(value))}
                                         step={5}
                                         min={30}
-                                        max={50}
+                                        max={40}
                                     />
-                                    <AddProductNumberField
+                                    <AddProductReadonlyField
                                         label="Porcentaje de rendimiento del módulo (%)"
-                                        required
-                                        value={Number(form.rendimiento_modulo_porcentaje) > 0 ? Number(form.rendimiento_modulo_porcentaje) : ""}
-                                        onChange={(value) => updateField("rendimiento_modulo_porcentaje", String(value))}
-                                        step={5}
-                                        min={75}
-                                        max={95}
+                                        value={form.rendimiento_modulo_porcentaje}
                                     />
 
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
