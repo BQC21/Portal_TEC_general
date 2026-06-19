@@ -18,8 +18,7 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import {
     INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
-import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
-import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
+import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, INSTALL_TYPE_OPTIONS, STATUS_PROJECT_OPTIONS_ADD } from "@/lib/utils/options"; // opciones
 
 // import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
@@ -532,7 +531,7 @@ export default function EditProjectModal({
                                 label="Estado del proyecto"
                                 required
                                 value={form.estado_proyecto}
-                                options={STATUS_PROJECT_OPTIONS}
+                                options={STATUS_PROJECT_OPTIONS_ADD}
                                 onChange={(value) => updateField("estado_proyecto", value)}
                             />
                             <AddProductSelectField
