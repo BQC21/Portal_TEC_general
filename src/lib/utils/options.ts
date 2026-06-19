@@ -145,6 +145,9 @@ export const FormatFile_OPTIONS = [
 export const ANGLE_OPTIONS = [
     "---", "Coplanar", "Inclinado"
 ] // Ángulos de orientación
+export const FILL_OPTIONS = [
+    "AUTOMÁTICO", "MANUAL"
+]
 
 
 

@@ -45,7 +45,9 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         // estado
         estado_proyecto: project.estado_proyecto,
         //enlace
-        enlace: project.enlace
+        enlace: project.enlace,
+        // llenado
+        opcion_llenado: project.opcion_llenado,
     }
 }
 
@@ -102,6 +104,8 @@ export function mapSupabaseRowToProject(
         estado_proyecto: row.estado_proyecto?.toString() || "",
         // enlace        
         enlace: row.enlace?.toString() || "",
+        // llenado
+        opcion_llenado: row.opcion_llenado?.toString() || "",
     }
 }
 
@@ -150,5 +154,7 @@ export function mapProjectToSupabaseRow(
         estado_proyecto: project.estado_proyecto,
         // enlace
         enlace: project.enlace,
+        // llenado
+        opcion_llenado: project.opcion_llenado
     };
 }

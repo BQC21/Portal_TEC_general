@@ -181,7 +181,9 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // estado
     estado_proyecto: STATUS_PROJECT_OPTIONS[0],
     // enlace
-    enlace: ""
+    enlace: "",
+    // llenado
+    opcion_llenado: "",
 }
 
 // valores iniciales para el estado de form de zonas

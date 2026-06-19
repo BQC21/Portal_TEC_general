@@ -47,6 +47,8 @@ export type SupabaseProjectRow = {
     estado_proyecto?: string;
     // enlace
     enlace?: string;
+    // llenado
+    opcion_llenado?: string;
 };
 
 // Campos para la base de datos a visualizarse en el frontend
@@ -91,6 +93,8 @@ export type Project = {
     estado_proyecto: string;
     // enlace
     enlace: string;
+    // llenado
+    opcion_llenado: string;
 };
 
 
