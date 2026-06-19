@@ -30,10 +30,12 @@ export function max_strings(potenciaDC_INV: number, potenciaMOD: number){
 // Protecciones
 // -------------------------
 
+// seleccionar previamente el módulo
 export function ITM_DC_MIN(isc_mod: number){
 	return Math.floor(isc_mod*1.25)
 }
 
+// seleccionar previamente el inversor
 export function ITM_AC_MIN(iout_inv: number){
 	return Math.ceil(iout_inv*1.25)
 }
