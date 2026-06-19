@@ -116,9 +116,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         const selectedBattery = selectedEquipmentTable.findLast((item) => item.row === "BATERÍA");
 
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
-        const potenciaDC = selectedAngle === "Coplanar" ? String(compute_DC_Power(Number(energia), 
-                            Number(ghi), Number(form.rendimiento_modulo_porcentaje))) : 
-                            String(compute_DC_Power(Number(energia), Number(gti), Number(form.rendimiento_modulo_porcentaje)))
+        const potenciaDC = selectedAngle === "Coplanar" ? String(compute_DC_Power(Number(energia), Number(ghi), 80)) : 
+                            String(compute_DC_Power(Number(energia), Number(gti), 80))
         const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
         // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
         const strings_minimos = String(min_strings(Number(potenciaDC), 
@@ -151,7 +150,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         };
     }, [form.demanda_electrica, 
         form.cobertura_porcentaje, 
-        form.rendimiento_modulo_porcentaje, 
         form.mppt_number,
         form.strings,
         form_zone.ghi_respaldo,
