@@ -168,7 +168,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     const showInverterSelector = Number(computedRequirements.potenciaAC) > 0 && computedRequirements.potenciaDC != "Infinity";
     const isNotOnGrid = form.tipo_instalacion !== "conexión ON-GRID";
     const showBatterySelector = isNotOnGrid
-    const showStructureSelector = Boolean(form.strings) && Number(form.strings) > 0;
+    // const showStructureSelector = Boolean(form.strings) && Number(form.strings) > 0;
 
     // ----------------------------------------
     // ------- EVENTOS ------------------------
@@ -201,12 +201,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             num_baterias: computedRequirements.num_baterias,
         }, selectedEquipmentTable, selectedMaterialTable);
     }
-    console.log("opción de llenado", form.opcion_llenado)
-    console.log ("energía requerida", form.energia_requerida)
-    console.log ("potencia DC requerida", form.potencia_dc_requerida)
-    console.log ("potencia AC requerida", form.potencia_ac_requerida)
-    console.log ("número de baterías requeridas", computedRequirements.num_baterias)
-    console.log ("número de strings", form.strings)
+    // console.log("opción de llenado", form.opcion_llenado)
+    // console.log ("energía requerida", form.energia_requerida)
+    // console.log ("potencia DC requerida", form.potencia_dc_requerida)
+    // console.log ("potencia AC requerida", form.potencia_ac_requerida)
+    // console.log ("número de baterías requeridas", computedRequirements.num_baterias)
+    // console.log ("número de strings", form.strings)
 
     // Agregar zona
     function handleZoneSelection(value: string) {
@@ -244,7 +244,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         let filteredOptions: string[] = [`Seleccionar - ${label}`];
 
         if (product_type === "EQUIPO") {
-
+            // EL BLOQUEADOR
             const isTypeAlreadySelected = selectedEquipmentTable.some(
                     (item) => item.row === label
             );
@@ -308,34 +308,34 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                     ];
                 }
             } else if (label === "ESTRUCTURA") {                                        
-                if (isTypeAlreadySelected) {
-                    filteredOptions = [`Seleccionar - ${label}`];
-                } else {
-                    filteredOptions = [
-                        `Seleccionar - ${label}`,
-                        ...equipos
-                            .filter((equipo) => {
-                                if (equipo.tipo_de_producto !== label) return false;
-                                // según baterías
-                                if (equipo.descripcion.includes("baterías") &&
-                                    ((Number(computedRequirements.num_baterias) <= 
-                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
-                                    isNaN(Number(computedRequirements.num_baterias)))) return false
-                                // según strings
-                                if (equipo.descripcion.includes("módulos") && 
-                                    (Number(form.strings) <= 
-                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
-                                    isNaN(Number(form.strings)))) return false
-                                // según orientación de la radiación
-                                if (equipo.descripcion.includes("coplanar") &&
-                                    form.angulo !== "Coplanar") return false
-                                if (equipo.descripcion.includes("regulable") &&
-                                    form.angulo !== "Inclinado") return false
-                                return true;
-                            })
-                            .map((equipo) => equipo.descripcion)
-                    ];
-                }
+                filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            // según baterías
+                            if (equipo.descripcion.includes("baterías") &&
+                                ((Number(computedRequirements.num_baterias) <= 
+                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
+                                isNaN(Number(computedRequirements.num_baterias)))) return false;
+                            // según strings
+                            if (equipo.descripcion.includes("módulos") && 
+                                (Number(form.strings) <= 
+                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
+                                isNaN(Number(form.strings)))) return false;
+                            // según orientación de la radiación
+                            if (equipo.descripcion.includes("coplanar") &&
+                                form.angulo !== "Coplanar") return false;
+                            if (equipo.descripcion.includes("regulable") &&
+                                form.angulo !== "Inclinado") return false;
+                            // evitar duplicados en la lista de estructuras ya agregadas
+                            const isAlreadySelected = selectedEquipmentTable.some(
+                                (item) => item.id === String(equipo.id)
+                            );
+                            return !isAlreadySelected;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
             } else if (label === "ACCESORIO") {
                 filteredOptions = [
                     `Seleccionar - ${label}`,
@@ -442,9 +442,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 return;
             }
 
-            // Revisa si existe en la tabla (no para "ACCESORIO")
+            // Revisa si existe en la tabla (no para "ACCESORIO" ni para ESTRUCTURA)
             let isAlreadyAdded = false;
-            if (label !== "ACCESORIO") {
+            if (label !== "ACCESORIO" && label !== "ESTRUCTURA") {
                 isAlreadyAdded = selectedEquipmentTable.some(
                     (item) => item.row === label
                 );
@@ -1041,7 +1041,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         const shouldRender =
                                             label === "MÓDULO FV" ? showModuleSelector :
                                             label === "INVERSOR" ? showInverterSelector :
-                                            label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
+                                            // label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
                                             label === "BATERÍA" ? showBatterySelector:
                                             true; // other rows (ACCESORIO, etc.) always show
 
