@@ -27,6 +27,7 @@ export type SelectedMaterialItem = {
     row: string;
     id: string;
     description: string;
+    cantidad?: number; // cantidad seleccionada para el proyecto
 };
 
 // Filas correspondientes a la tabla de productos de Supabase
