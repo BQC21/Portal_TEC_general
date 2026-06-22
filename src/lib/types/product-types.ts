@@ -20,6 +20,7 @@ export type SelectedEquipmentItem = {
     vmpp_vmin: number;
     isc_i_out: number;
     impp_i_in: string;
+    cantidad?: number; // cantidad seleccionada para el proyecto
 };
 // Material seleccionado
 export type SelectedMaterialItem = {
