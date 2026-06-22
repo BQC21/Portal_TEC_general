@@ -17,8 +17,7 @@ type DeleteProjectModalProps = {
     onClose: () => void;
 };
 
-export function DeleteProjectModal({ project, project_equipos, project_materiales,
-    onDeleteProject, onDeleteProjectEquipos, onDeleteProjectMateriales,
+export function DeleteProjectModal({ project, onDeleteProject,
     onClose }: DeleteProjectModalProps) {
 
     // Aceptar actualizacion
