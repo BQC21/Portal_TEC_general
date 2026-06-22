@@ -85,7 +85,7 @@ export default function ProjectsPage() {
                     equipo_id: equipo.id,
                     proyecto_id: createdProject.id,
                     fecha_agregado: new Date(),
-                    cantidad: "1",
+                    cantidad: String(equipo.cantidad ?? 1),
                 }),
             ),
         );
@@ -95,7 +95,7 @@ export default function ProjectsPage() {
                     material_id: material.id,
                     proyecto_id: createdProject.id,
                     fecha_agregado: new Date(),
-                    cantidad: "1",
+                    cantidad: String(material.cantidad ?? 1),
                 }),
             ),
         );
@@ -133,7 +133,7 @@ export default function ProjectsPage() {
                     equipo_id: equipo.id,
                     proyecto_id: id,
                     fecha_agregado: new Date(),
-                    cantidad: "1",
+                    cantidad: String(equipo.cantidad ?? 1),
                 }),
             ),
         );
@@ -143,7 +143,7 @@ export default function ProjectsPage() {
                     material_id: material.id,
                     proyecto_id: id,
                     fecha_agregado: new Date(),
-                    cantidad: "1",
+                    cantidad: String(material.cantidad ?? 1),
                 }),
             ),
         );
