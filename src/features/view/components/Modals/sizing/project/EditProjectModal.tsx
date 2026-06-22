@@ -265,6 +265,24 @@ export default function EditProjectModal({
             { ...r, cantidad: Number(numB.toFixed(0)) } : r)));
     }, [computedRequirements.num_baterias]);
 
+    // número de MC4
+    useEffect(() => {
+        const MC4_val = 6 * Number(form.mppt_number) || 0;
+        setSelectedMaterialTable((curr) => curr.map((r) => (r.row === "MC4" 
+            && r.description.includes("MC4") ? 
+            { ...r, cantidad: Number(MC4_val.toFixed(0))} : r)))
+    }, [form.mppt_number])
+
+    // número de estructuras
+    useEffect(() => {
+        setSelectedEquipmentTable((curr) => curr.map((r) => (
+            r.row === "ESTRUCTURA" && r.description.includes("baterías") ?
+            { ...r, cantidad: Math.floor(Number(computedRequirements.num_baterias)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || "")))} :
+            r.row === "ESTRUCTURA" && r.description.includes("módulos") ?
+            { ...r, cantidad: Math.floor(Number(form.strings)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || "")))} : r 
+        )))
+    }, [computedRequirements.num_baterias, form.strings]) 
+
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
     // ----------------------------------------
@@ -570,6 +588,20 @@ export default function EditProjectModal({
                 (equipo) => String(equipo.id) === selectedEquipo.equipoId
             );
             if (!isAlreadyAdded && equipoDetails) {
+                // determinar cantidad inicial según reglas
+                const cantidadInit =
+                    label === "INVERSOR"
+                        ? 1
+                        : label === "MÓDULO FV"
+                        ? Number(form.strings) || 0
+                        : label === "BATERÍA"
+                        ? Number(computedRequirements.num_baterias) || 0
+                        : label === "ESTRUCTURA" && equipoDetails.descripcion.includes("baterías")
+                        ? Math.floor(Number(computedRequirements.num_baterias)/
+                                parseInt(equipoDetails.descripcion.match(/\d+/)?.[0] || "0" || "")) 
+                        : label === "ESTRUCTURA" && equipoDetails.descripcion.includes("módulos")
+                        ? Math.floor(Number((form.strings))/parseInt(equipoDetails.descripcion.match(/\d+/)?.[0] || "0" || "")) 
+                        : 1;
                 setSelectedEquipmentTable((prev) => [
                     ...prev,
                     {
@@ -587,6 +619,7 @@ export default function EditProjectModal({
                         vmpp_vmin: equipoDetails.vmpp_vmin,
                         isc_i_out: equipoDetails.isc_i_out,
                         impp_i_in: equipoDetails.impp_i_in,
+                        cantidad: cantidadInit,
                     }
                 ]);
             }
@@ -609,12 +642,18 @@ export default function EditProjectModal({
             );
             
             if (!isAlreadyAdded) {
+                // determinar cantidad inicial según reglas
+                const cantidadInit =
+                    label === "MC4"
+                        ? 6*Number(form.mppt_number) || 0
+                        : 1;
                 setSelectedMaterialTable((prev) => [
                     ...prev,
                     {
                         row: label,
                         id: selectedMaterial.materialId,
                         description: selectedMaterial.description,
+                        cantidad: cantidadInit
                     }
                 ]);
             }
@@ -1235,7 +1274,8 @@ export default function EditProjectModal({
                                                                 )
                                                             }
                                                             step={1} min={0}
-                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
+                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" ||
+                                                                item.row === "BATERÍA" || item.row === "ESTRUCTURA"}
                                                         />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
@@ -1303,6 +1343,7 @@ export default function EditProjectModal({
                                                                 )
                                                             }
                                                             step={1} min={0}
+                                                            disabled={item.row === "MC4" && item.description.includes("MC4")}
                                                         />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
