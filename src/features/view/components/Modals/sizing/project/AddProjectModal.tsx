@@ -375,6 +375,22 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 ...materiales
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
+                        // según SPD
+                        if (material.descripcion.includes("SPD") && 
+                            (Number(computedRequirements.spd_min) >= 
+                            parseInt(material.descripcion.match(/\d+/g)?.[1] || "0" || "") ||
+                            isNaN(Number(computedRequirements.spd_min)))) return false;
+                        // según ITM_DC
+                        if (material.descripcion.includes("ITM") && 
+                            material.descripcion.includes("VDC") && 
+                            (Number(computedRequirements.spd_min) >= 
+                            parseInt(material.descripcion.match(/\d+/g)?.[2] || "0" || "") ||
+                            isNaN(Number(computedRequirements.spd_min)))) return false;
+                        // según ITM_AC
+                        if (material.descripcion.includes("ITM") &&
+                            (Number(computedRequirements.itm_ac_min) >= 
+                            parseInt(material.descripcion.match(/\d+/g)?.[1] || "0" || "") ||
+                            isNaN(Number(computedRequirements.itm_ac_min)))) return false;
                         const isAlreadySelected = selectedMaterialTable.some(
                             (item) => item.id === String(material.id)
                         );
