@@ -189,8 +189,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         await onAddProject({
             ...form,
             rendimiento_modulo_porcentaje: String(80),
-            potencia_ac_requerida: computedRequirements.potenciaAC,
-            potencia_dc_requerida: computedRequirements.potenciaDC,
+            energia_requerida: computedRequirements.energia ?? form.opcion_llenado == "AUTOMÁTICO",
+            potencia_ac_requerida: computedRequirements.potenciaAC ?? form.opcion_llenado == "AUTOMÁTICO",
+            potencia_dc_requerida: computedRequirements.potenciaDC ?? form.opcion_llenado == "AUTOMÁTICO",
             strings_min: computedRequirements.strings_minimos,
             strings_max: computedRequirements.strings_maximos,
             itm_ac_min: computedRequirements.itm_ac_min,
@@ -200,6 +201,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             num_baterias: computedRequirements.num_baterias,
         }, selectedEquipmentTable, selectedMaterialTable);
     }
+    console.log("opción de llenado", form.opcion_llenado)
+    console.log ("energía requerida", form.energia_requerida)
+    console.log ("potencia DC requerida", form.potencia_dc_requerida)
+    console.log ("potencia AC requerida", form.potencia_ac_requerida)
 
     // Agregar zona
     function handleZoneSelection(value: string) {
@@ -246,7 +251,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 if (isTypeAlreadySelected) {
                     filteredOptions = [`Seleccionar - ${label}`];
                 } else {
-                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                    const requiredPowerAC = form.opcion_llenado == "AUTOMÁTICO"
+                                            ? parseFloat(computedRequirements.potenciaAC):
+                                            form.potencia_ac_requerida;
                     filteredOptions = [
                         `Seleccionar - ${label}`,
                         ...equipos
@@ -255,7 +262,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                 
                                 // según valor de potencia AC requerida
                                 const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                if (inverterPowerAC < requiredPowerAC) return false;
+                                if (inverterPowerAC < Number(requiredPowerAC)) return false;
                                 // según configuración de fase
                                 if (form.tipo_instalacion !== "conexión OFF-GRID" && 
                                     equipo.tipo_conexion !== form.configuracion) return false;
@@ -769,18 +776,21 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             <>
                                                 <AddProductNumberField
                                                     label="Energía requerida"    required
-                                                    value={Number(form.energia_requerida)}
+                                                    value={Number(form.energia_requerida) > 0 ? Number(form.energia_requerida) : ""}
                                                     onChange={(value) => updateField("energia_requerida", String(value))}
+                                                    step={1000} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia DC requerida (KW)"    required
-                                                    value={Number(form.potencia_dc_requerida)}
+                                                    value={Number(form.potencia_dc_requerida) > 0 ? Number(form.potencia_dc_requerida) : ""}
                                                     onChange={(value) => updateField("potencia_dc_requerida", String(value))}
+                                                    step={1} min={0} 
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia AC requerida (KW)"    required
-                                                    value={Number(form.potencia_ac_requerida)}
+                                                    value={Number(form.potencia_ac_requerida) > 0 ? Number(form.potencia_ac_requerida) : ""}
                                                     onChange={(value) => updateField("potencia_ac_requerida", String(value))}
+                                                    step={1} min={0} 
                                                 />
                                             </>                                            
                                         )
@@ -1015,7 +1025,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     {equipmentRows.map((label, index) => {
                                         const equipment_filteredOptions = handlerSelector(label, "EQUIPO");
                                         const isSelected = isEquipmentTypeSelected(label);
-                                        const customSelectClass = isSelected && label !== "ACCESORIO"
+                                        const customSelectClass = isSelected && (label !== "ACCESORIO" && label !== "ESTRUCTURA")
                                             ? "bg-[#B5D18A] border-[#DE8BFC] text-black"
                                             : "";
 
