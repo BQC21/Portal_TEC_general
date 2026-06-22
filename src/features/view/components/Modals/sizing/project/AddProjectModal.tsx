@@ -700,7 +700,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
 
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)]">
+                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
                                     <AddProductNumberField
@@ -785,14 +785,14 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                             </>                                            
                                         )
                                     }
+                                </div>
 
 
 
 
 
-
-
-
+                                
+                                <div>
                                     {computedRequirements.selectedEquipment && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>
@@ -857,7 +857,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                     </>
                                     )}
                                 </div>
-
 
 
 
@@ -939,12 +938,12 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                         />
                                     </>
                                     )}
+                                </div>
 
 
 
 
-
-
+                                <div>
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             {computedRequirements.selectedBattery && (
