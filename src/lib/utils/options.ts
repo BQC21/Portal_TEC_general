@@ -116,6 +116,7 @@ export const MATERIALES_TYPE_OPTIONS = [
 
 
 export const STATUS_PROJECT_OPTIONS = [
+    "---",
     "Dimensionamiento iniciado",
     "Dimensionamiento en proceso",
     "Dimensionamiento cancelado",
@@ -133,7 +134,7 @@ export const CONNECTION_TYPE_OPTIONS = [
     "---", "1F 220V", "3F 220V", "3F 380V", "1F", "3F"
 ]; // tipo de conexión 
 export const INSTALL_TYPE_OPTIONS = [
-    "conexión HÍBRIDA", "conexión ON-GRID", "conexión OFF-GRID"
+    "---", "conexión HÍBRIDA", "conexión ON-GRID", "conexión OFF-GRID"
 ]; // tipo de instalación 
 export const POWER_SOURCE_OPTIONS = [
     "---", "DC", "AC", "DC/AC", "BAT", "MOD"
