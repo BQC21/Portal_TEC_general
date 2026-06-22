@@ -205,6 +205,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     console.log ("energía requerida", form.energia_requerida)
     console.log ("potencia DC requerida", form.potencia_dc_requerida)
     console.log ("potencia AC requerida", form.potencia_ac_requerida)
+    console.log ("número de baterías requeridas", computedRequirements.num_baterias)
+    console.log ("número de strings", form.strings)
 
     // Agregar zona
     function handleZoneSelection(value: string) {
@@ -315,13 +317,20 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                             .filter((equipo) => {
                                 if (equipo.tipo_de_producto !== label) return false;
                                 // según baterías
-                                if (computedRequirements.num_baterias &&
-                                    equipo.descripcion.includes("baterías") &&
-                                    Number(computedRequirements.num_baterias) <= 
-                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                                if (equipo.descripcion.includes("baterías") &&
+                                    ((Number(computedRequirements.num_baterias) <= 
+                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
+                                    isNaN(Number(computedRequirements.num_baterias)))) return false
                                 // según strings
-                                if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
-                                    Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
+                                if (equipo.descripcion.includes("módulos") && 
+                                    (Number(form.strings) <= 
+                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
+                                    isNaN(Number(form.strings)))) return false
+                                // según orientación de la radiación
+                                if (equipo.descripcion.includes("coplanar") &&
+                                    form.angulo !== "Coplanar") return false
+                                if (equipo.descripcion.includes("regulable") &&
+                                    form.angulo !== "Inclinado") return false
                                 return true;
                             })
                             .map((equipo) => equipo.descripcion)
