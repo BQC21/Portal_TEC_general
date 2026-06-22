@@ -186,21 +186,20 @@ export default function EditProjectModal({
     // ------- Cálculos de requerimientos -----
     // ----------------------------------------
 
-    const computedRequirements = useMemo(() => {
+        const computedRequirements = useMemo(() => {
 
         // const ghi = form.ghi ? Number(form.ghi) : form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
         // const gti = form.gti ? Number(form.gti) : form_zone.gti_respaldo ? Number(form_zone.gti_respaldo) : null;
         const ghi = form_zone.ghi_respaldo ? Number(form_zone.ghi_respaldo) : null;
         const gti = form_zone.gti_respaldo ? Number(form_zone.gti_respaldo) : null;
-
+        
         const selectedEquipment = selectedEquipmentTable.find((item) => item.row === "MÓDULO FV");
         const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
         const selectedBattery = selectedEquipmentTable.findLast((item) => item.row === "BATERÍA");
 
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
-        const potenciaDC = selectedAngle === "Coplanar" ? String(compute_DC_Power(Number(energia), 
-                            Number(ghi), Number(form.rendimiento_modulo_porcentaje))) : 
-                            String(compute_DC_Power(Number(energia), Number(gti), Number(form.rendimiento_modulo_porcentaje)))
+        const potenciaDC = selectedAngle === "Coplanar" ? String(compute_DC_Power(Number(energia), Number(ghi), 80)) : 
+                            String(compute_DC_Power(Number(energia), Number(gti), 80))
         const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
         // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
         const strings_minimos = String(min_strings(Number(potenciaDC), 
@@ -208,9 +207,9 @@ export default function EditProjectModal({
         const strings_maximos = String(max_strings(Number(selectedInverter?.potencia_maxima ?? 0), 
                                     Number(selectedEquipment?.potencia_maxima ?? 0)));
         // calcular protecciones
-        const itm_ac_min = String(ITM_AC_MIN(Number(selectedInverter?.isc_i_out ?? 0)))
-        const itm_dc_min = String(ITM_DC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)))
-        const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)))
+        const itm_ac_min = String(ITM_AC_MIN(Number(selectedInverter?.isc_i_out ?? 0)));
+        const itm_dc_min = String(ITM_DC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)));
+        const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)));
         // calcular propiedades de la batería
         const ah_sistema = String(AH_sistema(Number(form.demanda_electrica), Number(form.autonomia), 
                         Number(selectedBattery?.dod), Number(selectedBattery?.vmpp_vmin)));
@@ -233,7 +232,6 @@ export default function EditProjectModal({
         };
     }, [form.demanda_electrica, 
         form.cobertura_porcentaje, 
-        form.rendimiento_modulo_porcentaje, 
         form.mppt_number,
         form.strings,
         form_zone.ghi_respaldo,
@@ -251,7 +249,7 @@ export default function EditProjectModal({
     const showInverterSelector = Number(computedRequirements.potenciaAC) > 0 && computedRequirements.potenciaDC != "Infinity";
     const isNotOnGrid = form.tipo_instalacion !== "conexión ON-GRID";
     const showBatterySelector = isNotOnGrid
-    const showStructureSelector = Boolean(form.strings) && Number(form.strings) > 0;
+    // const showStructureSelector = Boolean(form.strings) && Number(form.strings) > 0;
 
 
     // ----------------------------------------
@@ -266,14 +264,16 @@ export default function EditProjectModal({
         });
     }
 
-    // Tabla
+    // Aceptar actualización
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         await onUpdateProject({
             ...form,
-            potencia_ac_requerida: computedRequirements.potenciaAC,
-            potencia_dc_requerida: computedRequirements.potenciaDC,
+            rendimiento_modulo_porcentaje: String(80),
+            energia_requerida: computedRequirements.energia ?? form.opcion_llenado == "AUTOMÁTICO",
+            potencia_ac_requerida: computedRequirements.potenciaAC ?? form.opcion_llenado == "AUTOMÁTICO",
+            potencia_dc_requerida: computedRequirements.potenciaDC ?? form.opcion_llenado == "AUTOMÁTICO",
             strings_min: computedRequirements.strings_minimos,
             strings_max: computedRequirements.strings_maximos,
             itm_ac_min: computedRequirements.itm_ac_min,
@@ -281,7 +281,6 @@ export default function EditProjectModal({
             spd_voltage: computedRequirements.spd_min,
             ah_sistema: computedRequirements.ah_sistema,
             num_baterias: computedRequirements.num_baterias,
-            updated_at: new Date(),
         }, selectedEquipmentTable, selectedMaterialTable);
     }
 
@@ -321,7 +320,7 @@ export default function EditProjectModal({
         let filteredOptions: string[] = [`Seleccionar - ${label}`];
 
         if (product_type === "EQUIPO") {
-
+            // EL BLOQUEADOR
             const isTypeAlreadySelected = selectedEquipmentTable.some(
                     (item) => item.row === label
             );
@@ -330,7 +329,9 @@ export default function EditProjectModal({
                 if (isTypeAlreadySelected) {
                     filteredOptions = [`Seleccionar - ${label}`];
                 } else {
-                    const requiredPowerAC = parseFloat(computedRequirements.potenciaAC);
+                    const requiredPowerAC = form.opcion_llenado == "AUTOMÁTICO"
+                                            ? parseFloat(computedRequirements.potenciaAC):
+                                            form.potencia_ac_requerida;
                     filteredOptions = [
                         `Seleccionar - ${label}`,
                         ...equipos
@@ -339,7 +340,7 @@ export default function EditProjectModal({
                                 
                                 // según valor de potencia AC requerida
                                 const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                if (inverterPowerAC < requiredPowerAC) return false;
+                                if (inverterPowerAC < Number(requiredPowerAC)) return false;
                                 // según configuración de fase
                                 if (form.tipo_instalacion !== "conexión OFF-GRID" && 
                                     equipo.tipo_conexion !== form.configuracion) return false;
@@ -383,27 +384,34 @@ export default function EditProjectModal({
                     ];
                 }
             } else if (label === "ESTRUCTURA") {                                        
-                if (isTypeAlreadySelected) {
-                    filteredOptions = [`Seleccionar - ${label}`];
-                } else {
-                    filteredOptions = [
-                        `Seleccionar - ${label}`,
-                        ...equipos
-                            .filter((equipo) => {
-                                if (equipo.tipo_de_producto !== label) return false;
-                                // según baterías
-                                if (computedRequirements.num_baterias &&
-                                    equipo.descripcion.includes("baterías") &&
-                                    Number(computedRequirements.num_baterias) <= 
-                                    parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
-                                // según strings
-                                if (Number(form.strings) && equipo.descripcion.includes("módulos") && 
-                                    Number(form.strings) < parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) return false
-                                return true;
-                            })
-                            .map((equipo) => equipo.descripcion)
-                    ];
-                }
+                filteredOptions = [
+                    `Seleccionar - ${label}`,
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            // según baterías
+                            if (equipo.descripcion.includes("baterías") &&
+                                ((Number(computedRequirements.num_baterias) <= 
+                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
+                                isNaN(Number(computedRequirements.num_baterias)))) return false;
+                            // según strings
+                            if (equipo.descripcion.includes("módulos") && 
+                                (Number(form.strings) <= 
+                                parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
+                                isNaN(Number(form.strings)))) return false;
+                            // según orientación de la radiación
+                            if (equipo.descripcion.includes("coplanar") &&
+                                form.angulo !== "Coplanar") return false;
+                            if (equipo.descripcion.includes("regulable") &&
+                                form.angulo !== "Inclinado") return false;
+                            // evitar duplicados en la lista de estructuras ya agregadas
+                            const isAlreadySelected = selectedEquipmentTable.some(
+                                (item) => item.id === String(equipo.id)
+                            );
+                            return !isAlreadySelected;
+                        })
+                        .map((equipo) => equipo.descripcion)
+                ];
             } else if (label === "ACCESORIO") {
                 filteredOptions = [
                     `Seleccionar - ${label}`,
@@ -510,9 +518,9 @@ export default function EditProjectModal({
                 return;
             }
 
-            // Revisa si existe en la tabla (no para "ACCESORIO")
+            // Revisa si existe en la tabla (no para "ACCESORIO" ni para ESTRUCTURA)
             let isAlreadyAdded = false;
-            if (label !== "ACCESORIO") {
+            if (label !== "ACCESORIO" && label !== "ESTRUCTURA") {
                 isAlreadyAdded = selectedEquipmentTable.some(
                     (item) => item.row === label
                 );
@@ -784,7 +792,7 @@ export default function EditProjectModal({
 
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)]">
+                            <div className="grid grid-cols-1 gap-40 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
                                     <AddProductNumberField
@@ -852,25 +860,28 @@ export default function EditProjectModal({
                                                     label="Energía requerida"    required
                                                     value={Number(form.energia_requerida)}
                                                     onChange={(value) => updateField("energia_requerida", String(value))}
+                                                    step={1000} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia DC requerida (KW)"    required
                                                     value={Number(form.potencia_dc_requerida)}
                                                     onChange={(value) => updateField("potencia_dc_requerida", String(value))}
+                                                    step={1} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia AC requerida (KW)"    required
                                                     value={Number(form.potencia_ac_requerida)}
                                                     onChange={(value) => updateField("potencia_ac_requerida", String(value))}
+                                                    step={1} min={0}
                                                 />
                                             </>                                            
                                         )
                                     }
+                                </div>
 
 
 
-
-
+                                <div>
                                     {computedRequirements.selectedEquipment && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>
@@ -1016,11 +1027,11 @@ export default function EditProjectModal({
                                         />
                                     </>
                                     )}
+                                </div>
 
 
 
-
-
+                                <div>
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>
                                             {computedRequirements.selectedBattery && (
@@ -1093,13 +1104,13 @@ export default function EditProjectModal({
                                             const equipment_filteredOptions = handlerSelector(label, "EQUIPO");
                                             
                                             const isSelected = isEquipmentTypeSelected(label);
-                                            const customSelectClass = isSelected && label !== "ACCESORIO"
+                                            const customSelectClass = isSelected && (label !== "ACCESORIO" && label !== "ESTRUCTURA")
                                                 ? "bg-[#B5D18A] border-[#DE8BFC] text-black" : "";
 
                                             const shouldRender =
                                             label === "MÓDULO FV" ? showModuleSelector :
                                             label === "INVERSOR" ? showInverterSelector :
-                                            label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
+                                            // label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
                                             label === "BATERÍA" ? showBatterySelector:
                                             true; // other rows (ACCESORIO, etc.) always show
 
