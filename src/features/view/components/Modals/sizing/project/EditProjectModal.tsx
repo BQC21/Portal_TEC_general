@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
 import type {
@@ -96,6 +96,10 @@ export default function EditProjectModal({
             : INITIAL_ZONE_FORM // en caso no haya zona existente o no tenga zona_info
     );
 
+    // ----------------------------------------
+    // ------- INFORMACIÓN SELECTA ------------
+    // ----------------------------------------
+    
     // datos seleccionados
     const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>(() => {
         const map: Record<string, { materialId: string; description: string }> = {};
@@ -142,7 +146,8 @@ export default function EditProjectModal({
                 voc_vmax: item.equipo_info!.voc_vmax,
                 vmpp_vmin: item.equipo_info!.vmpp_vmin,
                 isc_i_out: item.equipo_info!.isc_i_out,
-                impp_i_in: item.equipo_info!.impp_i_in
+                impp_i_in: item.equipo_info!.impp_i_in,
+                cantidad: Number(item.cantidad)
             })),
     );
     const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>(() =>
@@ -152,6 +157,7 @@ export default function EditProjectModal({
                 row: item.material_info!.tipo_de_producto,
                 id: item.material_id,
                 description: item.material_info!.descripcion,
+                cantidad: Number(item.cantidad)
             })),
     );
 
@@ -240,6 +246,24 @@ export default function EditProjectModal({
         form.autonomia,
         selectedEquipmentTable,
     ]);
+
+    // ------------------------------------------------
+    // ------- EFECTO PARA SINCRONIZAR CANTIDADES -----
+    // ------------------------------------------------
+
+    // número de strings (módulos FV)
+    useEffect(() => {
+        const stringsVal = Number(form.strings) || 0;
+        setSelectedEquipmentTable((curr) => curr.map((r) => (r.row === "MÓDULO FV" ? 
+            { ...r, cantidad: Number(stringsVal.toFixed(0)) } : r)));
+    }, [form.strings]);
+    
+    // número de baterías
+    useEffect(() => {
+        const numB = Number(computedRequirements.num_baterias) || 0;
+        setSelectedEquipmentTable((curr) => curr.map((r) => (r.row === "BATERÍA" ? 
+            { ...r, cantidad: Number(numB.toFixed(0)) } : r)));
+    }, [computedRequirements.num_baterias]);
 
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
@@ -1167,6 +1191,9 @@ export default function EditProjectModal({
                                                 Equipo seleccionado
                                             </th>
                                             <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Cantidad
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                                 Acciones
                                             </th>
                                         </tr>
@@ -1177,6 +1204,23 @@ export default function EditProjectModal({
                                                 <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        <AddProductNumberField
+                                                            label="ingrese cantidad"
+                                                            required
+                                                            value={Number(item.cantidad ?? 0)}
+                                                            onChange={(value) =>
+                                                                setSelectedEquipmentTable((curr) =>
+                                                                    curr.map((r) =>
+                                                                        r.row === item.row && r.id === item.id ? 
+                                                                            { ...r, cantidad: Number(value.toFixed(0)) } : r,
+                                                                    ),
+                                                                )
+                                                            }
+                                                            step={1} min={0}
+                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
+                                                        />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
@@ -1215,6 +1259,9 @@ export default function EditProjectModal({
                                                 Material seleccionado
                                             </th>
                                             <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Cantidad
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                                 Acciones
                                             </th>
                                         </tr>
@@ -1225,6 +1272,22 @@ export default function EditProjectModal({
                                                 <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        <AddProductNumberField
+                                                            label="ingrese cantidad"
+                                                            required
+                                                            value={Number(item.cantidad ?? 0)}
+                                                            onChange={(value) => 
+                                                                setSelectedMaterialTable((curr) => 
+                                                                    curr.map((r) => 
+                                                                        r.row === item.row && r.id === item.id ?
+                                                                            { ...r, cantidad: Number(value) } : r
+                                                                    ),
+                                                                )
+                                                            }
+                                                            step={1} min={0}
+                                                        />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
