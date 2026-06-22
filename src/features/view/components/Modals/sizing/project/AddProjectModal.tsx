@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
 import type {
@@ -69,6 +69,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
     const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
 
+    // ----------------------------------------
+    // ------- INFORMACIÓN SELECTA ------------
+    // ----------------------------------------
     // datos seleccionados
     const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<Record<string, { materialId: string; description: string }>>({});
     const [selectedEquipmentByRow, setSelectedEquipmentByRow] = useState<Record<string, { equipoId: string; description: string }>>({});
@@ -160,6 +163,24 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
         selectedEquipmentTable,
     ]);
 
+    // ------------------------------------------------
+    // ------- EFECTO PARA SINCRONIZAR CANTIDADES -----
+    // ------------------------------------------------
+
+    // número de strings (módulos FV)
+    useEffect(() => {
+        const stringsVal = Number(form.strings) || 0;
+        setSelectedEquipmentTable((curr) => curr.map((r) => (r.row === "MÓDULO FV" ? 
+            { ...r, cantidad: Number(stringsVal.toFixed(0)) } : r)));
+    }, [form.strings]);
+    
+    // número de baterías
+    useEffect(() => {
+        const numB = Number(computedRequirements.num_baterias) || 0;
+        setSelectedEquipmentTable((curr) => curr.map((r) => (r.row === "BATERÍA" ? 
+            { ...r, cantidad: Number(numB.toFixed(0)) } : r)));
+    }, [computedRequirements.num_baterias]);
+
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
     // ----------------------------------------
@@ -201,12 +222,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             num_baterias: computedRequirements.num_baterias,
         }, selectedEquipmentTable, selectedMaterialTable);
     }
-    // console.log("opción de llenado", form.opcion_llenado)
-    // console.log ("energía requerida", form.energia_requerida)
-    // console.log ("potencia DC requerida", form.potencia_dc_requerida)
-    // console.log ("potencia AC requerida", form.potencia_ac_requerida)
-    // console.log ("número de baterías requeridas", computedRequirements.num_baterias)
-    // console.log ("número de strings", form.strings)
 
     // Agregar zona
     function handleZoneSelection(value: string) {
@@ -454,6 +469,16 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                 (equipo) => String(equipo.id) === selectedEquipo.equipoId
             );
             if (!isAlreadyAdded && equipoDetails) {
+                // determinar cantidad inicial según reglas
+                const cantidadInit =
+                    label === "INVERSOR"
+                        ? 1
+                        : label === "MÓDULO FV"
+                        ? Number(form.strings) || 0
+                        : label === "BATERÍA"
+                        ? Number(computedRequirements.num_baterias) || 0
+                        : 1;
+
                 setSelectedEquipmentTable((prev) => [
                     ...prev,
                     {
@@ -471,6 +496,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                         vmpp_vmin: equipoDetails.vmpp_vmin,
                         isc_i_out: equipoDetails.isc_i_out,
                         impp_i_in: equipoDetails.impp_i_in,
+                        cantidad: cantidadInit,
                     }
                 ]);
             }
@@ -1098,6 +1124,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                 Equipo seleccionado
                                             </th>
                                             <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Cantidad
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                                 Acciones
                                             </th>
                                         </tr>
@@ -1108,6 +1137,23 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                 <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        <AddProductNumberField
+                                                            label="ingrese cantidad"
+                                                            required
+                                                            value={Number(item.cantidad ?? 0)}
+                                                            onChange={(value) =>
+                                                                setSelectedEquipmentTable((curr) =>
+                                                                    curr.map((r) =>
+                                                                        r.row === item.row && r.id === item.id ? 
+                                                                            { ...r, cantidad: Number(value.toFixed(0)) } : r,
+                                                                    ),
+                                                                )
+                                                            }
+                                                            step={1} min={0}
+                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
+                                                        />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
@@ -1146,6 +1192,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                 Material seleccionado
                                             </th>
                                             <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                                Cantidad
+                                            </th>
+                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                                 Acciones
                                             </th>
                                         </tr>
@@ -1156,6 +1205,22 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                 <tr key={`${item.row}-${item.id}`} className="bg-white">
                                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                         {item.description}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        <AddProductNumberField
+                                                            label="ingrese cantidad"
+                                                            required
+                                                            value={Number(item.cantidad ?? 0)}
+                                                            onChange={(value) => 
+                                                                setSelectedMaterialTable((curr) => 
+                                                                    curr.map((r) => 
+                                                                        r.row === item.row && r.id === item.id ?
+                                                                            { ...r, cantidad: Number(value) } : r
+                                                                    ),
+                                                                )
+                                                            }
+                                                            step={1} min={0}
+                                                        />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
                                                         <button
