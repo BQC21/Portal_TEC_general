@@ -181,6 +181,24 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             { ...r, cantidad: Number(numB.toFixed(0)) } : r)));
     }, [computedRequirements.num_baterias]);
 
+    // número de MC4
+    useEffect(() => {
+        const MC4_val = 6 * Number(form.mppt_number) || 0;
+        setSelectedMaterialTable((curr) => curr.map((r) => (r.row === "MC4" 
+            && r.description.includes("MC4") ? 
+            { ...r, cantidad: Number(MC4_val.toFixed(0))} : r)))
+    }, [form.mppt_number])
+
+    // // número de estructuras
+    // useEffect(() => {
+    //     setSelectedEquipmentTable((curr) => curr.map((r) => (
+    //         r.row === "ESTRUCTURA" && r.description.includes("baterías") ?
+    //         { ...r, cantidad: Number(computedRequirements.num_baterias)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || ""))} :
+    //         r.row === "ESTRUCTURA" && r.description.includes("módulos") ?
+    //         { ...r, cantidad: Number(form.strings)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || ""))} : r 
+    //     )))
+    // }, [computedRequirements.num_baterias, form.strings]) 
+
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
     // ----------------------------------------
@@ -535,12 +553,18 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             );
             
             if (!isAlreadyAdded) {
+                // determinar cantidad inicial según reglas
+                const cantidadInit =
+                    label === "MC4"
+                        ? 6*Number(form.mppt_number) || 0
+                        : 1;
                 setSelectedMaterialTable((prev) => [
                     ...prev,
                     {
                         row: label,
                         id: selectedMaterial.materialId,
                         description: selectedMaterial.description,
+                        cantidad: cantidadInit
                     }
                 ]);
             }
@@ -1236,6 +1260,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                                 )
                                                             }
                                                             step={1} min={0}
+                                                            disabled={item.row === "MC4" && item.description.includes("MC4")}
                                                         />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
