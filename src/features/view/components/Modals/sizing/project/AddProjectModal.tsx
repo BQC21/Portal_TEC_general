@@ -189,16 +189,16 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
             { ...r, cantidad: Number(MC4_val.toFixed(0))} : r)))
     }, [form.mppt_number])
 
-    // // número de estructuras
-    // useEffect(() => {
-    //     setSelectedEquipmentTable((curr) => curr.map((r) => (
-    //         r.row === "ESTRUCTURA" && r.description.includes("baterías") ?
-    //         { ...r, cantidad: Number(computedRequirements.num_baterias)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || ""))} :
-    //         r.row === "ESTRUCTURA" && r.description.includes("módulos") ?
-    //         { ...r, cantidad: Number(form.strings)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || ""))} : r 
-    //     )))
-    // }, [computedRequirements.num_baterias, form.strings]) 
-
+    // número de estructuras
+    useEffect(() => {
+        setSelectedEquipmentTable((curr) => curr.map((r) => (
+            r.row === "ESTRUCTURA" && r.description.includes("baterías") ?
+            { ...r, cantidad: Math.floor(Number(computedRequirements.num_baterias)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || "")))} :
+            r.row === "ESTRUCTURA" && r.description.includes("módulos") ?
+            { ...r, cantidad: Math.floor(Number(form.strings)/Number(parseInt(r.description.match(/\d+/)?.[0] || "0" || "")))} : r 
+        )))
+    }, [computedRequirements.num_baterias, form.strings]) 
+    
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
     // ----------------------------------------
@@ -511,6 +511,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                         ? Number(form.strings) || 0
                         : label === "BATERÍA"
                         ? Number(computedRequirements.num_baterias) || 0
+                        : label === "ESTRUCTURA" && equipoDetails.descripcion.includes("baterías")
+                        ? Math.floor(Number(computedRequirements.num_baterias)/
+                                parseInt(equipoDetails.descripcion.match(/\d+/)?.[0] || "0" || "")) 
+                        : label === "ESTRUCTURA" && equipoDetails.descripcion.includes("módulos")
+                        ? Math.floor(Number((form.strings))/parseInt(equipoDetails.descripcion.match(/\d+/)?.[0] || "0" || "")) 
                         : 1;
 
                 setSelectedEquipmentTable((prev) => [
@@ -1192,7 +1197,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddModalProps
                                                                 )
                                                             }
                                                             step={1} min={0}
-                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
+                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || 
+                                                                item.row === "BATERÍA" || item.row === "ESTRUCTURA"}
                                                         />
                                                     </td>
                                                     <td className="border-b border-slate-200 px-4 py-5">
