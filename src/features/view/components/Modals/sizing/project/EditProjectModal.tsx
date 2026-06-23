@@ -312,6 +312,7 @@ export default function EditProjectModal({
 
         await onUpdateProject({
             ...form,
+            updated_at: new Date(),
             rendimiento_modulo_porcentaje: String(80),
             energia_requerida: computedRequirements.energia ?? form.opcion_llenado == "AUTOMÁTICO",
             potencia_ac_requerida: computedRequirements.potenciaAC ?? form.opcion_llenado == "AUTOMÁTICO",
@@ -433,12 +434,12 @@ export default function EditProjectModal({
                             if (equipo.tipo_de_producto !== label) return false;
                             // según baterías
                             if (equipo.descripcion.includes("baterías") &&
-                                ((Number(computedRequirements.num_baterias) <= 
+                                ((Number(computedRequirements.num_baterias) < 
                                 parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
                                 isNaN(Number(computedRequirements.num_baterias)))) return false;
                             // según strings
                             if (equipo.descripcion.includes("módulos") && 
-                                (Number(form.strings) <= 
+                                (Number(form.strings) < 
                                 parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
                                 isNaN(Number(form.strings)))) return false;
                             // según orientación de la radiación
