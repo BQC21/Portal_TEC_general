@@ -3,19 +3,6 @@ import { Project, ProjectFormData } from "@/lib/types/project-types";
 import { mapSupabaseRowToProject, mapProjectToSupabaseRow } from "../../../lib/mapping/project_mapping";
 import { PROJECTS_TABLE } from "@/lib/utils/namingTolerance"
 
-// RegExp para detectar UUIDs en formato texto
-const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89abAB][0-9a-f]{3}-[0-9a-f]{12}$/i;
-
-function normalizeUserIdentifier(row: Record<string, unknown>) {
-    const raw = (row as Record<string, unknown>)["user_id"];
-    if (typeof raw === "string" && uuidRegex.test(raw)) {
-        (row as Record<string, unknown>)["user_uuid"] = raw;
-        Reflect.deleteProperty(row, "user_id");
-    } else if (raw != null && typeof raw === "string" && raw.trim() === "") {
-        Reflect.deleteProperty(row, "user_id");
-    }
-}
-
 // --------------------------
 // ---- Operaciones CRUD ----
 // --------------------------
@@ -24,9 +11,6 @@ function normalizeUserIdentifier(row: Record<string, unknown>) {
 export async function createProject(project: ProjectFormData): Promise<Project> {
     const supabase = createClient();
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
-
-    // Normalizar identificador de usuario (user_id -> user_uuid) si viene como UUID texto
-    normalizeUserIdentifier(baseRow);
 
     // Ensure we don't send an `id` to the insert payload which could collide with the
     // table primary key (supabase will generate it server-side).
@@ -126,9 +110,6 @@ export async function getProjectById(id: string): Promise<Project> {
 export async function updateProject(id: string, project: ProjectFormData): Promise<Project> {
     const supabase = createClient();
     const baseRow = mapProjectToSupabaseRow(project) as Record<string, unknown>;
-
-    // Normalizar identificador de usuario para evitar errores de tipo en la DB
-    normalizeUserIdentifier(baseRow);
 
     const { error } = await supabase.from(PROJECTS_TABLE)
     .update(baseRow)
