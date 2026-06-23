@@ -66,7 +66,6 @@ export default function ProjectsPage() {
     const sortedZones = useMemo(() => {
         return zones.length > 0 ? sortZones(zones, "zona") : [];
     }, [zones]);
-    // console.log("zonas ordenadas", sortedZones);
 
     // ---------------------------------
     // ---- Lista de eventos ----
