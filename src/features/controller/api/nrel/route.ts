@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { NRELInfo } from "@/lib/types/api/nrel-types";
 
-const NREL_BASE_URL = "https://developer.nrel.gov";
-// const NREL_BASE_URL = "https://developer.nlr.gov"; // desde el 29/5/2026
+// const NREL_BASE_URL = "https://developer.nrel.gov";
+const NREL_BASE_URL = "https://developer.nlr.gov"; // desde el 29/5/2026
 
 // Parámetros fijos de PVWatts (requeridos por la API)
 const PVWATTS_DEFAULTS = {
