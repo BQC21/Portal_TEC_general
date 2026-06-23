@@ -879,7 +879,7 @@ export default function EditProjectModal({
                                         required
                                         value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
                                         onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        step={1000}
+                                        step={1}
                                         min={0}
                                     />
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
@@ -939,7 +939,7 @@ export default function EditProjectModal({
                                                     label="Energía requerida"    required
                                                     value={Number(form.energia_requerida)}
                                                     onChange={(value) => updateField("energia_requerida", String(value))}
-                                                    step={1000} min={0}
+                                                    step={1} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia DC requerida (KW)"    required
