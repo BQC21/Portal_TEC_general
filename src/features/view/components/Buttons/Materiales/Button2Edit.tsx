@@ -1,7 +1,7 @@
 "use client";
 
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { Materiales } from "@/lib/types/materiales-types";
+import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { useState } from "react";
 import { EditMaterialModal } from "../../Modals/Materiales/EditMaterialModal";
 

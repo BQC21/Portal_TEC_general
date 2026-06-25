@@ -1,16 +1,16 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/project/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/project/button2trash";
 
-import type { Project } from "@/lib/types/project-types";
-import { Project_Equipos } from "@/lib/types/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/project_materiales_join";
+import type { Project } from "@/lib/types/supabase/project-types";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 
 import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 
 import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 type ProjectTableProps = {
     projects: Project[];

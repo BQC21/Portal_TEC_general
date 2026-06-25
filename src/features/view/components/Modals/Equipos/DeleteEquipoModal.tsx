@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { Equipos } from "@/lib/types/equipos-types";
+import { Equipos } from "@/lib/types/supabase/equipos-types";
 
 // --- Tipo de variables ---
 type DeleteEquipoModalProps = {

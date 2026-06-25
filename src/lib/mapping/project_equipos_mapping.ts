@@ -1,9 +1,9 @@
-import { SupabaseEquiposRow } from "../types/equipos-types"
-import { SupabaseProjectRow } from "../types/project-types"
+import { SupabaseEquiposRow } from "../types/supabase/equipos-types"
+import { SupabaseProjectRow } from "../types/supabase/project-types"
 
 import { Project_Equipos, Project_EquiposFormData, 
     Project_EquiposFormState, 
-    SupabaseProject_EquiposRow } from "../types/project_equipos_join"
+    SupabaseProject_EquiposRow } from "../types/supabase/project_equipos_join"
 
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 import { parseNumber } from "../utils/normalization";

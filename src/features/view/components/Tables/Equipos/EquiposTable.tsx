@@ -1,4 +1,4 @@
-import type { Equipos } from "@/lib/types/equipos-types";
+import type { Equipos } from "@/lib/types/supabase/equipos-types";
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
 import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";

@@ -11,18 +11,18 @@ import { useZone,
 
 import type { Project,
     ProjectFormData,
-} from "@/lib/types/project-types";
+} from "@/lib/types/supabase/project-types";
 
 import type { Zone,
     ZoneFormData,
-} from "@/lib/types/zone-types";
+} from "@/lib/types/supabase/zone-types";
 
 import ProjectTable from "@/features/view/components/Tables/sizing/ProjectTable";
 import ZoneTable from "@/features/view/components/Tables/sizing/ZoneTable";
 
 import Button2Modal_zone from "@/features/view/components/Buttons/sizing/zone/button2modal";
 import Button2Modal_project from "@/features/view/components/Buttons/sizing/project/button2modal";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 import { useMemo } from "react";

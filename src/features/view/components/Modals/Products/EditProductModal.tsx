@@ -11,7 +11,7 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 
-import type { Product, ProductFormState } from "@/lib/types/product-types";
+import type { Product, ProductFormState } from "@/lib/types/supabase/product-types";
 
 import { CurrencyCode } from "@/lib/utils/options";
 

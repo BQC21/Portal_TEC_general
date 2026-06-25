@@ -1,4 +1,4 @@
-import type { Materiales } from "@/lib/types/materiales-types";
+import type { Materiales } from "@/lib/types/supabase/materiales-types";
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";

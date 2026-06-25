@@ -7,7 +7,7 @@ import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIc
 import type { 
     ZoneFormState,
     ZoneFormData,
-} from "@/lib/types/zone-types"; 
+} from "@/lib/types/supabase/zone-types"; 
 
 import { AddProductTextField } from "@/features/view/components//Form_fields/AddTextField"; // campos
 

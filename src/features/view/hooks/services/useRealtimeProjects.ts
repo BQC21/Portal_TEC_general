@@ -14,7 +14,7 @@ import type {
     ProjectFormData,
     UseProjectMutationsResult,
     UseProjectResult,
-} from "@/lib/types/project-types";
+} from "@/lib/types/supabase/project-types";
 
 import { createClient } from "@/lib/supabase/client";
 

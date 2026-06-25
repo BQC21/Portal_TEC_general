@@ -5,7 +5,7 @@ import {
     PRODUCT_TYPE_OPTIONS, 
     BRAND_OPTIONS 
 } from "@/lib/utils/options"
-import { ProductFilterValues } from "@/lib/types/product-types"
+import { ProductFilterValues } from "@/lib/types/supabase/product-types"
 import type { FilterKey } from "@/lib/utils/options"; // Tipados
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 

@@ -2,9 +2,9 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import type { Project } from "@/lib/types/project-types";
-import { Project_Equipos } from "@/lib/types/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/project_materiales_join";
+import type { Project } from "@/lib/types/supabase/project-types";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 
 // --- Tipo de variables ---
 type DeleteProjectModalProps = {

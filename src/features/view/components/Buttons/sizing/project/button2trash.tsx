@@ -3,9 +3,9 @@
 import { DeleteProjectModal } from "@/features/view/components/Modals/sizing/project/DeleteProjectModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Project } from "@/lib/types/project-types";
-import { Project_Equipos } from "@/lib/types/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/project_materiales_join";
+import { Project } from "@/lib/types/supabase/project-types";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 
 type DeleteProjectModalProps = {
     project: Project;

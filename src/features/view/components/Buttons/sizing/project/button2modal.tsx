@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import AddProjectModal from "@/features/view/components/Modals/sizing/project/AddProjectModal";
-import type { ProjectFormData } from "@/lib/types/project-types";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import type { ProjectFormData } from "@/lib/types/supabase/project-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 type Button2ModalProps = {
     onAddProject: (

@@ -1,4 +1,4 @@
-import { Equipos, EquiposFormData, EquiposFormState } from "@/lib/types/equipos-types";
+import { Equipos, EquiposFormData, EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";

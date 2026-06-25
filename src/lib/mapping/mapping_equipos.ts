@@ -1,4 +1,4 @@
-import { Equipos, EquiposFormData, EquiposFormState, SupabaseEquiposRow } from "@/lib/types/equipos-types";
+import { Equipos, EquiposFormData, EquiposFormState, SupabaseEquiposRow } from "@/lib/types/supabase/equipos-types";
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 
 // enlace con los atributos de Supabase

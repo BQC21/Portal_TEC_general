@@ -3,7 +3,7 @@
 import { createJoinProjectMateriales, deleteJoinProjectMateriales, 
     getJoinProjectMateriales, updateJoinProjectMateriales } from "@/features/controller/services/projectMaterialesQueries";
 import { createClient } from "@/lib/supabase/client";
-import { Project_Materiales, Project_MaterialesFormData, useProject_MaterialesMutationResult, UseProject_MaterialesResult } from "@/lib/types/project_materiales_join";
+import { Project_Materiales, Project_MaterialesFormData, useProject_MaterialesMutationResult, UseProject_MaterialesResult } from "@/lib/types/supabase/project_materiales_join";
 import { PROJECTS_MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 import { useCallback, useEffect, useState } from "react";
 

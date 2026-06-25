@@ -2,7 +2,7 @@
 
 import { EditProductModal } from "@/features/view/components/Modals/Products/EditProductModal";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import type { Product } from "@/lib/types/product-types";
+import type { Product } from "@/lib/types/supabase/product-types";
 import { useState } from "react";
 
 type EditProductModalProps = {

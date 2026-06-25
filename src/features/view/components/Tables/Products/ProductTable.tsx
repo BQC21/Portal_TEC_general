@@ -1,7 +1,7 @@
 import { Button2Edit } from "@/features/view/components/Buttons/Products/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/Products/button2trash";
 
-import type { Product } from "@/lib/types/product-types";
+import type { Product } from "@/lib/types/supabase/product-types";
 
 import { TABLE_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass, getPriceCellClass } from "@/lib/utils/helpers/manage_info/cell_manage";

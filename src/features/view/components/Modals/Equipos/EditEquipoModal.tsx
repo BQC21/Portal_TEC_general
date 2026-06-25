@@ -32,7 +32,7 @@ import {
     shouldRender_SupplyInfoSelection,
     shouldRenderConnectionTypeAccesories,
 } from "@/lib/utils/helpers/render/render_modals";
-import { Equipos, EquiposFormState } from "@/lib/types/equipos-types";
+import { Equipos, EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
 import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 

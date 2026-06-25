@@ -3,7 +3,7 @@
 import { DeleteZoneModal } from "@/features/view/components/Modals/sizing/zone/DeleteZoneModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Zone } from "@/lib/types/zone-types";
+import { Zone } from "@/lib/types/supabase/zone-types";
 
 type DeleteZoneModalProps = {
     zone: Zone;

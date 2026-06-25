@@ -1,4 +1,4 @@
-import type { Product, ProductFormData } from "@/lib/types/product-types";
+import type { Product, ProductFormData } from "@/lib/types/supabase/product-types";
 import * as XLSX from "xlsx-js-style";
 
 type ExportCellValue = string | number | null;

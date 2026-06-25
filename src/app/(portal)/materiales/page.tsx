@@ -9,7 +9,7 @@ import { MaterialesTable } from "@/features/view/components/Tables/Materiales/Ma
 
 import { useMateriales, useMaterialMutations } from "@/features/view/hooks/services/useRealtimeMateriales";
 
-import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/materiales-types";
+import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";

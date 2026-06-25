@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import EditProjectModal from "@/features/view/components/Modals/sizing/project/EditProjectModal";
-import type { Project, ProjectFormData } from "@/lib/types/project-types";
-import { Project_Equipos } from "@/lib/types/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/project_materiales_join";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import type { Project, ProjectFormData } from "@/lib/types/supabase/project-types";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 type EditProjectModalProps = {
     project: Project;

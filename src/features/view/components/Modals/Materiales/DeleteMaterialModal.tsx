@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { Materiales } from "@/lib/types/materiales-types";
+import { Materiales } from "@/lib/types/supabase/materiales-types";
 
 // --- Tipo de variables ---
 type DeleteMaterialModalProps = {

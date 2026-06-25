@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { Project, ProjectFormData } from "@/lib/types/project-types";
+import { Project, ProjectFormData } from "@/lib/types/supabase/project-types";
 import { mapSupabaseRowToProject, mapProjectToSupabaseRow } from "../../../lib/mapping/project_mapping";
 import { PROJECTS_TABLE } from "@/lib/utils/namingTolerance"
 

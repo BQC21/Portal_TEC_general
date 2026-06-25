@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { FormEvent } from "react";
-import type { Product } from "@/lib/types/product-types";
+import type { Product } from "@/lib/types/supabase/product-types";
 
 import { FormatFile_OPTIONS } from "@/lib/utils/options"
 

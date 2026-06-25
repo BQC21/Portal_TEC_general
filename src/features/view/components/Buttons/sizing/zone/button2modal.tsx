@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import AddZoneModal  from "@/features/view/components/Modals/sizing/zone/AddZoneModal";
-import type { ZoneFormData } from "@/lib/types/zone-types";
+import type { ZoneFormData } from "@/lib/types/supabase/zone-types";
 
 type Button2ModalProps = {
     onAddZone: (zone: ZoneFormData) => void;

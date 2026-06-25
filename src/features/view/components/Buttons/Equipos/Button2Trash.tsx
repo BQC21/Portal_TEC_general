@@ -1,7 +1,7 @@
 "use client";
 
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
-import { Equipos } from "@/lib/types/equipos-types";
+import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { useState } from "react";
 import { DeleteEquipoModal } from "../../Modals/Equipos/DeleteEquipoModal";
 

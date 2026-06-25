@@ -1,17 +1,17 @@
 import type { 
 	// Product,
 	ProductFormState,
-} from "@/lib/types/product-types";
+} from "@/lib/types/supabase/product-types";
 
 import type {
     // Equipos,
     EquiposFormState,
-} from "@/lib/types/equipos-types";
+} from "@/lib/types/supabase/equipos-types";
 
 import type {
     // Materiales,
     MaterialesFormState,
-} from "@/lib/types/materiales-types";
+} from "@/lib/types/supabase/materiales-types";
 
 import {
 	// SORTING_OPTIONS,
@@ -30,10 +30,10 @@ import {
     MATERIALES_TYPE_OPTIONS,
     FILL_OPTIONS
 } from "@/lib/utils/options"
-import { ZoneFormState } from "../types/zone-types";
-import { ProjectFormState } from "../types/project-types";
-import { Project_EquiposFormState } from "../types/project_equipos_join";
-import { Project_MaterialesFormState } from "../types/project_materiales_join";
+import { ZoneFormState } from "../types/supabase/zone-types";
+import { ProjectFormState } from "../types/supabase/project-types";
+import { Project_EquiposFormState } from "../types/supabase/project_equipos_join";
+import { Project_MaterialesFormState } from "../types/supabase/project_materiales_join";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_PRODUCT_FORM: ProductFormState = {

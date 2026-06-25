@@ -1,4 +1,4 @@
-import { Materiales, MaterialesFormData, MaterialesFormState, SupabaseMaterialesRow } from "@/lib/types/materiales-types";
+import { Materiales, MaterialesFormData, MaterialesFormState, SupabaseMaterialesRow } from "@/lib/types/supabase/materiales-types";
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 
 // enlace con los atributos de Supabase

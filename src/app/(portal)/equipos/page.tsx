@@ -9,7 +9,7 @@ import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposT
 
 import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 
-import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/equipos-types";
+import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";

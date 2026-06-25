@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import EditZoneModal  from "@/features/view/components/Modals/sizing/zone/EditZoneModal";
-import type { Zone, ZoneFormData } from "@/lib/types/zone-types";
+import type { Zone, ZoneFormData } from "@/lib/types/supabase/zone-types";
 
 type EditZoneModalProps = {
     zone: Zone;

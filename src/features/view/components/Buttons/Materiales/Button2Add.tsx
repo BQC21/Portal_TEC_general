@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import { Materiales, MaterialesFormData } from "@/lib/types/materiales-types";
+import { Materiales, MaterialesFormData } from "@/lib/types/supabase/materiales-types";
 import { AddMaterialModal } from "../../Modals/Materiales/AddMaterialModal";
 
 type Button2ModalProps = {

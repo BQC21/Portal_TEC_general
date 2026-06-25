@@ -1,5 +1,5 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
-import type { EquiposFilterValues } from "@/lib/types/equipos-types";
+import type { EquiposFilterValues } from "@/lib/types/supabase/equipos-types";
 import { 
     SUPPLIER_OPTIONS, 
     EQUIPOS_TYPE_OPTIONS, 

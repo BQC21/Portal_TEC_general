@@ -1,6 +1,6 @@
 import { mapProject_EquiposToSupabaseRow, mapSupabaseRowToProject_Equipos } from "@/lib/mapping/project_equipos_mapping";
 import { createClient } from "@/lib/supabase/client";
-import { Project_Equipos, Project_EquiposFormData } from "@/lib/types/project_equipos_join";
+import { Project_Equipos, Project_EquiposFormData } from "@/lib/types/supabase/project_equipos_join";
 import { PROJECTS_EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 
 export async function createJoinProjectEquipos(

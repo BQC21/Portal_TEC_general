@@ -1,5 +1,5 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
-import type { MaterialesFilterValues } from "@/lib/types/materiales-types";
+import type { MaterialesFilterValues } from "@/lib/types/supabase/materiales-types";
 import { 
     SUPPLIER_OPTIONS, 
     MATERIALES_TYPE_OPTIONS, 

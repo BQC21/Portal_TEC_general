@@ -1,9 +1,9 @@
-import { SupabaseMaterialesRow } from "../types/materiales-types"
-import { SupabaseProjectRow } from "../types/project-types"
+import { SupabaseMaterialesRow } from "../types/supabase/materiales-types"
+import { SupabaseProjectRow } from "../types/supabase/project-types"
 
 import { Project_Materiales, Project_MaterialesFormData, 
     Project_MaterialesFormState, 
-    SupabaseProject_MaterialesRow } from "../types/project_materiales_join"
+    SupabaseProject_MaterialesRow } from "../types/supabase/project_materiales_join"
 
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 import { parseNumber } from "../utils/normalization";

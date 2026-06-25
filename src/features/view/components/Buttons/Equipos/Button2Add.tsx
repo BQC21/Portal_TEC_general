@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import { Equipos, EquiposFormData } from "@/lib/types/equipos-types";
+import { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 import { AddEquipoModal } from "../../Modals/Equipos/AddEquipoModal";
 
 type Button2ModalProps = {

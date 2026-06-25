@@ -1,7 +1,7 @@
 "use client";
 
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { Equipos } from "@/lib/types/equipos-types";
+import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { useState } from "react";
 import { EditEquipoModal } from "../../Modals/Equipos/EditEquipoModal";
 

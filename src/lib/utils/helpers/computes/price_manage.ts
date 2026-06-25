@@ -1,4 +1,4 @@
-import { Product } from "../../../types/product-types";
+import { Product } from "../../../types/supabase/product-types";
 import { toSafeNumber } from "../../normalization";
 
 // -------------------------

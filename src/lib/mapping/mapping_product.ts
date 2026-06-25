@@ -1,4 +1,4 @@
-import { Product, ProductFormData, ProductFormState, SupabaseProductRow } from "@/lib/types/product-types";
+import { Product, ProductFormData, ProductFormState, SupabaseProductRow } from "@/lib/types/supabase/product-types";
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 import { normalizeCurrencyCode } from "../utils/normalization";
 

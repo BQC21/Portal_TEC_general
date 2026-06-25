@@ -15,7 +15,7 @@ import { useProducts, useProductMutations } from "@/features/view/hooks/services
 // import { useConverter } from "@/features/hooks/useConverterFrankfurter"; // API (browser)
 import { useConverterSunat } from "@/features/view/hooks/api/useConverterSunat"; // API SUNAT
 
-import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/product-types"; // Tipados
+import type { Product, ProductFormData, ProductFilterValues } from "@/lib/types/supabase/product-types"; // Tipados
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 

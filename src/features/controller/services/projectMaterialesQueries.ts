@@ -1,6 +1,6 @@
 import { mapProject_MaterialesToSupabaseRow, mapSupabaseRowToProject_Materiales } from "@/lib/mapping/project_materiales_mapping";
 import { createClient } from "@/lib/supabase/client";
-import { Project_Materiales, Project_MaterialesFormData } from "@/lib/types/project_materiales_join";
+import { Project_Materiales, Project_MaterialesFormData } from "@/lib/types/supabase/project_materiales_join";
 import { PROJECTS_MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 
 export async function createJoinProjectMateriales(

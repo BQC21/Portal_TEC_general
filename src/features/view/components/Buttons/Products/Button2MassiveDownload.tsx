@@ -2,7 +2,7 @@
 
 import { MassiveDownloadModal } from "@/features/view/components/Modals/Products/MassiveDownloadModal";
 import { MassiveDownloadIcon } from "@/features/view/components/Icons/MassiveDownloadIcon";
-import type { Product } from "@/lib/types/product-types";
+import type { Product } from "@/lib/types/supabase/product-types";
 import { useState } from "react";
 
 type MassiveDownloadModalProps = {

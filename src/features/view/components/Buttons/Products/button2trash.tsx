@@ -3,7 +3,7 @@
 import { DeleteProductModal } from "@/features/view/components/Modals/Products/DeleteProductModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Product } from "@/lib/types/product-types";
+import { Product } from "@/lib/types/supabase/product-types";
 
 type DeleteProductModalProps = {
     product: Product;

@@ -6,11 +6,11 @@ import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIc
 import type {
     ProjectFormState,
     ProjectFormData,
-} from "@/lib/types/project-types";
+} from "@/lib/types/supabase/project-types";
 
 import type {
     ZoneFormState,
-} from "@/lib/types/zone-types"; // Tipados
+} from "@/lib/types/supabase/zone-types"; // Tipados
 
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
@@ -39,14 +39,14 @@ import {
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { Project } from "@/lib/types/project-types";
+import { Project } from "@/lib/types/supabase/project-types";
 import { createProjectFormStateFromProject } from "@/lib/mapping/project_mapping";
-import { Project_Equipos } from "@/lib/types/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/project_materiales_join";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/product-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
 

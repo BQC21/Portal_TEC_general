@@ -1,4 +1,4 @@
-import {Zone, ZoneFormState, ZoneFormData, SupabaseZoneRow} from "@/lib/types/zone-types"
+import {Zone, ZoneFormState, ZoneFormData, SupabaseZoneRow} from "@/lib/types/supabase/zone-types"
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage"
 
 // Actualización del formulario

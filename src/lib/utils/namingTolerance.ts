@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-import { ProductFormData } from "@/lib/types/product-types";
+import { ProductFormData } from "@/lib/types/supabase/product-types";
 
 export const PRODUCTS_TABLE = "productos";
 export const EQUIPOS_TABLE = "equipo_principales";

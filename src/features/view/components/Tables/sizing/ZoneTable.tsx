@@ -1,7 +1,7 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/zone/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/zone/button2trash";
 
-import type { Zone } from "@/lib/types/zone-types";
+import type { Zone } from "@/lib/types/supabase/zone-types";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 

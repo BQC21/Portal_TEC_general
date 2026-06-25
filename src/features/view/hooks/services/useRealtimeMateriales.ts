@@ -16,7 +16,7 @@ import type {
 	MaterialesFilterOptions,
 	UseMaterialesMutationsResult,
 	UseMaterialesResult,
-} from "@/lib/types/materiales-types";
+} from "@/lib/types/supabase/materiales-types";
 
 import { createClient } from "@/lib/supabase/client";
 

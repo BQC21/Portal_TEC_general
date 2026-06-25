@@ -6,7 +6,7 @@ import type {
     Zone,
     ZoneFormState,
     ZoneFormData,
-} from "@/lib/types/zone-types";
+} from "@/lib/types/supabase/zone-types";
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 

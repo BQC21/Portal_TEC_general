@@ -16,7 +16,7 @@ import type {
 	EquiposFilterOptions,
 	UseEquiposMutationsResult,
 	UseEquiposResult,
-} from "@/lib/types/equipos-types";
+} from "@/lib/types/supabase/equipos-types";
 
 import { createClient } from "@/lib/supabase/client";
 

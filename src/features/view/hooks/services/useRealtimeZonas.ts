@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { Zone, ZoneFormData, UseZoneMutationsResult, UseZoneResult } from "@/lib/types/zone-types"
+import { Zone, ZoneFormData, UseZoneMutationsResult, UseZoneResult } from "@/lib/types/supabase/zone-types"
 import { getZones, createZone, updateZone, deleteZone  } from "@/features/controller/services/zoneQueries"
 
 const supabase = createClient();

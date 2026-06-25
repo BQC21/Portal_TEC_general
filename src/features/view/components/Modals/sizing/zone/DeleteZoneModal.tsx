@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import type { Zone } from "@/lib/types/zone-types";
+import type { Zone } from "@/lib/types/supabase/zone-types";
 
 // --- Tipo de variables ---
 type DeleteZoneModalProps = {

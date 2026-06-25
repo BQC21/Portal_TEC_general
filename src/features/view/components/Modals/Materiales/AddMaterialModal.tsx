@@ -8,7 +8,7 @@ import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/ren
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
-import { Materiales, MaterialesFormData, MaterialesFormState } from "@/lib/types/materiales-types";
+import { Materiales, MaterialesFormData, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 

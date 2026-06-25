@@ -26,7 +26,7 @@ import {
     shouldRender_SupplyInfoSelection,
 } from "@/lib/utils/helpers/render/render_modals";
 
-import { Materiales, MaterialesFormState } from "@/lib/types/materiales-types";
+import { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 
