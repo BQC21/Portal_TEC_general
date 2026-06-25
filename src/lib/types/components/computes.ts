@@ -1,4 +1,4 @@
-import { SelectedEquipmentItem } from "./supabase/product-types";
+import { SelectedEquipmentItem } from "../supabase/product-types";
 
 export type computedRequirements = {
     energia: string;
