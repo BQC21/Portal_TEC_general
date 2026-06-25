@@ -1,0 +1,156 @@
+import { Equipos, EquiposFormData } from "../supabase/equipos-types";
+import { Materiales, MaterialesFormData } from "../supabase/materiales-types";
+import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
+import { Project, ProjectFormData } from "../supabase/project-types";
+import { Project_Equipos } from "../supabase/project_equipos_join";
+import { Project_Materiales } from "../supabase/project_materiales_join";
+import { Zone, ZoneFormData } from "../supabase/zone-types";
+
+
+
+// ------------------
+// modals -- agregar
+// ------------------
+
+export type AddEquipoModalProps = {
+    existingEquipos: Equipos[];
+    onAddEquipos: (equipo: EquiposFormData) => void;
+    onClose: () => void;
+};
+
+export type AddMaterialModalProps = {
+    existingMateriales: Materiales[];
+    onAddMateriales: (material: MaterialesFormData) => void;
+    onClose: () => void;
+};
+
+export type AddProductModalProps = {
+    exchangeRate: number;
+    existingProducts: Product[];
+    onAddProduct: (product: ProductFormData) => void;
+    onClose: () => void;
+};
+
+export type AddMProjectodalProps = {
+    onAddProject: (
+        project: ProjectFormData,
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
+    ) => Promise<void> | void;
+    onClose: () => void;
+};
+
+export type AddZoneModalProps = {
+    onAddZone: (zone: ZoneFormData) => void;
+    onClose: () => void;
+};
+
+// ------------------
+// modals -- editar
+// ------------------
+export type EditEquipoModalProps = {
+    equipo: Equipos;
+    onUpdateEquipo: (equipo: Equipos) => void;
+    onClose: () => void;
+};
+
+export type EditMaterialModalProps = {
+    material: Materiales;
+    onUpdateMaterial: (material: Materiales) => void;
+    onClose: () => void;
+};
+
+export type EditProductModalProps = {
+    product: Product;
+    exchangeRate: number;
+    onUpdateProduct: (product: Product) => void;
+    onClose: () => void;
+};
+
+export type EditProjectModalProps = {
+    existingProject: Project;
+    existingProjectEquipos: Project_Equipos[];
+    existingProjectMateriales: Project_Materiales[];
+    onUpdateProject: (
+        project: ProjectFormData,
+        selectedEquipos: SelectedEquipmentItem[],
+        selectedMateriales: SelectedMaterialItem[],
+    ) => Promise<void> | void;
+    onClose: () => void;
+};
+
+export type EditZoneModalProps = {
+    existingZone: Zone;
+    onUpdateZone: (zone: ZoneFormData) => void;
+    onClose: () => void;
+};
+
+// ------------------
+// modals -- borrar
+// ------------------
+export type DeleteEquipoModalProps = {
+    equipo: Equipos;
+    onDeleteEquipo: (equipoId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteMaterialModalProps = {
+    material: Materiales;
+    onDeleteMaterial: (materialId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteProductModalProps = {
+    product: Product;
+    onDeleteProduct: (productId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteProjectModalProps = {
+    project: Project;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
+    onDeleteProject: (projectId: string) => void
+    onDeleteProjectEquipos: (projectsEquiposId: string) => void
+    onDeleteProjectMateriales: (projectsMaterialesId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteZoneModalProps = {
+    zone: Zone;
+    onDeleteZone: (zoneId: string) => void
+    onClose: () => void;
+};
+
+// ------------------
+// modals -- subida masiva
+// ------------------
+export type MassiveUploadModalProps = {
+	onClose: () => void;
+	onSuccess?: () => void;
+};
+
+// ------------------
+// modals -- borrado masivo
+// ------------------
+export type MassiveCleanModalProps = {
+	currentCount: number;
+	onClose: () => void;
+	onSuccess?: () => void;
+};
+
+// ------------------
+// modals -- descarga masiva
+// ------------------
+export type MassiveDownloadModalProps = {
+    productsToDownload?: Product[];
+    exchangeRate: number;
+    defaultFileName?: string;
+    onClose: () => void;
+};
+
+export type DownloadFormState = {
+    format: string;
+    fileName: string;
+    includeHeaders: boolean;
+};
