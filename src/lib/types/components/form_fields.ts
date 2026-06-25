@@ -58,6 +58,16 @@ export type AddProductSelectFieldProps = {
     customClass?: string; // Optional custom class for styling
 };
 
+export type SelectionRowProps = {
+    label: string;
+    buttonLabel: string;
+    value: string;
+    options: string[];
+    onChange: (value: string) => void;
+    onClick?: () => void;
+    customSelectClass?: string; // Optional custom class for select styling
+};
+
 // campo para texto
 export type AddProductTextFieldProps = {
     label: string;
@@ -66,3 +76,4 @@ export type AddProductTextFieldProps = {
     value: string;
     onChange: (value: string) => void;
 };
+
