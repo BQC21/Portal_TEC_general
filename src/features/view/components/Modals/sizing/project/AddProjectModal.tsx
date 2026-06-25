@@ -36,6 +36,10 @@ import { useSyncQuantities } from "@/features/view/hooks/modals/useSyncQuantitie
 import { ZoneSelection } from "@/features/view/hooks/modals/useZoneSelection";
 import { handlerSelector } from "@/features/view/hooks/modals/useHandlerSelector";
 import { useSelectionHandlers } from "@/features/view/hooks/modals/useSelectionHandlers";
+import { getDarkSilverColorClass, getLightSilverColorClass } from "@/lib/utils/helpers/project_modals/colorclasses";
+import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
+import { SelectionRowProps } from "@/lib/types/components/form_fields";
+import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 
 export default function AddProjectModal({ onAddProject, onClose }: AddMProjectodalProps) {
 
@@ -165,79 +169,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
 
     // -------------------------------------------------------------------------------------------
 
-    // ---------------------------------------
-    // ----- Condicionar coloreado -----------
-    // ---------------------------------------
-    const getDarkSilverColorClass = (value: string | number | null | undefined) => {
-        if (value === "NaN" || value === "Infinity" || value === null || 
-                value === undefined || value === "" || value === "0" || value === 0) return "bg-[#BFAC7E]"; 
-        return "bg-slate-400"; // Default color
-    };
-
-    const getLightSilverColorClass = (value: string | number | null | undefined) => {
-        if (value === "NaN" || value === "Infinity" || value === null || 
-                value === undefined || value === "" || value === 0 || value === "0") return "bg-[#F0B746]"; 
-        return "bg-slate-200"; // Default color
-    };
-
     const isEquipmentTypeSelected = (type: string) => {
         return selectedEquipmentTable.some(item => item.row === type);
     };
 
-
-    // --------------------------------------------------
-    // ------- SELECTOR DE FILAS ------------------------
-    // --------------------------------------------------
-
-    const selectionRowStyles = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.35fr)_auto] lg:items-end";
-    const actionButtonStyles = "shrink-0 whitespace-nowrap rounded-xl border border-slate-300 px-4 py-3 text-base font-semibold text-slate-700 transition hover:bg-slate-50";
-
-    type SelectionRowProps = {
-        label: string;
-        buttonLabel: string;
-        value: string;
-        options: string[];
-        onChange: (value: string) => void;
-        onClick?: () => void;
-        customSelectClass?: string; // Optional custom class for select styling
-    };
-
-    function SelectionRow({ label, buttonLabel, value, options, onChange, onClick, customSelectClass }: SelectionRowProps) {
-        return (
-            <div className={selectionRowStyles}>
-                <div className="min-w-0">
-                    <AddProductSelectField
-                        label={label}
-                        required
-                        value={value}
-                        options={options}
-                        onChange={onChange}
-                        customClass={customSelectClass}
-                    />
-                </div>
-                <button type="button" className={actionButtonStyles} onClick={onClick}>
-                    {buttonLabel}
-                </button>
-            </div>
-        );
-    }
-
-    const equipmentRows = [
-        "ACCESORIO",
-        "BATERÍA",
-        "ESTRUCTURA",
-        "INVERSOR",
-        "MÓDULO FV",
-    ];
-
-    const materialRows = [
-        "CABLE",
-        "PROTECCIÓN",
-        "MC4",
-        "CANALIZACIÓN",
-        "CONSUMIBLE",
-    ];
-    
     // -------------------------------------------------------------------------------------------
 
 
