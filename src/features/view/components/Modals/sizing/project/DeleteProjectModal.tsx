@@ -2,20 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import type { Project } from "@/lib/types/supabase/project-types";
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-
-// --- Tipo de variables ---
-type DeleteProjectModalProps = {
-    project: Project;
-    project_equipos: Project_Equipos[];
-    project_materiales: Project_Materiales[];
-    onDeleteProject: (projectId: string) => void
-    onDeleteProjectEquipos: (projectsEquiposId: string) => void
-    onDeleteProjectMateriales: (projectsMaterialesId: string) => void
-    onClose: () => void;
-};
+import { DeleteProjectModalProps } from "@/lib/types/components/modals";
 
 export function DeleteProjectModal({ project, onDeleteProject,
     onClose }: DeleteProjectModalProps) {

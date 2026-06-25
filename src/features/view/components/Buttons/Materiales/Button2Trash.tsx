@@ -1,14 +1,9 @@
 "use client";
 
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { useState } from "react";
 import { DeleteMaterialModal } from "../../Modals/Materiales/DeleteMaterialModal";
-
-type DeleteMaterialModalProps = {
-    material: Materiales;
-    onDeleteMaterial: (materialId: string) => void;
-};
+import { DeleteMaterialModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Trash({ material, onDeleteMaterial }: DeleteMaterialModalProps) {
     const [open, setOpen] = useState(false);

@@ -1,14 +1,5 @@
+import { AddProductDateFieldProps } from "@/lib/types/components/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-type AddProductDateFieldProps = {
-    label: string;
-    required?: boolean;
-    value: string;
-    onChange: (value: string) => void;
-    min?: string;
-    max?: string;
-    disabled?: boolean;
-};
 
 export function AddProductDateField({
     label,

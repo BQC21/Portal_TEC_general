@@ -1,4 +1,4 @@
-import { Equipos, EquiposFormData, EquiposFormState } from "@/lib/types/supabase/equipos-types";
+import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
@@ -15,15 +15,7 @@ import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
 import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
-
-
-// --- Tipo de variables ---
-type AddEquipoModalProps = {
-    existingEquipos: Equipos[];
-    onAddEquipos: (equipo: EquiposFormData) => void;
-    onClose: () => void;
-};
-
+import { AddEquipoModalProps } from "@/lib/types/components/modals";
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
     const [form, setForm] = useState<EquiposFormState>(INITIAL_EQUIPOS_FORM);

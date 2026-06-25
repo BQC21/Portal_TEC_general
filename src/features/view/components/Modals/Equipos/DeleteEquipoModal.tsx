@@ -2,14 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { Equipos } from "@/lib/types/supabase/equipos-types";
-
-// --- Tipo de variables ---
-type DeleteEquipoModalProps = {
-    equipo: Equipos;
-    onDeleteEquipo: (equipoId: string) => void
-    onClose: () => void;
-};
+import { DeleteEquipoModalProps } from "@/lib/types/components/modals";
 
 export function DeleteEquipoModal({ equipo, onDeleteEquipo, onClose }: DeleteEquipoModalProps) {
 

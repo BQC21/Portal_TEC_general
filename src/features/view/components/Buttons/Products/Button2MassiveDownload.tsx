@@ -2,16 +2,11 @@
 
 import { MassiveDownloadModal } from "@/features/view/components/Modals/Products/MassiveDownloadModal";
 import { MassiveDownloadIcon } from "@/features/view/components/Icons/MassiveDownloadIcon";
-import type { Product } from "@/lib/types/supabase/product-types";
 import { useState } from "react";
+import { MassiveDownloadModalProps } from "@/lib/types/components/buttons";
 
-type MassiveDownloadModalProps = {
-    productsToDownload?: Product[];
-    exchangeRate: number;
-    defaultFileName?: string;
-};
-
-export default function Button2MassiveDownload({ productsToDownload, exchangeRate, defaultFileName }: MassiveDownloadModalProps) {
+export default function Button2MassiveDownload({ productsToDownload, exchangeRate, defaultFileName }: 
+    MassiveDownloadModalProps) {
     const [open, setOpen] = useState(false);
     
     return (

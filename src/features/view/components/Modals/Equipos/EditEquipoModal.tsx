@@ -1,15 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
-import { AddProductRadioField } from "@/features/view/components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 
 import { SUPPLIER_CODE_OPTIONS } from "@/lib/utils/options";
 
@@ -32,16 +30,10 @@ import {
     shouldRender_SupplyInfoSelection,
     shouldRenderConnectionTypeAccesories,
 } from "@/lib/utils/helpers/render/render_modals";
-import { Equipos, EquiposFormState } from "@/lib/types/supabase/equipos-types";
+import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
 import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
-
-// --- Tipo de variables ---
-type EditEquipoModalProps = {
-    equipo: Equipos;
-    onUpdateEquipo: (equipo: Equipos) => void;
-    onClose: () => void;
-};
+import { EditEquipoModalProps } from "@/lib/types/components/modals";
 
 export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoModalProps) {
     const [form, setForm] = useState<EquiposFormState>(() => createEquiposFormStateFromEquipos(equipo));

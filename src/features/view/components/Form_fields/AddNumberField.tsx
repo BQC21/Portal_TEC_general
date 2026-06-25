@@ -1,15 +1,5 @@
+import { AddProductNumberFieldProps } from "@/lib/types/components/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-type AddProductNumberFieldProps = {
-    label: string;
-    required?: boolean;
-    value: number | "";
-    onChange: (value: number) => void;
-    step?: number | "";
-    min?: number | "";
-    max?: number | "";
-    disabled?: boolean;
-};
 
 export function AddProductNumberField({
         label,

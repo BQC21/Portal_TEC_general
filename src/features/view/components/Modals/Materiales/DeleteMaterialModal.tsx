@@ -2,14 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
-
-// --- Tipo de variables ---
-type DeleteMaterialModalProps = {
-    material: Materiales;
-    onDeleteMaterial: (materialId: string) => void
-    onClose: () => void;
-};
+import { DeleteMaterialModalProps } from "@/lib/types/components/modals";
 
 export function DeleteMaterialModal({ material, onDeleteMaterial, onClose }: DeleteMaterialModalProps) {
 

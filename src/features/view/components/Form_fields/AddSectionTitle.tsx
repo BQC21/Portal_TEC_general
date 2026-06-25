@@ -1,6 +1,4 @@
-type AddProductSectionTitleProps = {
-  title: string;
-};
+import { AddProductSectionTitleProps } from "@/lib/types/components/form_fields";
 
 export function AddProductSectionTitle({ title }: AddProductSectionTitleProps) {
   return (

@@ -1,8 +1,4 @@
-type AddProductRadioFieldProps = {
-  label: string;
-  checked: boolean;
-  onChange: () => void;
-};
+import { AddProductRadioFieldProps } from "@/lib/types/components/form_fields";
 
 export function AddProductRadioField({ label, checked, onChange }: AddProductRadioFieldProps) {
   return (

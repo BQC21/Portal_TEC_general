@@ -17,6 +17,7 @@ import {
 import { toSafeNumber } from "@/lib/utils/normalization";
 
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
+import { MassiveUploadModalProps } from "@/lib/types/components/modals";
 
 type MaterialesMatchedSheet = {
 	sheetName: string;
@@ -24,11 +25,6 @@ type MaterialesMatchedSheet = {
 	headerStart: number;
 	headerRow: number;
 	detectedHeaders: string[];
-};
-
-type MassiveUploadModalProps = {
-	onClose: () => void;
-	onSuccess?: () => void;
 };
 
 type MaterialUploadRow = {

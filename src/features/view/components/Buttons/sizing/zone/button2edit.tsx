@@ -4,11 +4,7 @@ import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import EditZoneModal  from "@/features/view/components/Modals/sizing/zone/EditZoneModal";
 import type { Zone, ZoneFormData } from "@/lib/types/supabase/zone-types";
-
-type EditZoneModalProps = {
-    zone: Zone;
-    onUpdateZone: (zone: Zone) => void;
-};
+import { EditZoneModalProps } from "@/lib/types/components/buttons";
 
 export default function Button2Edit({ zone, onUpdateZone }: EditZoneModalProps) {
     const [open, setOpen] = useState(false);

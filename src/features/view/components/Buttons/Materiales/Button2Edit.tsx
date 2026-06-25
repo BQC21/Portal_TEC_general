@@ -1,14 +1,9 @@
 "use client";
 
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { useState } from "react";
 import { EditMaterialModal } from "../../Modals/Materiales/EditMaterialModal";
-
-type EditMaterialesModalProps = {
-    material: Materiales;
-    onUpdateMateriales: (material: Materiales) => void;
-};
+import { EditMaterialesModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Edit({ material, onUpdateMateriales }: EditMaterialesModalProps) {
     const [open, setOpen] = useState(false);

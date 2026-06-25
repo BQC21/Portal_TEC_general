@@ -3,15 +3,9 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { AddProductModal } from "@/features/view/components/Modals/Products/AddProductModal";
-import type { Product, ProductFormData } from "@/lib/types/supabase/product-types";
+import { Button2ModalPropsProducto } from "@/lib/types/components/buttons";
 
-type Button2ModalProps = {
-    exchangeRate: number;
-    existingProducts: Product[];
-    onAddProduct: (product: ProductFormData) => void;
-};
-
-export default function Button2Modal({ exchangeRate, existingProducts, onAddProduct }: Button2ModalProps) {
+export default function Button2Modal({ exchangeRate, existingProducts, onAddProduct }: Button2ModalPropsProducto) {
     const [open, setOpen] = useState(false);
 
     return (

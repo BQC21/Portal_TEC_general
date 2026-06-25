@@ -11,7 +11,7 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 
-import type { Product, ProductFormState } from "@/lib/types/supabase/product-types";
+import type { ProductFormState } from "@/lib/types/supabase/product-types";
 
 import { CurrencyCode } from "@/lib/utils/options";
 
@@ -47,14 +47,7 @@ import {
     shouldRender_SupplyInfoSelection,
 } from "@/lib/utils/helpers/render/render_modals";
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
-
-// --- Tipo de variables ---
-type EditProductModalProps = {
-    product: Product;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
-    onClose: () => void;
-};
+import { EditProductModalProps } from "@/lib/types/components/modals";
 
 export function EditProductModal({ product, exchangeRate, onUpdateProduct, onClose }: EditProductModalProps) {
     const today = new Date().toISOString().split('T')[0];

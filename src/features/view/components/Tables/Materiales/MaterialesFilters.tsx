@@ -9,6 +9,7 @@ import {
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { MaterialesFiltersProps } from "@/lib/types/components/filter_tables";
 
 const FILTERS = [
     {
@@ -30,12 +31,6 @@ const FILTERS = [
         content: SUPPLIER_OPTIONS,
     },
 ];
-
-
-type MaterialesFiltersProps = {
-    values: MaterialesFilterValues;
-    onFilterChange: (key: FilterKey, value: string) => void;
-};
 
 export function MaterialesFilters({ values, onFilterChange }: MaterialesFiltersProps) {
 

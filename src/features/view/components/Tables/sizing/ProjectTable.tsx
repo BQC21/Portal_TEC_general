@@ -1,32 +1,12 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/project/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/project/button2trash";
 
-import type { Project } from "@/lib/types/supabase/project-types";
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-
 import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 
 import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-
-type ProjectTableProps = {
-    projects: Project[];
-    projects_equipos: Project_Equipos[];
-    projects_materiales: Project_Materiales[];
-    totalProjects: number;
-    onUpdateProject: (
-        project: Project,
-        selectedEquipos: SelectedEquipmentItem[],
-        selectedMateriales: SelectedMaterialItem[],
-    ) => Promise<void> | void;
-    onDeleteProject: (projectId: string) => void;
-    onDeleteProjectEquipos?: (projectEquiposId: string) => void;
-    onDeleteProjectMateriales?: (projectMaterialesId: string) => void;
-};
-
+import { ProjectTableProps } from "@/lib/types/components/tables";
 
 export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
     onUpdateProject, onDeleteProject,

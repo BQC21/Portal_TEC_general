@@ -4,12 +4,7 @@ import { EditProductModal } from "@/features/view/components/Modals/Products/Edi
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import type { Product } from "@/lib/types/supabase/product-types";
 import { useState } from "react";
-
-type EditProductModalProps = {
-    product: Product;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
-};
+import { EditProductModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Edit({ product, exchangeRate, onUpdateProduct }: EditProductModalProps) {
     const [open, setOpen] = useState(false);

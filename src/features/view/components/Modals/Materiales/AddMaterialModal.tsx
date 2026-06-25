@@ -6,19 +6,12 @@ import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
 import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/render_modals";import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
-import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
-import { Materiales, MaterialesFormData, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
+import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { AddMaterialModalProps } from "@/lib/types/components/modals";
 
-
-// --- Tipo de variables ---
-type AddMaterialModalProps = {
-    existingMateriales: Materiales[];
-    onAddMateriales: (material: MaterialesFormData) => void;
-    onClose: () => void;
-};
 
 
 export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose }: AddMaterialModalProps) {

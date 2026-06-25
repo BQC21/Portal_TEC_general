@@ -1,14 +1,9 @@
 "use client";
 
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { useState } from "react";
 import { EditEquipoModal } from "../../Modals/Equipos/EditEquipoModal";
-
-type EditEquiposModalProps = {
-    equipo: Equipos;
-    onUpdateEquipo: (equipo: Equipos) => void;
-};
+import { EditEquiposModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Edit({ equipo, onUpdateEquipo }: EditEquiposModalProps) {
     const [open, setOpen] = useState(false);

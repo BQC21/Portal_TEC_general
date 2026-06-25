@@ -3,9 +3,7 @@
 import { useState } from "react";
 
 import type {
-    Zone,
     ZoneFormState,
-    ZoneFormData,
 } from "@/lib/types/supabase/zone-types";
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
@@ -15,12 +13,7 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 
 import { createZoneFormStateFromZone } from "@/lib/mapping/zone_mapping"; 
-
-type EditZoneModalProps = {
-    existingZone: Zone;
-    onUpdateZone: (zone: ZoneFormData) => void;
-    onClose: () => void;
-};
+import { EditZoneModalProps } from "@/lib/types/components/modals";
 
 export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: EditZoneModalProps) {
     const [form_zone, setForm_zone] = useState<ZoneFormState>(() => createZoneFormStateFromZone(existingZone));;

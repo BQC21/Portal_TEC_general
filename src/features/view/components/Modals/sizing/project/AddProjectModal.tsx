@@ -5,7 +5,6 @@ import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIc
 
 import type {
     ProjectFormState,
-    ProjectFormData,
 } from "@/lib/types/supabase/project-types";
 
 import type {
@@ -44,18 +43,9 @@ import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyFi
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
+import { AddMProjectodalProps } from "@/lib/types/components/modals";
 
-// --- Tipo de variables ---
-type AddModalProps = {
-    onAddProject: (
-        project: ProjectFormData,
-        selectedEquipos: SelectedEquipmentItem[],
-        selectedMateriales: SelectedMaterialItem[],
-    ) => Promise<void> | void;
-    onClose: () => void;
-};
-
-export default function AddProjectModal({ onAddProject, onClose }: AddModalProps) {
+export default function AddProjectModal({ onAddProject, onClose }: AddMProjectodalProps) {
 
     // ----------------------------
     // ------- Estados ------------

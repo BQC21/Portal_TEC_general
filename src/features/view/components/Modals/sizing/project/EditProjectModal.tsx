@@ -5,7 +5,6 @@ import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIc
 
 import type {
     ProjectFormState,
-    ProjectFormData,
 } from "@/lib/types/supabase/project-types";
 
 import type {
@@ -39,28 +38,14 @@ import {
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { Project } from "@/lib/types/supabase/project-types";
 import { createProjectFormStateFromProject } from "@/lib/mapping/project_mapping";
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
-
-type EditProjectModalProps = {
-    existingProject: Project;
-    existingProjectEquipos: Project_Equipos[];
-    existingProjectMateriales: Project_Materiales[];
-    onUpdateProject: (
-        project: ProjectFormData,
-        selectedEquipos: SelectedEquipmentItem[],
-        selectedMateriales: SelectedMaterialItem[],
-    ) => Promise<void> | void;
-    onClose: () => void;
-};
+import { EditProjectModalProps } from "@/lib/types/components/modals";
 
 export default function EditProjectModal({
     existingProject,

@@ -5,12 +5,7 @@ import { useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 import { bulkDeleteAllRows } from "@/lib/utils/helpers/massive/massiveClean";
-
-type MassiveCleanModalProps = {
-	currentCount: number;
-	onClose: () => void;
-	onSuccess?: () => void;
-};
+import { MassiveCleanModalProps } from "@/lib/types/components/modals";
 
 export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveCleanModalProps) {
 	const [isCleaning, setIsCleaning] = useState(false);

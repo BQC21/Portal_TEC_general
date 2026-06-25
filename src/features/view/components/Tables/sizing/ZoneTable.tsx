@@ -1,17 +1,8 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/zone/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/zone/button2trash";
-
-import type { Zone } from "@/lib/types/supabase/zone-types";
+import { ZoneTableProps } from "@/lib/types/components/tables";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
-
-type ZoneTableProps = {
-    zones: Zone[];
-    totalZones: number;
-    onUpdateZone: (zone: Zone) => void;
-    onDeleteZone: (zoneId: string) => void;
-};
-
 
 export default function ProjectTable({ zones, 
     totalZones, 

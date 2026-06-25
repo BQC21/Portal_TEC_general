@@ -2,15 +2,10 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 import { AddEquipoModal } from "../../Modals/Equipos/AddEquipoModal";
+import { Button2ModalPropsEquipos } from "@/lib/types/components/buttons";
 
-type Button2ModalProps = {
-    existingEquipos: Equipos[];
-    onAddEquipos: (equipo: EquiposFormData) => void;
-};
-
-export default function Button2Modal({existingEquipos, onAddEquipos }: Button2ModalProps) {
+export default function Button2Modal({existingEquipos, onAddEquipos }: Button2ModalPropsEquipos) {
     const [open, setOpen] = useState(false);
 
     return (

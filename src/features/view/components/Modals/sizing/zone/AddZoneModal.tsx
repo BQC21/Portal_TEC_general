@@ -6,19 +6,13 @@ import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIc
 
 import type { 
     ZoneFormState,
-    ZoneFormData,
 } from "@/lib/types/supabase/zone-types"; 
 
 import { AddProductTextField } from "@/features/view/components//Form_fields/AddTextField"; // campos
 
 import { INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
-
-// --- Tipo de variables ---
-type AddZoneModalProps = {
-    onAddZone: (zone: ZoneFormData) => void;
-    onClose: () => void;
-};
+import { AddZoneModalProps } from "@/lib/types/components/modals";
 
 export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) {
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);

@@ -3,18 +3,9 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import AddProjectModal from "@/features/view/components/Modals/sizing/project/AddProjectModal";
-import type { ProjectFormData } from "@/lib/types/supabase/project-types";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
+import { Button2ModalPropsProject } from "@/lib/types/components/buttons";
 
-type Button2ModalProps = {
-    onAddProject: (
-        project: ProjectFormData,
-        selectedEquipos: SelectedEquipmentItem[],
-        selectedMateriales: SelectedMaterialItem[],
-    ) => Promise<void> | void;
-};
-
-export default function Button2Modal({ onAddProject }: Button2ModalProps) {
+export default function Button2Modal({ onAddProject }: Button2ModalPropsProject) {
     const [open, setOpen] = useState(false);
 
     return (

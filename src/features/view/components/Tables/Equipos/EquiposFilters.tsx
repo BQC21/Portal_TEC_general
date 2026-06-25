@@ -1,5 +1,4 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
-import type { EquiposFilterValues } from "@/lib/types/supabase/equipos-types";
 import { 
     SUPPLIER_OPTIONS, 
     EQUIPOS_TYPE_OPTIONS, 
@@ -9,6 +8,7 @@ import {
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { EquiposFiltersProps } from "@/lib/types/components/filter_tables";
 
 const FILTERS = [
     {
@@ -30,11 +30,6 @@ const FILTERS = [
         content: SUPPLIER_OPTIONS,
     },
 ];
-
-type EquiposFiltersProps = {
-    values: EquiposFilterValues;
-    onFilterChange: (key: FilterKey, value: string) => void;
-};
 
 export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) {
 

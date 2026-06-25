@@ -1,14 +1,9 @@
 "use client";
 
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
-import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { useState } from "react";
 import { DeleteEquipoModal } from "../../Modals/Equipos/DeleteEquipoModal";
-
-type DeleteEquipoModalProps = {
-    equipo: Equipos;
-    onDeleteEquipo: (equipoId: string) => void;
-};
+import { DeleteEquipoModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Trash({ equipo, onDeleteEquipo }: DeleteEquipoModalProps) {
     const [open, setOpen] = useState(false);

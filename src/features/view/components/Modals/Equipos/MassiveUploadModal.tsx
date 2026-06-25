@@ -17,6 +17,7 @@ import {
 
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { toSafeNumber } from "@/lib/utils/normalization";
+import { MassiveUploadModalProps } from "@/lib/types/components/modals";
 
 type EquipoMatchedSheet = {
 	sheetName: string;
@@ -24,11 +25,6 @@ type EquipoMatchedSheet = {
 	headerStart: number;
 	headerRow: number;
 	detectedHeaders: string[];
-};
-
-type MassiveUploadModalProps = {
-	onClose: () => void;
-	onSuccess?: () => void;
 };
 
 type EquipoUploadRow = {

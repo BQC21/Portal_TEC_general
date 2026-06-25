@@ -1,10 +1,5 @@
 import { SearchIcon } from "@/features/view/components/Icons/SearchIcon"; // ícono de búsqueda
-
-type SearchBarProps = {
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-};
+import { SearchBarProps } from "@/lib/types/components/search_bar";
 
 export function SearchBar({ value, onChange, placeholder = "Buscar..." }: SearchBarProps) {
     return (

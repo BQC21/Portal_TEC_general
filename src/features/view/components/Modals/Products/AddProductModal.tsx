@@ -12,7 +12,7 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 
-import type { Product, ProductFormData, ProductFormState } from "@/lib/types/supabase/product-types";
+import type { ProductFormState } from "@/lib/types/supabase/product-types";
 
 import { CurrencyCode } from "@/lib/utils/options";
 
@@ -45,17 +45,11 @@ import {
     computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency 
 } from "@/lib/utils/helpers/computes/price_manage";
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
-import { buildProductCode, shouldRender_CodeProduct } from "@/lib/utils/helpers/render/render_codeProduct";
+import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { AddProductModalProps } from "@/lib/types/components/modals";
 
-// --- Tipo de variables ---
-type AddProductModalProps = {
-    exchangeRate: number;
-    existingProducts: Product[];
-    onAddProduct: (product: ProductFormData) => void;
-    onClose: () => void;
-};
-
-export function AddProductModal({ exchangeRate, existingProducts, onAddProduct, onClose }: AddProductModalProps) {
+export function AddProductModal({ exchangeRate, existingProducts, 
+    onAddProduct, onClose }: AddProductModalProps) {
     const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<ProductFormState>(INITIAL_PRODUCT_FORM);
     // console.log(form.proveedor)

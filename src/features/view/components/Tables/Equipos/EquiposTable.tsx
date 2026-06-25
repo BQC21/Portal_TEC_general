@@ -1,16 +1,9 @@
-import type { Equipos } from "@/lib/types/supabase/equipos-types";
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
 import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
 import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
-
-type EquiposTableProps = {
-    equipos: Equipos[];
-    totalEquipos: number;
-    onUpdateEquipos: (equipo: Equipos) => void;
-    onDeleteEquipos: (equipoId: string) => void;
-};
+import { EquiposTableProps } from "@/lib/types/components/tables";
 
 export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (

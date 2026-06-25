@@ -1,12 +1,5 @@
+import { AddProductTextFieldProps } from "@/lib/types/components/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-type AddProductTextAreaFieldProps = {
-    label: string;
-    required?: boolean;
-    placeholder?: string;
-    value: string;
-    onChange: (value: string) => void;
-};
 
 export function AddProductTextAreaField({
         label,
@@ -14,7 +7,7 @@ export function AddProductTextAreaField({
         placeholder,
         value,
         onChange,
-    }: AddProductTextAreaFieldProps) {
+    }: AddProductTextFieldProps) {
     return (
         <div>
             <AddProductFieldLabel label={label} required={required} />

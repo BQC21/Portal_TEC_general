@@ -1,15 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
-import { AddProductRadioField } from "@/features/view/components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
-import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 
 import { POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS } from "@/lib/utils/options";
 
@@ -26,19 +23,12 @@ import {
     shouldRender_SupplyInfoSelection,
 } from "@/lib/utils/helpers/render/render_modals";
 
-import { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
+import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
-
-// --- Tipo de variables ---
-type EditMaterialModalProps = {
-    material: Materiales;
-    onUpdateMaterial: (material: Materiales) => void;
-    onClose: () => void;
-};
+import { EditMaterialModalProps } from "@/lib/types/components/modals";
 
 export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditMaterialModalProps) {
-    const today = new Date().toISOString().split('T')[0];
     const [form, setForm] = useState<MaterialesFormState>(() => createMaterialesFormStateFromMateriales(material));
 
     useEffect(() => {

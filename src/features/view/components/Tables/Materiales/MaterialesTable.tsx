@@ -1,18 +1,12 @@
-import type { Materiales } from "@/lib/types/supabase/materiales-types";
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
 import { Button2Edit } from "../../Buttons/Materiales/Button2Edit";
 import { Button2Trash } from "../../Buttons/Materiales/Button2Trash";
+import { MaterialesTableProps } from "@/lib/types/components/tables";
 
-type MaterialesTableProps = {
-    materiales: Materiales[];
-    totalMateriales: number;
-    onUpdateMateriales: (material: Materiales) => void;
-    onDeleteMateriales: (materialId: string) => void;
-};
-
-export function MaterialesTable({ materiales, totalMateriales, onUpdateMateriales, onDeleteMateriales}: MaterialesTableProps) {
+export function MaterialesTable({ materiales, totalMateriales, 
+    onUpdateMateriales, onDeleteMateriales}: MaterialesTableProps) {
     return (
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">

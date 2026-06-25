@@ -1,14 +1,5 @@
+import { AddProductSelectFieldProps } from "@/lib/types/components/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-type AddProductSelectFieldProps = {
-    label: string;
-    required?: boolean;
-    options: string[];
-    value: string;
-    disabled?: boolean;
-    onChange: (value: string) => void;
-    customClass?: string; // Optional custom class for styling
-};
 
 export function AddProductSelectField({
     label,

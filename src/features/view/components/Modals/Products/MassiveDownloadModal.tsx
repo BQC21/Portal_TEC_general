@@ -13,19 +13,7 @@ import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { 
     prepareAndDownloadFile,
 } from "@/lib/utils/helpers/massive/massiveDownload"
-
-type MassiveDownloadModalProps = {
-    productsToDownload?: Product[];
-    exchangeRate: number;
-    defaultFileName?: string;
-    onClose: () => void;
-};
-
-type DownloadFormState = {
-    format: string;
-    fileName: string;
-    includeHeaders: boolean;
-};
+import { DownloadFormState, MassiveDownloadModalProps } from "@/lib/types/components/modals";
 
 export function MassiveDownloadModal({ productsToDownload, exchangeRate, defaultFileName, onClose }:
     MassiveDownloadModalProps) {

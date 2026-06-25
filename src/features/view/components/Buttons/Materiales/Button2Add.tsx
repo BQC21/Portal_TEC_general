@@ -2,15 +2,11 @@
 
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
-import { Materiales, MaterialesFormData } from "@/lib/types/supabase/materiales-types";
 import { AddMaterialModal } from "../../Modals/Materiales/AddMaterialModal";
+import { Button2ModalPropsMateriales } from "@/lib/types/components/buttons";
 
-type Button2ModalProps = {
-    existingMateriales: Materiales[];
-    onAddMateriales: (equipo: MaterialesFormData) => void;
-};
 
-export default function Button2Modal({existingMateriales, onAddMateriales }: Button2ModalProps) {
+export default function Button2Modal({existingMateriales, onAddMateriales }: Button2ModalPropsMateriales) {
     const [open, setOpen] = useState(false);
 
     return (

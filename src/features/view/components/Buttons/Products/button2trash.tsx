@@ -3,12 +3,7 @@
 import { DeleteProductModal } from "@/features/view/components/Modals/Products/DeleteProductModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Product } from "@/lib/types/supabase/product-types";
-
-type DeleteProductModalProps = {
-    product: Product;
-    onDeleteProduct: (productId: string) => void;
-};
+import { DeleteProductModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Trash({ product, onDeleteProduct }: DeleteProductModalProps) {
     const [open, setOpen] = useState(false);

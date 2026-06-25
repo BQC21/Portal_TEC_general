@@ -1,22 +1,14 @@
 import { Button2Edit } from "@/features/view/components/Buttons/Products/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/Products/button2trash";
-
-import type { Product } from "@/lib/types/supabase/product-types";
+import { ProductTableProps } from "@/lib/types/components/tables";
 
 import { TABLE_HEADERS } from "@/lib/utils/headers";
 import { displayCellValue, getCellTextClass, getPriceCellClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
 
-type ProductTableProps = {
-    products: Product[];
-    totalProducts: number;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
-    onDeleteProduct: (productId: string) => void;
-};
-
-export function ProductTable({ products, totalProducts, exchangeRate, onUpdateProduct, onDeleteProduct }: ProductTableProps) {
+export function ProductTable({ products, totalProducts, exchangeRate, 
+    onUpdateProduct, onDeleteProduct }: ProductTableProps) {
     return (
         <section className="space-y-4 w-full">
         <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">

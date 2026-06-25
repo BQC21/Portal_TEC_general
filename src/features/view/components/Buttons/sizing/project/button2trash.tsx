@@ -3,18 +3,7 @@
 import { DeleteProjectModal } from "@/features/view/components/Modals/sizing/project/DeleteProjectModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { Project } from "@/lib/types/supabase/project-types";
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-
-type DeleteProjectModalProps = {
-    project: Project;
-    project_equipos: Project_Equipos[];
-    project_materiales: Project_Materiales[];
-    onDeleteProject: (projectId: string) => void;
-    onDeleteProjectEquipos: (projectsEquiposId: string) => void;
-    onDeleteProjectMateriales: (projectMaterialesId: string) => void;
-};
+import { DeleteProjectModalProps } from "@/lib/types/components/buttons";
 
 export function Button2Trash({ project, project_equipos, project_materiales,
     onDeleteProject, onDeleteProjectEquipos, onDeleteProjectMateriales }: DeleteProjectModalProps) {

@@ -5,9 +5,9 @@ import {
     PRODUCT_TYPE_OPTIONS, 
     BRAND_OPTIONS 
 } from "@/lib/utils/options"
-import { ProductFilterValues } from "@/lib/types/supabase/product-types"
 import type { FilterKey } from "@/lib/utils/options"; // Tipados
 import { shouldRender_ProductInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { ProductFiltersProps } from "@/lib/types/components/filter_tables";
 
 const FILTERS = [
     {
@@ -29,11 +29,6 @@ const FILTERS = [
         content: SUPPLIER_OPTIONS,
     },
 ];
-
-type ProductFiltersProps = {
-    values: ProductFilterValues;
-    onFilterChange: (key: FilterKey, value: string) => void;
-};
 
 export function ProductFilters({ values, onFilterChange }: ProductFiltersProps) {
     const brandFilterOptions = useMemo(() => {
