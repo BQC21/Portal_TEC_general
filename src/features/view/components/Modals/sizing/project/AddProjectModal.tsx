@@ -38,7 +38,6 @@ import { handlerSelector } from "@/features/view/hooks/modals/useHandlerSelector
 import { useSelectionHandlers } from "@/features/view/hooks/modals/useSelectionHandlers";
 import { getDarkSilverColorClass, getLightSilverColorClass } from "@/lib/utils/helpers/project_modals/colorclasses";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
-import { SelectionRowProps } from "@/lib/types/components/form_fields";
 import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 
 export default function AddProjectModal({ onAddProject, onClose }: AddMProjectodalProps) {
@@ -167,14 +166,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
         updateField("opcion_llenado", value);
     }
 
-    // -------------------------------------------------------------------------------------------
-
+    // Condicionar el estado de la visualización del selector de EQUIPOS
     const isEquipmentTypeSelected = (type: string) => {
         return selectedEquipmentTable.some(item => item.row === type);
     };
-
-    // -------------------------------------------------------------------------------------------
-
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
