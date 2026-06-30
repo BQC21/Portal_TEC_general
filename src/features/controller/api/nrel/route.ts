@@ -1,19 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { NRELInfo } from "@/lib/types/api/nrel-types";
-
-// const NREL_BASE_URL = "https://developer.nrel.gov";
-const NREL_BASE_URL = "https://developer.nlr.gov"; // desde el 29/5/2026
-
-// Parámetros fijos de PVWatts (requeridos por la API)
-const PVWATTS_DEFAULTS = {
-    system_capacity: "1",
-    module_type:     "0",
-    losses:          "14",
-    array_type:      "1",
-    tilt:            "0", 
-    azimuth:         "0",
-    dataset:         "nsrdb", // diferirá un poco al de ATLAS (este de SOLARGIS dataset)
-} as const;
+import { type NRELInfo, NREL_BASE_URL, PVWATTS_DEFAULTS } from "@/lib/types/api/nrel-types";
 
 export async function GET(req: NextRequest){
     try{

@@ -8,26 +8,9 @@ import { createClient } from "@/lib/supabase/client";
 
 import  TECIcon  from "@/features/view/components/Images/TEC_Icon";
 
-type PortalNavItem = {
-    label: string;
-    href: string;
-};
+import type { PortalShellProps } from "@/lib/types/components/portalShell";
 
-// añadir modulos por rutas
-const navigation: PortalNavItem[] = [
-    { label: "Vista principal", href: "/dashboard" },
-    // { label: "Productos", href: "/products" }, // comentar en caso no se quiera mostrar el módulo de productos
-    { label: "Equipos Principales", href: "/equipos" },
-    { label: "Materiales Eléctricos", href: "/materiales" },
-    { label: "Dimensionamiento", href: "/sizing" },
-];
-
-type PortalShellProps = {
-    title: string;
-    subtitle: string;
-    activePath: string;
-    children: ReactNode;
-};
+import { navigation } from "@/lib/types/components/portalShell";
 
 export function PortalShell({ title, subtitle, activePath, children }: PortalShellProps) {
     const router = useRouter();

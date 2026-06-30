@@ -1,16 +1,10 @@
 import { SortingIcon } from "@/features/view/components/Icons/SortingIcon";
 import { shouldRender_ProductSortingSelection } from "@/lib/utils/helpers/sorting/sorting";
-import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
-
-type ProductSortingProps = {
-    value: ProductSortingOrder;
-    onSortingChange: (value: ProductSortingOrder) => void;
-};
+import type { ProductSortingProps } from "@/lib/types/components/sorting"; // Tipados
 
 export function Sorting_IGV_USD({ value, onSortingChange }: ProductSortingProps) {
     const { label, nextOrder } = shouldRender_ProductSortingSelection(value);
-    // console.log("Ancla de ordenamiento", label)
-    // console.log("Siguiente orden", nextOrder)
+
     const title = `Estado actual: ${label}. Haz clic para cambiar el orden.`;
 
     return (
