@@ -54,7 +54,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
                                             {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-indigo-700`}>{project.enlace}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500`}>{project.enlace}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>

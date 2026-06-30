@@ -22,7 +22,7 @@ export function AddProductDateField({
                 max={max}
                 disabled={disabled}
                 aria-label={label}
-                className="w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 outline-none transition disabled:bg-slate-100 disabled:text-slate-500 focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100"
+                className="input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 transition disabled:bg-slate-100 disabled:text-slate-500"
             />
         </div>
     );

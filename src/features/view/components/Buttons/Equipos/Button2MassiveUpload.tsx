@@ -14,7 +14,7 @@ export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUpload
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
-				className="inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-indigo-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
+				className="inline-flex h-12 items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 text-sm font-medium text-brand-500 shadow-sm transition hover:border-slate-300 hover:bg-slate-50"
 				title="Subida masiva"
 			>
 				<MassiveUploadIcon />

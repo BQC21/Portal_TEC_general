@@ -13,7 +13,7 @@ export function Button2Trash({ material, onDeleteMaterial }: DeleteMaterialModal
         <button
             type="button"
             onClick={() => setOpen(true)}
-            className="table-icon-button text-indigo-600"
+            className="table-icon-button text-brand-500"
             title="Eliminar material"
         >
             <TrashIcon />

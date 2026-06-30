@@ -143,7 +143,7 @@ export default function ProductsPage() {
 
     if (exchangeRateLoading) {
         return (
-        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+        <main className="min-h-screen bg-background text-foreground">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
             <p className="text-lg text-slate-600">Cargando tasa de conversión...</p>
             </div>
@@ -157,7 +157,7 @@ export default function ProductsPage() {
             subtitle="Gestión de inventario de productos para energía solar fotovoltaica"
             activePath="/products"
         >
-        <main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+        <main className="min-h-screen bg-background text-foreground">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 {exchangeRateError && (
                     <section className="rounded-2xl border border-amber-300 bg-amber-50 p-4 text-amber-900 shadow-sm">

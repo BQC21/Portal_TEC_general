@@ -113,7 +113,7 @@ export function MassiveDownloadModal({ productsToDownload, exchangeRate, default
                                     type="checkbox"
                                     checked={form.includeHeaders}
                                     onChange={(event) => updateField("includeHeaders", event.target.checked)}
-                                    className="h-4 w-4 rounded border-slate-300 text-indigo-700 focus:ring-indigo-300"
+                                    className="h-4 w-4 rounded border-slate-300 text-brand-500 focus:ring-brand-100"
                                 />
                                 Incluir encabezados
                             </label>
@@ -133,7 +133,7 @@ export function MassiveDownloadModal({ productsToDownload, exchangeRate, default
                         <button
                             type="submit"
                             disabled={isDownloading}
-                            className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                         >
                             {isDownloading ? "Descargando..." : "Descargar base de datos"}
                         </button>

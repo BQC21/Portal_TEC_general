@@ -107,7 +107,7 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button type="button" onClick={onClose} className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50">Cancelar</button>
-                        <button type="submit" className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800">Actualizar Zona</button>
+                        <button type="submit" className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600">Actualizar Zona</button>
                     </div>
                 </form>
             </div>

@@ -88,7 +88,7 @@ export default function MaterialesPage() {
 			subtitle="Gestión de materiales eléctricos"
 			activePath="/materiales"
 		>
-			<main className="min-h-screen bg-[var(--page-bg)] text-[var(--foreground)]">
+			<main className="min-h-screen bg-background text-foreground">
 				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
                     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)] xl:items-end">

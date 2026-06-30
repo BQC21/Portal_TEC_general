@@ -65,7 +65,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
     }
 
     return (
-        <main className="min-h-screen bg-[#f6f8fc] text-slate-900">
+        <main className="min-h-screen bg-background text-foreground">
             <div className="flex min-h-screen flex-col">
                 {/* Encabezado */}
                 <header className="flex flex-col gap-4 border-b border-slate-200 bg-white px-6 py-4 shadow-sm md:h-24 md:flex-row md:items-center md:justify-between md:py-0">
@@ -99,7 +99,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
                 </header>
                 {/* Barra de navegación vertical */}
                 <div className="grid flex-1 grid-cols-1 lg:grid-cols-[320px_1fr]">
-                    <aside className="border-r border-slate-200 bg-[#f8fafc] px-4 py-6">
+                    <aside className="border-r border-slate-200 bg-surface-muted px-4 py-6">
                         <nav className="space-y-4">
                             {navigation.map((item) => {
                                 const isActive = item.href === activePath; // indicador de activación
@@ -111,7 +111,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
                                         className={[
                                             "flex items-center gap-4 rounded-2xl px-6 py-4 text-lg font-semibold transition",
                                             isActive
-                                                ? "bg-[#2f4ea8] text-white shadow-lg shadow-[#2f4ea8]/20"
+                                                ? "bg-brand-500 text-white shadow-lg shadow-brand-500/20"
                                                 : "text-slate-400 hover:bg-slate-100 hover:text-slate-700",
                                         ].join(" ")}
                                     >

@@ -51,7 +51,7 @@ export function DeleteMaterialModal({ material, onDeleteMaterial, onClose }: Del
                     </button>
                     <button
                         type="submit"
-                        className="rounded-xl bg-indigo-700 px-6 py-3 text-lg font-semibold text-white transition hover:bg-indigo-800"
+                        className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                     >
                         Eliminar material
                     </button>

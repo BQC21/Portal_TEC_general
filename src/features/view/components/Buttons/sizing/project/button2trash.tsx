@@ -14,7 +14,7 @@ export function Button2Trash({ project, project_equipos, project_materiales,
         <button
             type="button"
             onClick={() => setOpen(true)}
-            className="table-icon-button text-indigo-600"
+            className="table-icon-button text-brand-500"
             title="Eliminar proyecto"
         >
             <TrashIcon />

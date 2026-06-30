@@ -6,10 +6,14 @@
   --brand-100: #dfe9ff;
   --brand-500: #2f4ea8;
   --brand-600: #254192;
+  --brand-dark: #0f172a;
 
   /* Neutrals */
   --surface: #f6f8fc;
+  --surface-muted: #f8fafc;
   --surface-panel: #ffffff;
+  --surface-emphasis: #94a3b8;
+  --surface-subtle: #e2e8f0;
   --border: #dbe1ea;
   --text-primary: #0f172a;
   --text-secondary: #64748b;
@@ -18,13 +22,31 @@
   --success-50: #eaf8f0;
   --success-200: #b8e7c8;
   --success-700: #15803d;
+  --warning-light: #f0b746;
+  --warning-dark: #bfac7e;
   --danger-50: #fef2f2;
   --danger-600: #dc2626;
+
+  /* Sizing / equipment highlights */
+  --equipment-code: #7cc3cc;
+  --equipment-row-selected: #b5d18a;
+  --equipment-row-selected-border: #de8bfc;
+
+  /* Page aliases */
+  --page-bg: var(--surface);
+  --foreground: var(--text-primary);
 }
 
 @theme inline {
   --color-background: var(--surface);
   --color-foreground: var(--text-primary);
+  --color-brand-50: var(--brand-50);
+  --color-brand-100: var(--brand-100);
+  --color-brand-500: var(--brand-500);
+  --color-brand-600: var(--brand-600);
+  --color-brand-dark: var(--brand-dark);
+  --color-danger-600: var(--danger-600);
+  --color-surface-muted: var(--surface-muted);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -54,10 +76,110 @@ a {
   text-decoration: none;
 }
 
-/* Utilidades globales para el dashboard */
+/* Layout */
 .panel {
   border: 1px solid var(--border);
   background: var(--surface-panel);
   border-radius: 1rem;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+/* Buttons */
+.btn-primary {
+  border-radius: 0.75rem;
+  background: var(--brand-500);
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: background-color 150ms ease;
+}
+
+.btn-primary:hover {
+  background: var(--brand-600);
+}
+
+.btn-primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  border-radius: 0.75rem;
+  border: 1px solid #cbd5e1;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  color: #334155;
+  transition: background-color 150ms ease;
+}
+
+.btn-secondary:hover {
+  background: #f8fafc;
+}
+
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  font-size: 1.125rem;
+}
+
+/* Table icon actions */
+.table-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  padding: 0.375rem;
+  color: var(--brand-500);
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.table-icon-button:hover {
+  background: var(--brand-50);
+  color: var(--brand-600);
+}
+
+/* Form focus ring shared by inputs */
+.input-focus {
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.input-focus:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand-100) 80%, transparent);
+}
+
+.input-focus-brand:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand-500) 10%, transparent);
+}
+
+/* Readonly field states for sizing modals */
+.field-equipment-code {
+  background: var(--equipment-code);
+}
+
+.field-value-dark {
+  background: var(--surface-emphasis);
+}
+
+.field-value-dark--invalid {
+  background: var(--warning-dark);
+}
+
+.field-value-light {
+  background: var(--surface-subtle);
+}
+
+.field-value-light--invalid {
+  background: var(--warning-light);
+}
+
+.field-row-selected {
+  border-color: var(--equipment-row-selected-border);
+  background: var(--equipment-row-selected);
+  color: #000000;
 }

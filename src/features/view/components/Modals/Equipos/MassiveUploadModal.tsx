@@ -259,7 +259,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 							type="file"
 							accept=".xlsx"
 							onChange={handleFileChange}
-							className="block w-full rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-indigo-700 file:px-4 file:py-2 file:text-white hover:border-indigo-400"
+							className="block w-full rounded-xl border border-dashed border-slate-300 px-4 py-3 text-sm text-slate-700 file:mr-4 file:rounded-lg file:border-0 file:bg-brand-500 file:px-4 file:py-2 file:text-white hover:border-brand-500"
 						/>
 					</label>
 
@@ -299,7 +299,7 @@ export function MassiveUploadModal({ onClose, onSuccess }: MassiveUploadModalPro
 						<button
 							type="submit"
 							disabled={isUploading}
-							className="rounded-xl bg-indigo-700 px-6 py-3 text-base font-semibold text-white transition hover:bg-indigo-800 disabled:cursor-not-allowed disabled:opacity-60"
+							className="rounded-xl bg-brand-500 px-6 py-3 text-base font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
 						>
 							{isUploading ? "Importando..." : "Confirmar subida"}
 						</button>

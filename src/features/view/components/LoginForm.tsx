@@ -65,7 +65,7 @@ export function LoginForm() {
                     onChange={(event) => setEmail(event.target.value)}
                     autoComplete="email"
                     placeholder="usuario@empresa.com"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f4ea8] focus:ring-4 focus:ring-[#2f4ea8]/10"
+                    className="input-focus-brand w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 transition placeholder:text-slate-400"
                     required
                 />
             </div>
@@ -81,7 +81,7 @@ export function LoginForm() {
                     onChange={(event) => setPassword(event.target.value)}
                     autoComplete="current-password"
                     placeholder="Tu contraseña"
-                    className="w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-[#2f4ea8] focus:ring-4 focus:ring-[#2f4ea8]/10"
+                    className="input-focus-brand w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 transition placeholder:text-slate-400"
                     required
                 />
             </div>
@@ -96,7 +96,7 @@ export function LoginForm() {
             <button
                 type="submit"
                 disabled={isLoading}
-                className="flex w-full items-center justify-center rounded-2xl bg-[#2f4ea8] px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-[#2f4ea8]/20 transition hover:bg-[#254192] disabled:cursor-not-allowed disabled:opacity-70"
+                className="flex w-full items-center justify-center rounded-2xl bg-brand-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/20 transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-70"
             >
                 {isLoading ? "Ingresando..." : "Ingresar al portal"}
             </button>

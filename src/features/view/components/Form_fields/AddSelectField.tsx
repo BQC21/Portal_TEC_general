@@ -19,8 +19,7 @@ export function AddProductSelectField({
             value={value ?? ""}
             onChange={(event) => onChange(event.target.value)}
             aria-label={label}
-            className={`w-full rounded-xl border border-slate-300 px-4 py-3 text-lg 
-                outline-none transition focus:border-indigo-700 focus:ring-2 focus:ring-indigo-100 ${customClass}`}
+            className={`input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg transition ${customClass}`}
         >
             {options.map((option) => (
             <option key={option} value={option}>

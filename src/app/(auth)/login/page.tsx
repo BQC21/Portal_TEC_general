@@ -9,7 +9,7 @@ export default async function LoginPage() {
             <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-6xl items-center">
                 <div className="grid w-full gap-8 rounded-[2rem] border border-white/70 bg-white/80 p-6 shadow-[0_24px_80px_rgba(15,23,42,0.12)] backdrop-blur md:grid-cols-[1.1fr_0.9fr] md:p-10">
                     {/* Logo y descripción breve de la ventana */}
-                    <section className="flex flex-col justify-between rounded-[1.5rem] bg-[#0f172a] p-8 text-white">
+                    <section className="flex flex-col justify-between rounded-[1.5rem] bg-brand-dark p-8 text-white">
                         <div className="space-y-6">
                             <TECLogo/>
 
