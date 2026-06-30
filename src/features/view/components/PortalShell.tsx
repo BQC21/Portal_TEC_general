@@ -16,7 +16,7 @@ type PortalNavItem = {
 // añadir modulos por rutas
 const navigation: PortalNavItem[] = [
     { label: "Vista principal", href: "/dashboard" },
-    { label: "Productos", href: "/products" }, // comentar en caso no se quiera mostrar el módulo de productos
+    // { label: "Productos", href: "/products" }, // comentar en caso no se quiera mostrar el módulo de productos
     { label: "Equipos Principales", href: "/equipos" },
     { label: "Materiales Eléctricos", href: "/materiales" },
     { label: "Dimensionamiento", href: "/sizing" },
