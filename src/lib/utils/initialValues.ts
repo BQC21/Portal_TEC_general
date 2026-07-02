@@ -35,6 +35,9 @@ import { ZoneFormState } from "../types/supabase/zone-types";
 import { ProjectFormState } from "../types/supabase/project-types";
 import { Project_EquiposFormState } from "../types/supabase/project_equipos_join";
 import { Project_MaterialesFormState } from "../types/supabase/project_materiales_join";
+import { SupplierFormstate } from "../types/supabase/supplier-types";
+import { BrandFormstate } from "../types/supabase/brand.types";
+import { TypeFormstate } from "../types/supabase/type-types";
 
 // // valores iniciales para el estado de form de productos
 // export const INITIAL_PRODUCT_FORM: ProductFormState = {
@@ -222,3 +225,34 @@ export const INITIAL_PROJECT_MATERIAL_FORM: Project_MaterialesFormState = {
     fecha_agregado: new Date(),
     cantidad: ""
 } 
+
+export const INITIAL_SUPPLIER_FORM: SupplierFormstate = {
+    // propiedades generales
+    nombre: "",        
+    ruc: "",  
+    contacto: "",  
+    telefono: "",  
+    categoria: "",  
+    codigo: "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}
+
+export const INITIAL_BRAND_FORM: BrandFormstate = {
+    // propiedades generales
+    nombre: "",        
+    categoria: "",  
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}
+
+export const INITIAL_TYPE_FORM: TypeFormstate = {
+    // propiedades generales
+    nombre: "",        
+    categoria: "",  
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}

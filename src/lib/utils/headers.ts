@@ -102,6 +102,8 @@ export const MATERIALES_HEADERS = [
     "Acciones",
 ];
 
+/////////////
+
 export const TABLE_HEADERS_PROJECT = [
     "Nombre del proyecto",
     // "Descripción del proyecto",
@@ -125,5 +127,32 @@ export const TABLE_HEADERS_ZONE = [
     "GHI Anual (Coplanar)",
     "GHI Diario (Coplanar)",
     "HSP (Peor mes)",
+    "Acciones",
+]
+
+
+/////////////
+
+export const TABLE_HEADERS_SUPPLIER = [
+    "Nombre del proveedor",
+    "Código del proveedor",
+    "RUC",
+    "Nombre del contacto",
+    "Teléfono",
+    "Categoría",
+    "Acciones",
+]
+
+
+export const TABLE_HEADERS_BRAND = [
+    "Nombre de la marca",
+    "Categoría",
+    "Acciones",
+]
+
+
+export const TABLE_HEADERS_TYPE = [
+    "Nombre del tipo de producto",
+    "Categoría",
     "Acciones",
 ]
