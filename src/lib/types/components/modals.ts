@@ -1,9 +1,12 @@
+import { Brand, BrandFormData } from "../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../supabase/equipos-types";
 import { Materiales, MaterialesFormData } from "../supabase/materiales-types";
 import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
 import { Project, ProjectFormData } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
+import { Supplier, SupplierFormData } from "../supabase/supplier-types";
+import { Type, TypeFormData } from "../supabase/type-types";
 import { Zone, ZoneFormData } from "../supabase/zone-types";
 
 
@@ -42,6 +45,21 @@ export type AddMProjectodalProps = {
 
 export type AddZoneModalProps = {
     onAddZone: (zone: ZoneFormData) => void;
+    onClose: () => void;
+};
+
+export type AddSupplierModalProps = {
+    onAddSupplier: (supplier: SupplierFormData) => void;
+    onClose: () => void;
+};
+
+export type AddBrandModalProps = {
+    onAddZone: (brand: BrandFormData) => void;
+    onClose: () => void;
+};
+
+export type AddTypeModalProps = {
+    onAddType: (type: TypeFormData) => void;
     onClose: () => void;
 };
 
@@ -85,6 +103,24 @@ export type EditZoneModalProps = {
     onClose: () => void;
 };
 
+export type EditSupplierModalProps = {
+    existingSupplier: Supplier;
+    onUpdateSupplier: (supplier: SupplierFormData) => void;
+    onClose: () => void;
+};
+
+export type EditBrandModalProps = {
+    existingBrand: Brand;
+    onUpdateBrand: (brand: BrandFormData) => void;
+    onClose: () => void;
+};
+
+export type EditTypeModalProps = {
+    existingType: Type;
+    onUpdateType: (type: TypeFormData) => void;
+    onClose: () => void;
+};
+
 // ------------------
 // modals -- borrar
 // ------------------
@@ -119,6 +155,24 @@ export type DeleteProjectModalProps = {
 export type DeleteZoneModalProps = {
     zone: Zone;
     onDeleteZone: (zoneId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteSupplierModalProps = {
+    supplier: Supplier;
+    onDeleteSupplier: (supplierId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteBrandModalProps = {
+    brand: Brand;
+    onDeleteBrand: (brandId: string) => void
+    onClose: () => void;
+};
+
+export type DeleteTypeModalProps = {
+    type: Type;
+    onDeleteZone: (typeId: string) => void
     onClose: () => void;
 };
 
