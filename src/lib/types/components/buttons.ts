@@ -1,9 +1,12 @@
+import { Brand, BrandFormData } from "../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../supabase/equipos-types";
 import { Materiales, MaterialesFormData } from "../supabase/materiales-types";
 import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
 import { Project, ProjectFormData } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
+import { Supplier, SupplierFormData } from "../supabase/supplier-types";
+import { Type, TypeFormData } from "../supabase/type-types";
 import { Zone, ZoneFormData } from "../supabase/zone-types";
 
 // ------------------
@@ -36,6 +39,18 @@ export type Button2ModalPropsProject = {
 
 export type Button2ModalPropsZone = {
     onAddZone: (zone: ZoneFormData) => void;
+};
+
+export type Button2ModalPropsSupplier = {
+    onAddSupplier: (supplier: SupplierFormData) => void;
+};
+
+export type Button2ModalPropsBrand = {
+    onAddBrand: (brand: BrandFormData) => void;
+};
+
+export type Button2ModalPropsType = {
+    onAddType: (type: TypeFormData) => void;
 };
 
 // ------------------
@@ -74,6 +89,21 @@ export type EditZoneModalProps = {
     onUpdateZone: (zone: Zone) => void;
 };
 
+export type EditSupplierModalProps = {
+    supplier: Supplier;
+    onUpdateSupplier: (supplier: Supplier) => void;
+};
+
+export type EditBrandModalProps = {
+    brand: Brand;
+    onUpdateBrand: (brand: Brand) => void;
+};
+
+export type EditTypeModalProps = {
+    type: Type;
+    onUpdateType: (type: Type) => void;
+};
+
 // ------------------
 // botones -- borrar
 // ------------------
@@ -105,6 +135,21 @@ export type DeleteProjectModalProps = {
 export type DeleteZoneModalProps = {
     zone: Zone;
     onDeleteZone: (zoneId: string) => void;
+};
+
+export type DeleteSupplierModalProps = {
+    supplier: Supplier;
+    onDeleteSupplier: (supplierId: string) => void;
+};
+
+export type DeleteBrandModalProps = {
+    brand: Brand;
+    onDeleteBrand: (brandId: string) => void;
+};
+
+export type DeleteTypeModalProps = {
+    type: Type;
+    onDeleteType: (typeId: string) => void;
 };
 
 // ------------------
