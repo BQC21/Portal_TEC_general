@@ -13,10 +13,10 @@ import { MaterialesFiltersProps } from "@/lib/types/components/filter_tables";
 
 const FILTERS = [
     {
-        id: "type",
-        label: "Filtrar por Tipo",
-        placeholder: "Todos los Tipos",
-        content: MATERIALES_TYPE_OPTIONS,
+        id: "supplier",
+        label: "Filtrar por Proveedor",
+        placeholder: "Todos los Proveedores",
+        content: SUPPLIER_OPTIONS_MATERIALES,
     },
     {
         id: "brand",
@@ -25,10 +25,10 @@ const FILTERS = [
         content: BRAND_OPTIONS_MATERIALES,
     },
     {
-        id: "supplier",
-        label: "Filtrar por Proveedor",
-        placeholder: "Todos los Proveedores",
-        content: SUPPLIER_OPTIONS_MATERIALES,
+        id: "type",
+        label: "Filtrar por Tipo",
+        placeholder: "Todos los Tipos",
+        content: MATERIALES_TYPE_OPTIONS,
     },
 ];
 

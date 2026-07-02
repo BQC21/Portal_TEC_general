@@ -12,10 +12,10 @@ import { EquiposFiltersProps } from "@/lib/types/components/filter_tables";
 
 const FILTERS = [
     {
-        id: "type",
-        label: "Filtrar por Tipo",
-        placeholder: "Todos los Tipos",
-        content: EQUIPOS_TYPE_OPTIONS,
+        id: "supplier",
+        label: "Filtrar por Proveedor",
+        placeholder: "Todos los Proveedores",
+        content: SUPPLIER_OPTIONS_EQUIPOS,
     },
     {
         id: "brand",
@@ -24,10 +24,10 @@ const FILTERS = [
         content: BRAND_OPTIONS_EQUIPOS,
     },
     {
-        id: "supplier",
-        label: "Filtrar por Proveedor",
-        placeholder: "Todos los Proveedores",
-        content: SUPPLIER_OPTIONS_EQUIPOS,
+        id: "type",
+        label: "Filtrar por Tipo",
+        placeholder: "Todos los Tipos",
+        content: EQUIPOS_TYPE_OPTIONS,
     },
 ];
 
