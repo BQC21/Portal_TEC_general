@@ -11,8 +11,14 @@ import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/u
 
 import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
-import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder, FilterKey } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
+import {
+	getBrandOptions,
+	getSupplierOptions,
+	getTypeOptions,
+	resolveCascadeFilters,
+} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/SortingIGVUSD";
@@ -35,6 +41,19 @@ export default function EquiposPage() {
 		brand: "",
 		supplier: "",
 	});
+
+	const filterOptions = useMemo(
+		() => ({
+			suppliers: getSupplierOptions(equipos),
+			brands: getBrandOptions(equipos, filters.supplier),
+			types: getTypeOptions(equipos, filters.supplier, filters.brand),
+		}),
+		[equipos, filters.supplier, filters.brand],
+	);
+
+	const handleFilterChange = (key: FilterKey, value: string) => {
+		setFilters((current) => resolveCascadeFilters(equipos, current, key, value));
+	};
 
 	const filteredEquipos = equipos.filter((equipo) => {
 		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type; // según tipo
@@ -124,12 +143,8 @@ export default function EquiposPage() {
 						<div className="space-y-6">
 							<EquiposFilters
 								values={filters}
-								onFilterChange={(key: string, value: string) =>
-									setFilters((current) => ({
-										...current,
-										[key]: value,
-									}))
-								}
+								filterOptions={filterOptions}
+								onFilterChange={handleFilterChange}
 							/>
 						</div>
 					</section>

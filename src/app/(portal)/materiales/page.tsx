@@ -11,8 +11,14 @@ import { useMateriales, useMaterialMutations } from "@/features/view/hooks/servi
 
 import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
-import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder, FilterKey } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
+import {
+	getBrandOptions,
+	getSupplierOptions,
+	getTypeOptions,
+	resolveCascadeFilters,
+} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/SortingIGVUSD";
@@ -36,6 +42,19 @@ export default function MaterialesPage() {
 		brand: "",
 		supplier: "",
 	});
+
+	const filterOptions = useMemo(
+		() => ({
+			suppliers: getSupplierOptions(materiales),
+			brands: getBrandOptions(materiales, filters.supplier),
+			types: getTypeOptions(materiales, filters.supplier, filters.brand),
+		}),
+		[materiales, filters.supplier, filters.brand],
+	);
+
+	const handleFilterChange = (key: FilterKey, value: string) => {
+		setFilters((current) => resolveCascadeFilters(materiales, current, key, value));
+	};
 
 	const filteredMateriales = materiales.filter((material) => {
 		const matchesType = !filters.type || material.tipo_de_producto === filters.type;
@@ -125,12 +144,8 @@ export default function MaterialesPage() {
 						<div className="space-y-6">
 							<MaterialesFilters
 								values={filters}
-								onFilterChange={(key: string, value: string) =>
-									setFilters((current) => ({
-										...current,
-										[key]: value,
-									}))
-								}
+								filterOptions={filterOptions}
+								onFilterChange={handleFilterChange}
 							/>
 						</div>
 					</section>
