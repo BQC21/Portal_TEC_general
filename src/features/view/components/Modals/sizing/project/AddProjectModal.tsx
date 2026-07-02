@@ -11,34 +11,28 @@ import type {
     ZoneFormState,
 } from "@/lib/types/supabase/zone-types"; // Tipados
 
-import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
-import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { AddProductUrlField } from "@/features/view/components/Form_fields/AddUrlField"; // campos
-
 import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
 import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, FillOptions, INSTALL_TYPE_OPTIONS, STATUS_PROJECT_OPTIONS } from "@/lib/utils/options"; // opciones
 
 // import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
-import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
-
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
-import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
 import { AddMProjectodalProps } from "@/lib/types/components/modals";
 import { useComputedRequirements } from "@/features/view/hooks/modals/useComputedRequirements";
 import { useSyncQuantities } from "@/features/view/hooks/modals/useSyncQuantities";
-import { ZoneSelection } from "@/features/view/hooks/modals/useZoneSelection";
 import { handlerSelector } from "@/features/view/hooks/modals/useHandlerSelector";
 import { useSelectionHandlers } from "@/features/view/hooks/modals/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
 import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
+import { General_info_M2 } from "@/features/view/sub_components/M2/General_info_M2";
+import { Data_info_M2 } from "@/features/view/sub_components/M2/Data_info_M2";
+import { Selectors_M2 } from "@/features/view/sub_components/M2/Selectors_M2";
+import { Tables_M2 } from "@/features/view/sub_components/M2/Tables_M2";
 
 export default function AddProjectModal({ onAddProject, onClose }: AddMProjectodalProps) {
 
@@ -187,638 +181,102 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                 </div>
 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <AddProductTextField
-                                label="Nombre del proyecto"
-                                required
-                                placeholder=" "
-                                value={form.nombre}
-                                onChange={(value) => updateField("nombre", value)}
-                            />
-                            <AddProductSelectField
-                                label="Estado del proyecto"
-                                required
-                                value={form.estado_proyecto}
-                                options={STATUS_PROJECT_OPTIONS}
-                                onChange={(value) => updateField("estado_proyecto", value)}
-                            />
-                            <AddProductSelectField
-                                label="Tipo de instalación"
-                                required
-                                value={form.tipo_instalacion}
-                                options={INSTALL_TYPE_OPTIONS}
-                                onChange={(value) => updateField("tipo_instalacion", value)}
-                            />
-                            <AddProductUrlField
-                                label="Enlace al proyecto"
-                                placeholder=" "
-                                value={form.enlace}
-                                onChange={(value) => updateField("enlace", value)}
-                            />
-                        </section>
-                    </div>
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <AddProductSelectField
-                                label="Zona"
-                                required
-                                value={form_zone.zona ?? ""}
-                                options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
-                                onChange={(value) => ZoneSelection(value, zones, 
-                                    setForm_zone, setForm)}
-                            />
-                            <AddProductSelectField
-                                label="Orientación de la radiación"
-                                required
-                                value={String(form.angulo)}
-                                options={ANGLE_OPTIONS}
-                                onChange={(value) => updateField("angulo", value)}
-                            />
+                    <General_info_M2 
+                        form={form} 
+                        updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 
+                        form_zone={form_zone} 
+                        zones={zones} 
+                        setForm_zone={setForm_zone} 
+                        setForm={setForm} 
+                        ANGLE_OPTIONS={ANGLE_OPTIONS} 
+                        selectedZone={selectedZone} 
+                        selectedAngle={String(selectedAngle)} />
 
-                            {selectedZone && (
-                                <>
-                                    <span>
-                                        <AddProductReadonlyField
-                                            label="Latitud de la zona"
-                                            value={form_zone.latitude ?? "---"}
-                                        />
-                                    </span>
-                                    <span>
-                                        <AddProductReadonlyField
-                                            label="Longitud de la zona"
-                                            value={form_zone.longitude ?? "---"}
-                                        />
-                                    </span>
-                                    {selectedAngle == "Coplanar" ? (
-                                            <span>
-                                            <AddProductReadonlyField
-                                                label="GHI anual de la zona"
-                                                value={form_zone.ghi_respaldo ?? "---"}
-                                            />
-                                        </span>
-                                        ) : selectedAngle == "Inclinado" ? (
-                                        <span>
-                                            <AddProductReadonlyField
-                                                label="GTI anual de la zona"
-                                                value={form_zone.gti_respaldo ?? "---"}
-                                            />
-                                        </span>
-                                        ) : 
-                                        <span>
-                                            <p>Seleccione la orientación de los módulos</p>
-                                        </span>
-                                    }
-                                    {/* <span>
-                                    {!NRELerror && ghi_nrel !== null ? (
-                                        <span>
-                                            <AddProductReadonlyField
-                                                label="GHI (NREL) - kWh/m²/año"
-                                                value={nrelValue(ghi_nrel)}
-                                            />
-                                        </span>
-                                    ) : (
-                                        <>
-                                            <span>
-                                                <AddProductReadonlyField
-                                                    label="GHI anual de la zona"
-                                                    value={form_zone.ghi_respaldo ?? "---"}
-                                                />
-                                            </span>
-                                            <p className="max-w-xs text-sm text-yellow-600">
-                                                En caso haya problemas con la API, los datos han sido registrados según Global Solar ATLAS.
-                                            </p>
-                                        </>
-                                    )}
-                                    </span> */}
-                                </>
-                            )}
-                        </section>
-                    </div>
+                    <Data_info_M2 
+                        form={form} 
+                        updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 
+                        handleOpcionLlenadoChange={(value) => handleOpcionLlenadoChange(value as FillOptions)} 
+                        computedRequirements={computedRequirements.computedRequirements} 
+                        getFieldValueLightClass={getFieldValueLightClass} 
+                        getFieldValueDarkClass={getFieldValueDarkClass} 
+                        shouldRender_M2_battery_properties={(value) => shouldRender_M2_battery_properties(value as string)} 
+                        shouldRender_M2_configuration={(value) => shouldRender_M2_configuration(value as string)} 
+                        CONNECTION_TYPE_OPTIONS={CONNECTION_TYPE_OPTIONS} 
+                        selectedEquipment={computedRequirements.computedRequirements.selectedEquipment ?? {
+                            row: "",
+                            id: "",
+                            description: "",
+                            marca: "",
+                            codigo: "",
+                            potencia_maxima: 0,
+                            mppt: 0,
+                            dod: 0,
+                            potencia_ac: 0,
+                            voc_vmax: 0,
+                            vmpp_vmin: 0,
+                            isc_i_out: 0,
+                            impp_i_in: "",
+                            cantidad: 0,
+                        }} 
+                        selectedInverter={computedRequirements.computedRequirements.selectedInverter ?? {
+                            row: "",
+                            id: "",
+                            description: "",
+                            marca: "",
+                            codigo: "",
+                            potencia_maxima: 0,
+                            mppt: 0,
+                            dod: 0,
+                            potencia_ac: 0,
+                            voc_vmax: 0,
+                            vmpp_vmin: 0,
+                            isc_i_out: 0,
+                            impp_i_in: "",
+                            cantidad: 0,
+                        }} 
+                        selectedBattery={computedRequirements.computedRequirements.selectedBattery ?? {
+                            row: "",
+                            id: "",
+                            description: "",
+                            marca: "",
+                            codigo: "",
+                            potencia_maxima: 0,
+                            mppt: 0,
+                            dod: 0,
+                            potencia_ac: 0,
+                            voc_vmax: 0,
+                            vmpp_vmin: 0,
+                            isc_i_out: 0,
+                            impp_i_in: "",
+                            cantidad: 0,
+                        }} />
 
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
-                                <div>
-                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
-                                    <AddProductNumberField
-                                        label="Demanda eléctrica anual (kWh)"
-                                        required
-                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
-                                        onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        step={1}
-                                        min={0}
-                                    />
-                                    {shouldRender_M2_configuration(form.tipo_instalacion) && (
-                                        <AddProductSelectField
-                                            label="Configuración"
-                                            required
-                                            value={form.configuracion}
-                                            options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("configuracion", value)}
-                                        />
-                                    )}
-                                    <AddProductNumberField
-                                        label="Porcentaje de cobertura (%)"
-                                        required
-                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
-                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
-                                        step={5}
-                                        min={30}
-                                        max={40}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Porcentaje de rendimiento del módulo (%)"
-                                        value="80"
-                                    />
-
-
-
-
-                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
-                                    {/* Handlers */}
-                                    <AddProductRadioField
-                                        label="Llenado automático"  checked={form.opcion_llenado == "AUTOMÁTICO"}
-                                        onChange={() => handleOpcionLlenadoChange("AUTOMÁTICO")}
-                                    />
-                                    <AddProductRadioField
-                                        label="Llenado manual"  checked={form.opcion_llenado == "MANUAL"}
-                                        onChange={() => handleOpcionLlenadoChange("MANUAL")}
-                                    />
-                                    {form.opcion_llenado == "AUTOMÁTICO" ? (
-                                        <>
-                                            <AddEquipoReadonlyField
-                                                label="Energía requerida"
-                                                value={computedRequirements.computedRequirements.energia}
-                                                colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.energia)}
-                                            />
-                                            <AddEquipoReadonlyField
-                                                label="Potencia DC requerida (KW)"
-                                                value={String(Number(computedRequirements.computedRequirements.potenciaDC).toFixed(2))}
-                                                colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.potenciaDC)}
-                                            />
-                                            <AddEquipoReadonlyField
-                                                label="Potencia AC requerida (KW)"
-                                                value={String(Number(computedRequirements.computedRequirements.potenciaAC).toFixed(2))}
-                                                colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.potenciaAC)}
-                                            />
-                                        </>
-                                        ) : (
-                                            <>
-                                                <AddProductNumberField
-                                                    label="Energía requerida"    required
-                                                    value={Number(form.energia_requerida) > 0 ? Number(form.energia_requerida) : ""}
-                                                    onChange={(value) => updateField("energia_requerida", String(value))}
-                                                    step={1} min={0}
-                                                />
-                                                <AddProductNumberField
-                                                    label="Potencia DC requerida (KW)"    required
-                                                    value={Number(form.potencia_dc_requerida) > 0 ? Number(form.potencia_dc_requerida) : ""}
-                                                    onChange={(value) => updateField("potencia_dc_requerida", String(value))}
-                                                    step={1} min={0} 
-                                                />
-                                                <AddProductNumberField
-                                                    label="Potencia AC requerida (KW)"    required
-                                                    value={Number(form.potencia_ac_requerida) > 0 ? Number(form.potencia_ac_requerida) : ""}
-                                                    onChange={(value) => updateField("potencia_ac_requerida", String(value))}
-                                                    step={1} min={0} 
-                                                />
-                                            </>                                            
-                                        )
-                                    }
-                                </div>
-
-
-
-
-
-                                
-                                <div>
-                                    {computedRequirements.computedRequirements.selectedEquipment && (
-                                        <>
-                                        <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>
-                                        <AddEquipoReadonlyField
-                                            label="Código del módulo seleccionado"
-                                            value={computedRequirements.computedRequirements.selectedEquipment?.codigo ?? ""}
-                                            colorClass={"field-equipment-code"}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Marca del módulo seleccionado"
-                                            value={computedRequirements.computedRequirements.selectedEquipment?.marca ?? ""}
-                                            colorClass={"field-equipment-code"}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="VMPP del módulo seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedEquipment?.vmpp_vmin)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="IMPP del módulo seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedEquipment?.impp_i_in).toFixed(2))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedEquipment?.impp_i_in)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="VOC del módulo seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedEquipment?.voc_vmax).toFixed(2))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedEquipment?.voc_vmax)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="ISC del módulo seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedEquipment?.isc_i_out).toFixed(2))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedEquipment?.isc_i_out)}
-                                        />  
-                                        <AddEquipoReadonlyField
-                                            label="Potencia del módulo seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedEquipment?.potencia_maxima).toFixed(2))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedEquipment?.potencia_maxima)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Mínimo de Strings"
-                                            value={String(Number(computedRequirements.computedRequirements.strings_minimos).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.strings_minimos)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Máximo de Strings"
-                                            value={String(Number(computedRequirements.computedRequirements.strings_maximos).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.strings_maximos)}
-                                        />
-                                        <AddProductNumberField
-                                            label="Número exacto de Strings"
-                                            required
-                                            value={Number(form.strings) > 0 ? Number(form.strings) : ""}
-                                            onChange={(value) => updateField("strings", String(value))}
-                                            min={Math.floor(Number(computedRequirements.computedRequirements.strings_minimos)) > 0 ?
-                                                    Math.floor(Number(computedRequirements.computedRequirements.strings_minimos)) : 0
-                                            }
-                                            step={1}
-                                            max={Math.floor(Number(computedRequirements.computedRequirements.strings_maximos)) > 0 ?
-                                                    Math.floor(Number(computedRequirements.computedRequirements.strings_maximos)) : 0
-                                            }
-                                        />
-                                    </>
-                                    )}
-                                </div>
-
-
-
-
-
-
-                                <div>
-                                    {computedRequirements.computedRequirements.selectedInverter && (
-                                        <>
-                                        <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Inversor seleccionado</h2>
-                                        <AddEquipoReadonlyField
-                                            label="Código del inversor seleccionado"
-                                            value={computedRequirements.computedRequirements.selectedInverter?.codigo ?? ""}
-                                            colorClass={"field-equipment-code"}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Marca del inversor seleccionado"
-                                            value={computedRequirements.computedRequirements.selectedInverter?.marca ?? ""}
-                                            colorClass={"field-equipment-code"}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Potencia DC máxima del inversor seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.potencia_maxima).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.potencia_maxima)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Potencia AC del inversor seleccionado"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.potencia_ac).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.potencia_ac)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Corriente de entrada del inversor"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.impp_i_in).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.impp_i_in)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Corriente de salida del inversor"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.isc_i_out).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.isc_i_out)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Voltaje máximo del inversor por MPPT"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.voc_vmax).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.voc_vmax)}
-                                        />
-                                        <AddEquipoReadonlyField
-                                            label="Número máximo de MPPTs a usarse"
-                                            value={String(Number(computedRequirements.computedRequirements.selectedInverter?.mppt).toFixed(0))}
-                                            colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedInverter?.mppt ?? 0)}
-                                        />
-                                        <AddProductNumberField
-                                            label="Número de MPPTs a usarse"
-                                            required
-                                            value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
-                                            onChange={(value) => updateField("mppt_number", String(value))}
-                                            min={0}  step={1}
-                                            max={Math.floor(Number(computedRequirements.computedRequirements.selectedInverter?.mppt)) > 0 ? 
-                                                    Math.floor(Number(computedRequirements.computedRequirements.selectedInverter?.mppt)) : 0}
-                                        />
-
-
-
-
-                                        <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Protecciones eléctricas</h2>
-                                        <AddProductReadonlyField
-                                            label="Protección ITM AC mínima"
-                                            value={String(Number(computedRequirements.computedRequirements.itm_ac_min).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.itm_ac_min)}
-                                        />
-                                        <AddProductReadonlyField
-                                            label="Protección ITM DC mínima"
-                                            value={String(Number(computedRequirements.computedRequirements.itm_dc_min).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.itm_dc_min)}
-                                        />
-                                        <AddProductReadonlyField
-                                            label="Protección SPD"
-                                            value={String(Number(computedRequirements.computedRequirements.spd_min).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.spd_min)}
-                                        />
-                                    </>
-                                    )}
-                                </div>
-
-
-
-
-                                <div>
-                                    {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
-                                        <>
-                                            {computedRequirements.computedRequirements.selectedBattery && (
-                                                <>
-                                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Características de la batería seleccionada</h2>
-                                                    <AddEquipoReadonlyField
-                                                        label="Código de la batería seleccionada"
-                                                        value={computedRequirements.computedRequirements.selectedBattery?.codigo ?? ""}
-                                                        colorClass={"field-equipment-code"}
-                                                    />
-                                                    <AddEquipoReadonlyField
-                                                        label="Marca de la batería seleccionado"
-                                                        value={computedRequirements.computedRequirements.selectedBattery?.marca ?? ""}
-                                                        colorClass={"field-equipment-code"}
-                                                    />
-                                                    <AddEquipoReadonlyField
-                                                        label="Capacidad de la batería seleccionada"
-                                                        value={String(Number(computedRequirements.computedRequirements.selectedBattery?.impp_i_in).toFixed(0))}
-                                                        colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedBattery?.impp_i_in)}
-                                                    />
-                                                    <AddEquipoReadonlyField
-                                                        label="Voltaje de la batería seleccionada"
-                                                        value={String(Number(computedRequirements.computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
-                                                        colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedBattery?.vmpp_vmin)}
-                                                    />
-                                                    <AddEquipoReadonlyField
-                                                        label="DoD de la batería seleccionada"
-                                                        value={String(Number(computedRequirements.computedRequirements.selectedBattery?.dod).toFixed(0))}
-                                                        colorClass={getFieldValueDarkClass(computedRequirements.computedRequirements.selectedBattery?.dod)}
-                                                    />
-
-
-
-
-                                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Almacenamiento energético</h2>
-                                                    <AddProductNumberField
-                                                        label="Días de autonomía"
-                                                        value={Number(form.autonomia) > 0 ? Number(form.autonomia) : ""}
-                                                        onChange={(value) => updateField("autonomia", String(value))}
-                                                        min={0}
-                                                        step={1}
-                                                        max={2}
-                                                    />
-                                                    <AddProductReadonlyField
-                                                        label="Capacidad (Ah) del sistema"
-                                                        value={String(Number(computedRequirements.computedRequirements.ah_sistema).toFixed(2))}
-                                                        colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.ah_sistema)}
-                                                    />
-                                                    <AddProductReadonlyField
-                                                        label="Número de baterías necesarias"
-                                                        value={String(Number(computedRequirements.computedRequirements.num_baterias).toFixed(0))}
-                                                        colorClass={getFieldValueLightClass(computedRequirements.computedRequirements.num_baterias)}
-                                                    />
-                                                </>
-                                            )}
-                                    </>
-                                )}
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2.0fr)_minmax(0,2.0fr)]">
-                                <div>
-                                    <h2 className="mb-10 text-2xl font-bold text-slate-900">Selección de equipos</h2>
-                                    <div className="flex flex-col gap-4">
-                                    {equipmentRows.map((label, index) => {
-                                        const equipment_filteredOptions = handlerSelector(label, "EQUIPO", 
-                                            selectedEquipmentTable, selectedMaterialTable, 
-                                            form, computedRequirements.computedRequirements, 
-                                            equipos, materiales);
-                                        const isSelected = isEquipmentTypeSelected(label);
-                                        const customSelectClass = isSelected && (label !== "ACCESORIO" && label !== "ESTRUCTURA")
-                                            ? "field-row-selected"
-                                            : "";
-
-                                        const shouldRender =
-                                            label === "MÓDULO FV" ? showModuleSelector :
-                                            label === "INVERSOR" ? showInverterSelector :
-                                            // label === "ESTRUCTURA" ? (showStructureSelector && isNotOnGrid) :
-                                            label === "BATERÍA" ? showBatterySelector:
-                                            true; // other rows (ACCESORIO, etc.) always show
-
-                                        if (!shouldRender) return null;
-
-                                        return (
-                                            <SelectionRow
-                                                key={`equipment-${label}-${index}`}
-                                                label={label}
-                                                buttonLabel="Agregar"
-                                                value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
-                                                options={equipment_filteredOptions}
-                                                customSelectClass={customSelectClass}
-                                                onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
-                                                onClick={() => handle_click(label, index, "EQUIPO")}
-                                            />
-                                        );
-                                        })}
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
-                                    <div className="flex flex-col gap-4">
-                                        {materialRows.map((label, index) => {
-                                            const material_filteredOptions = handlerSelector(label, "MATERIAL",
-                                            selectedEquipmentTable, selectedMaterialTable, 
-                                            form, computedRequirements.computedRequirements, 
-                                            equipos, materiales);
-
-                                            return (
-                                                <SelectionRow
-                                                    key={`material-row-${label}-${index}`}
-                                                    label={label}
-                                                    buttonLabel="Agregar"
-                                                    value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
-                                                    options={material_filteredOptions}
-                                                    onChange={(value) => {handle_onChange(value, label, index, "MATERIAL")}}
-                                                    onClick={() => handle_click(label, index, "MATERIAL")}
-                                                />
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-
-                    <div className="space-y-8 border-b border-slate-200 px-6 py-5">
-                        <section className="space-y-4">
-                            <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
-                            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                                <table className="min-w-full border-separate border-spacing-0">
-                                    <thead className="sticky top-0 z-10 bg-slate-100">
-                                        <tr className="bg-slate-100 text-left">
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Equipo seleccionado
-                                            </th>
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Cantidad
-                                            </th>
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Acciones
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {selectedEquipmentTable.length > 0 ? (
-                                            selectedEquipmentTable.map((item) => (
-                                                <tr key={`${item.row}-${item.id}`} className="bg-white">
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {item.description}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        <AddProductNumberField
-                                                            label="ingrese cantidad"
-                                                            required
-                                                            value={Number(item.cantidad ?? 0)}
-                                                            onChange={(value) =>
-                                                                setSelectedEquipmentTable((curr) =>
-                                                                    curr.map((r) =>
-                                                                        r.row === item.row && r.id === item.id ? 
-                                                                            { ...r, cantidad: Number(value.toFixed(0)) } : r,
-                                                                    ),
-                                                                )
-                                                            }
-                                                            step={1} min={0} max={item.row === "ESTRUCTURA" && item.description.includes("baterías") ?
-                                                                Math.floor(Number(computedRequirements.computedRequirements.num_baterias)/
-                                                                    parseInt(item.description.match(/\d+/)?.[0] || "0" || ""))  :
-                                                                item.row === "ESTRUCTURA" && item.description.includes("módulos") ? 
-                                                                Math.floor(Number((form.strings))/parseInt(item.description.match(/\d+/)?.[0] || "0" || "")) :
-                                                                100000}
-                                                            disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" ||
-                                                                item.row === "BATERÍA"}
-                                                        />
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setSelectedEquipmentTable((current) =>
-                                                                    current.filter((row) => !(row.row === item.row && row.id === item.id)),
-                                                                );
-                                                            }}
-                                                            className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
-                                                        >
-                                                            Eliminar
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr className="bg-white">
-                                                <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
-                                                    No hay equipos seleccionados todavía.
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-
-                        <section className="space-y-4">
-                            <h2 className="text-2xl font-bold text-slate-900">Materiales eléctricos seleccionados</h2>
-                            <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                                <table className="min-w-full border-separate border-spacing-0">
-                                    <thead className="sticky top-0 z-10 bg-slate-100">
-                                        <tr className="bg-slate-100 text-left">
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Material seleccionado
-                                            </th>
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Cantidad
-                                            </th>
-                                            <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                                Acciones
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {selectedMaterialTable.length > 0 ? (
-                                            selectedMaterialTable.map((item) => (
-                                                <tr key={`${item.row}-${item.id}`} className="bg-white">
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {item.description}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        <AddProductNumberField
-                                                            label="ingrese cantidad"
-                                                            required
-                                                            value={Number(item.cantidad ?? 0)}
-                                                            onChange={(value) => 
-                                                                setSelectedMaterialTable((curr) => 
-                                                                    curr.map((r) => 
-                                                                        r.row === item.row && r.id === item.id ?
-                                                                            { ...r, cantidad: Number(value) } : r
-                                                                    ),
-                                                                )
-                                                            }
-                                                            step={1} min={0}
-                                                            disabled={item.row === "MC4" && item.description.includes("MC4")}
-                                                        />
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                setSelectedMaterialTable((current) =>
-                                                                    current.filter((row) => row.id !== item.id),
-                                                                );
-                                                            }}
-                                                            className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
-                                                        >
-                                                            Eliminar
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        ) : (
-                                            <tr className="bg-white">
-                                                <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
-                                                    No hay materiales seleccionados todavía.
-                                                </td>
-                                            </tr>
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </section>
-                    </div>
-
+                    <Selectors_M2
+                        equipmentRows={equipmentRows}
+                        materialRows={materialRows}
+                        selectedEquipmentTable={selectedEquipmentTable}
+                        selectedMaterialTable={selectedEquipmentTable}
+                        form={form}
+                        computedRequirements={computedRequirements.computedRequirements}
+                        equipos={equipos}
+                        materiales={materiales}
+                        selectedEquipmentByRow={selectedEquipmentByRow}
+                        selectedMaterialByRow={selectedMaterialByRow}
+                        isEquipmentTypeSelected={isEquipmentTypeSelected}
+                        showModuleSelector={showModuleSelector}
+                        showInverterSelector={showInverterSelector}
+                        showBatterySelector={showBatterySelector}
+                        handle_onChange={handle_onChange}
+                        handle_click={handle_click}
+                    />
+                    <Tables_M2
+                        selectedEquipmentTable={selectedEquipmentTable}
+                        setSelectedEquipmentTable={setSelectedEquipmentTable}
+                        selectedMaterialTable={selectedMaterialTable}
+                        setSelectedMaterialTable={setSelectedMaterialTable}
+                        computedRequirements={computedRequirements.computedRequirements}
+                        form={form}
+                    />
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button
                             type="button"
