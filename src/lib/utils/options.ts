@@ -15,7 +15,7 @@ export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 // ------------------
 // MÓDULO 1
 // ------------------
-// ------------------
+// ------------------ 
 
 // export const RUC_OPTIONS = [
 //     "20601248647",
@@ -49,6 +49,13 @@ export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 //     "Fusible",
 //     "Portafusible",
 // ]; // tipo de producto
+
+
+
+
+
+
+
 
 // -- equipos principales
 
