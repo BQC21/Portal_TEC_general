@@ -1,7 +1,7 @@
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_MATERIALES_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
-import { MATERIALES_TYPE_OPTIONS, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
+import { MATERIALES_TYPE_OPTIONS, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
 import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/render_modals";import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
@@ -84,14 +84,14 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                                     label="COD PROV"
                                     required
                                     value={form.cod_prov}
-                                    options={SUPPLIER_CODE_OPTIONS}
+                                    options={SUPPLIER_CODE_OPTIONS_MATERIALES}
                                     onChange={(value) => updateField("cod_prov", value)}
                                 />
                                 <AddProductSelectField
                                     label="PROVEEDOR"
                                     required
                                     value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS}
+                                    options={SUPPLIER_OPTIONS_MATERIALES}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
                                 {/* {shouldRender_CodeProduct(form.tipo_de_producto, form.proveedor) ? (

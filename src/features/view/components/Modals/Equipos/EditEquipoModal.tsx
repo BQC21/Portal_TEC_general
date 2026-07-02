@@ -9,12 +9,11 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
-import { SUPPLIER_CODE_OPTIONS } from "@/lib/utils/options";
-
 import {
     CONNECTION_TYPE_OPTIONS,
-    PRODUCT_TYPE_OPTIONS,
-    SUPPLIER_OPTIONS,
+    EQUIPOS_TYPE_OPTIONS,
+    SUPPLIER_CODE_OPTIONS_EQUIPOS,
+    SUPPLIER_OPTIONS_EQUIPOS,
 } from "@/lib/utils/options";
 
 import {
@@ -114,14 +113,14 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                                     label="COD PROV"
                                     required
                                     value={form.cod_prov}
-                                    options={SUPPLIER_CODE_OPTIONS}
+                                    options={SUPPLIER_CODE_OPTIONS_EQUIPOS}
                                     onChange={(value) => updateField("cod_prov", value)}
                                 />
                                 <AddProductSelectField
                                     label="PROVEEDOR"
                                     required
                                     value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS}
+                                    options={SUPPLIER_OPTIONS_EQUIPOS}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
                                 <AddProductReadonlyField
@@ -132,7 +131,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                                     label="TIPO DE PRODUCTO"
                                     required
                                     value={form.tipo_de_producto}
-                                    options={PRODUCT_TYPE_OPTIONS}
+                                    options={EQUIPOS_TYPE_OPTIONS}
                                     onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductSelectField

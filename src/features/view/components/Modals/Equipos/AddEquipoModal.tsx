@@ -2,7 +2,7 @@ import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
-import { CONNECTION_TYPE_OPTIONS, EQUIPOS_TYPE_OPTIONS, SUPPLIER_OPTIONS } from "@/lib/utils/options";
+import { CONNECTION_TYPE_OPTIONS, EQUIPOS_TYPE_OPTIONS, SUPPLIER_OPTIONS_EQUIPOS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
 import { shouldRender_SupplyInfoSelection, 
@@ -86,7 +86,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                                     label="PROVEEDOR"
                                     required
                                     value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS}
+                                    options={SUPPLIER_OPTIONS_EQUIPOS}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
                                 <AddProductReadonlyField

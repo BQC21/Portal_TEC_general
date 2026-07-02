@@ -8,12 +8,7 @@ import { AddProductSectionTitle } from "@/features/view/components/Form_fields/A
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 
-import { POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS } from "@/lib/utils/options";
-
-import {
-    PRODUCT_TYPE_OPTIONS,
-    SUPPLIER_OPTIONS,
-} from "@/lib/utils/options";
+import { MATERIALES_TYPE_OPTIONS, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
 
 import {
     // INITIAL_PRODUCT_FORM,
@@ -99,14 +94,14 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
                                     label="COD PROV"
                                     required
                                     value={form.cod_prov}
-                                    options={SUPPLIER_CODE_OPTIONS}
+                                    options={SUPPLIER_CODE_OPTIONS_MATERIALES}
                                     onChange={(value) => updateField("cod_prov", value)}
                                 />
                                 <AddProductSelectField
                                     label="PROVEEDOR"
                                     required
                                     value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS}
+                                    options={SUPPLIER_OPTIONS_MATERIALES}
                                     onChange={(value) => updateField("proveedor", value)}
                                 />
                                 <AddProductReadonlyField
@@ -117,7 +112,7 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
                                     label="TIPO DE PRODUCTO"
                                     required
                                     value={form.tipo_de_producto}
-                                    options={PRODUCT_TYPE_OPTIONS}
+                                    options={MATERIALES_TYPE_OPTIONS}
                                     onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductSelectField
