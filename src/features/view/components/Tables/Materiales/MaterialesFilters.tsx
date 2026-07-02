@@ -1,10 +1,10 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import type { MaterialesFilterValues } from "@/lib/types/supabase/materiales-types";
 import { 
-    SUPPLIER_OPTIONS, 
     MATERIALES_TYPE_OPTIONS, 
-    BRAND_OPTIONS,
-    FilterKey
+    FilterKey,
+    BRAND_OPTIONS_MATERIALES,
+    SUPPLIER_OPTIONS_MATERIALES
 } from "@/lib/utils/options"
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
@@ -22,13 +22,13 @@ const FILTERS = [
         id: "brand",
         label: "Filtrar por Marca",
         placeholder: "Todas las Marcas",
-        content: BRAND_OPTIONS,
+        content: BRAND_OPTIONS_MATERIALES,
     },
     {
         id: "supplier",
         label: "Filtrar por Proveedor",
         placeholder: "Todos los Proveedores",
-        content: SUPPLIER_OPTIONS,
+        content: SUPPLIER_OPTIONS_MATERIALES,
     },
 ];
 
@@ -36,11 +36,11 @@ export function MaterialesFilters({ values, onFilterChange }: MaterialesFiltersP
 
     const brandFilterOptions = useMemo(() => {
         if (!values.type) {
-            return BRAND_OPTIONS;
+            return BRAND_OPTIONS_MATERIALES;
         }
 
         const { brand_options } = shouldRender_MaterialInfoSelection(values.type);
-        return brand_options.length > 0 ? brand_options : BRAND_OPTIONS;
+        return brand_options.length > 0 ? brand_options : BRAND_OPTIONS_MATERIALES;
     }, [values.type]);
 
     return (

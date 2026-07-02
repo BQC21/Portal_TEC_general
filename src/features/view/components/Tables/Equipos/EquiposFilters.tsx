@@ -1,9 +1,9 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import { 
-    SUPPLIER_OPTIONS, 
+    BRAND_OPTIONS_EQUIPOS,
     EQUIPOS_TYPE_OPTIONS, 
-    BRAND_OPTIONS,
-    FilterKey
+    FilterKey,
+    SUPPLIER_OPTIONS_EQUIPOS
 } from "@/lib/utils/options"
 import { useMemo } from "react";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
@@ -21,13 +21,13 @@ const FILTERS = [
         id: "brand",
         label: "Filtrar por Marca",
         placeholder: "Todas las Marcas",
-        content: BRAND_OPTIONS,
+        content: BRAND_OPTIONS_EQUIPOS,
     },
     {
         id: "supplier",
         label: "Filtrar por Proveedor",
         placeholder: "Todos los Proveedores",
-        content: SUPPLIER_OPTIONS,
+        content: SUPPLIER_OPTIONS_EQUIPOS,
     },
 ];
 
@@ -35,11 +35,11 @@ export function EquiposFilters({ values, onFilterChange }: EquiposFiltersProps) 
 
     const brandFilterOptions = useMemo(() => {
         if (!values.type) {
-            return BRAND_OPTIONS;
+            return BRAND_OPTIONS_EQUIPOS;
         }
 
         const { brand_options } = shouldRender_EquipoInfoSelection(values.type);
-        return brand_options.length > 0 ? brand_options : BRAND_OPTIONS;
+        return brand_options.length > 0 ? brand_options : BRAND_OPTIONS_EQUIPOS;
     }, [values.type]);
     
 
