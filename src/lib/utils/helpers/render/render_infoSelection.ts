@@ -36,22 +36,6 @@ export function shouldRender_EquipoInfoSelection(equipoType: string) {
 
     return equipoMap[equipoType] || { brand_options: [], unit: "" };
 }
-
-export function getEquipoTypesForMarca(marca: string): string[] {
-    if (!marca) return [];
-
-    const equipoMap: Record<string, { brand_options: string[] }> = {
-        "ACCESORIO": { brand_options: ["LIVOLTEK", "GOODWE", "SOLIS", "FELICITY"] },
-        "BATERÍA": { brand_options: ["LIVOLTEK", "SOLUNA", "FELICITY"] },
-        "ESTRUCTURA": { brand_options: ["FELICITY", "TELPERION"] },
-        "INVERSOR": { brand_options: ["LIVOLTEK", "GOODWE", "SOLIS", "FELICITY"] },
-        "MÓDULO FV": { brand_options: ["JA SOLAR", "JINKO"] },
-    };
-
-    return Object.entries(equipoMap)
-        .filter(([, config]) => config.brand_options.includes(marca))
-        .map(([type]) => type);
-}
 // filtrado de materiales
 export function shouldRender_MaterialInfoSelection(materialType: string) {
     const materialMap: { [key: string]: { brand_options: string[]; unit: string } } = {
@@ -63,20 +47,4 @@ export function shouldRender_MaterialInfoSelection(materialType: string) {
     };
 
     return materialMap[materialType] || { brand_options: [], unit: "" };
-}
-
-export function getMaterialTypesForMarca(marca: string): string[] {
-    if (!marca) return [];
-
-    const materialMap: Record<string, { brand_options: string[] }> = {
-        "CABLE": { brand_options: ["TELPERION", "INDECO"] },
-        "PROTECCIÓN": { brand_options: ["ABB", "EBASEE"] },
-        "MC4": { brand_options: ["TRINA"] },
-        "CANALIZACIÓN": { brand_options: [""] },
-        "CONSUMIBLE": { brand_options: ["TIBOX"] },
-    };
-
-    return Object.entries(materialMap)
-        .filter(([, config]) => config.brand_options.includes(marca))
-        .map(([type]) => type);
 }

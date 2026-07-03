@@ -73,12 +73,6 @@ export function resolveCascadeFilters<T extends FilterableItem>(
 	return next;
 }
 
-export function mergeCascadeOptions(dataOptions: string[], staticOptions: string[]): string[] {
-	return Array.from(new Set([...dataOptions, ...staticOptions].filter(Boolean))).sort((a, b) =>
-		a.localeCompare(b, "es"),
-	);
-}
-
 type FormCascadeValues = {
 	proveedor: string;
 	marca: string;
@@ -98,8 +92,6 @@ export function resolveFormCascadeFilters<T extends FilterableItem>(
 	current: FormCascadeValues,
 	field: FormCascadeField,
 	value: string,
-	staticBrands: string[],
-	getTypesForMarca: (marca: string) => string[],
 ): FormCascadeValues {
 	const filterKey = FORM_FIELD_TO_FILTER_KEY[field];
 	const filters: CascadeFilterValues = {
@@ -109,28 +101,10 @@ export function resolveFormCascadeFilters<T extends FilterableItem>(
 	};
 	const resolved = resolveCascadeFilters(items, filters, filterKey, value);
 
-	const brandOptions = mergeCascadeOptions(
-		getBrandOptions(items, resolved.supplier),
-		resolved.supplier ? staticBrands : [],
-	);
-	let marca = resolved.brand;
-	if (marca && !brandOptions.includes(marca)) {
-		marca = "";
-	}
-
-	const typeOptions = mergeCascadeOptions(
-		getTypeOptions(items, resolved.supplier, marca),
-		marca ? getTypesForMarca(marca) : [],
-	);
-	let tipo_de_producto = resolved.type;
-	if (tipo_de_producto && !typeOptions.includes(tipo_de_producto)) {
-		tipo_de_producto = "";
-	}
-
 	return {
 		proveedor: resolved.supplier,
-		marca,
-		tipo_de_producto,
+		marca: resolved.brand,
+		tipo_de_producto: resolved.type,
 	};
 }
 
@@ -138,17 +112,11 @@ export function getModalCascadeOptions<T extends FilterableItem>(
 	items: T[],
 	proveedor: string,
 	marca: string,
-	staticSuppliers: string[],
-	staticBrands: string[],
-	getTypesForMarca: (marca: string) => string[],
 ) {
 	return {
-		suppliers: mergeCascadeOptions(getSupplierOptions(items), staticSuppliers),
-		brands: mergeCascadeOptions(getBrandOptions(items, proveedor), proveedor ? staticBrands : []),
-		types: mergeCascadeOptions(
-			getTypeOptions(items, proveedor, marca),
-			marca ? getTypesForMarca(marca) : [],
-		),
+		suppliers: getSupplierOptions(items),
+		brands: proveedor ? getBrandOptions(items, proveedor) : [],
+		types: proveedor && marca ? getTypeOptions(items, proveedor, marca) : [],
 	};
 }
 

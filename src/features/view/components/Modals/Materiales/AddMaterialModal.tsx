@@ -3,7 +3,7 @@
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_MATERIALES_FORM } from "@/lib/utils/initialValues";
 import { useMemo, useState } from "react";
-import { BRAND_OPTIONS_MATERIALES, POWER_SOURCE_OPTIONS, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
+import { POWER_SOURCE_OPTIONS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
 import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/render_modals";
@@ -11,7 +11,7 @@ import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
-import { getMaterialTypesForMarca, shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddMaterialModalProps } from "@/lib/types/components/modals";
 import {
@@ -24,15 +24,7 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
     const [form, setForm] = useState<MaterialesFormState>(INITIAL_MATERIALES_FORM);
 
     const cascadeOptions = useMemo(
-        () =>
-            getModalCascadeOptions(
-                existingMateriales,
-                form.proveedor,
-                form.marca,
-                SUPPLIER_OPTIONS_MATERIALES,
-                BRAND_OPTIONS_MATERIALES,
-                getMaterialTypesForMarca,
-            ),
+        () => getModalCascadeOptions(existingMateriales, form.proveedor, form.marca),
         [existingMateriales, form.proveedor, form.marca],
     );
 
@@ -47,8 +39,6 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
                     current,
                     field,
                     String(value),
-                    BRAND_OPTIONS_MATERIALES,
-                    getMaterialTypesForMarca,
                 );
                 updated.proveedor = cascaded.proveedor;
                 updated.marca = cascaded.marca;

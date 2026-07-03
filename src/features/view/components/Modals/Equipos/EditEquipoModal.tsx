@@ -10,10 +10,8 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
 import {
-    BRAND_OPTIONS_EQUIPOS,
     CONNECTION_TYPE_OPTIONS,
     SUPPLIER_CODE_OPTIONS_EQUIPOS,
-    SUPPLIER_OPTIONS_EQUIPOS,
 } from "@/lib/utils/options";
 
 import { 
@@ -27,7 +25,7 @@ import {
 } from "@/lib/utils/helpers/render/render_modals";
 import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
-import { getEquipoTypesForMarca, shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditEquipoModalProps } from "@/lib/types/components/modals";
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import {
@@ -45,15 +43,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
     }, [equipo]);
 
     const cascadeOptions = useMemo(
-        () =>
-            getModalCascadeOptions(
-                existingEquipos,
-                form.proveedor,
-                form.marca,
-                SUPPLIER_OPTIONS_EQUIPOS,
-                BRAND_OPTIONS_EQUIPOS,
-                getEquipoTypesForMarca,
-            ),
+        () => getModalCascadeOptions(existingEquipos, form.proveedor, form.marca),
         [existingEquipos, form.proveedor, form.marca],
     );
 
@@ -71,8 +61,6 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                     current,
                     field,
                     String(value),
-                    BRAND_OPTIONS_EQUIPOS,
-                    getEquipoTypesForMarca,
                 );
                 updated.proveedor = cascaded.proveedor;
                 updated.marca = cascaded.marca;

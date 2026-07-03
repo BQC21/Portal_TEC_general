@@ -8,7 +8,7 @@ import { AddProductSectionTitle } from "@/features/view/components/Form_fields/A
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 
-import { BRAND_OPTIONS_MATERIALES, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
+import { POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES } from "@/lib/utils/options";
 
 import { 
     shouldRender_SupplyInfoSelection,
@@ -16,7 +16,7 @@ import {
 
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
-import { getMaterialTypesForMarca, shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditMaterialModalProps } from "@/lib/types/components/modals";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import {
@@ -34,15 +34,7 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
     }, [material]);
 
     const cascadeOptions = useMemo(
-        () =>
-            getModalCascadeOptions(
-                existingMateriales,
-                form.proveedor,
-                form.marca,
-                SUPPLIER_OPTIONS_MATERIALES,
-                BRAND_OPTIONS_MATERIALES,
-                getMaterialTypesForMarca,
-            ),
+        () => getModalCascadeOptions(existingMateriales, form.proveedor, form.marca),
         [existingMateriales, form.proveedor, form.marca],
     );
 
@@ -60,8 +52,6 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
                     current,
                     field,
                     String(value),
-                    BRAND_OPTIONS_MATERIALES,
-                    getMaterialTypesForMarca,
                 );
                 updated.proveedor = cascaded.proveedor;
                 updated.marca = cascaded.marca;

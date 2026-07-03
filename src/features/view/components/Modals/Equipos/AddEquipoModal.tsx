@@ -4,7 +4,7 @@ import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
 import { INITIAL_EQUIPOS_FORM } from "@/lib/utils/initialValues";
 import { useMemo, useState } from "react";
-import { BRAND_OPTIONS_EQUIPOS, CONNECTION_TYPE_OPTIONS, SUPPLIER_OPTIONS_EQUIPOS } from "@/lib/utils/options";
+import { CONNECTION_TYPE_OPTIONS } from "@/lib/utils/options";
 import { AddProductSelectField } from "../../Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
 import { shouldRender_SupplyInfoSelection, 
@@ -15,7 +15,7 @@ import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
 import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
 import { AddProductTextField } from "../../Form_fields/AddTextField";
 import { AddProductNumberField } from "../../Form_fields/AddNumberField";
-import { getEquipoTypesForMarca, shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddEquipoModalProps } from "@/lib/types/components/modals";
 import {
@@ -28,15 +28,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
     const [form, setForm] = useState<EquiposFormState>(INITIAL_EQUIPOS_FORM);
 
     const cascadeOptions = useMemo(
-        () =>
-            getModalCascadeOptions(
-                existingEquipos,
-                form.proveedor,
-                form.marca,
-                SUPPLIER_OPTIONS_EQUIPOS,
-                BRAND_OPTIONS_EQUIPOS,
-                getEquipoTypesForMarca,
-            ),
+        () => getModalCascadeOptions(existingEquipos, form.proveedor, form.marca),
         [existingEquipos, form.proveedor, form.marca],
     );
 
@@ -51,8 +43,6 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                     current,
                     field,
                     String(value),
-                    BRAND_OPTIONS_EQUIPOS,
-                    getEquipoTypesForMarca,
                 );
                 updated.proveedor = cascaded.proveedor;
                 updated.marca = cascaded.marca;
