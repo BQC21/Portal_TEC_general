@@ -33,15 +33,6 @@ export type ProjectTableProps = {
     onDeleteProjectMateriales?: (projectMaterialesId: string) => void;
 };
 
-// productos
-export type ProductTableProps = {
-    products: Product[];
-    totalProducts: number;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
-    onDeleteProduct: (productId: string) => void;
-};
-
 // materiales
 export type MaterialesTableProps = {
     materiales: Materiales[];

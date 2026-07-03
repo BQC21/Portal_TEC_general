@@ -27,13 +27,6 @@ export type AddMaterialModalProps = {
     onClose: () => void;
 };
 
-export type AddProductModalProps = {
-    exchangeRate: number;
-    existingProducts: Product[];
-    onAddProduct: (product: ProductFormData) => void;
-    onClose: () => void;
-};
-
 export type AddMProjectodalProps = {
     onAddProject: (
         project: ProjectFormData,
@@ -75,13 +68,6 @@ export type EditEquipoModalProps = {
 export type EditMaterialModalProps = {
     material: Materiales;
     onUpdateMaterial: (material: Materiales) => void;
-    onClose: () => void;
-};
-
-export type EditProductModalProps = {
-    product: Product;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
     onClose: () => void;
 };
 
@@ -136,12 +122,6 @@ export type DeleteMaterialModalProps = {
     onClose: () => void;
 };
 
-export type DeleteProductModalProps = {
-    product: Product;
-    onDeleteProduct: (productId: string) => void
-    onClose: () => void;
-};
-
 export type DeleteProjectModalProps = {
     project: Project;
     project_equipos: Project_Equipos[];
@@ -191,20 +171,4 @@ export type MassiveCleanModalProps = {
 	currentCount: number;
 	onClose: () => void;
 	onSuccess?: () => void;
-};
-
-// ------------------
-// modals -- descarga masiva
-// ------------------
-export type MassiveDownloadModalProps = {
-    productsToDownload?: Product[];
-    exchangeRate: number;
-    defaultFileName?: string;
-    onClose: () => void;
-};
-
-export type DownloadFormState = {
-    format: string;
-    fileName: string;
-    includeHeaders: boolean;
 };

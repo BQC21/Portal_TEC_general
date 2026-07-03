@@ -23,12 +23,6 @@ export type Button2ModalPropsMateriales = {
     onAddMateriales: (equipo: MaterialesFormData) => void;
 };
 
-export type Button2ModalPropsProducto = {
-    exchangeRate: number;
-    existingProducts: Product[];
-    onAddProduct: (product: ProductFormData) => void;
-};
-
 export type Button2ModalPropsProject = {
     onAddProject: (
         project: ProjectFormData,
@@ -65,12 +59,6 @@ export type EditEquiposModalProps = {
 export type EditMaterialesModalProps = {
     material: Materiales;
     onUpdateMateriales: (material: Materiales) => void;
-};
-
-export type EditProductModalProps = {
-    product: Product;
-    exchangeRate: number;
-    onUpdateProduct: (product: Product) => void;
 };
 
 export type EditProjectModalProps = {
@@ -118,11 +106,6 @@ export type DeleteMaterialModalProps = {
     onDeleteMaterial: (materialId: string) => void;
 };
 
-export type DeleteProductModalProps = {
-    product: Product;
-    onDeleteProduct: (productId: string) => void;
-};
-
 export type DeleteProjectModalProps = {
     project: Project;
     project_equipos: Project_Equipos[];
@@ -167,14 +150,4 @@ export type Button2MassiveCleanProps = {
 
 export type Button2MassiveUploadProps = {
 	onSuccess?: () => void;
-};
-
-// ------------------
-// botones -- descarga masiva
-// ------------------
-
-export type MassiveDownloadModalProps = {
-    productsToDownload?: Product[];
-    exchangeRate: number;
-    defaultFileName?: string;
 };

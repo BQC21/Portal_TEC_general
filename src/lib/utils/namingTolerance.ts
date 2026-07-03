@@ -1,7 +1,6 @@
 import { createClient } from "@/lib/supabase/client";
 import { ProductFormData } from "@/lib/types/supabase/product-types";
 
-export const PRODUCTS_TABLE = "productos";
 export const EQUIPOS_TABLE = "equipo_principales";
 export const MATERIALES_TABLE = "materiales_electricos";
 export const PROJECTS_TABLE = "proyectos";
@@ -25,45 +24,45 @@ export const CURRENCY_COLUMN_CANDIDATES = [
     "moneda",
 ] as const;
 
-let cachedCurrencyColumnName: string | null | undefined; // memoria caché de la columna asociada a la fuente de divisas
+// let cachedCurrencyColumnName: string | null | undefined; // memoria caché de la columna asociada a la fuente de divisas
 
-export async function resolveCurrencyColumnName(supabase: ReturnType<typeof createClient>): Promise<string | null> {
-    if (cachedCurrencyColumnName !== undefined) {
-    return cachedCurrencyColumnName;
-    }
+// export async function resolveCurrencyColumnName(supabase: ReturnType<typeof createClient>): Promise<string | null> {
+//     if (cachedCurrencyColumnName !== undefined) {
+//     return cachedCurrencyColumnName;
+//     }
 
-    for (const columnName of CURRENCY_COLUMN_CANDIDATES) {
-        const { error } = await supabase
-            .from(PRODUCTS_TABLE)
-            .select(columnName)
-            .limit(1);
+//     for (const columnName of CURRENCY_COLUMN_CANDIDATES) {
+//         const { error } = await supabase
+//             .from(PRODUCTS_TABLE)
+//             .select(columnName)
+//             .limit(1);
 
-        if (!error) {
-            cachedCurrencyColumnName = columnName;
-            return columnName;
-        }
-    }
+//         if (!error) {
+//             cachedCurrencyColumnName = columnName;
+//             return columnName;
+//         }
+//     }
 
-    cachedCurrencyColumnName = null;
-    return null;
-}
+//     cachedCurrencyColumnName = null;
+//     return null;
+// }
 
-// --------------------------
-// ---- Añadir la fuente de divisa
-// --------------------------
-export async function addCurrencyToRow(
-    supabase: ReturnType<typeof createClient>,
-    row: Record<string, unknown>,
-    currency: ProductFormData["priceInputCurrency"]
-): Promise<Record<string, unknown>> {
-    const currencyColumnName = await resolveCurrencyColumnName(supabase);
+// // --------------------------
+// // ---- Añadir la fuente de divisa
+// // --------------------------
+// export async function addCurrencyToRow(
+//     supabase: ReturnType<typeof createClient>,
+//     row: Record<string, unknown>,
+//     currency: ProductFormData["priceInputCurrency"]
+// ): Promise<Record<string, unknown>> {
+//     const currencyColumnName = await resolveCurrencyColumnName(supabase);
 
-    if (!currencyColumnName) {
-        return row;
-    }
+//     if (!currencyColumnName) {
+//         return row;
+//     }
 
-    return {
-        ...row,
-        [currencyColumnName]: currency,
-    };
-}
+//     return {
+//         ...row,
+//         [currencyColumnName]: currency,
+//     };
+// }

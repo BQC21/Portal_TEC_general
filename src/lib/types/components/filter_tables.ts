@@ -9,12 +9,6 @@ export type CascadeFilterOptions = {
 	types: string[];
 };
 
-// Filtrado de productos
-export type ProductFiltersProps = {
-    values: ProductFilterValues;
-    onFilterChange: (key: FilterKey, value: string) => void;
-};
-
 // Filtrado de materiales
 export type MaterialesFiltersProps = {
     values: MaterialesFilterValues;
