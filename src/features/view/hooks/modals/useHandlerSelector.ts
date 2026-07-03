@@ -4,6 +4,12 @@ import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import {
+    extractItmAcRating,
+    extractItmDcRating,
+    extractSpdRating,
+    getNearestHigherItmAcRating,
+} from "@/lib/utils/helpers/project_modals/protectionSelector";
 import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
 
 export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL",
@@ -125,31 +131,38 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
 
             return filteredOptions;
         } else if (product_type === "MATERIAL") {
+            const spdMin = Number(computedRequirements.spd_min);
+            const itmDcMin = Number(computedRequirements.itm_dc_min);
+            const itmAcMin = Number(computedRequirements.itm_ac_min);
+            const nearestItmAcRating = getNearestHigherItmAcRating(materiales, label, itmAcMin);
+
             filteredOptions = [
                 defaultSelectOption(label),
                 ...materiales
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
-                        // según SPD
-                        if (material.descripcion.includes("SPD") && 
-                            (Number(computedRequirements.spd_min) >= 
-                            parseInt(material.descripcion.match(/\d+/g)?.[1] || "0" || "") ||
-                            isNaN(Number(computedRequirements.spd_min)))) return false;
-                        // según ITM_DC
-                        if (material.descripcion.includes("ITM") && 
-                            material.descripcion.includes("VDC") && 
-                            (Number(computedRequirements.spd_min) >= 
-                            parseInt(material.descripcion.match(/\d+/g)?.[2] || "0" || "") ||
-                            isNaN(Number(computedRequirements.spd_min)))) return false;
-                        // según ITM_AC
-                        if (material.descripcion.includes("ITM") &&
-                            (Number(computedRequirements.itm_ac_min) >= 
-                            parseInt(material.descripcion.match(/\d+/g)?.[1] || "0" || "") ||
-                            isNaN(Number(computedRequirements.itm_ac_min)))) return false;
+
+                        const spdRating = extractSpdRating(material.descripcion);
+                        if (spdRating !== null) {
+                            if (isNaN(spdMin) || spdMin <= 0 || spdRating < spdMin) return false;
+                        }
+
+                        const itmDcRating = extractItmDcRating(material.descripcion);
+                        if (itmDcRating !== null) {
+                            if (isNaN(itmDcMin) || itmDcMin <= 0 || itmDcRating < itmDcMin) return false;
+                        }
+
+                        const itmAcRating = extractItmAcRating(material.descripcion);
+                        if (itmAcRating !== null) {
+                            if (nearestItmAcRating === null || itmAcRating !== nearestItmAcRating) {
+                                return false;
+                            }
+                        }
+
                         const isAlreadySelected = selectedMaterialTable.some(
                             (item) => item.id === String(material.id)
                         );
-                        return !isAlreadySelected; // retiene en el selector los no seleccionados
+                        return !isAlreadySelected;
                     })
                     .map(toProductSelectOption),
             ]
