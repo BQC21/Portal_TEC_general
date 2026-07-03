@@ -62,7 +62,7 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                         key={`equipment-${label}-${index}`}
                                         label={label}
                                         buttonLabel="Agregar"
-                                        value={selectedEquipmentByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
+                                        value={selectedEquipmentByRow[`${label}-${index}`]?.equipoId || ""}
                                         options={equipment_filteredOptions}
                                         customSelectClass={customSelectClass}
                                         onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
@@ -87,7 +87,7 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                             key={`material-row-${label}-${index}`}
                                             label={label}
                                             buttonLabel="Agregar"
-                                            value={selectedMaterialByRow[`${label}-${index}`]?.description || `Seleccionar - ${label}`}
+                                            value={selectedMaterialByRow[`${label}-${index}`]?.materialId || ""}
                                             options={material_filteredOptions}
                                             onChange={(value) => {handle_onChange(value, label, index, "MATERIAL")}}
                                             onClick={() => handle_click(label, index, "MATERIAL")}
