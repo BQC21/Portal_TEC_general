@@ -1,3 +1,5 @@
+"use client";
+
 import { createMarca, deleteMarca, getMarcas, getMarcasbyId, updateMarca } from "@/features/controller/services/marcasQueries";
 import { createClient } from "@/lib/supabase/client";
 import { Brand, BrandFormData, UseBrandMutationsResult, UseBrandResult } from "@/lib/types/supabase/brand.types";

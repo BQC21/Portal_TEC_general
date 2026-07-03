@@ -1,3 +1,5 @@
+"use client";
+
 import { createType, deleteType, getTypeById, getTypes, updateType } from "@/features/controller/services/typeQueries";
 import { createClient } from "@/lib/supabase/client";
 import { Type, TypeFormData, UseTypeMutationsResult, UseTypeResult } from "@/lib/types/supabase/type-types";
