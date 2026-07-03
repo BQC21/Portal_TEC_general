@@ -1,5 +1,6 @@
+"use client"
+
 import Button2Modal_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2Add";
-import Button2Modal from "@/features/view/components/Buttons/Proveedores/marcas/button2Add";
 import Button2Modal_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2Add";
 import Button2Modal_type from "@/features/view/components/Buttons/Proveedores/tipo/button2Add";
 import { PortalShell } from "@/features/view/components/PortalShell";
