@@ -164,17 +164,17 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.potencia_maxima))}
                                         />
                                         <AddEquipoReadonlyField
-                                            label="Mínimo de Strings"
+                                            label="Mínimo de Módulos"
                                             value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
                                             colorClass={getFieldValueLightClass(computedRequirements.strings_minimos)}
                                         />
                                         <AddEquipoReadonlyField
-                                            label="Máximo de Strings"
+                                            label="Máximo de Módulos"
                                             value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
                                             colorClass={getFieldValueLightClass(computedRequirements.strings_maximos)}
                                         />
                                         <AddProductNumberField
-                                            label="Número exacto de Strings"
+                                            label="Número exacto de Módulos"
                                             required
                                             value={Number(form.strings) > 0 ? Number(form.strings) : ""}
                                             onChange={(value) => updateField("strings", String(value))}
