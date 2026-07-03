@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
@@ -8,11 +8,7 @@ import { AddProductSectionTitle } from "@/features/view/components/Form_fields/A
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 
-import { MATERIALES_TYPE_OPTIONS, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
-
-import {
-    // INITIAL_PRODUCT_FORM,
-} from "@/lib/utils/initialValues";
+import { BRAND_OPTIONS_MATERIALES, POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES, SUPPLIER_OPTIONS_MATERIALES } from "@/lib/utils/options";
 
 import { 
     shouldRender_SupplyInfoSelection,
@@ -20,15 +16,35 @@ import {
 
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
-import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { getMaterialTypesForMarca, shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditMaterialModalProps } from "@/lib/types/components/modals";
+import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import {
+    getModalCascadeOptions,
+    resolveFormCascadeFilters,
+    withCascadePlaceholder,
+} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditMaterialModalProps) {
+    const { materiales: existingMateriales } = useMateriales();
     const [form, setForm] = useState<MaterialesFormState>(() => createMaterialesFormStateFromMateriales(material));
 
     useEffect(() => {
         setForm(createMaterialesFormStateFromMateriales(material));
     }, [material]);
+
+    const cascadeOptions = useMemo(
+        () =>
+            getModalCascadeOptions(
+                existingMateriales,
+                form.proveedor,
+                form.marca,
+                SUPPLIER_OPTIONS_MATERIALES,
+                BRAND_OPTIONS_MATERIALES,
+                getMaterialTypesForMarca,
+            ),
+        [existingMateriales, form.proveedor, form.marca],
+    );
 
     // Actualizar campos del formulario
     function updateField<K extends keyof MaterialesFormState>(field: K, value: MaterialesFormState[K]) {
@@ -38,24 +54,33 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
                 [field]: value,
             };
 
-            if (field === "proveedor") {
-                const { supplierCode } = shouldRender_SupplyInfoSelection(String(value));
+            if (field === "proveedor" || field === "marca" || field === "tipo_de_producto") {
+                const cascaded = resolveFormCascadeFilters(
+                    existingMateriales,
+                    current,
+                    field,
+                    String(value),
+                    BRAND_OPTIONS_MATERIALES,
+                    getMaterialTypesForMarca,
+                );
+                updated.proveedor = cascaded.proveedor;
+                updated.marca = cascaded.marca;
+                updated.tipo_de_producto = cascaded.tipo_de_producto;
+            }
+
+            if (field === "proveedor" || updated.proveedor !== current.proveedor) {
+                const { supplierCode } = shouldRender_SupplyInfoSelection(String(updated.proveedor));
                 updated.cod_prov = supplierCode;
             }
 
-            if (field === "tipo_de_producto") {
-                const { brand_options, unit } = shouldRender_MaterialInfoSelection(String(value));
-                if (!brand_options.includes(updated.marca)) {
-                    updated.marca = brand_options[0] || "";
-                }
+            if (field === "tipo_de_producto" || updated.tipo_de_producto !== current.tipo_de_producto) {
+                const { unit } = shouldRender_MaterialInfoSelection(String(updated.tipo_de_producto));
                 updated.unidad = unit || "";
             }
 
             return updated;
         });
     }
-
-    const materialInfoSelection = shouldRender_MaterialInfoSelection(form.tipo_de_producto);
 
     // Aceptar actualizacion
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -91,37 +116,38 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
                 <AddProductSectionTitle title="Información Básica" />
                             <div className="grid gap-5 md:grid-cols-2">
                                 <AddProductSelectField
+                                    label="PROVEEDOR"
+                                    required
+                                    value={form.proveedor}
+                                    options={withCascadePlaceholder(cascadeOptions.suppliers)}
+                                    onChange={(value) => updateField("proveedor", value)}
+                                />
+                                <AddProductSelectField
                                     label="COD PROV"
                                     required
                                     value={form.cod_prov}
                                     options={SUPPLIER_CODE_OPTIONS_MATERIALES}
                                     onChange={(value) => updateField("cod_prov", value)}
                                 />
-                                <AddProductSelectField
-                                    label="PROVEEDOR"
-                                    required
-                                    value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS_MATERIALES}
-                                    onChange={(value) => updateField("proveedor", value)}
-                                />
                                 <AddProductReadonlyField
                                     label="Código del Producto"
                                     value={form.cod_producto}
                                 />
                                 <AddProductSelectField
-                                    label="TIPO DE PRODUCTO"
-                                    required
-                                    value={form.tipo_de_producto}
-                                    options={MATERIALES_TYPE_OPTIONS}
-                                    onChange={(value) => updateField("tipo_de_producto", value)}
-                                />
-                                <AddProductSelectField
                                     label="MARCA"
                                     required
                                     value={form.marca}
-                                    options={materialInfoSelection.brand_options.length > 0 
-                                        ? materialInfoSelection.brand_options : [""]}
+                                    options={withCascadePlaceholder(cascadeOptions.brands)}
+                                    disabled={!form.proveedor}
                                     onChange={(value) => updateField("marca", value)}
+                                />
+                                <AddProductSelectField
+                                    label="TIPO DE PRODUCTO"
+                                    required
+                                    value={form.tipo_de_producto}
+                                    options={withCascadePlaceholder(cascadeOptions.types)}
+                                    disabled={!form.marca}
+                                    onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductReadonlyField
                                     label="UNIDAD"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
@@ -10,15 +10,11 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
 import {
+    BRAND_OPTIONS_EQUIPOS,
     CONNECTION_TYPE_OPTIONS,
-    EQUIPOS_TYPE_OPTIONS,
     SUPPLIER_CODE_OPTIONS_EQUIPOS,
     SUPPLIER_OPTIONS_EQUIPOS,
 } from "@/lib/utils/options";
-
-import {
-    // INITIAL_PRODUCT_FORM,
-} from "@/lib/utils/initialValues";
 
 import { 
     shouldRenderConnectionTypeBattery, 
@@ -31,15 +27,35 @@ import {
 } from "@/lib/utils/helpers/render/render_modals";
 import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
-import { shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { getEquipoTypesForMarca, shouldRender_EquipoInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditEquipoModalProps } from "@/lib/types/components/modals";
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
+import {
+    getModalCascadeOptions,
+    resolveFormCascadeFilters,
+    withCascadePlaceholder,
+} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoModalProps) {
+    const { equipos: existingEquipos } = useEquipos();
     const [form, setForm] = useState<EquiposFormState>(() => createEquiposFormStateFromEquipos(equipo));
 
     useEffect(() => {
         setForm(createEquiposFormStateFromEquipos(equipo));
     }, [equipo]);
+
+    const cascadeOptions = useMemo(
+        () =>
+            getModalCascadeOptions(
+                existingEquipos,
+                form.proveedor,
+                form.marca,
+                SUPPLIER_OPTIONS_EQUIPOS,
+                BRAND_OPTIONS_EQUIPOS,
+                getEquipoTypesForMarca,
+            ),
+        [existingEquipos, form.proveedor, form.marca],
+    );
 
     // Actualizar campos del formulario
     function updateField<K extends keyof EquiposFormState>(field: K, value: EquiposFormState[K]) {
@@ -49,32 +65,39 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                 [field]: value,
             };
 
-            if (field === "proveedor") {
-                const { supplierCode } = shouldRender_SupplyInfoSelection(String(value));
+            if (field === "proveedor" || field === "marca" || field === "tipo_de_producto") {
+                const cascaded = resolveFormCascadeFilters(
+                    existingEquipos,
+                    current,
+                    field,
+                    String(value),
+                    BRAND_OPTIONS_EQUIPOS,
+                    getEquipoTypesForMarca,
+                );
+                updated.proveedor = cascaded.proveedor;
+                updated.marca = cascaded.marca;
+                updated.tipo_de_producto = cascaded.tipo_de_producto;
+            }
+
+            if (field === "proveedor" || updated.proveedor !== current.proveedor) {
+                const { supplierCode } = shouldRender_SupplyInfoSelection(String(updated.proveedor));
                 updated.cod_prov = supplierCode;
             }
 
-            if (field === "tipo_de_producto") {
-                const { brand_options, unit } = shouldRender_EquipoInfoSelection(String(value));
-                if (!brand_options.includes(updated.marca)) {
-                    updated.marca = brand_options[0] || "";
-                }
+            if (field === "tipo_de_producto" || updated.tipo_de_producto !== current.tipo_de_producto) {
+                const { unit } = shouldRender_EquipoInfoSelection(String(updated.tipo_de_producto));
                 updated.unidad = unit || "";
             }
 
-            if (field === "tipo_de_producto") {
-                if (value === "Batería") {
-                    updated.tipo_conexion = "BAT";
-                } else if (current.tipo_conexion === "BAT") {
-                    updated.tipo_conexion = "";
-                }
+            if (updated.tipo_de_producto === "BATERÍA") {
+                updated.tipo_conexion = "BAT";
+            } else if (current.tipo_conexion === "BAT") {
+                updated.tipo_conexion = "";
             }
 
             return updated;
         });
     }
-
-    const equipoInfoSelection = shouldRender_EquipoInfoSelection(form.tipo_de_producto);
 
     // Aceptar actualizacion
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -110,36 +133,38 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                 <AddProductSectionTitle title="Información Básica" />
                             <div className="grid gap-5 md:grid-cols-2">
                                 <AddProductSelectField
+                                    label="PROVEEDOR"
+                                    required
+                                    value={form.proveedor}
+                                    options={withCascadePlaceholder(cascadeOptions.suppliers)}
+                                    onChange={(value) => updateField("proveedor", value)}
+                                />
+                                <AddProductSelectField
                                     label="COD PROV"
                                     required
                                     value={form.cod_prov}
                                     options={SUPPLIER_CODE_OPTIONS_EQUIPOS}
                                     onChange={(value) => updateField("cod_prov", value)}
                                 />
-                                <AddProductSelectField
-                                    label="PROVEEDOR"
-                                    required
-                                    value={form.proveedor}
-                                    options={SUPPLIER_OPTIONS_EQUIPOS}
-                                    onChange={(value) => updateField("proveedor", value)}
-                                />
                                 <AddProductReadonlyField
                                     label="Código del Producto"
                                     value={form.cod_producto}
                                 />
                                 <AddProductSelectField
-                                    label="TIPO DE PRODUCTO"
-                                    required
-                                    value={form.tipo_de_producto}
-                                    options={EQUIPOS_TYPE_OPTIONS}
-                                    onChange={(value) => updateField("tipo_de_producto", value)}
-                                />
-                                <AddProductSelectField
                                     label="MARCA"
                                     required
                                     value={form.marca}
-                                    options={equipoInfoSelection.brand_options.length > 0 ? equipoInfoSelection.brand_options : [""]}
+                                    options={withCascadePlaceholder(cascadeOptions.brands)}
+                                    disabled={!form.proveedor}
                                     onChange={(value) => updateField("marca", value)}
+                                />
+                                <AddProductSelectField
+                                    label="TIPO DE PRODUCTO"
+                                    required
+                                    value={form.tipo_de_producto}
+                                    options={withCascadePlaceholder(cascadeOptions.types)}
+                                    disabled={!form.marca}
+                                    onChange={(value) => updateField("tipo_de_producto", value)}
                                 />
                                 <AddProductReadonlyField
                                     label="UNIDAD"

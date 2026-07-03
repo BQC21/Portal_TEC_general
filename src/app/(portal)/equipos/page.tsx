@@ -81,7 +81,6 @@ export default function EquiposPage() {
             sorting === "asc" ? sortGroupedByPrice(equiposToSort, "asc") :
                 sorting === "desc" ? sortGroupedByPrice(equiposToSort, "desc") : []
     }, [sortedByCodeEquipos, sorting]); // lógica para asignar el tipo de ordenamiento de productos
-    console.log("equipos ordenados", sortedEquipos)
 
     // ---------------------------------
     // ---- Lista de eventos -----------
