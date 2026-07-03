@@ -14,7 +14,6 @@ export default function DashboardPage() {
     const { materiales } = useMateriales();
     const { projects } = useProjects();
     const { zones } = useZone();
-
     const metrics = [
         // {
         //     title: "Productos Activos",
@@ -22,7 +21,6 @@ export default function DashboardPage() {
         //     accent: "bg-blue-50 text-blue-700",
         //     icon: "▣",
         // },
-
         {
             title: "Equipos eléctricos Activos",
             value: equipos.length,
