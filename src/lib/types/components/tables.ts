@@ -61,7 +61,7 @@ export type EquiposTableProps = {
 // proveedores
 export type ProveedoresTableProps = {
     supplier: Supplier[];
-    totalEquipos: number;
+    totalSupplier: number;
     onUpdateSupplier: (supplier: Supplier) => void;
     onDeleteSupplier: (supplierId: string) => void;
 };
@@ -69,8 +69,8 @@ export type ProveedoresTableProps = {
 // marcas
 export type MarcasTableProps = {
     brand: Brand[];
-    totalEquipos: number;
-    onUpdateBrand: (brand: Equipos) => void;
+    totalBrand: number;
+    onUpdateBrand: (brand: Brand) => void;
     onDeleteBrand: (brandId: string) => void;
 };
 
