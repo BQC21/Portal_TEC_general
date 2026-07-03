@@ -1,5 +1,11 @@
-import { AddProductSelectFieldProps } from "@/lib/types/components/form_fields";
+import { AddProductSelectFieldProps, SelectOption } from "@/lib/types/components/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
+
+function normalizeOptions(options: AddProductSelectFieldProps["options"]): SelectOption[] {
+    return options.map((option) =>
+        typeof option === "string" ? { value: option, label: option } : option
+    );
+}
 
 export function AddProductSelectField({
     label,
@@ -10,6 +16,8 @@ export function AddProductSelectField({
     onChange,
     customClass = "", // Default to empty string
 }: AddProductSelectFieldProps) {
+    const normalizedOptions = normalizeOptions(options);
+
     return (
         <div>
         <AddProductFieldLabel label={label} required={required} />
@@ -21,9 +29,9 @@ export function AddProductSelectField({
             aria-label={label}
             className={`input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg transition ${customClass}`}
         >
-            {options.map((option) => (
-            <option key={option} value={option}>
-                {option}
+            {normalizedOptions.map((option) => (
+            <option key={option.value || option.label} value={option.value}>
+                {option.label}
             </option>
             ))}
         </select>
