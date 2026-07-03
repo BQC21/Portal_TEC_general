@@ -73,6 +73,7 @@ export type SelectionRowProps = {
     onChange: (value: string) => void;
     onClick?: () => void;
     customSelectClass?: string; // Optional custom class for select styling
+    required?: boolean;
 };
 
 // campo para texto

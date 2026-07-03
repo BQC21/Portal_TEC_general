@@ -1,3 +1,6 @@
+"use client";
+
+import { useCallback } from "react";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddEquipoReadonlyField } from "../../components/Form_fields/AddEquipoReadOnlyField";
 import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
@@ -6,6 +9,7 @@ import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonl
 import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
 import { computedRequirements } from "@/lib/types/components/computes";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
+import { MONTH_LABELS, useMonthlyDemand } from "../../hooks/modals/useMonthlyDemand";
 
 export type Data_info_M2Props = {
     form: ProjectFormState;
@@ -25,6 +29,18 @@ export type Data_info_M2Props = {
 export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
     CONNECTION_TYPE_OPTIONS }: Data_info_M2Props) {
+
+    const handleAnnualDemandChange = useCallback(
+        (value: string) => updateField("demanda_electrica", value),
+        [updateField],
+    );
+
+    const { monthlyValues, updateMonth, annualTotal } = useMonthlyDemand(handleAnnualDemandChange);
+
+    const displayedAnnualDemand = annualTotal > 0
+        ? String(annualTotal)
+        : form.demanda_electrica;
+
     return (
         <>
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
@@ -32,14 +48,28 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                             <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
-                                    <AddProductNumberField
-                                        label="Demanda eléctrica anual (kWh)"
-                                        required
-                                        value={Number(form.demanda_electrica) > 0 ? Number(form.demanda_electrica) : ""}
-                                        onChange={(value) => updateField("demanda_electrica", String(value))}
-                                        step={1}
-                                        min={0}
+                                    <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Demanda eléctrica mensual</h2>
+                                    {MONTH_LABELS.map((month, index) => (
+                                        <AddProductNumberField
+                                            key={month}
+                                            label={`Demanda eléctrica - ${month} (kWh)`}
+                                            required
+                                            value={monthlyValues[index]}
+                                            onChange={(value) => updateMonth(index, value)}
+                                            step={1}
+                                            min={0}
+                                        />
+                                    ))}
+                                    <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Demanda eléctrica anual</h2>
+
+                                    <AddEquipoReadonlyField
+                                        label="Demanda eléctrica total por año (kWh)"
+                                        value={Number(displayedAnnualDemand) > 0
+                                            ? String(Number(displayedAnnualDemand).toFixed(2))
+                                            : ""}
+                                        colorClass={getFieldValueLightClass(displayedAnnualDemand)}
                                     />
+
                                     {shouldRender_M2_configuration(form.tipo_instalacion) && (
                                         <AddProductSelectField
                                             label="Configuración"
@@ -62,10 +92,14 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                         label="Porcentaje de rendimiento del módulo (%)"
                                         value="80"
                                     />
+                                </div>
 
 
 
 
+
+                                
+                                <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
                                     {/* Handlers */}
                                     <AddProductRadioField
@@ -117,14 +151,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             </>                                            
                                         )
                                     }
-                                </div>
 
-
-
-
-
-                                
-                                <div>
                                     {computedRequirements.selectedEquipment && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>
@@ -178,8 +205,8 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             required
                                             value={Number(form.strings) > 0 ? Number(form.strings) : ""}
                                             onChange={(value) => updateField("strings", String(value))}
-                                            min={Math.floor(Number(computedRequirements.strings_minimos)) > 0 ?
-                                                    Math.floor(Number(computedRequirements.strings_minimos)) : 0
+                                            min={Math.ceil(Number(computedRequirements.strings_minimos)) > 0 ?
+                                                    Math.ceil(Number(computedRequirements.strings_minimos)) : 0
                                             }
                                             step={1}
                                             max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
@@ -189,7 +216,6 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                     </>
                                     )}
                                 </div>
-
 
 
 

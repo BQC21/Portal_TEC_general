@@ -6,13 +6,13 @@ const actionButtonStyles = "shrink-0 whitespace-nowrap rounded-xl border border-
 
 
 export function SelectionRow({ label, buttonLabel, value, options, 
-    onChange, onClick, customSelectClass }: SelectionRowProps) {
+    onChange, onClick, customSelectClass, required = false }: SelectionRowProps) {
         return (
             <div className={selectionRowStyles}>
                 <div className="min-w-0">
                     <AddProductSelectField
                         label={label}
-                        required
+                        required={required}
                         value={value}
                         options={options}
                         onChange={onChange}
