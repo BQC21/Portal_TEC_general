@@ -19,6 +19,7 @@ import type {
 } from "@/lib/types/supabase/equipos-types";
 
 import { createClient } from "@/lib/supabase/client";
+import { getProveedorById } from "@/features/controller/services/proveedoresQueries";
 
 const supabase = createClient();
 
@@ -180,6 +181,6 @@ export function useEquipoMutations(): UseEquiposMutationsResult {
 	};
 }
 
-export async function getEquipoByIdService(id: string): Promise<Equipos> {
-	return getEquipoById(id);
+export async function getProveedorByIdService(id: string): Promise<Equipos> {
+	return getProveedorByIdService(id);
 }
