@@ -4,7 +4,6 @@ import { createProveedor, deleteProveedor, getProveedor, getProveedorById, updat
 import { createClient } from "@/lib/supabase/client";
 import { Supplier, SupplierFormData, UseSupplierMutationsResult, UseSupplierResult } from "@/lib/types/supabase/supplier-types";
 import { useCallback, useEffect, useState } from "react";
-import { getProveedorByIdService } from "./useRealtimeEquipos";
 
 const supabase = createClient();
 
