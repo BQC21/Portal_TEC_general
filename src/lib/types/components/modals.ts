@@ -54,7 +54,7 @@ export type AddSupplierModalProps = {
 };
 
 export type AddBrandModalProps = {
-    onAddZone: (brand: BrandFormData) => void;
+    onAddBrand: (brand: BrandFormData) => void;
     onClose: () => void;
 };
 
@@ -172,7 +172,7 @@ export type DeleteBrandModalProps = {
 
 export type DeleteTypeModalProps = {
     type: Type;
-    onDeleteZone: (typeId: string) => void
+    onDeleteType: (typeId: string) => void
     onClose: () => void;
 };
 
