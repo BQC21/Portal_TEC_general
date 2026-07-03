@@ -47,11 +47,18 @@ export type AddProductSectionTitleProps = {
     title: string;
 };
 
+export type SelectOption = {
+    value: string;
+    label: string;
+};
+
+export type SelectFieldOptions = string[] | SelectOption[];
+
 // campo para selectores
 export type AddProductSelectFieldProps = {
     label: string;
     required?: boolean;
-    options: string[];
+    options: SelectFieldOptions;
     value: string;
     disabled?: boolean;
     onChange: (value: string) => void;
@@ -62,7 +69,7 @@ export type SelectionRowProps = {
     label: string;
     buttonLabel: string;
     value: string;
-    options: string[];
+    options: SelectOption[];
     onChange: (value: string) => void;
     onClick?: () => void;
     customSelectClass?: string; // Optional custom class for select styling
