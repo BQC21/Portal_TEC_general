@@ -11,50 +11,62 @@ export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de o
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 
 
+export const RUC_OPTIONS = [
+    "20601248647",
+    "20268214527",
+    "20602492118",
+    "20601873894",
+    "20603087675",
+    "20611054069",
+    "20502234693",
+    "20548407991",
+    "20611896116",
+] // RUC
+
+export const PRODUCT_TYPE_OPTIONS = [
+    "Accesorio",
+    "Batería",
+    "Controlador",
+    "Convertidor",
+    "Datalogger",
+    "Estructura",
+    "Inversor",
+    "Módulo",
+    "Monitor",
+    "Rack",
+    "Smart Meter",
+    "Cable",
+    "Protección",
+    "MC4",
+    "Tablero",
+    "CT",
+    "Fusible",
+    "Portafusible",
+]; // tipo de producto
+
+export const BRAND_OPTIONS = [
+    "FELICITY",
+    "GOODWE",
+    "JA SOLAR",
+    "JINKO",
+    "LIVOLTEK",
+    "SOLIS",
+    "SOLUNA",
+    "TELPERION",
+]; // marcas 
+
+export const SUPPLIER_OPTIONS = [
+    "Andet S.A.C.",
+    "Caral Soluciones Energéticas S.A.C.",
+    "Felicitysolar Peru E.I.R.L.",
+    "Sigelec S.A.C.",
+    "Tienda Solar S.A.C.",
+] // proveedores
 // ------------------
 // ------------------
 // MÓDULO 1
 // ------------------
-// ------------------ 
-
-// export const RUC_OPTIONS = [
-//     "20601248647",
-//     "20268214527",
-//     "20602492118",
-//     "20601873894",
-//     "20603087675",
-//     "20611054069",
-//     "20502234693",
-//     "20548407991",
-//     "20611896116",
-// ] // RUC
-
-// export const PRODUCT_TYPE_OPTIONS = [
-//     "Accesorio",
-//     "Batería",
-//     "Controlador",
-//     "Convertidor",
-//     "Datalogger",
-//     "Estructura",
-//     "Inversor",
-//     "Módulo",
-//     "Monitor",
-//     "Rack",
-//     "Smart Meter",
-//     "Cable",
-//     "Protección",
-//     "MC4",
-//     "Tablero",
-//     "CT",
-//     "Fusible",
-//     "Portafusible",
-// ]; // tipo de producto
-
-
-
-
-
-
+// ------------------
 
 
 // -- equipos principales
