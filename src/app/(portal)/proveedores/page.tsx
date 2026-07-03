@@ -82,7 +82,9 @@ export default function ProveedoresPage() {
             <main className="min-h-screen bg-background text-foreground">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                     <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                        <div className="flex w-full xl:justify-end">
+						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de proveedores</h2>
+
+                        <div className="flex mb-5 w-full xl:justify-end">
 							<Button2Modal_supplier onAddSupplier={handleAddSupplier} />
                         </div>
 
@@ -94,7 +96,9 @@ export default function ProveedoresPage() {
                         />
                     </section>
                     <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                        <div className="flex w-full xl:justify-end">
+						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de marcas</h2>
+
+                        <div className="flex mb-5 w-full xl:justify-end">
 							<Button2Modal_brand onAddBrand={handleAddBrand} />
                         </div>
 
@@ -106,7 +110,9 @@ export default function ProveedoresPage() {
                         />
                     </section>
                     <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                        <div className="flex w-full xl:justify-end">
+						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de tipos de producto</h2>
+
+                        <div className="flex mb-5 w-full xl:justify-end">
 							<Button2Modal_type onAddType={handleAddType} />
                         </div>
 
