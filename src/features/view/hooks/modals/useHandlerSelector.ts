@@ -1,15 +1,17 @@
 import { computedRequirements } from "@/lib/types/components/computes";
+import { SelectOption } from "@/lib/types/components/form_fields";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
 
 export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL",
     selectedEquipmentTable: SelectedEquipmentItem[], selectedMaterialTable: SelectedMaterialItem[], 
     form: ProjectFormState, computedRequirements: computedRequirements, 
     equipos: Equipos[], materiales: Materiales[]
-): string[]{
-        let filteredOptions: string[] = [`Seleccionar - ${label}`];
+): SelectOption[]{
+        let filteredOptions: SelectOption[] = [defaultSelectOption(label)];
 
         if (product_type === "EQUIPO") {
             // EL BLOQUEADOR
@@ -19,13 +21,13 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
 
             if (label === "INVERSOR") {
                 if (isTypeAlreadySelected) {
-                    filteredOptions = [`Seleccionar - ${label}`];
+                    filteredOptions = [defaultSelectOption(label)];
                 } else {
                     const requiredPowerAC = form.opcion_llenado == "AUTOMÁTICO"
                                             ? parseFloat(computedRequirements.potenciaAC):
                                             form.potencia_ac_requerida;
                     filteredOptions = [
-                        `Seleccionar - ${label}`,
+                        defaultSelectOption(label),
                         ...equipos
                             .filter((equipo) => {
                                 if (equipo.tipo_de_producto !== label) return false;
@@ -45,50 +47,50 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                                     form.tipo_instalacion !== "conexión HÍBRIDA") return false;                                 
                                 return true;
                             })
-                            .map((equipo) => equipo.descripcion)
+                            .map(toProductSelectOption)
                     ];
                 }
             } else if (label === "BATERÍA") {
                 if (form.tipo_instalacion === "conexión ON-GRID" || isTypeAlreadySelected) {
-                    filteredOptions = [`Seleccionar - ${label}`];
+                    filteredOptions = [defaultSelectOption(label)];
                 } else {
                         filteredOptions = [
-                            `Seleccionar - ${label}`,
+                            defaultSelectOption(label),
                             ...equipos
                                 .filter((equipo) => {
                                     return equipo.tipo_de_producto === label;
                                 })
-                                .map((equipo) => equipo.descripcion)
+                                .map(toProductSelectOption)
                         ];
                 }
             } else if (label === "MÓDULO FV") {                                        
                 if (isTypeAlreadySelected) {
-                    filteredOptions = [`Seleccionar - ${label}`];
+                    filteredOptions = [defaultSelectOption(label)];
                 } else {
                     filteredOptions = [
-                        `Seleccionar - ${label}`,
+                        defaultSelectOption(label),
                         ...equipos
                             .filter((equipo) => {
                                 if (equipo.tipo_de_producto !== label) return false;
                                 return true;
                             })
-                            .map((equipo) => equipo.descripcion)
+                            .map(toProductSelectOption)
                     ];
                 }
             } else if (label === "ESTRUCTURA") {                                        
                 filteredOptions = [
-                    `Seleccionar - ${label}`,
+                    defaultSelectOption(label),
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
                             // según baterías
                             if (equipo.descripcion.includes("baterías") &&
-                                ((Number(computedRequirements.num_baterias) <= 
+                                ((Number(computedRequirements.num_baterias) < 
                                 parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "")) ||
                                 isNaN(Number(computedRequirements.num_baterias)))) return false;
                             // según strings
                             if (equipo.descripcion.includes("módulos") && 
-                                (Number(form.strings) <= 
+                                (Number(form.strings) < 
                                 parseInt(equipo.descripcion.match(/\d+/)?.[0] || "0" || "") ||
                                 isNaN(Number(form.strings)))) return false;
                             // según orientación de la radiación
@@ -102,11 +104,11 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                             );
                             return !isAlreadySelected;
                         })
-                        .map((equipo) => equipo.descripcion)
+                        .map(toProductSelectOption)
                 ];
             } else if (label === "ACCESORIO") {
                 filteredOptions = [
-                    `Seleccionar - ${label}`,
+                    defaultSelectOption(label),
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
@@ -115,7 +117,7 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                             );
                             return !isAlreadySelected;
                         })
-                        .map((equipo) => equipo.descripcion)
+                        .map(toProductSelectOption)
                 ];
 
                 return filteredOptions;
@@ -124,7 +126,7 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
             return filteredOptions;
         } else if (product_type === "MATERIAL") {
             filteredOptions = [
-                `Seleccionar - ${label}`,
+                defaultSelectOption(label),
                 ...materiales
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
@@ -149,7 +151,7 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                         );
                         return !isAlreadySelected; // retiene en el selector los no seleccionados
                     })
-                    .map((material) => material.descripcion),
+                    .map(toProductSelectOption),
             ]
             return filteredOptions;
         }

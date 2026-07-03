@@ -255,7 +255,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                         equipmentRows={equipmentRows}
                         materialRows={materialRows}
                         selectedEquipmentTable={selectedEquipmentTable}
-                        selectedMaterialTable={selectedEquipmentTable}
+                        selectedMaterialTable={selectedMaterialTable}
                         form={form}
                         computedRequirements={computedRequirements.computedRequirements}
                         equipos={equipos}

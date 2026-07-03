@@ -56,8 +56,7 @@ export function useSelectionHandlers({
     const handle_onChange = useCallback(
         (value: string, label: string, index: string | number, product_type: string) => {
             if (product_type === "EQUIPO") {
-                // Limpiar el selector si se selecciona la opción por defecto
-                if (value === `Seleccionar - ${label}`) {
+                if (!value) {
                     setSelectedEquipmentByRow((prev) => {
                         const newState = { ...prev };
                         delete newState[`${label}-${index}`];
@@ -66,24 +65,21 @@ export function useSelectionHandlers({
                     return;
                 }
 
-                // Buscar el equipo seleccionado
                 const selected = equipos.find(
-                    (equipo) => equipo.tipo_de_producto === label && equipo.descripcion === value
+                    (equipo) => equipo.tipo_de_producto === label && String(equipo.id) === value
                 );
 
-                // Actualizar el estado del selector con el equipo encontrado
                 if (selected) {
                     setSelectedEquipmentByRow((prev: Record<string, { equipoId: string; description: string }>) => ({
                         ...prev,
                         [`${label}-${index}`]: {
                             equipoId: String(selected.id),
-                            description: value,
+                            description: selected.descripcion,
                         },
                     }));
                 }
             } else if (product_type === "MATERIAL") {
-            // Limpiar el selector si se selecciona la opción por defecto
-                if (value === `Seleccionar - ${label}`) {
+                if (!value) {
                     setSelectedMaterialByRow((prev) => {
                         const newState = { ...prev };
                         delete newState[`${label}-${index}`];
@@ -92,18 +88,16 @@ export function useSelectionHandlers({
                     return;
                 }
 
-                // Buscar el material seleccionado
                 const selected = materiales.find(
-                    (material) => material.tipo_de_producto === label && material.descripcion === value
+                    (material) => material.tipo_de_producto === label && String(material.id) === value
                 );
 
-                // Actualizar el estado del selector con el material encontrado
                 if (selected) {
                     setSelectedMaterialByRow((prev: Record<string, { materialId: string; description: string }>) => ({
                     ...prev,
                     [`${label}-${index}`]: {
                         materialId: String(selected.id),
-                        description: value,
+                        description: selected.descripcion,
                     },
                     }));
                 }
@@ -120,8 +114,7 @@ export function useSelectionHandlers({
             if (product_type === "EQUIPO") {
                 const selectedEquipo = selectedEquipmentByRow[`${label}-${index}`];
 
-                // Validar que hay una selección válida
-                if (!selectedEquipo || selectedEquipo.description === `Seleccionar - ${label}`) {
+                if (!selectedEquipo?.equipoId) {
                     return;
                 }
 
@@ -187,8 +180,7 @@ export function useSelectionHandlers({
             } else if (product_type === "MATERIAL") {
                 const selectedMaterial = selectedMaterialByRow[`${label}-${index}`];
 
-                // Validar que hay una selección válida
-                if (!selectedMaterial || selectedMaterial.description === `Seleccionar - ${label}`) {
+                if (!selectedMaterial?.materialId) {
                     return;
                 }
 
