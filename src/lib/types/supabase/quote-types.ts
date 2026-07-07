@@ -24,7 +24,7 @@ export type Quote = {
     id: string;
     cod_cotizacion: string;
     proyecto_id: string;
-    proyecto_info: Project;
+    proyecto_info: Project | undefined;
     igv: string;
     tasa_cambio: string;
     precio_dolares: string;

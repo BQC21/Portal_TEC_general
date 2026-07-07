@@ -29,7 +29,7 @@ export type SupabaseReportRow = {
 export type Report = {
     id: string;
     cotizacion_id?: string;
-    cotizacion_info?: Quote;
+    cotizacion_info?: Quote | undefined;
     // datos del cliente
     cliente?: string;
     ruc_dni?: string;
