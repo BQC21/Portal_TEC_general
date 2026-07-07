@@ -5,6 +5,8 @@ import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem }
 import { Project, ProjectFormData } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
+import { Quote, QuoteFormData } from "../supabase/quote-types";
+import { ReportFormData } from "../supabase/report-types";
 import { Supplier, SupplierFormData } from "../supabase/supplier-types";
 import { Type, TypeFormData } from "../supabase/type-types";
 import { Zone, ZoneFormData } from "../supabase/zone-types";
@@ -55,6 +57,16 @@ export type AddTypeModalProps = {
     onAddType: (type: TypeFormData) => void;
     onClose: () => void;
 };
+
+export type AddQuoteModalProps = {
+    onAddQuote: (quote: QuoteFormData) => void;
+    onClose: () => void;
+}
+
+export type AddReportModalProps = {
+    onAddReport: (report: ReportFormData) => void;
+    onClose: () => void;
+}
 
 // ------------------
 // modals -- editar
@@ -107,6 +119,18 @@ export type EditTypeModalProps = {
     onClose: () => void;
 };
 
+export type EditQuoteModalProps = {
+    existingQuote: Quote;
+    onUpdateQuote: (quote: QuoteFormData) => void;
+    onClose: () => void;
+}
+
+export type EditReportModalProps = {
+    existingReport: Report;
+    onUpdateReport: (report: ReportFormData) => void;
+    onClose: () => void;
+}
+
 // ------------------
 // modals -- borrar
 // ------------------
@@ -140,21 +164,33 @@ export type DeleteZoneModalProps = {
 
 export type DeleteSupplierModalProps = {
     supplier: Supplier;
-    onDeleteSupplier: (supplierId: string) => void
+    onDeleteSupplier: (supplierId: string) => void;
     onClose: () => void;
 };
 
 export type DeleteBrandModalProps = {
     brand: Brand;
-    onDeleteBrand: (brandId: string) => void
+    onDeleteBrand: (brandId: string) => void;
     onClose: () => void;
 };
 
 export type DeleteTypeModalProps = {
     type: Type;
-    onDeleteType: (typeId: string) => void
+    onDeleteType: (typeId: string) => void;
     onClose: () => void;
 };
+
+export type DeleteQuoteModalProps = {
+    quote: Quote;
+    onDeleteQuote: (quoteId: string) => void;
+    onClose: () => void;
+}
+
+export type DeleteReportModalProps = {
+    report: Report;
+    onDeleteReport: (reportId: string) => void;
+    onClose: () => void;
+}
 
 // ------------------
 // modals -- subida masiva
