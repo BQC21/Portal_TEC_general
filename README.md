@@ -5,7 +5,7 @@ Se desarrolla un portal corporativo empresarial que será desplegado en un sitio
 
 ## Características
 - [x] Módulo 1: Base de datos de equipos y materiales eléctricos 
-- [ ] Módulo 2: Dimensionamiento del sistema solar FV 
+- [x] Módulo 2: Dimensionamiento del sistema solar FV 
 - [ ] Módulo 3: Generación automatizada de reportes de cotización
 
 <!-- En la página principal, se muestra el tablero donde se registra, en base a los 5 módulos, los productos almacenados, la cantidad de proyectos en curso y las cotizaciones almacenadas. -->
