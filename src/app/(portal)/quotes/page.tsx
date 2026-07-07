@@ -1,6 +1,10 @@
 "use client";
 
+import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add_quote";
+import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
 import { PortalShell } from "@/features/view/components/PortalShell";
+import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";
+import ReportTable from "@/features/view/components/Tables/quotes/ReportTable";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 import { useQuoteMutations, useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
@@ -106,14 +110,14 @@ export default function QuotesPage(){
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                     <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                            <Button2Modal_quote
+                            <Button2Add_quote
                                 onAddQuote={handleAddQuote}
                             />
                         </div>
                     </section>
                     <QuoteTable
-                        quotes={quotes}
-                        totalQuotes={quotes.length}
+                        quote={quotes}
+                        totalQuote={quotes.length}
                         onUpdateQuote={handleEditQuote}
                         onDeleteQuote={handleDeleteQuote}
                     />
@@ -122,14 +126,14 @@ export default function QuotesPage(){
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                     <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                            <Button2Modal_report
+                            <Button2Add_report
                                 onAddReport={handleAddReport}
                             />
                         </div>
                     </section>
                     <ReportTable
-                        reports={reports}
-                        totalReports={reports.length}
+                        report={reports}
+                        totalReport={reports.length}
                         onUpdateReport={handleEditReport}
                         onDeleteReport={handleDeleteReport}
                     />
