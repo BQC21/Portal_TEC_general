@@ -53,13 +53,13 @@ export default function DashboardPage() {
         {
             title: "Cotizaciones enlistadas",
             value: quotes.length,
-            accent: "bg-emerald-50 text-red-700",
+            accent: "bg-red-50 text-red-700",
             icon: "▣",
         },
         {
             title: "Reportes enlistados",
             value: reports.length,
-            accent: "bg-emerald-50 text-red-700",
+            accent: "bg-red-50 text-red-700",
             icon: "▣",
         },
     ];
