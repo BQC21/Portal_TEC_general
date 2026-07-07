@@ -29,7 +29,8 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const isRootRoute = pathname === "/";
     const isProtectedRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/proveedores") 
-            || pathname.startsWith("/equipos") || pathname.startsWith("/materiales") || pathname.startsWith("/sizing");
+            || pathname.startsWith("/equipos") || pathname.startsWith("/materiales") || pathname.startsWith("/sizing")
+            || pathname.startsWith("/quotes");
     const isLoginRoute = pathname.startsWith("/login");
 
 
@@ -54,5 +55,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: ["/", "/dashboard/:path*", "/proveedores/:path*",
-        "/equipos/:path*", "/materiales/:path*", "/sizing/:path*", "/login"],
+        "/equipos/:path*", "/materiales/:path*", "/sizing/:path*", 
+        "/quotes/:path", "/login"],
 };
