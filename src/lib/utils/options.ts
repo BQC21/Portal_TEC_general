@@ -138,3 +138,9 @@ export const ANGLE_OPTIONS = [
 export const FILL_OPTIONS = [
     "AUTOMÁTICO", "MANUAL"
 ]
+
+// ------------------
+// ------------------
+// MÓDULO 3
+// ------------------
+// ------------------

@@ -36,6 +36,8 @@ import { Project_MaterialesFormState } from "../types/supabase/project_materiale
 import { SupplierFormstate } from "../types/supabase/supplier-types";
 import { BrandFormstate } from "../types/supabase/brand.types";
 import { TypeFormstate } from "../types/supabase/type-types";
+import { QuoteFormState } from "../types/supabase/quote-types";
+import { ReportFormState } from "../types/supabase/report-types";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
@@ -200,4 +202,30 @@ export const INITIAL_TYPE_FORM: TypeFormstate = {
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
+}
+
+export const INITIAL_QUOTE_FORM: QuoteFormState = {
+        created_at: new Date(),
+        updated_at: new Date(),
+        proyecto_id: "",
+        proyecto_info: undefined,
+        cod_cotizacion: "",
+        igv: "",
+        tasa_cambio: "",
+        precio_dolares: "",
+}
+
+export const INITIAL_REPORT_FORM: ReportFormState = {
+    created_at: new Date(),
+    updated_at: new Date(),
+    cotizacion_id: "",
+    cotizacion_info: undefined,
+    cliente: "",
+    ruc_dni: "",
+    fecha: undefined,
+    lugar: "",
+    atencion: "",
+    porcentaje_eqmt: "",
+    porcentaje_inst: "",
+    precio_cotizacion: "",
 }

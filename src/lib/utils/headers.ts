@@ -102,3 +102,26 @@ export const TABLE_HEADERS_TYPE = [
     "Categoría",
     "Acciones",
 ]
+
+export const TABLE_HEADERS_QUOTE = [
+    "Código de cotización",
+    "Proyecto asociado",
+    "IGV",
+    "Tasa de cambio",
+    "Precio de venta ($)",
+    "Creado",
+    "Actualizado",
+    "Ver cotización",
+    "Remover cotización",
+]
+
+export const TABLE_HEADERS_REPORT = [
+    "Cotización asociada",
+    "Nombre del cliente",
+    "(%) Eq y Mat",
+    "(%) Instalación",
+    "Precio de cotización",
+    "Creado",
+    "Actualizado",
+    "Acciones"
+]
