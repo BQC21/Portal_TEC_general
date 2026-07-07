@@ -5,6 +5,8 @@ import { PortalShell } from "@/features/view/components/PortalShell";
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
+import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
+import { useReports } from "@/features/view/hooks/services/useRealtimeReports";
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 
 export default function DashboardPage() {
@@ -14,6 +16,8 @@ export default function DashboardPage() {
     const { materiales } = useMateriales();
     const { projects } = useProjects();
     const { zones } = useZone();
+    const { quotes } = useQuotes();
+    const { reports } = useReports();
     const metrics = [
         // {
         //     title: "Productos Activos",
@@ -44,6 +48,18 @@ export default function DashboardPage() {
             title: "Zonas enlistadas",
             value: zones.length,
             accent: "bg-emerald-50 text-emerald-700",
+            icon: "▣",
+        },
+        {
+            title: "Cotizaciones enlistadas",
+            value: quotes.length,
+            accent: "bg-emerald-50 text-red-700",
+            icon: "▣",
+        },
+        {
+            title: "Reportes enlistados",
+            value: reports.length,
+            accent: "bg-emerald-50 text-red-700",
             icon: "▣",
         },
     ];
