@@ -54,10 +54,10 @@ export type useReportResult = {
 }
 
 // manejo de la visualización modificada
-export type useQuoteMutationResult = {
+export type useReportMutationResult = {
     loading: boolean;
     error: string | null;
     create: (report: ReportFormData) => Promise<Report>;
     update: (id: string, report: ReportFormData) => Promise<Report>;
-    remove: (id: string) => Promise<Report>;
+    remove: (id: string) => Promise<void>;
 }

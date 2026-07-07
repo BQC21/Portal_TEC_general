@@ -47,5 +47,5 @@ export type useQuoteMutationResult = {
     error: string | null;
     create: (quote: QuoteFormData) => Promise<Quote>;
     update: (id: string, quote: QuoteFormData) => Promise<Quote>;
-    remove: (id: string) => Promise<Quote>;
+    remove: (id: string) => Promise<void>;
 }
