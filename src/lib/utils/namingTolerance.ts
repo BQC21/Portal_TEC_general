@@ -10,6 +10,8 @@ export const PROJECTS_MATERIALES_TABLE = "join_proyecto_materiales";
 export const SUPPLIER_TABLE = "proveedores";
 export const BRAND_TABLE = "marcas";
 export const TYPE_TABLE = "tipo";
+export const QUOTE_TABLE = "cotizacion";
+export const REPORT_TABLE = "reporte";
 
 // --------------------------
 // ---- Tolerancias de nomenclatura para el atributo de fuente de divisas

@@ -1,6 +1,7 @@
 import { mapReportToSupabaseRow, mapSupabaseRowtoReport } from "@/lib/mapping/mapping_reports";
 import { createClient } from "@/lib/supabase/client";
-import { ReportFormData } from "@/lib/types/supabase/report-types";
+import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
+import { REPORT_TABLE } from "@/lib/utils/namingTolerance";
 
 // crear
 export async function createReport(report: ReportFormData): Promise<Report> {
@@ -112,9 +113,9 @@ export async function updateReport(id: string, report: ReportFormData): Promise<
 export async function deleteReport(id: string): Promise<void> {
     const supabase = createClient();
 
-    const { error } = await supabase.from(QUOTE_TABLE).delete().eq("id", id);
+    const { error } = await supabase.from(REPORT_TABLE).delete().eq("id", id);
 
     if (error) {
-        throw new Error(`Error al eliminar la cotización: ${error.message}`);
+        throw new Error(`Error al eliminar el reporte: ${error.message}`);
     }
 }

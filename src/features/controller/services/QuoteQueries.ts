@@ -5,6 +5,7 @@
 import { mapQuoteToSupabaseRow, mapSupabaseRowtoQuote } from "@/lib/mapping/mapping_quotes";
 import { createClient } from "@/lib/supabase/client";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
+import { QUOTE_TABLE } from "@/lib/utils/namingTolerance";
 
 // crear
 export async function createQuote(quote: QuoteFormData): Promise<Quote> {
