@@ -3,6 +3,7 @@
 import { Button2ModalPropsQuote } from "@/lib/types/components/buttons";
 import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
+import AddQuoteModal from "../../../Modals/quotes/quote/AddQuoteModal";
 
 export default function Button2Add_quote({onAddQuote}: Button2ModalPropsQuote){
     const [open, setOpen] = useState(false);
@@ -19,6 +20,11 @@ export default function Button2Add_quote({onAddQuote}: Button2ModalPropsQuote){
 
             {open && (
                 <AddQuoteModal
+                    onAddQuote={async (quote) => {
+                        await onAddQuote(quote);
+                        setOpen(false);
+                    }}
+                    onClose={() => setOpen(false)}
                 />
             )}
         </div>
