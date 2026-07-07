@@ -4,6 +4,16 @@ import { SupabaseProjectRow, Project } from "@/lib/types/supabase/project-types"
 export type Project_MaterialesFormState = Omit<Project_Materiales, "id">;
 export type Project_MaterialesFormData = Omit<Project_Materiales, "id">;
 
+// Proyecto-MATERIAL relationship seleccionado
+export type SelectedProjectMaterialsItem = {
+    row: string;
+    // propiedades generales
+    id: string;
+    proyecto_id: string;
+    material_id: string;
+    cantidad: string;
+};
+
 export type SupabaseProject_MaterialesRow = {
     id?: number | string;
     material_id?: number | string;

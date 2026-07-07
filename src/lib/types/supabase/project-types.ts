@@ -4,6 +4,14 @@ import { SupabaseZoneRow, Zone } from "@/lib/types/supabase/zone-types";
 export type ProjectFormState = Omit<Project, "id">; // visto desde el componente ProjectTable
 export type ProjectFormData = Omit<Project, "id">; // usado para las mutaciones (update || remove)
 
+// Proyecto seleccionado
+export type SelectedProjectItem = {
+    row: string;
+    // propiedades generales
+    id: string;
+    nombre: string;
+};
+
 // Columnas correspondientes a la tabla de proyectos de Supabase
 export type SupabaseProjectRow = {
     // propiedades generales

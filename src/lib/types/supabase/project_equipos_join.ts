@@ -4,6 +4,16 @@ import { SupabaseProjectRow, Project } from "@/lib/types/supabase/project-types"
 export type Project_EquiposFormState = Omit<Project_Equipos, "id">;
 export type Project_EquiposFormData = Omit<Project_Equipos, "id">;
 
+// Proyecto-EQUIPO relationship seleccionado
+export type SelectedProjectEquiposItem = {
+    row: string;
+    // propiedades generales
+    id: string;
+    proyecto_id: string;
+    equipo_id: string;
+    cantidad: string;
+};
+
 export type SupabaseProject_EquiposRow = {
     id?: number | string;
     equipo_id?: number | string;
