@@ -36,22 +36,16 @@ export default function QuoteTable({quote, totalQuote,
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit
-                                                    project={project}
-                                                    project_equipos={projectEquipos}
-                                                    project_materiales={projectMateriales}
-                                                    onUpdateProject={onUpdateProject}
+                                                    quote={quote}
+                                                    onUpdateQuote={onUpdateQuote}
                                                 />
                                             </div>
                                         </td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4">
                                                 <Button2Trash
-                                                    project={project}
-                                                    project_equipos={projectEquipos}
-                                                    project_materiales={projectMateriales}
-                                                    onDeleteProject={() => onDeleteProject(project.id)}
-                                                    onDeleteProjectEquipos={() => onDeleteProjectEquipos?.(projectEquipos[0]?.id?.toString() ?? "")}
-                                                    onDeleteProjectMateriales={() => onDeleteProjectMateriales?.(projectMateriales[0]?.id?.toString() ?? "")}
+                                                    quote={quote}
+                                                    onDeleteQuote={() => onDeleteQuote(quote.id)}
                                                 />
                                             </div>
                                         </td>

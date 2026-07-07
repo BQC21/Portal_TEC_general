@@ -5,7 +5,7 @@ import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem }
 import { Project, ProjectFormData } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
-import { QuoteFormData } from "../supabase/quote-types";
+import { Quote, QuoteFormData } from "../supabase/quote-types";
 import { ReportFormData } from "../supabase/report-types";
 import { Supplier, SupplierFormData } from "../supabase/supplier-types";
 import { Type, TypeFormData } from "../supabase/type-types";
@@ -102,6 +102,16 @@ export type EditTypeModalProps = {
     onUpdateType: (type: Type) => void;
 };
 
+export type EditQuoteModalProps = {
+    quote: Quote;
+    onUpdateQuote: (quote: Quote) => void;
+}
+
+export type EditReportModalProps = {
+    report: Report;
+    onUpdateReport: (report: Report) => void;
+}
+
 // ------------------
 // botones -- borrar
 // ------------------
@@ -144,6 +154,16 @@ export type DeleteTypeModalProps = {
     type: Type;
     onDeleteType: (typeId: string) => void;
 };
+
+export type DeleteQuoteModalProps = {
+    quote: Quote;
+    onDeleteQuote: (quoteId: string) => void;
+}
+
+export type DeleteReportModalProps = {
+    report: Report;
+    onDeleteReport: (reportId: string) => void;
+}
 
 // ------------------
 // botones -- borrado masivo
