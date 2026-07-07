@@ -1,6 +1,6 @@
 "use client";
 
-import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add_quote";
+import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add";
 import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
 import { PortalShell } from "@/features/view/components/PortalShell";
 import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";

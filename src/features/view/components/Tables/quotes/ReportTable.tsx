@@ -1,6 +1,8 @@
 import { ReportTableProps } from "@/lib/types/components/tables";
 import { TABLE_HEADERS_REPORT } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";
+import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
 
 
 export default function ReportTable({report, totalReport, 
@@ -36,11 +38,11 @@ export default function ReportTable({report, totalReport,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
+                                                <Button2Edit_report
                                                     report={report}
                                                     onUpdateReport={onUpdateReport}
                                                 />
-                                                <Button2Trash
+                                                <Button2Trash_report
                                                     report={report}
                                                     onDeleteReport={() => onDeleteReport(report.id)}
                                                 />

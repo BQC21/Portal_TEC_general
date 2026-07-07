@@ -1,6 +1,8 @@
 import { QuoteTableProps } from "@/lib/types/components/tables";
 import { TABLE_HEADERS_QUOTE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
+import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
 
 export default function QuoteTable({quote, totalQuote, 
     onUpdateQuote, onDeleteQuote}: QuoteTableProps){
@@ -35,7 +37,7 @@ export default function QuoteTable({quote, totalQuote,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
+                                                <Button2Edit_quote
                                                     quote={quote}
                                                     onUpdateQuote={onUpdateQuote}
                                                 />
@@ -43,7 +45,7 @@ export default function QuoteTable({quote, totalQuote,
                                         </td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4">
-                                                <Button2Trash
+                                                <Button2Trash_quote
                                                     quote={quote}
                                                     onDeleteQuote={() => onDeleteQuote(quote.id)}
                                                 />
