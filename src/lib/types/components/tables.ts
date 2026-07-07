@@ -5,6 +5,7 @@ import { Product, SelectedEquipmentItem, SelectedMaterialItem } from "../supabas
 import { Project } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
+import { Quote } from "../supabase/quote-types";
 import { Supplier } from "../supabase/supplier-types";
 import { Type } from "../supabase/type-types";
 import { Zone } from "../supabase/zone-types";
@@ -72,3 +73,19 @@ export type TiposTableProps = {
     onUpdateType: (type: Type) => void;
     onDeleteType: (typeId: string) => void;
 };
+
+// cotizaciones
+export type QuoteTableProps = {
+    quote: Quote[];
+    totalQuote: number;
+    onUpdateQuote: (quote: Quote) => void;
+    onDeleteQuote: (quoteId: string) => void;
+}
+
+// reportes
+export type ReportTableProps = {
+    report: Report[];
+    totalReport: number;
+    onUpdateReport: (report: Report) => void;
+    onDeleteReport: (reportId: string) => void;
+}
