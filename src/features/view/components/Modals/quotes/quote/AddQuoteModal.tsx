@@ -14,6 +14,17 @@ import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quot
 import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
+import { EP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/EP_PriceTable";
+import { Structure_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Structure_PriceTable";
+import { Consume_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Consume_PriceTable";
+import { EPP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/EPP_PriceTable";
+import { Tooling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Tooling_PriceTable";
+import { Hotel_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Hotel_PriceTable";
+import { Personal_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Personal_PriceTable";
+import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/SCTR_PriceTable";
+import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Traveling_PriceTable";
+import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Courier_PriceTable";
+import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -139,11 +150,11 @@ export default function AddQuoteModal({
                             </div>
                         </div>
 
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1/>
                             </div>
-                            {/* <div className="rounded-2xl border border-slate-200 p-4">
+                            <div className="rounded-2xl border border-slate-200 p-4">
                                 <EP_PriceTable/>
                                 <Structure_PriceTable/>
                                 <Consume_PriceTable/>
@@ -152,18 +163,18 @@ export default function AddQuoteModal({
                                 <Hotel_PriceTable/>
                                 <Personal_PriceTable/>
                                 <SCTR_PriceTable/>
-                            </div> */}
+                            </div>
                         </div>
 
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2/>
                             </div>
-                            {/* <div className="rounded-2xl border border-slate-200 p-4">
+                            <div className="rounded-2xl border border-slate-200 p-4">
                                 <Courier_PriceTable/>
                                 <Eating_PriceTable/>
                                 <Traveling_PriceTable/>
-                            </div> */}
+                            </div>
                         </div>
 
                         <div className="mt-6 grid gap-6 grid-cols">
