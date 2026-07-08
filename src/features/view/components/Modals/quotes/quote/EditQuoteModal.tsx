@@ -10,6 +10,7 @@ import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
+import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 
 export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose, 
     existing_project_equipos, existing_project_materiales}: EditQuoteModalProps){
@@ -102,6 +103,7 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                     />
 
                     {hasSelectedProject && (
+                        <>
                         <div className="mt-6 grid gap-6 md:grid-cols-2">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
@@ -125,6 +127,33 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                                 </p>
                             </div>
                         </div>
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_3fr]">
+                            <div className="mt-6 grid gap-6">
+                                <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Márgenes financieros</h2>
+                                <AddProductNumberField
+                                    label="Porcentaje de MarkUp (%)"
+                                    required
+                                    value={Number(form.markup) > 0 ? Number(form.markup) : ""}
+                                    onChange={(value) => updateField("markup", String(value))}
+                                    step={1}   min={30}   max={50}
+                                />
+                                <AddProductNumberField
+                                    label="Porcentaje del margen de riesgos para la tabla de recursos (%)"
+                                    required
+                                    value={Number(form.gm_general) > 0 ? Number(form.gm_general) : ""}
+                                    onChange={(value) => updateField("gm_general", String(value))}
+                                    step={1}   min={1}   max={10}
+                                />
+                                <AddProductNumberField
+                                    label="Porcentaje del margen de riesgos para la tabla de viáticos (%)"
+                                    required
+                                    value={Number(form.gm_viaticos) > 0 ? Number(form.gm_viaticos) : ""}
+                                    onChange={(value) => updateField("gm_viaticos", String(value))}
+                                    step={1}   min={1}   max={10}
+                                />
+                            </div>
+                        </div>
+                        </>
                     )}
 
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
