@@ -213,6 +213,9 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
         igv: "",
         tasa_cambio: "",
         precio_dolares: "",
+        markup: "",
+        gm_general: "",
+        gm_viaticos: "",
 }
 
 export const INITIAL_REPORT_FORM: ReportFormState = {

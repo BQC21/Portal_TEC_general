@@ -14,6 +14,10 @@ export type SupabaseQuoteRow = {
     igv?: number;
     tasa_cambio?: number;
     precio_dolares?: number;
+    // procentajes
+    markup: number;
+    gm_general: number;
+    gm_viaticos: number;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -28,6 +32,10 @@ export type Quote = {
     igv: string;
     tasa_cambio: string;
     precio_dolares: string;
+    // procentajes
+    markup: string;
+    gm_general: string;
+    gm_viaticos: string;
     // fechas
     created_at: Date;
     updated_at: Date;

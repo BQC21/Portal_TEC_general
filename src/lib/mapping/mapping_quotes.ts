@@ -13,6 +13,9 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         igv: quote.igv,
         tasa_cambio: quote.tasa_cambio,
         precio_dolares: quote.precio_dolares,
+        markup: quote.markup,
+        gm_general: quote.gm_general,
+        gm_viaticos: quote.gm_viaticos,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
     }
@@ -32,6 +35,9 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         igv: row.igv?.toString() || "",
         tasa_cambio: row.tasa_cambio?.toString() || "",
         precio_dolares: row.precio_dolares?.toString() || "",
+        markup: row.markup?.toString() || "",
+        gm_general: row.gm_general?.toString() || "",
+        gm_viaticos: row.gm_viaticos?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
     }
@@ -45,6 +51,9 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         igv: parseNumber(quote.igv),
         tasa_cambio: parseNumber(quote.tasa_cambio),
         precio_dolares: parseNumber(quote.precio_dolares),
+        markup: parseNumber(quote.markup) ?? 0,
+        gm_general: parseNumber(quote.gm_general) ?? 0,
+        gm_viaticos: parseNumber(quote.gm_viaticos) ?? 0,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
     }
