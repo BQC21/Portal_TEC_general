@@ -9,6 +9,7 @@ import { INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialVal
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
+import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -16,11 +17,14 @@ export default function AddQuoteModal({
     existing_project_equipos,
     existing_project_materiales,
 }: AddQuoteModalProps) {
+
+    // ESTADOS
     const { projects } = useProjects();
 
     const [form, setForm] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
     const [form_project, setForm_project] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
 
+    // SELECCIONADOS
     const hasSelectedProject = Boolean(form.proyecto_id);
 
     const projectEquipos = hasSelectedProject
@@ -39,9 +43,17 @@ export default function AddQuoteModal({
         .map((item) => item.material_info?.descripcion)
         .filter((description): description is string => Boolean(description));
 
+    // EVENTOS
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         await onAddQuote({ ...form });
+    }
+
+    function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
+        setForm((current) => {
+            const updated = { ...current, [field]: value };
+            return updated;
+        });
     }
 
     return (
@@ -69,6 +81,7 @@ export default function AddQuoteModal({
                     />
 
                     {hasSelectedProject && (
+                        <>
                         <div className="mt-6 grid gap-6 md:grid-cols-2">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
@@ -92,6 +105,33 @@ export default function AddQuoteModal({
                                 </p>
                             </div>
                         </div>
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_3fr]">
+                            <div className="mt-6 grid gap-6">
+                                <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Márgenes financieros</h2>
+                                <AddProductNumberField
+                                    label="Porcentaje de MarkUp (%)"
+                                    required
+                                    value={Number(form.markup) > 0 ? Number(form.markup) : ""}
+                                    onChange={(value) => updateField("markup", String(value))}
+                                    step={1}   min={30}   max={50}
+                                />
+                                <AddProductNumberField
+                                    label="Porcentaje del margen de riesgos para la tabla de recursos (%)"
+                                    required
+                                    value={Number(form.gm_general) > 0 ? Number(form.gm_general) : ""}
+                                    onChange={(value) => updateField("gm_general", String(value))}
+                                    step={1}   min={1}   max={10}
+                                />
+                                <AddProductNumberField
+                                    label="Porcentaje del margen de riesgos para la tabla de viáticos (%)"
+                                    required
+                                    value={Number(form.gm_viaticos) > 0 ? Number(form.gm_viaticos) : ""}
+                                    onChange={(value) => updateField("gm_viaticos", String(value))}
+                                    step={1}   min={1}   max={10}
+                                />
+                            </div>
+                        </div>
+                        </>
                     )}
 
                     <div className="mt-6 flex items-center justify-between border-t border-slate-200 pt-5">
