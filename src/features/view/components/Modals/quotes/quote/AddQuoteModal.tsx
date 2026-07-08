@@ -10,6 +10,9 @@ import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
 import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
+import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable2";
+import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
+import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -135,7 +138,7 @@ export default function AddQuoteModal({
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1/>
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
+                            {/* <div className="rounded-2xl border border-slate-200 p-4">
                                 <EP_PriceTable/>
                                 <Structure_PriceTable/>
                                 <Consume_PriceTable/>
@@ -144,18 +147,18 @@ export default function AddQuoteModal({
                                 <Hotel_PriceTable/>
                                 <Personal_PriceTable/>
                                 <SCTR_PriceTable/>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2/>
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
+                            {/* <div className="rounded-2xl border border-slate-200 p-4">
                                 <Courier_PriceTable/>
                                 <Eating_PriceTable/>
                                 <Traveling_PriceTable/>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className="mt-6 grid gap-6 grid-cols">
