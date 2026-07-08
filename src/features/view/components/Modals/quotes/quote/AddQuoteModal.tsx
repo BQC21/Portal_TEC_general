@@ -82,7 +82,7 @@ export default function AddQuoteModal({
 
                     {hasSelectedProject && (
                         <>
-                        <div className="mt-6 grid gap-6 md:grid-cols-2">
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
                                     Equipos seleccionados
@@ -104,8 +104,7 @@ export default function AddQuoteModal({
                                         : "No hay materiales registrados para este proyecto."}
                                 </p>
                             </div>
-                        </div>
-                        <div className="mt-6 grid gap-6 grid-cols-[1fr_3fr]">
+                            
                             <div className="mt-6 grid gap-6">
                                 <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Márgenes financieros</h2>
                                 <AddProductNumberField
@@ -130,6 +129,37 @@ export default function AddQuoteModal({
                                     step={1}   min={1}   max={10}
                                 />
                             </div>
+                        </div>
+
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <SummaryCostTable1/>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <EP_PriceTable/>
+                                <Structure_PriceTable/>
+                                <Consume_PriceTable/>
+                                <EPP_PriceTable/>
+                                <Tooling_PriceTable/>
+                                <Hotel_PriceTable/>
+                                <Personal_PriceTable/>
+                                <SCTR_PriceTable/>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <SummaryCostTable2/>
+                            </div>
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <Courier_PriceTable/>
+                                <Eating_PriceTable/>
+                                <Traveling_PriceTable/>
+                            </div>
+                        </div>
+
+                        <div className="mt-6 grid gap-6 grid-cols">
+                            <SummaryCostTable/>
                         </div>
                         </>
                     )}
