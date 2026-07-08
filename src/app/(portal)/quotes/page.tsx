@@ -35,17 +35,11 @@ export default function QuotesPage(){
     // JOIN EQUIPOS <---> PROYECTOS
     const { projects_equipos: project_equipos,
         refetch: fetchProjectEquipos } = useProjectEquipos();
-    const { create: create_project_equipos,
-        remove: remove_project_equipos
-    } = useProjectEquiposMutations();
 
     // JOIN MATERIALES <---> PROYECTOS    
     const { projects_materiales: project_materiales,
         refetch: fetchProjectMateriales
     } = useProjectMateriales();
-    const {create: create_project_material,
-        remove: remove_project_material
-    } = useProjectMaterialesMutations();
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -54,9 +48,6 @@ export default function QuotesPage(){
     //------- Agregar
     async function handleAddQuote(
         quote: QuoteFormData,
-        // selectedProject: SelectedProjectItem[] = [],
-        // selectedEquipmentProject: SelectedProjectEquiposItem[] = [],
-        // selectedMaterialProject: SelectedProjectMaterialsItem[] = []
     ) {
         await create_quote(quote);
         await refetch_quote();
@@ -64,9 +55,6 @@ export default function QuotesPage(){
 
     async function handleAddReport(
         report: ReportFormData,
-        // selectedProject: SelectedProjectItem[] = [],
-        // selectedEquipmentProject: SelectedProjectEquiposItem[] = [],
-        // selectedMaterialProject: SelectedProjectMaterialsItem[] = []
     ) {
         await create_report(report);
         await refetch_report();
@@ -112,6 +100,8 @@ export default function QuotesPage(){
                         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                             <Button2Add_quote
                                 onAddQuote={handleAddQuote}
+                                project_equipos={project_equipos}
+                                project_materiales={project_materiales}
                             />
                         </div>
                     </section>
@@ -120,6 +110,8 @@ export default function QuotesPage(){
                         totalQuote={quotes.length}
                         onUpdateQuote={handleEditQuote}
                         onDeleteQuote={handleDeleteQuote}
+                        projects_equipos={project_equipos}
+                        projects_materiales={project_materiales}
                     />
                 </div>
 
