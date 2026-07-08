@@ -11,7 +11,8 @@ import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
 
-export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose}: EditQuoteModalProps){
+export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose, 
+    existing_project_equipos, existing_project_materiales}: EditQuoteModalProps){
     // ----------------------------
     // ------- Estados ------------
     // ----------------------------
@@ -31,8 +32,25 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose}: 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
     // ----------------------------------------
-    // proyecto seleccionado
-    const selectedProject = form_project.nombre;
+    // condicionador de proyecto seleccionado
+    const hasSelectedProject = Boolean(form.proyecto_id);
+
+
+    // Equipos y materiales relacionados al proyecto seleccionado
+    const projectEquipos = hasSelectedProject
+        ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
+        : [];
+    const equiposDescriptions = projectEquipos
+        .map((item) => item.equipo_info?.descripcion)
+        .filter((description): description is string => Boolean(description));
+
+
+    const projectMateriales = hasSelectedProject
+        ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
+        : [];
+    const materialesDescriptions = projectMateriales
+        .map((item) => item.material_info?.descripcion)
+        .filter((description): description is string => Boolean(description));
 
 
     // ----------------------------------------
@@ -83,6 +101,31 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose}: 
                             setForm_project, setForm)}
                     />
 
+                    {hasSelectedProject && (
+                        <div className="mt-6 grid gap-6 md:grid-cols-2">
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <h3 className="mb-3 text-lg font-semibold text-slate-900">
+                                    Equipos seleccionados
+                                </h3>
+                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
+                                    {equiposDescriptions.length > 0
+                                        ? equiposDescriptions.join("\n")
+                                        : "No hay equipos registrados para este proyecto."}
+                                </p>
+                            </div>
+
+                            <div className="rounded-2xl border border-slate-200 p-4">
+                                <h3 className="mb-3 text-lg font-semibold text-slate-900">
+                                    Materiales seleccionados
+                                </h3>
+                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
+                                    {materialesDescriptions.length > 0
+                                        ? materialesDescriptions.join("\n")
+                                        : "No hay materiales registrados para este proyecto."}
+                                </p>
+                            </div>
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button
