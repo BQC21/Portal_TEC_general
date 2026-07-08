@@ -19,5 +19,5 @@ export const navigation: PortalNavItem[] = [
     { label: "Equipos Principales", href: "/equipos" },
     { label: "Materiales Eléctricos", href: "/materiales" },
     { label: "Dimensionamiento", href: "/sizing" },
-    { label: "Cotizaciones", href: "quotes" }
+    { label: "Cotizaciones", href: "/quotes" }
 ];
