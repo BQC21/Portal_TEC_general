@@ -16,6 +16,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         markup: quote.markup,
         gm_general: quote.gm_general,
         gm_viaticos: quote.gm_viaticos,
+        gm: quote.gm,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
     }
@@ -38,6 +39,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         markup: row.markup?.toString() || "",
         gm_general: row.gm_general?.toString() || "",
         gm_viaticos: row.gm_viaticos?.toString() || "",
+        gm: row.gm?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
     }
@@ -54,6 +56,7 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         markup: parseNumber(quote.markup) ?? 0,
         gm_general: parseNumber(quote.gm_general) ?? 0,
         gm_viaticos: parseNumber(quote.gm_viaticos) ?? 0,
+        gm: parseNumber(quote.gm) ?? 0,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
     }

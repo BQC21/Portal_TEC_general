@@ -216,6 +216,7 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
         markup: "",
         gm_general: "",
         gm_viaticos: "",
+        gm: "",
 }
 
 export const INITIAL_REPORT_FORM: ReportFormState = {

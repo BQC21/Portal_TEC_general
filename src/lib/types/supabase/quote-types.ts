@@ -18,6 +18,7 @@ export type SupabaseQuoteRow = {
     markup: number;
     gm_general: number;
     gm_viaticos: number;
+    gm: number; 
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -36,6 +37,7 @@ export type Quote = {
     markup: string;
     gm_general: string;
     gm_viaticos: string;
+    gm: string;
     // fechas
     created_at: Date;
     updated_at: Date;
