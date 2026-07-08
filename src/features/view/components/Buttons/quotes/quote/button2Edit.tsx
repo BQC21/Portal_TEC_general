@@ -7,7 +7,7 @@ import EditQuoteModal from "../../../Modals/quotes/quote/EditQuoteModal";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 
 export default function Button2Edit_quote({ quote,
-    onUpdateQuote }: EditQuoteModalProps) {
+    onUpdateQuote, project_equipos, project_materiales }: EditQuoteModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -29,6 +29,8 @@ export default function Button2Edit_quote({ quote,
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}
+                    existing_project_equipos={project_equipos}
+                    existing_project_materiales={project_materiales}
                 />
             )}
         </div>

@@ -5,7 +5,7 @@ import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
 import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
 
 export default function QuoteTable({quote, totalQuote, 
-    onUpdateQuote, onDeleteQuote}: QuoteTableProps){
+    onUpdateQuote, onDeleteQuote, projects_equipos, projects_materiales}: QuoteTableProps){
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -40,6 +40,8 @@ export default function QuoteTable({quote, totalQuote,
                                                 <Button2Edit_quote
                                                     quote={quote}
                                                     onUpdateQuote={onUpdateQuote}
+                                                    project_equipos={projects_equipos}
+                                                    project_materiales={projects_materiales}
                                                 />
                                             </div>
                                         </td>
