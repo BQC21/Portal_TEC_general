@@ -150,7 +150,7 @@ export default function AddQuoteModal({
                             </div>
                         </div>
 
-                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1/>
                             </div>
@@ -166,7 +166,7 @@ export default function AddQuoteModal({
                             </div>
                         </div>
 
-                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2/>
                             </div>
