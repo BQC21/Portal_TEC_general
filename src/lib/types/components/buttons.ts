@@ -51,6 +51,8 @@ export type Button2ModalPropsType = {
 
 export type Button2ModalPropsQuote = {
     onAddQuote: (quote: QuoteFormData) => void;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
 }
 
 export type Button2ModalPropsReport = {
@@ -105,6 +107,8 @@ export type EditTypeModalProps = {
 export type EditQuoteModalProps = {
     quote: Quote;
     onUpdateQuote: (quote: Quote) => void;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
 }
 
 export type EditReportModalProps = {

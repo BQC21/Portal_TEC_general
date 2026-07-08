@@ -81,6 +81,8 @@ export type QuoteTableProps = {
     totalQuote: number;
     onUpdateQuote: (quote: Quote) => void;
     onDeleteQuote: (quoteId: string) => void;
+    projects_equipos: Project_Equipos[];
+    projects_materiales: Project_Materiales[];
 }
 
 // reportes
