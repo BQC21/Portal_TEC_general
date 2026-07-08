@@ -8,6 +8,8 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
 
 export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose}: EditQuoteModalProps){
     // ----------------------------
@@ -71,7 +73,15 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose}: 
                 </div>
 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                
+                    <AddProductSelectField
+                        label="Seleccionar Proyecto"
+                        required
+                        value={form_project.nombre}
+                        options={["Seleccione proyecto", 
+                            ...projects.map((project) => project.nombre)]}
+                        onChange={(value) => ProjectSelection(value, projects, 
+                            setForm_project, setForm)}
+                    />
 
 
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
