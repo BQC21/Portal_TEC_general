@@ -13,6 +13,7 @@ import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable2";
 import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable";
+import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -108,8 +109,8 @@ export default function AddQuoteModal({
                                 </p>
                             </div>
                             
-                            <div className="mt-6 grid gap-6">
-                                <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Márgenes financieros</h2>
+                            <div className="grid gap-6">
+                                <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Márgenes financieros</h2>
                                 <AddProductNumberField
                                     label="Porcentaje de MarkUp (%)"
                                     required
@@ -130,6 +131,10 @@ export default function AddQuoteModal({
                                     value={Number(form.gm_viaticos) > 0 ? Number(form.gm_viaticos) : ""}
                                     onChange={(value) => updateField("gm_viaticos", String(value))}
                                     step={1}   min={1}   max={10}
+                                />
+                                <AddProductReadonlyField
+                                    label="Gross Margin"
+                                    value={Number(form.gm) > 0 ? String(Number(form.gm)) : ""}
                                 />
                             </div>
                         </div>
