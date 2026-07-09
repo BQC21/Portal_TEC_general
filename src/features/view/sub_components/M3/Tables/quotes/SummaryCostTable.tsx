@@ -8,7 +8,7 @@ export function SummaryCostTable({
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold text-slate-900">Resumen de costos de viáticos</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">Resumen de costos de cotización</h2>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
