@@ -25,6 +25,7 @@ import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Traveling_PriceTable";
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -97,7 +98,7 @@ export default function AddQuoteModal({
 
                     {hasSelectedProject && (
                         <>
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
                                     Equipos seleccionados
@@ -146,6 +147,30 @@ export default function AddQuoteModal({
                                 <AddProductReadonlyField
                                     label="Gross Margin"
                                     value={Number(form.gm) > 0 ? String(Number(form.gm)) : ""}
+                                />
+                            </div>
+
+                            <div className="grid gap-6">
+                                <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Parámetros financieros</h2>
+                                <AddProductNumberField
+                                    label="IGV (Impuesto General a la Venta)"
+                                    required
+                                    value={Number(form.igv) > 0 ? Number(form.igv) : ""}
+                                    onChange={(value) => updateField("igv", String(value))}
+                                    step={0.01}   min={0.1}   max={0.2}
+                                />
+                                <AddProductNumberField
+                                    label="Tasa de cambio"
+                                    required
+                                    value={Number(form.tasa_cambio) > 0 ? Number(form.tasa_cambio) : ""}
+                                    onChange={(value) => updateField("tasa_cambio", String(value))}
+                                    step={0.01}   min={3.00}   max={4.50}
+                                />
+                                <AddProductTextField
+                                    label="Código de cotización"
+                                    placeholder="C001-202607009"
+                                    value={form.cod_cotizacion ?? ""}
+                                    onChange={(value) => updateField("cod_cotizacion", value)}
                                 />
                             </div>
                         </div>
