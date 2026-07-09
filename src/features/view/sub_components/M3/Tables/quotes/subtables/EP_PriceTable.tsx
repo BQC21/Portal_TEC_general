@@ -1,8 +1,12 @@
-export type EP_PriceTable_props = {
+import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types"
+import { Project_EquiposFormState } from "@/lib/types/supabase/project_equipos_join"
 
+export type EP_PriceTable_props = {
+    selected_equipos: SelectedEquipmentItem[]
 }
 
 export function EP_PriceTable({
+    selected_equipos, 
     }: EP_PriceTable_props){
     return(
         <>
@@ -37,6 +41,7 @@ export function EP_PriceTable({
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Precio Unidad ($) + IGV
                                     </th>
+                                    {/* Cálculo automático */}
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Precio Total (s/.)
                                     </th>
@@ -52,10 +57,55 @@ export function EP_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-slate-100 text-left">
-                                    
-                                </tr>
-
+                                {selected_equipos.length > 0 ? (
+                                    selected_equipos.map((item) => (
+                                        <tr key={`${item.row}-${item.id}`} className="bg-white">
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.codigo}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.description}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.unidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.cantidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_soles}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_soles_igv}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_dolares}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_dolares_igv}
+                                            </td>
+                                            {/* Cálculo automático */}
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_soles*Number(item.cantidad)}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_soles_igv*Number(item.cantidad)}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_dolares*Number(item.cantidad)}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.precio_dolares_igv*Number(item.cantidad)}
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr className="bg-white">
+                                        <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                            No hay equipos seleccionados todavía.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

@@ -1,9 +1,8 @@
-export type EPP_PriceTable_props = {
+import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
-}
 
-export function EPP_PriceTable({
-    }: EPP_PriceTable_props){
+export function EPP_PriceTable(){
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -29,7 +28,34 @@ export function EPP_PriceTable({
                             </thead>
                             <tbody>
                                 <tr className="bg-slate-100 text-left">
-                                    
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductTextField
+                                            label="Descripción"
+                                            value=""
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Cantidad"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Precio Unidad (s/.)"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Precio Total (s/.)"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
                                 </tr>
 
                             </tbody>

@@ -1,8 +1,11 @@
-export type Consume_PriceTable_props = {
+import { SelectedMaterialItem } from "@/lib/types/supabase/product-types"
 
+export type Consume_PriceTable_props = {
+    selected_materiales: SelectedMaterialItem[]
 }
 
 export function Consume_PriceTable({
+        selected_materiales
     }: Consume_PriceTable_props){
     return(
         <>
@@ -49,8 +52,56 @@ export function Consume_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-slate-100 text-left">
-                                    
+                            <tr className="bg-slate-100 text-left">
+                                    {selected_materiales.length > 0 ? (
+                                        selected_materiales.map((item) => (
+                                            <tr key={`${item.row}-${item.id}`} className="bg-white">
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.codigo}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.description}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.unidad}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.cantidad}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_soles}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_soles_igv}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_dolares}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_dolares_igv}
+                                                </td>
+                                                {/* Cálculo automático */}
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_soles*Number(item.cantidad)}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_soles_igv*Number(item.cantidad)}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_dolares*Number(item.cantidad)}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.precio_dolares_igv*Number(item.cantidad)}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr className="bg-white">
+                                            <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                                No hay consumibles seleccionados todavía.
+                                            </td>
+                                        </tr>
+                                    )}
                                 </tr>
 
                             </tbody>

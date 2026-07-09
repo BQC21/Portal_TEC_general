@@ -1,14 +1,12 @@
-export type Traveling_PriceTable_props = {
+import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 
-}
-
-export function Traveling_PriceTable({
-    }: Traveling_PriceTable_props){
+export function Traveling_PriceTable(){
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">Costos de Viajes</h2>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
@@ -32,7 +30,41 @@ export function Traveling_PriceTable({
                             </thead>
                             <tbody>
                                 <tr className="bg-slate-100 text-left">
-                                    
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductTextField
+                                            label="Descripción"
+                                            value=""
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Monto"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Personas"
+                                            value=""
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Días"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        <AddProductNumberField
+                                            label="Precio Total (s/.)"
+                                            value={0}
+                                            onChange={() => {}}
+                                        />
+                                    </td>
                                 </tr>
 
                             </tbody>
