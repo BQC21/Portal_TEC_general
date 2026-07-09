@@ -20,14 +20,27 @@ export type SelectedEquipmentItem = {
     vmpp_vmin: number;
     isc_i_out: number;
     impp_i_in: string;
+    unidad: string;
     cantidad?: number; // cantidad seleccionada para el proyecto
+    // ṕrecios
+    precio_soles: number;
+    precio_dolares: number;
+    precio_soles_igv: number;
+    precio_dolares_igv: number;
 };
 // Material seleccionado
 export type SelectedMaterialItem = {
     row: string;
     id: string;
+    codigo: string;
+    unidad: string;
     description: string;
     cantidad?: number; // cantidad seleccionada para el proyecto
+    // ṕrecios
+    precio_soles: number;
+    precio_dolares: number;
+    precio_soles_igv: number;
+    precio_dolares_igv: number;
 };
 
 // Filas correspondientes a la tabla de productos de Supabase
