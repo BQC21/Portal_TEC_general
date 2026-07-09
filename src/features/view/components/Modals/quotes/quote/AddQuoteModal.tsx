@@ -8,7 +8,7 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
+import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable2";
 import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
@@ -26,6 +26,7 @@ import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/q
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -39,6 +40,8 @@ export default function AddQuoteModal({
 
     const [form, setForm] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
     const [form_project, setForm_project] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
+    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
+    const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
 
     // SELECCIONADOS
     const hasSelectedProject = Boolean(form.proyecto_id);
@@ -71,6 +74,18 @@ export default function AddQuoteModal({
             return updated;
         });
     }
+
+    // // ----------------------------------------
+    // // ------- Cálculos de requerimientos -----
+    // // ----------------------------------------
+
+    // const finantialRequirements = useFinantialRequirement(form, form_project)
+
+    // // ------------------------------------------------
+    // // ------- EFECTO PARA SINCRONIZAR CANTIDADES -----
+    // // ------------------------------------------------
+
+    // useSyncQuantities(form, finantialRequirements.finantialRequirements)
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -180,9 +195,15 @@ export default function AddQuoteModal({
                                 <SummaryCostTable1/>
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <EP_PriceTable/>
-                                <Structure_PriceTable/>
-                                <Consume_PriceTable/>
+                                <EP_PriceTable
+                                    selected_equipos={selectedEquipmentTable}
+                                />
+                                <Structure_PriceTable
+                                    selected_equipos={selectedEquipmentTable}
+                                />
+                                <Consume_PriceTable
+                                    selected_materiales={selectedMaterialTable}
+                                />
                                 <EPP_PriceTable/>
                                 <Tooling_PriceTable/>
                                 <Hotel_PriceTable/>

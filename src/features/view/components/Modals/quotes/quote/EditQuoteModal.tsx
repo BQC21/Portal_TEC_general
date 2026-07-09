@@ -9,7 +9,7 @@ import { createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { ProjectSelection } from "@/features/view/hooks/modals/useProjectSelection";
+import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
@@ -27,6 +27,7 @@ import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quo
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Traveling_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose, 
     existing_project_equipos, existing_project_materiales}: EditQuoteModalProps){
@@ -45,6 +46,45 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
             ...existingQuote.proyecto_info,
         } : INITIAL_PROJECT_FORM
     );
+    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>(() =>
+        existing_project_equipos.filter((item) => item.equipo_info?.tipo_de_producto && item.equipo_info?.descripcion)
+        .map((item) => ({
+            row: item.equipo_info!.tipo_de_producto,
+            id: item.equipo_id,
+            description: item.equipo_info!.descripcion,
+            codigo: item.equipo_info!.cod_producto,
+            marca: item.equipo_info!.marca,
+            potencia_maxima: item.equipo_info!.potencia_maxima,
+            mppt: item.equipo_info!.mppt,
+            dod: item.equipo_info!.dod,
+            potencia_ac: item.equipo_info!.potencia_ac,
+            voc_vmax: item.equipo_info!.voc_vmax,
+            vmpp_vmin: item.equipo_info!.vmpp_vmin,
+            isc_i_out: item.equipo_info!.isc_i_out,
+            impp_i_in: item.equipo_info!.impp_i_in,
+            cantidad: Number(item.cantidad),
+            unidad: item.equipo_info!.unidad,
+            precio_soles: item.equipo_info!.precio_soles,
+            precio_dolares: item.equipo_info!.precio_dolares,
+            precio_soles_igv: item.equipo_info!.precio_soles_igv,
+            precio_dolares_igv: item.equipo_info!.precio_dolares_igv,
+        })),
+    );
+    const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>(() =>
+        existing_project_materiales.filter((item) => item.material_info?.tipo_de_producto && item.material_info?.descripcion)
+        .map((item) => ({
+            row: item.material_info!.tipo_de_producto,
+            id: item.material_id,
+            description: item.material_info!.descripcion,
+            codigo: item.material_info!.cod_producto,
+            unidad: item.material_info!.unidad,
+            precio_soles: item.material_info!.precio_soles,
+            precio_dolares: item.material_info!.precio_dolares,
+            precio_soles_igv: item.material_info!.precio_soles_igv,
+            precio_dolares_igv: item.material_info!.precio_dolares_igv,
+        })),
+    );
+
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -201,9 +241,15 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                                 <SummaryCostTable1/>
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <EP_PriceTable/>
-                                <Structure_PriceTable/>
-                                <Consume_PriceTable/>
+                                <EP_PriceTable
+                                    selected_equipos={selectedEquipmentTable}
+                                />
+                                <Structure_PriceTable
+                                    selected_equipos={selectedEquipmentTable}
+                                />
+                                <Consume_PriceTable
+                                    selected_materiales={selectedMaterialTable}
+                                />
                                 <EPP_PriceTable/>
                                 <Tooling_PriceTable/>
                                 <Hotel_PriceTable/>
