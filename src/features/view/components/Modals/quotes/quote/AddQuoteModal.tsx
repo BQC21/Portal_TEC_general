@@ -168,7 +168,7 @@ export default function AddQuoteModal({
                                 />
                                 <AddProductTextField
                                     label="Código de cotización"
-                                    placeholder="C001-202607009"
+                                    placeholder="C001-YYYYMMDDD"
                                     value={form.cod_cotizacion ?? ""}
                                     onChange={(value) => updateField("cod_cotizacion", value)}
                                 />
