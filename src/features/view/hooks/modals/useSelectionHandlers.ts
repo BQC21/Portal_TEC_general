@@ -167,6 +167,11 @@ export function useSelectionHandlers({
                         isc_i_out: equipoDetails.isc_i_out,
                         impp_i_in: equipoDetails.impp_i_in,
                         cantidad: cantidadInit,
+                        unidad: equipoDetails.unidad,
+                        precio_soles: equipoDetails.precio_soles,
+                        precio_dolares: equipoDetails.precio_dolares,
+                        precio_soles_igv: equipoDetails.precio_soles_igv,
+                        precio_dolares_igv: equipoDetails.precio_dolares_igv,
                     },
                     ]);
                 }
@@ -189,6 +194,14 @@ export function useSelectionHandlers({
                     (item) => item.id === selectedMaterial.materialId
                 );
 
+                const materialDetails = materiales.find(
+                    (material) => String(material.id) === selectedMaterial.materialId
+                );
+
+                if (!materialDetails) {
+                    return;
+                }
+
                 if (!isAlreadyAdded) {
                     // Determinar cantidad inicial según reglas por tipo de material
                     const cantidadInit = label === "MC4" ? 6 * Number(form.mppt_number) || 0 : 1;
@@ -199,7 +212,13 @@ export function useSelectionHandlers({
                         row: label,
                         id: selectedMaterial.materialId,
                         description: selectedMaterial.description,
+                        codigo: materialDetails.cod_producto,
                         cantidad: cantidadInit,
+                        unidad: materialDetails.unidad,
+                        precio_soles: materialDetails.precio_soles,
+                        precio_dolares: materialDetails.precio_dolares,
+                        precio_soles_igv: materialDetails.precio_soles_igv,
+                        precio_dolares_igv: materialDetails.precio_dolares_igv,
                     },
                     ]);
                 }
