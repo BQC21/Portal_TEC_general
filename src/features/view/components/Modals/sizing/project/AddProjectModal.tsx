@@ -217,6 +217,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                             isc_i_out: 0,
                             impp_i_in: "",
                             cantidad: 0,
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} 
                         selectedInverter={computedRequirements.computedRequirements.selectedInverter ?? {
                             row: "",
@@ -233,6 +238,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                             isc_i_out: 0,
                             impp_i_in: "",
                             cantidad: 0,
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} 
                         selectedBattery={computedRequirements.computedRequirements.selectedBattery ?? {
                             row: "",
@@ -249,6 +259,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                             isc_i_out: 0,
                             impp_i_in: "",
                             cantidad: 0,
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} />
 
                     <Selectors_M2

@@ -131,7 +131,12 @@ export default function EditProjectModal({
                 vmpp_vmin: item.equipo_info!.vmpp_vmin,
                 isc_i_out: item.equipo_info!.isc_i_out,
                 impp_i_in: item.equipo_info!.impp_i_in,
-                cantidad: Number(item.cantidad)
+                cantidad: Number(item.cantidad),
+                unidad: item.equipo_info!.unidad,
+                precio_soles: item.equipo_info!.precio_soles,
+                precio_dolares: item.equipo_info!.precio_dolares,
+                precio_soles_igv: item.equipo_info!.precio_soles_igv,
+                precio_dolares_igv: item.equipo_info!.precio_dolares_igv,
             })),
     );
     const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>(() =>
@@ -141,7 +146,13 @@ export default function EditProjectModal({
                 row: item.material_info!.tipo_de_producto,
                 id: item.material_id,
                 description: item.material_info!.descripcion,
-                cantidad: Number(item.cantidad)
+                cantidad: Number(item.cantidad),
+                codigo: item.material_info!.cod_producto,
+                unidad: item.material_info!.unidad,
+                precio_soles: item.material_info!.precio_soles,
+                precio_dolares: item.material_info!.precio_dolares,
+                precio_soles_igv: item.material_info!.precio_soles_igv,
+                precio_dolares_igv: item.material_info!.precio_dolares_igv,
             })),
     );
 
@@ -307,6 +318,11 @@ export default function EditProjectModal({
                             impp_i_in: "",
                             cantidad: 0,
                             row: "",
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} 
                         selectedInverter={computedRequirements.computedRequirements.selectedInverter ?? {
                             id: "",
@@ -323,6 +339,11 @@ export default function EditProjectModal({
                             impp_i_in: "",
                             cantidad: 0,
                             row: "",
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} 
                         selectedBattery={computedRequirements.computedRequirements.selectedBattery ?? {
                             id: "",
@@ -339,6 +360,11 @@ export default function EditProjectModal({
                             impp_i_in: "",
                             cantidad: 0,
                             row: "",
+                            unidad: "",
+                            precio_soles: 0,
+                            precio_dolares: 0,
+                            precio_soles_igv: 0,
+                            precio_dolares_igv: 0,
                         }} />
 
                     <Selectors_M2
