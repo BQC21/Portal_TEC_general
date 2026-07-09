@@ -1,7 +1,7 @@
-import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types"
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
 
 export type Structure_PriceTable_props = {
-    selected_equipos: SelectedEquipmentItem[]
+    selected_equipos: Project_Equipos[]
 }
 
 export function Structure_PriceTable({
@@ -55,48 +55,51 @@ export function Structure_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-slate-100 text-left">
                                     {selected_equipos.length > 0 ? (
                                         selected_equipos.map((item) => (
-                                            <tr key={`${item.row}-${item.id}`} className="bg-white">
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.codigo}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.description}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.unidad}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.cantidad}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles_igv}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares_igv}
-                                                </td>
-                                                {/* Cálculo automático */}
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles*Number(item.cantidad)}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles_igv*Number(item.cantidad)}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares*Number(item.cantidad)}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares_igv*Number(item.cantidad)}
-                                                </td>
-                                            </tr>
+                                            <tr key={`${item.id}`} className="bg-white">
+                                            {item.equipo_info?.tipo_de_producto === "ESTRUCTURA" && (
+                                                <>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.cod_producto}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.descripcion}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.unidad}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.cantidad}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.precio_soles}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.precio_soles_igv}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.precio_dolares}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {item.equipo_info?.precio_dolares_igv}
+                                                    </td>
+                                                    {/* Cálculo automático */}
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {Number(item.equipo_info?.precio_soles)*Number(item.cantidad)}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {Number(item.equipo_info?.precio_soles_igv)*Number(item.cantidad)}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {Number(item.equipo_info?.precio_dolares)*Number(item.cantidad)}
+                                                    </td>
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        {Number(item.equipo_info?.precio_dolares_igv)*Number(item.cantidad)}
+                                                    </td>
+                                                </>
+                                            )}
+                                        </tr>
                                         ))
                                     ) : (
                                         <tr className="bg-white">
@@ -105,7 +108,6 @@ export function Structure_PriceTable({
                                             </td>
                                         </tr>
                                     )}
-                                </tr>
 
                             </tbody>
                         </table>

@@ -196,13 +196,13 @@ export default function AddQuoteModal({
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <EP_PriceTable
-                                    selected_equipos={selectedEquipmentTable}
+                                    selected_equipos={projectEquipos}
                                 />
                                 <Structure_PriceTable
-                                    selected_equipos={selectedEquipmentTable}
+                                    selected_equipos={projectEquipos}
                                 />
                                 <Consume_PriceTable
-                                    selected_materiales={selectedMaterialTable}
+                                    selected_materiales={projectMateriales}
                                 />
                                 <EPP_PriceTable/>
                                 <Tooling_PriceTable/>

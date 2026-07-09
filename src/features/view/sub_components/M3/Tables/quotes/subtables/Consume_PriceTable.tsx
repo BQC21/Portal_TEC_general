@@ -1,7 +1,7 @@
-import { SelectedMaterialItem } from "@/lib/types/supabase/product-types"
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 
 export type Consume_PriceTable_props = {
-    selected_materiales: SelectedMaterialItem[]
+    selected_materiales: Project_Materiales[]
 }
 
 export function Consume_PriceTable({
@@ -52,46 +52,45 @@ export function Consume_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr className="bg-slate-100 text-left">
                                     {selected_materiales.length > 0 ? (
                                         selected_materiales.map((item) => (
-                                            <tr key={`${item.row}-${item.id}`} className="bg-white">
+                                            <tr key={`${item.id}`} className="bg-white">
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.codigo}
+                                                    {item.material_info?.cod_producto}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.description}
+                                                    {item.material_info?.descripcion}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.unidad}
+                                                    {item.material_info?.unidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.cantidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles}
+                                                    {item.material_info?.precio_soles}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles_igv}
+                                                    {item.material_info?.precio_soles_igv}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares}
+                                                    {item.material_info?.precio_dolares}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares_igv}
+                                                    {item.material_info?.precio_dolares_igv}
                                                 </td>
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles*Number(item.cantidad)}
+                                                    {Number(item.material_info?.precio_soles)*Number(item.cantidad)}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_soles_igv*Number(item.cantidad)}
+                                                    {Number(item.material_info?.precio_soles_igv)*Number(item.cantidad)}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares*Number(item.cantidad)}
+                                                    {Number(item.material_info?.precio_dolares)*Number(item.cantidad)}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.precio_dolares_igv*Number(item.cantidad)}
+                                                    {Number(item.material_info?.precio_dolares_igv)*Number(item.cantidad)}
                                                 </td>
                                             </tr>
                                         ))
@@ -102,7 +101,6 @@ export function Consume_PriceTable({
                                             </td>
                                         </tr>
                                     )}
-                                </tr>
 
                             </tbody>
                         </table>
