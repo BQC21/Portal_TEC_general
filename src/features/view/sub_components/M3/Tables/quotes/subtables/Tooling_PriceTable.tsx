@@ -1,7 +1,18 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { useEffect, useState } from "react";
 
 export function Tooling_PriceTable(){
+    const [descripcion, setDescripcion] = useState<string>("");
+    const [cantidad, setCantidad] = useState<number>(0);
+    const [precio_unitario, setPrecio_unitario] = useState<number>(0);
+
+    useEffect(() => {
+        setDescripcion(descripcion);
+        setCantidad(cantidad);
+        setPrecio_unitario(precio_unitario);
+    }, [cantidad, precio_unitario]);
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -30,30 +41,29 @@ export function Tooling_PriceTable(){
                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
-                                            value=""
-                                            onChange={() => {}}
+                                            value={descripcion}
+                                            onChange={(value) => setDescripcion(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Cantidad"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={cantidad} min={0}
+                                            onChange={(value) => setCantidad(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio Unidad (s/.)"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={precio_unitario} min={0}
+                                            onChange={(value) => setPrecio_unitario(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductNumberField
-                                            label="Precio Total (s/.)"
-                                            value={0}
-                                            onChange={() => {}}
-                                        />
+                                        {/* El precio total se calcula como la cantidad por el precio unitario */}
+                                        <span className="text-slate-900">
+                                            {cantidad * precio_unitario}
+                                        </span>
                                     </td>
                                 </tr>
 

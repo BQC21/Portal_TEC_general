@@ -1,7 +1,18 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { useEffect, useState } from "react";
 
 export function Hotel_PriceTable(){
+    const [monto, setMonto] = useState<number>(0);
+    const [personas, setPersonas] = useState<number>(0);
+    const [dias, setDias] = useState<number>(0);
+
+    useEffect(() => {
+        setMonto(monto);
+        setPersonas(personas);
+        setDias(dias);
+    }, [monto, personas, dias]);
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -30,30 +41,28 @@ export function Hotel_PriceTable(){
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={monto}
+                                            onChange={(value) => setMonto(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductTextField
+                                        <AddProductNumberField
                                             label="Personas"
-                                            value=""
-                                            onChange={() => {}}
+                                            value={personas} min={0}
+                                            onChange={(value) => setPersonas(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={dias} min={0}
+                                            onChange={(value) => setDias(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductNumberField
-                                            label="Precio Total (s/.)"
-                                            value={0}
-                                            onChange={() => {}}
-                                        />
+                                        <span className="text-slate-900">
+                                            {monto * personas * dias}
+                                        </span>
                                     </td>
                                 </tr>
 

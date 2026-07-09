@@ -1,7 +1,20 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export function Traveling_PriceTable(){
+
+    const [monto, setMonto] = useState<number>(0);
+    const [personas, setPersonas] = useState<number>(0);
+    const [dias, setDias] = useState<number>(0);
+
+    useEffect(() => {
+        setMonto(monto);
+        setPersonas(personas);
+        setDias(dias);
+    }, [monto, personas, dias]);
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -11,9 +24,6 @@ export function Traveling_PriceTable(){
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
                                 <tr className="bg-slate-100 text-left">
-                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                        Descripción
-                                    </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Monto (s/.)
                                     </th>
@@ -31,39 +41,30 @@ export function Traveling_PriceTable(){
                             <tbody>
                                 <tr className="bg-slate-100 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductTextField
-                                            label="Descripción"
-                                            value=""
-                                            onChange={() => {}}
-                                        />
-                                    </td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={monto} min={0}
+                                            onChange={(value) => setMonto(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Personas"
-                                            value=""
-                                            onChange={() => {}}
+                                            value={personas} min={0}
+                                            onChange={(value) => setPersonas(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={0}
-                                            onChange={() => {}}
+                                            value={dias} min={0}
+                                            onChange={(value) => setDias(value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductNumberField
-                                            label="Precio Total (s/.)"
-                                            value={0}
-                                            onChange={() => {}}
-                                        />
+                                        <span className="text-slate-900">
+                                            {monto * personas * dias}
+                                        </span>
                                     </td>
                                 </tr>
 
