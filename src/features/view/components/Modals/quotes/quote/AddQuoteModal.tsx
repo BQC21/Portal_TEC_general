@@ -98,7 +98,7 @@ export default function AddQuoteModal({
 
                     {hasSelectedProject && (
                         <>
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_1fr_1fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
                                     Equipos seleccionados
