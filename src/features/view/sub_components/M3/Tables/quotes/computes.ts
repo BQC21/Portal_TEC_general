@@ -116,3 +116,20 @@ export function computePrecioFinal(
         precioFinalDolaresIgv: precioFinalIgv / tasa,
     };
 }
+
+// -----------------
+// Gross Margin
+// -----------------
+
+export function computGrossMargin(
+    costs: RecursosCostsInput,
+    markup: number, gm_general: number,
+    tasa_cambio: number,
+) {
+    const ventaRecursos = computeVentaRecursos(costs, markup, gm_general, tasa_cambio).ventaSoles 
+    const subtotalMargeRecursos = computeSubtotalConMargenRecursos(costs, gm_general).soles
+
+    return{
+        gm : (ventaRecursos - subtotalMargeRecursos)/ventaRecursos
+    }
+}
