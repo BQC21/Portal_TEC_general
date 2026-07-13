@@ -1,4 +1,5 @@
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
+import { formatCurrency } from "@/lib/utils/normalization"
 
 export type Consume_PriceTable_props = {
     selected_materiales: Project_Materiales[]
@@ -15,12 +16,15 @@ export function Consume_PriceTable({
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
-                                <tr className="bg-slate-100 text-left">
+                                <tr className="bg-slate-400 text-left">
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         COD PROD
                                     </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Descripción
+                                    </th>
+                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                        Unidad
                                     </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Cantidad
@@ -68,29 +72,29 @@ export function Consume_PriceTable({
                                                     {item.cantidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.precio_soles}
+                                                    {formatCurrency(Number(item.material_info?.precio_soles), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.precio_soles_igv}
+                                                    {formatCurrency(Number(item.material_info?.precio_soles_igv), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.precio_dolares}
+                                                    {formatCurrency(Number(item.material_info?.precio_dolares), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.precio_dolares_igv}
+                                                    {formatCurrency(Number(item.material_info?.precio_dolares_igv), "USD")}
                                                 </td>
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {Number(item.material_info?.precio_soles)*Number(item.cantidad)}
+                                                    {formatCurrency(Number(item.material_info?.precio_soles)*Number(item.cantidad), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {Number(item.material_info?.precio_soles_igv)*Number(item.cantidad)}
+                                                    {formatCurrency(Number(item.material_info?.precio_soles_igv)*Number(item.cantidad), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {Number(item.material_info?.precio_dolares)*Number(item.cantidad)}
+                                                    {formatCurrency(Number(item.material_info?.precio_dolares)*Number(item.cantidad), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {Number(item.material_info?.precio_dolares_igv)*Number(item.cantidad)}
+                                                    {formatCurrency(Number(item.material_info?.precio_dolares_igv)*Number(item.cantidad), "USD")}
                                                 </td>
                                             </tr>
                                         ))
