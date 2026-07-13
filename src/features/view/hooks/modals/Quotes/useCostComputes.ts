@@ -1,4 +1,4 @@
-import { computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/features/view/sub_components/M3/Tables/quotes/computes";
+import { computeGrossMargin, computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/features/view/sub_components/M3/Tables/quotes/computes";
 import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
@@ -233,7 +233,21 @@ export function useCostComputes(
         [ventaRecursos, ventaViaticos, tasa_cambio],
     );
 
+    // -----------------
+    // ALMACENAR CÁLCULOS EN LAS TABLAS SECUNDARIAS
+    // -----------------
+
+    const GrossMargin = useMemo(
+        () => computeGrossMargin(recursosCosts, markup, gm_general, tasa_cambio),
+        [recursosCosts, markup]
+    )
+
+    // -----------------
+    // OUTPUT
+    // -----------------
+
     return{
+        // TOTALES RECURSOS
         equiposPrincipalesTotal,
         equiposPrincipalesTotalIgv,
         estructurasTotal,
@@ -250,15 +264,21 @@ export function useCostComputes(
         personalTotalIgv,
         sctrTotal,
         sctrTotalIgv,
+        // TOTALES VIÁTICOS
         eatingTotal,
         eatingTotalIgv,
         travelingTotal,
         travelingTotalIgv,
         courierTotal,
         courierTotalIgv,
+        // TOTALES DEFINITIVOS
         precioFinal,
         precioFinalIgv,
         precioFinalDolares,
         precioFinalDolaresIgv,
+        // Gross Margin
+        GrossMargin
     }
+
+    
 }

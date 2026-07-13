@@ -121,7 +121,7 @@ export function computePrecioFinal(
 // Gross Margin
 // -----------------
 
-export function computGrossMargin(
+export function computeGrossMargin(
     costs: RecursosCostsInput,
     markup: number, gm_general: number,
     tasa_cambio: number,
