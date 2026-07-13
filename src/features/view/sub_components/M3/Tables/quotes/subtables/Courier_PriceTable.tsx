@@ -1,17 +1,19 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { formatCurrency } from "@/lib/utils/normalization";
 import { useState } from "react";
 import { useEffect } from "react";
 
 export function Courier_PriceTable(){
     const [descripcion, setDescripcion] = useState<string>("");
-    const [cantidad, setCantidad] = useState<number>(0);
-    const [precio_unitario, setPrecio_unitario] = useState<number>(0);
+    const [cantidad, setCantidad] = useState<number>(Number(0));
+    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(0));
 
     useEffect(() => {
         setDescripcion(descripcion);
-        setCantidad(cantidad);
-        setPrecio_unitario(precio_unitario);
+        setCantidad(Number(cantidad));
+        setPrecio_unitario(Number(precio_unitario));
     }, [cantidad, precio_unitario]);
 
     return(
@@ -61,9 +63,10 @@ export function Courier_PriceTable(){
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <span className="text-slate-900">
-                                            {cantidad * precio_unitario}
-                                        </span>
+                                        <AddProductReadonlyField
+                                            label="Precio Total (s/.)"
+                                            value={formatCurrency(Number(cantidad) * Number(precio_unitario), "PEN")}
+                                        />
                                     </td>
                                 </tr>
 

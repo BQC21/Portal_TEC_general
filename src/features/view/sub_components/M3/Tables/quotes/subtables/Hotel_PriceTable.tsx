@@ -1,17 +1,20 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
-export function Hotel_PriceTable(){
-    const [monto, setMonto] = useState<number>(0);
-    const [personas, setPersonas] = useState<number>(0);
-    const [dias, setDias] = useState<number>(0);
+export function Hotel_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
+    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.hotel.monto));
+    const [personas, setPersonas] = useState<number>(manualResourceCosts.hotel.personas);
+    const [dias, setDias] = useState<number>(Number(manualResourceCosts.hotel.dias));
 
     useEffect(() => {
-        setMonto(monto);
-        setPersonas(personas);
-        setDias(dias);
-    }, [monto, personas, dias]);
+        setMonto(manualResourceCosts.hotel.monto);
+        setPersonas(manualResourceCosts.hotel.personas);
+        setDias(manualResourceCosts.hotel.dias);
+    }, [manualResourceCosts]);
 
     return(
         <>
@@ -60,9 +63,10 @@ export function Hotel_PriceTable(){
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <span className="text-slate-900">
-                                            {monto * personas * dias}
-                                        </span>
+                                        <AddProductReadonlyField
+                                            label="Precio Total (s/.)"
+                                            value={formatCurrency(Number(monto) * Number(personas) * Number(dias), "PEN")}
+                                        />
                                     </td>
                                 </tr>
 

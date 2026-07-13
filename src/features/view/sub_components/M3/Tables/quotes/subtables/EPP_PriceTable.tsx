@@ -1,18 +1,22 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
 
-export function EPP_PriceTable(){
-    const [descripcion, setDescripcion] = useState<string>("");
-    const [cantidad, setCantidad] = useState<number>(0);
-    const [precio_unitario, setPrecio_unitario] = useState<number>(0);
+export function EPP_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
 
+    const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.epp.descripcion);
+    const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.epp.cantidad));
+    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.epp.precio_unitario));
+    
     useEffect(() => {
-        setDescripcion(descripcion);
-        setCantidad(cantidad);
-        setPrecio_unitario(precio_unitario);
-    }, [cantidad, precio_unitario]);
+        setDescripcion(manualResourceCosts.epp.descripcion);
+        setCantidad(manualResourceCosts.epp.cantidad);
+        setPrecio_unitario(manualResourceCosts.epp.precio_unitario);
+    }, [manualResourceCosts]);
 
     return(
         <>
@@ -62,9 +66,10 @@ export function EPP_PriceTable(){
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {/* El precio total se calcula como la cantidad por el precio unitario */}
-                                        <span className="text-slate-900">
-                                            {cantidad * precio_unitario}
-                                        </span>
+                                        <AddProductReadonlyField
+                                            label="Precio Total (s/.)"
+                                            value={formatCurrency(Number(cantidad) * Number(precio_unitario), "PEN")}
+                                        />
                                     </td>
                                 </tr>
 

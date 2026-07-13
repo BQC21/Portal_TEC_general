@@ -1,19 +1,22 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
-export function Personal_PriceTable(){
-    const [dias, setDias] = useState<number>(0);
-    const [precio_dia, setPrecio_dia] = useState<number>(0);
-    const [nombre, setNombre] = useState<string>("");
-    const [puesto, setPuesto] = useState<string>("");
+export function Personal_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
+    const [dias, setDias] = useState<number>(Number(manualResourceCosts.personal.dias));
+    const [precio_dia, setPrecio_dia] = useState<number>(Number(manualResourceCosts.personal.precio_dia));
+    const [nombre, setNombre] = useState<string>(manualResourceCosts.personal.nombre);
+    const [puesto, setPuesto] = useState<string>(manualResourceCosts.personal.puesto);
 
     useEffect(() => {
-        setNombre(nombre);
-        setPuesto(puesto);
-        setDias(dias);
-        setPrecio_dia(precio_dia);
-    }, [nombre, puesto, dias, precio_dia]);
+        setNombre(manualResourceCosts.personal.nombre);
+        setPuesto(manualResourceCosts.personal.puesto);
+        setDias(Number(manualResourceCosts.personal.dias));
+        setPrecio_dia(Number(manualResourceCosts.personal.precio_dia));
+    }, [manualResourceCosts]);
 
     return(
         <>
@@ -72,9 +75,10 @@ export function Personal_PriceTable(){
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <span className="text-slate-900">
-                                            {dias * precio_dia}
-                                        </span>
+                                        <AddProductReadonlyField
+                                            label="Precio Total (s/.)"
+                                            value={formatCurrency(Number(dias) * Number(precio_dia), "PEN")}
+                                        />
                                     </td>
                                 </tr>
 

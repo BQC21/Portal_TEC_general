@@ -1,17 +1,18 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
-import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
+import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect } from "react";
 import { useState } from "react";
 
 export function Eating_PriceTable(){
-    const [monto, setMonto] = useState<number>(0);
-    const [personas, setPersonas] = useState<number>(0);
-    const [dias, setDias] = useState<number>(0);
+    const [monto, setMonto] = useState<number>(Number(0));
+    const [personas, setPersonas] = useState<number>(Number(0));
+    const [dias, setDias] = useState<number>(Number(0));
 
     useEffect(() => {
-        setMonto(monto);
-        setPersonas(personas);
-        setDias(dias);
+        setMonto(Number(monto));
+        setPersonas(Number(personas));
+        setDias(Number(dias));
     }, [monto, personas, dias]);
 
     return(
@@ -61,9 +62,10 @@ export function Eating_PriceTable(){
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <span className="text-slate-900">
-                                            {monto * personas * dias}
-                                        </span>
+                                        <AddProductReadonlyField
+                                            label="Precio Total (s/.)"
+                                            value={formatCurrency(Number(monto) * Number(personas) * Number(dias), "PEN")}
+                                        />
                                     </td>
                                 </tr>
 
