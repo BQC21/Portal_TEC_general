@@ -5,14 +5,14 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
 import { useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
-import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable2";
-import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
-import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable";
+import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable2";
+import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable1";
+import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { EP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/EP_PriceTable";
 import { Structure_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Structure_PriceTable";
@@ -26,7 +26,8 @@ import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/q
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -40,8 +41,6 @@ export default function AddQuoteModal({
 
     const [form, setForm] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
     const [form_project, setForm_project] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
-    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
-    const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
 
     // SELECCIONADOS
     const hasSelectedProject = Boolean(form.proyecto_id);
@@ -75,17 +74,41 @@ export default function AddQuoteModal({
         });
     }
 
-    // // ----------------------------------------
-    // // ------- Cálculos de requerimientos -----
-    // // ----------------------------------------
+    // CÁLCULOS MANUALES
+    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS);
 
-    // const finantialRequirements = useFinantialRequirement(form, form_project)
+    function updateManualCost<K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) {
+    setManualResourceCosts((current) => ({
+        ...current,
+        [section]: { ...current[section], [field]: value },
+    }));
+    }
 
-    // // ------------------------------------------------
-    // // ------- EFECTO PARA SINCRONIZAR CANTIDADES -----
-    // // ------------------------------------------------
-
-    // useSyncQuantities(form, finantialRequirements.finantialRequirements)
+    // CÁLCULOS TOTALES
+    const { 
+        // TOTALES RECURSOS
+        equiposPrincipalesTotal, equiposPrincipalesTotalIgv, 
+        estructurasTotal, estructurasTotalIgv, 
+        consumiblesTotal, consumiblesTotalIgv,
+        eppTotal, eppTotalIgv,
+        toolingTotal, toolingTotalIgv,
+        hotelTotal, hotelTotalIgv,
+        personalTotal, personalTotalIgv,
+        sctrTotal, sctrTotalIgv,
+        // TOTALES VIÁTICOS
+        eatingTotal, eatingTotalIgv,
+        travelingTotal, travelingTotalIgv,
+        courierTotal, courierTotalIgv, 
+        // GrossMargin
+        GrossMargin
+    } = useCostComputes(
+        projectEquipos, projectMateriales, manualResourceCosts, 
+        Number(form.igv), Number(form.tasa_cambio), Number(form.gm_general), Number(form.gm_viaticos)
+    );
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -161,7 +184,7 @@ export default function AddQuoteModal({
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin"
-                                    value={Number(form.gm) > 0 ? String(Number(form.gm)) : ""}
+                                    value={Number(GrossMargin) > 0 ? String(Number(GrossMargin).toFixed(2)) : ""}
                                 />
                             </div>
 
@@ -190,9 +213,30 @@ export default function AddQuoteModal({
                             </div>
                         </div>
 
+                        {/* TABLA RECURSOS */}
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable1/>
+                                <SummaryCostTable1
+                                    equiposPrincipalesCost={equiposPrincipalesTotal}
+                                    equiposPrincipalesCostIgv={equiposPrincipalesTotalIgv}
+                                    estructurasCost={estructurasTotal}
+                                    estructurasCostIgv={estructurasTotalIgv}
+                                    consumiblesCost={consumiblesTotal}
+                                    consumiblesCostIgv={consumiblesTotalIgv}
+                                    eppCost={eppTotal}
+                                    eppCostIgv={eppTotalIgv}
+                                    toolingCost={toolingTotal}
+                                    toolingCostIgv={toolingTotalIgv}
+                                    hotelCost={hotelTotal}
+                                    hotelCostIgv={hotelTotalIgv}
+                                    personalCost={personalTotal}
+                                    personalCostIgv={personalTotalIgv}
+                                    sctrCost={sctrTotal}
+                                    sctrCostIgv={sctrTotalIgv}
+                                    gm_general={Number(form.gm_general)}
+                                    markup={Number(form.markup)}
+                                    tasa_cambio={Number(form.tasa_cambio)}
+                                />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <EP_PriceTable
@@ -204,17 +248,37 @@ export default function AddQuoteModal({
                                 <Consume_PriceTable
                                     selected_materiales={projectMateriales}
                                 />
-                                <EPP_PriceTable/>
-                                <Tooling_PriceTable/>
-                                <Hotel_PriceTable/>
-                                <Personal_PriceTable/>
-                                <SCTR_PriceTable/>
+                                <EPP_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Tooling_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Hotel_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Personal_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <SCTR_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
                             </div>
                         </div>
 
+                        {/* TABLA VIÁTICOS */}
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable2/>
+                                <SummaryCostTable2
+                                    eatingTotal={eatingTotal}
+                                    eatingTotalIgv={eatingTotalIgv}
+                                    travelingTotal={travelingTotal}
+                                    travelingTotalIgv={travelingTotalIgv}
+                                    courierTotal={courierTotal}
+                                    courierTotalIgv={courierTotalIgv}
+                                    gm_viaticos={Number(form.gm_viaticos)}
+                                    tasa_cambio={Number(form.tasa_cambio)}
+                                />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <Courier_PriceTable/>
@@ -222,9 +286,15 @@ export default function AddQuoteModal({
                                 <Traveling_PriceTable/>
                             </div>
                         </div>
-
+                        
+                        {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
-                            <SummaryCostTable/>
+                            <SummaryCostTable
+                                PrecioFinal={equiposPrincipalesTotal}
+                                PrecioFinalIgv={equiposPrincipalesTotalIgv}
+                                PrecioFinalDolares={equiposPrincipalesTotalIgv}
+                                PrecioFinalDolaresIgv={equiposPrincipalesTotalIgv}
+                            />
                         </div>
                         </>
                     )}
