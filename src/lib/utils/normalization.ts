@@ -66,3 +66,11 @@ export const parseNumber = (v: unknown): number | undefined => {
     const n = Number(s);
     return Number.isFinite(n) ? n : undefined;
 };
+
+// Conversión de número a formato de moneda
+export const formatCurrency = (value: number, currency: "PEN" | "USD"): string => {
+    return new Intl.NumberFormat("es-PE", {
+        style: "currency",
+        currency: currency,
+    }).format(value);
+};
