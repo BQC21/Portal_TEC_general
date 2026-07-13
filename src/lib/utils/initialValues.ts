@@ -38,6 +38,7 @@ import { BrandFormstate } from "../types/supabase/brand.types";
 import { TypeFormstate } from "../types/supabase/type-types";
 import { QuoteFormState } from "../types/supabase/quote-types";
 import { ReportFormState } from "../types/supabase/report-types";
+import { ManualResourceCosts } from "../types/components/manual_resources";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
@@ -233,3 +234,14 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     porcentaje_inst: "",
     precio_cotizacion: "",
 }
+
+export const INITIAL_MANUAL_RESOURCE_COSTS: ManualResourceCosts = { 
+    epp: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+    tooling: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+    hotel: { monto: 0, personas: 0, dias: 0 },
+    personal: { nombre: "", puesto: "", dias: 0, precio_dia: 0 },
+    sctr: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+    eating: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+    traveling: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+    courier: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+};
