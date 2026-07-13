@@ -1,3 +1,5 @@
+import { formatCurrency } from "@/lib/utils/normalization";
+
 export type SummaryCostTable_props = {
     PrecioFinal: number;
     PrecioFinalIgv: number;
@@ -37,10 +39,10 @@ export function SummaryCostTable({
                                         Venta Final (s/.)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {PrecioFinal}
+                                        {formatCurrency(Number(PrecioFinal), "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {PrecioFinalIgv}
+                                        {formatCurrency(Number(PrecioFinalIgv), "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -48,10 +50,10 @@ export function SummaryCostTable({
                                     Venta Final ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {PrecioFinalDolares}
+                                        {formatCurrency(Number(PrecioFinalDolares), "USD")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {PrecioFinalDolaresIgv}
+                                        {formatCurrency(Number(PrecioFinalDolaresIgv), "USD")}
                                     </td>
                                 </tr>
 
