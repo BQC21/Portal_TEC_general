@@ -6,15 +6,15 @@ import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects"
 import { useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
-import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
-import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable1";
-import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable2";
-import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/SummaryCostTable";
+import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable1";
+import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable2";
+import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
 import { EP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/EP_PriceTable";
 import { Structure_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Structure_PriceTable";
 import { Consume_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Consume_PriceTable";
@@ -28,9 +28,13 @@ import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quot
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Traveling_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 
-export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose, 
-    existing_project_equipos, existing_project_materiales}: EditQuoteModalProps){
+export default function EditQuoteModal({
+    existingQuote, onUpdateQuote, onClose, 
+    existing_project_equipos, existing_project_materiales,
+}: EditQuoteModalProps){
     // ----------------------------
     // ------- Estados ------------
     // ----------------------------
@@ -38,7 +42,6 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
     // usar información de otras tabla
     const { projects } = useProjects();
 
-    // valores iniciales
     const [form, setForm] = useState<QuoteFormState>(() => createQuoteFormStateFromQuote(existingQuote))
     const [form_project, setForm_project] = useState<ProjectFormState>(() => 
         existingQuote.proyecto_info ? {
@@ -46,91 +49,74 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
             ...existingQuote.proyecto_info,
         } : INITIAL_PROJECT_FORM
     );
-    const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>(() =>
-        existing_project_equipos.filter((item) => item.equipo_info?.tipo_de_producto && item.equipo_info?.descripcion)
-        .map((item) => ({
-            row: item.equipo_info!.tipo_de_producto,
-            id: item.equipo_id,
-            description: item.equipo_info!.descripcion,
-            codigo: item.equipo_info!.cod_producto,
-            marca: item.equipo_info!.marca,
-            potencia_maxima: item.equipo_info!.potencia_maxima,
-            mppt: item.equipo_info!.mppt,
-            dod: item.equipo_info!.dod,
-            potencia_ac: item.equipo_info!.potencia_ac,
-            voc_vmax: item.equipo_info!.voc_vmax,
-            vmpp_vmin: item.equipo_info!.vmpp_vmin,
-            isc_i_out: item.equipo_info!.isc_i_out,
-            impp_i_in: item.equipo_info!.impp_i_in,
-            cantidad: Number(item.cantidad),
-            unidad: item.equipo_info!.unidad,
-            precio_soles: item.equipo_info!.precio_soles,
-            precio_dolares: item.equipo_info!.precio_dolares,
-            precio_soles_igv: item.equipo_info!.precio_soles_igv,
-            precio_dolares_igv: item.equipo_info!.precio_dolares_igv,
-        })),
-    );
-    const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>(() =>
-        existing_project_materiales.filter((item) => item.material_info?.tipo_de_producto && item.material_info?.descripcion)
-        .map((item) => ({
-            row: item.material_info!.tipo_de_producto,
-            id: item.material_id,
-            description: item.material_info!.descripcion,
-            codigo: item.material_info!.cod_producto,
-            unidad: item.material_info!.unidad,
-            precio_soles: item.material_info!.precio_soles,
-            precio_dolares: item.material_info!.precio_dolares,
-            precio_soles_igv: item.material_info!.precio_soles_igv,
-            precio_dolares_igv: item.material_info!.precio_dolares_igv,
-        })),
-    );
 
-
-    // ----------------------------------------
-    // ------- INFORMACIÓN SELECTA ------------
-    // ----------------------------------------
-    // condicionador de proyecto seleccionado
+    // SELECCIONADOS
     const hasSelectedProject = Boolean(form.proyecto_id);
 
-
-    // Equipos y materiales relacionados al proyecto seleccionado
     const projectEquipos = hasSelectedProject
         ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
         : [];
-    const equiposDescriptions = projectEquipos
-        .map((item) => item.equipo_info?.descripcion)
-        .filter((description): description is string => Boolean(description));
-
 
     const projectMateriales = hasSelectedProject
         ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
         : [];
+
+    const equiposDescriptions = projectEquipos
+        .map((item) => item.equipo_info?.descripcion)
+        .filter((description): description is string => Boolean(description));
+
     const materialesDescriptions = projectMateriales
         .map((item) => item.material_info?.descripcion)
         .filter((description): description is string => Boolean(description));
 
+    // EVENTOS
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+        await onUpdateQuote({ ...form });
+    }
 
-    // ----------------------------------------
-    // ------- EVENTOS ------------------------
-    // ----------------------------------------
-
-    // Actualizar Form
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value };
             return updated;
         });
     }
-    
-    // Aceptar inserción
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
 
-        await onUpdateQuote({
-            ...form,
-        });
+    // CÁLCULOS MANUALES
+    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS);
+
+    function updateManualCost<K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) {
+    setManualResourceCosts((current) => ({
+        ...current,
+        [section]: { ...current[section], [field]: value },
+    }));
     }
 
+    // CÁLCULOS TOTALES
+    const { 
+        // TOTALES RECURSOS
+        equiposPrincipalesTotal, equiposPrincipalesTotalIgv, 
+        estructurasTotal, estructurasTotalIgv, 
+        consumiblesTotal, consumiblesTotalIgv,
+        eppTotal, eppTotalIgv,
+        toolingTotal, toolingTotalIgv,
+        hotelTotal, hotelTotalIgv,
+        personalTotal, personalTotalIgv,
+        sctrTotal, sctrTotalIgv,
+        // TOTALES VIÁTICOS
+        eatingTotal, eatingTotalIgv,
+        travelingTotal, travelingTotalIgv,
+        courierTotal, courierTotalIgv, 
+        // GrossMargin
+        GrossMargin
+    } = useCostComputes(
+        projectEquipos, projectMateriales, manualResourceCosts, 
+        Number(form.igv), Number(form.tasa_cambio), Number(form.gm_general), Number(form.gm_viaticos)
+    );
 
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -207,7 +193,7 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin"
-                                    value={Number(form.gm) > 0 ? String(Number(form.gm)) : ""}
+                                    value={Number(GrossMargin) > 0 ? String(Number(GrossMargin).toFixed(2)) : ""}
                                 />
                             </div>
 
@@ -236,31 +222,72 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                             </div>
                         </div>
 
+                        {/* TABLA RECURSOS */}
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable1/>
+                                <SummaryCostTable1
+                                    equiposPrincipalesCost={equiposPrincipalesTotal}
+                                    equiposPrincipalesCostIgv={equiposPrincipalesTotalIgv}
+                                    estructurasCost={estructurasTotal}
+                                    estructurasCostIgv={estructurasTotalIgv}
+                                    consumiblesCost={consumiblesTotal}
+                                    consumiblesCostIgv={consumiblesTotalIgv}
+                                    eppCost={eppTotal}
+                                    eppCostIgv={eppTotalIgv}
+                                    toolingCost={toolingTotal}
+                                    toolingCostIgv={toolingTotalIgv}
+                                    hotelCost={hotelTotal}
+                                    hotelCostIgv={hotelTotalIgv}
+                                    personalCost={personalTotal}
+                                    personalCostIgv={personalTotalIgv}
+                                    sctrCost={sctrTotal}
+                                    sctrCostIgv={sctrTotalIgv}
+                                    gm_general={Number(form.gm_general)}
+                                    markup={Number(form.markup)}
+                                    tasa_cambio={Number(form.tasa_cambio)}
+                                />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <EP_PriceTable
-                                    selected_equipos={selectedEquipmentTable}
+                                    selected_equipos={projectEquipos}
                                 />
                                 <Structure_PriceTable
-                                    selected_equipos={selectedEquipmentTable}
+                                    selected_equipos={projectEquipos}
                                 />
                                 <Consume_PriceTable
-                                    selected_materiales={selectedMaterialTable}
+                                    selected_materiales={projectMateriales}
                                 />
-                                <EPP_PriceTable/>
-                                <Tooling_PriceTable/>
-                                <Hotel_PriceTable/>
-                                <Personal_PriceTable/>
-                                <SCTR_PriceTable/>
+                                <EPP_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Tooling_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Hotel_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <Personal_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
+                                <SCTR_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                />
                             </div>
                         </div>
 
+                        {/* TABLA VIÁTICOS */}
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable2/>
+                                <SummaryCostTable2
+                                    eatingTotal={eatingTotal}
+                                    eatingTotalIgv={eatingTotalIgv}
+                                    travelingTotal={travelingTotal}
+                                    travelingTotalIgv={travelingTotalIgv}
+                                    courierTotal={courierTotal}
+                                    courierTotalIgv={courierTotalIgv}
+                                    gm_viaticos={Number(form.gm_viaticos)}
+                                    tasa_cambio={Number(form.tasa_cambio)}
+                                />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <Courier_PriceTable/>
@@ -268,9 +295,15 @@ export default function EditQuoteModal({existingQuote, onUpdateQuote, onClose,
                                 <Traveling_PriceTable/>
                             </div>
                         </div>
-
+                        
+                        {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
-                            <SummaryCostTable/>
+                            <SummaryCostTable
+                                PrecioFinal={equiposPrincipalesTotal}
+                                PrecioFinalIgv={equiposPrincipalesTotalIgv}
+                                PrecioFinalDolares={equiposPrincipalesTotalIgv}
+                                PrecioFinalDolaresIgv={equiposPrincipalesTotalIgv}
+                            />
                         </div>
                         </>
                     )}
