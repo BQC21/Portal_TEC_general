@@ -5,13 +5,10 @@ import Button2Add_report from "@/features/view/components/Buttons/quotes/report/
 import { PortalShell } from "@/features/view/components/PortalShell";
 import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";
 import ReportTable from "@/features/view/components/Tables/quotes/ReportTable";
-import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
-import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
+import { useProjectEquipos } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
+import { useProjectMateriales } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 import { useQuoteMutations, useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { useReportMutations, useReports } from "@/features/view/hooks/services/useRealtimeReports";
-import { SelectedProjectItem } from "@/lib/types/supabase/project-types";
-import { SelectedProjectEquiposItem } from "@/lib/types/supabase/project_equipos_join";
-import { SelectedProjectMaterialsItem } from "@/lib/types/supabase/project_materiales_join";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 
