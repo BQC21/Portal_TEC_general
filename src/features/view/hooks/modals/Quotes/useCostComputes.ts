@@ -1,6 +1,6 @@
 import { computeGrossMargin, computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
-import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
-import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
+import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { useMemo } from "react";

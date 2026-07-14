@@ -1,6 +1,6 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: { 

@@ -26,7 +26,7 @@ import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/q
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 

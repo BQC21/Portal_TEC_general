@@ -1,7 +1,7 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 

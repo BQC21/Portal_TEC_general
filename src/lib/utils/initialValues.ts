@@ -38,7 +38,7 @@ import { BrandFormstate } from "../types/supabase/brand.types";
 import { TypeFormstate } from "../types/supabase/type-types";
 import { QuoteFormState } from "../types/supabase/quote-types";
 import { ReportFormState } from "../types/supabase/report-types";
-import { ManualResourceCosts } from "../types/components/manual_resources";
+import { ManualResourceCosts } from "../types/components/Quotes/manual_resources";
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_EQUIPOS_FORM: EquiposFormState = {

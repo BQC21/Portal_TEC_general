@@ -6,7 +6,7 @@ import {
     computeSubtotalRecursos,
     computeVentaRecursos,
 } from "../../../../../../../lib/utils/helpers/computes/quote_computes";
-import { RecursosCostsInput } from "@/lib/types/components/finantial_computes";
+import { RecursosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
 
 
 export function SummaryCostTable1({

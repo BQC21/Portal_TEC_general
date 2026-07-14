@@ -1,4 +1,4 @@
-import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
+import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
 
 // -----------------
 // RECURSOS

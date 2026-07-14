@@ -4,7 +4,7 @@ import {
     computeSubtotalViaticos,
     computeVentaViaticos,
 } from "../../../../../../../lib/utils/helpers/computes/quote_computes";
-import { ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
+import { ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
 
 export type SummaryCostTable2_props = ViaticosCostsInput & {
     gm_viaticos: number;

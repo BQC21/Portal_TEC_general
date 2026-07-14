@@ -28,7 +28,7 @@ import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quot
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
+import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 
 export default function EditQuoteModal({
