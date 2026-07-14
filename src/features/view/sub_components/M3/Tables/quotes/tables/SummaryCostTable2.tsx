@@ -15,7 +15,6 @@ export function SummaryCostTable2({
     courierTotalIgv,
     // PARÁMETROS
     igv,
-    tasa_cambio,
     // SUBTOTALES
     subtotal_viaticos,
     margenRiesgo_viaticos,
@@ -25,7 +24,6 @@ export function SummaryCostTable2({
     ventaDolaresIgv_viaticos,
 }: ViaticosCostsInput & {
     igv: number;
-    tasa_cambio: number;
 } & ViaticosSubtotalInput){
 
     const costs: ViaticosCostsInput = {
@@ -141,10 +139,10 @@ export function SummaryCostTable2({
                                         Venta ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSoles_viaticos/Number(tasa_cambio), "USD") : 0}
+                                        {formatCurrency(subtotales.ventaDolares_viaticos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSolesIgv_viaticos/Number(tasa_cambio), "USD") : 0}
+                                        {formatCurrency(subtotales.ventaDolaresIgv_viaticos, "PEN")}
                                     </td>
                                 </tr>
 

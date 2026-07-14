@@ -317,7 +317,6 @@ export default function AddQuoteModal({
                                     sctrCostIgv={sctrTotalIgv}
                                     // PARÁMETROS
                                     igv={Number(form.igv)}
-                                    tasa_cambio={Number(form.tasa_cambio)}
                                     // TOTALES RECURSOS
                                     subtotal_recursos={subtotal_recursos}
                                     margenRiesgo_recursos={margenRiesgo_recursos}
@@ -374,7 +373,6 @@ export default function AddQuoteModal({
                                     courierTotalIgv={courierTotalIgv}
                                     // PARÁMETROS
                                     igv={Number(form.igv)}
-                                    tasa_cambio={Number(form.tasa_cambio)}
                                     // TOTALES VIÁTICOS
                                     subtotal_viaticos={subtotal_viaticos}
                                     margenRiesgo_viaticos={margenRiesgo_viaticos}

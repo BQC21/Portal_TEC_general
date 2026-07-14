@@ -28,7 +28,6 @@ export function SummaryCostTable1({
     sctrCostIgv,
     // PARÁMETROS
     igv,
-    tasa_cambio,
     // SUBTOTALES
     subtotal_recursos,
     margenRiesgo_recursos,
@@ -40,7 +39,6 @@ export function SummaryCostTable1({
     ventaDolaresIgv_recursos,
 }: RecursosCostsInput & {
     igv: number;
-    tasa_cambio: number;
 } & RecursosSubtotalInput){
 
     const costs: RecursosCostsInput = {
@@ -244,10 +242,10 @@ export function SummaryCostTable1({
                                         Venta ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSoles_recursos/(Number(tasa_cambio)), "USD") : 0}
+                                        {formatCurrency(subtotales.ventaDolares_recursos, "USD")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSolesIgv_recursos/(Number(tasa_cambio)), "USD") : 0}
+                                        {formatCurrency(subtotales.ventaDolaresIgv_recursos, "USD")}
                                     </td>
                                 </tr>
 
