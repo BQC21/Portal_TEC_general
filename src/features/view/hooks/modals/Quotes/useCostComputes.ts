@@ -213,6 +213,56 @@ export function useCostComputes(
     // ALMACENAR CÁLCULOS EN LAS TABLAS PRINCIPALES
     // -----------------
 
+    // subtotal
+    const subtotal = useMemo(() =>
+        recursosCosts.equiposPrincipalesCost + recursosCosts.estructurasCost + recursosCosts.consumiblesCost + recursosCosts.eppCost + recursosCosts.toolingCost + recursosCosts.hotelCost + recursosCosts.personalCost + recursosCosts.sctrCost + viaticosCosts.eatingTotal + viaticosCosts.travelingTotal + viaticosCosts.courierTotal,
+        [recursosCosts, viaticosCosts],
+    );
+
+    // Margen de riesgo
+    const margenRiesgo = useMemo(() =>
+        subtotal * gm_general,
+        [subtotal, gm_general],
+    );
+
+    // Subtotal con Margen de Riesgo
+    const subtotalConMargenRiesgo = useMemo(() =>
+        subtotal + margenRiesgo,
+        [subtotal, margenRiesgo],
+    );
+
+    // MarkUp
+    const markUp = useMemo(() =>
+        subtotalConMargenRiesgo * markup,
+        [subtotalConMargenRiesgo, markup],
+    );
+
+    // Venta (s/.)
+    const ventaSoles = useMemo(() =>
+        markUp,
+        [subtotalConMargenRiesgo, markup],
+    );
+    const ventaSolesIgv = useMemo(() =>
+        ventaSoles * 1.18,
+        [ventaSoles],
+    );
+
+    // venta ($)
+    const ventaDolares = useMemo(() =>
+        ventaSoles / tasa_cambio,
+        [ventaSoles, tasa_cambio],
+    );
+
+    // venta ($ IGV)
+    const ventaDolaresIgv = useMemo(() =>
+        ventaSoles / tasa_cambio,
+        [ventaSoles, tasa_cambio],
+    );
+
+    // -----------------
+    // ALMACENAR CÁLCULOS EN LAS TABLAS DEFINITIVA
+    // -----------------
+
     const ventaRecursos = useMemo(
         () => computeVentaRecursos(recursosCosts, markup, tasa_cambio, gm_general),
         [recursosCosts, markup, tasa_cambio],
@@ -237,9 +287,9 @@ export function useCostComputes(
     // ALMACENAR CÁLCULOS EN LAS TABLAS SECUNDARIAS
     // -----------------
 
-    const GrossMargin = useMemo(
-        () => computeGrossMargin(recursosCosts, markup, gm_general, tasa_cambio),
-        [recursosCosts, markup]
+    const GrossMargin = useMemo(() => 
+        computeGrossMargin(recursosCosts, markup, gm_general, tasa_cambio),
+        [recursosCosts, markup, gm_general, tasa_cambio]
     )
 
     // -----------------
@@ -271,6 +321,15 @@ export function useCostComputes(
         travelingTotalIgv,
         courierTotal,
         courierTotalIgv,
+        // TOTALES PRINCIPALES
+        subtotal,
+        margenRiesgo,
+        subtotalConMargenRiesgo,
+        markUp,
+        ventaSoles,
+        ventaSolesIgv,
+        ventaDolares,
+        ventaDolaresIgv,
         // TOTALES DEFINITIVOS
         precioFinal,
         precioFinalIgv,
