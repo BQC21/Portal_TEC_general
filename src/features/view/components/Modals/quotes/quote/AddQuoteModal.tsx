@@ -3,7 +3,7 @@
 import { AddQuoteModalProps } from "@/lib/types/components/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
@@ -105,13 +105,41 @@ export default function AddQuoteModal({
         travelingTotal, travelingTotalIgv,
         courierTotal, courierTotalIgv, 
         // GrossMargin
-        GrossMargin
+        GrossMargin,
+        // TOTALES PRINCIPALES
+        subtotal,
+        margenRiesgo,
+        subtotalConMargenRiesgo,
+        markUp,
+        ventaSoles,
+        ventaSolesIgv,
+        ventaDolares,
+        ventaDolaresIgv,
+        // TOTALES DEFINITIVOS
+        precioFinal,
+        precioFinalIgv,
+        precioFinalDolares,
+        precioFinalDolaresIgv,
     } = useCostComputes(
-        projectEquipos, projectMateriales, manualResourceCosts, 
-        Number(form.igv), Number(form.tasa_cambio), Number(form.gm_general), Number(form.gm_viaticos)
+        projectEquipos,
+        projectMateriales,
+        manualResourceCosts,
+        Number(form.gm_general),
+        Number(form.markup),
+        Number(form.gm_viaticos),
+        Number(form.tasa_cambio),
     );
 
-    // SINCRONIZAR CANTIDADES
+
+    // SINCRONIZAR GROSS MARGIN
+    useEffect(() => {
+        if (GrossMargin.gm > 0) {
+            updateField("gm", String(GrossMargin.gm));
+        }
+    }, [GrossMargin.gm]);
+    // console.log("valor del grossMargin", GrossMargin.gm);
+    // console.log("valor del precio de venta Recursos", ventaSoles);
+    // console.log("valor del precio de MarkUp", markUp);
 
 
     return (
@@ -187,8 +215,8 @@ export default function AddQuoteModal({
                                     step={1}   min={1}   max={10}
                                 />
                                 <AddProductReadonlyField
-                                    label="Gross Margin"
-                                    value={Number(GrossMargin) > 0 ? String(Number(GrossMargin).toFixed(2)) : ""}
+                                    label="Gross Margin (%)"
+                                    value={Number(GrossMargin.gm) > 0 ? String(Number(GrossMargin.gm * 100).toFixed(2)) : ""}
                                 />
                             </div>
 
@@ -308,10 +336,10 @@ export default function AddQuoteModal({
                         {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
                             <SummaryCostTable
-                                PrecioFinal={equiposPrincipalesTotal}
-                                PrecioFinalIgv={equiposPrincipalesTotalIgv}
-                                PrecioFinalDolares={equiposPrincipalesTotalIgv}
-                                PrecioFinalDolaresIgv={equiposPrincipalesTotalIgv}
+                                PrecioFinal={precioFinal}
+                                PrecioFinalIgv={precioFinalIgv}
+                                PrecioFinalDolares={precioFinalDolares}
+                                PrecioFinalDolaresIgv={precioFinalDolaresIgv}
                             />
                         </div>
                         </>
