@@ -5,16 +5,32 @@ import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
-export function Hotel_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
-    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.hotel.monto));
-    const [personas, setPersonas] = useState<number>(manualResourceCosts.hotel.personas);
-    const [dias, setDias] = useState<number>(Number(manualResourceCosts.hotel.dias));
+export function Hotel_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+    })
+{
+    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.hotel.monto ?? 0));
+    const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.hotel.personas ?? 0));
+    const [dias, setDias] = useState<number>(Number(manualResourceCosts.hotel.dias ?? 0));
 
     useEffect(() => {
-        setMonto(manualResourceCosts.hotel.monto);
-        setPersonas(manualResourceCosts.hotel.personas);
-        setDias(manualResourceCosts.hotel.dias);
+        // sincronizar los valores de la tabla con los valores del manual de costos
+        setMonto(Number(manualResourceCosts.hotel.monto ?? 0));
+        setPersonas(Number(manualResourceCosts.hotel.personas ?? 0));
+        setDias(Number(manualResourceCosts.hotel.dias ?? 0));
     }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("hotel", "monto", Number(monto));
+        updateManualCost("hotel", "personas", Number(personas));
+        updateManualCost("hotel", "dias", Number(dias));
+    }, [monto, personas, dias, updateManualCost]);
 
     return(
         <>

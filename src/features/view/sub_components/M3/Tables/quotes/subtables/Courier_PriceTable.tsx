@@ -1,20 +1,36 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export function Courier_PriceTable(){
-    const [descripcion, setDescripcion] = useState<string>("");
-    const [cantidad, setCantidad] = useState<number>(Number(0));
-    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(0));
+export function Courier_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+}){
+    const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.courier.descripcion);
+    const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.courier.cantidad));
+    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.courier.precio_unitario));
 
     useEffect(() => {
-        setDescripcion(descripcion);
-        setCantidad(Number(cantidad));
-        setPrecio_unitario(Number(precio_unitario));
-    }, [cantidad, precio_unitario]);
+        // sincronizar los valores de la tabla con los valores del manual de costos
+        setDescripcion(manualResourceCosts.courier.descripcion);
+        setCantidad(Number(manualResourceCosts.courier.cantidad));
+        setPrecio_unitario(Number(manualResourceCosts.courier.precio_unitario));
+    }, [cantidad, precio_unitario, descripcion, manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("courier", "descripcion", String(descripcion));
+        updateManualCost("courier", "cantidad", Number(cantidad));
+        updateManualCost("courier", "precio_unitario", Number(precio_unitario));
+    }, [cantidad, precio_unitario, descripcion, updateManualCost]);
 
     return(
         <>

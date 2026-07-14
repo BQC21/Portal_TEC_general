@@ -1,19 +1,35 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect } from "react";
 import { useState } from "react";
 
-export function Eating_PriceTable(){
-    const [monto, setMonto] = useState<number>(Number(0));
-    const [personas, setPersonas] = useState<number>(Number(0));
-    const [dias, setDias] = useState<number>(Number(0));
+export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+}){
+    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.eating?.monto ?? 0));
+    const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.eating?.personas ?? 0));
+    const [dias, setDias] = useState<number>(Number(manualResourceCosts.eating?.dias ?? 0));
 
     useEffect(() => {
-        setMonto(Number(monto));
-        setPersonas(Number(personas));
-        setDias(Number(dias));
-    }, [monto, personas, dias]);
+        // sincronizar los valores de la tabla con los valores del manual de costos
+        setMonto(Number(manualResourceCosts.eating?.monto ?? 0));
+        setPersonas(Number(manualResourceCosts.eating?.personas ?? 0));
+        setDias(Number(manualResourceCosts.eating?.dias ?? 0));
+    }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("eating", "monto", Number(monto));
+        updateManualCost("eating", "personas", Number(personas));
+        updateManualCost("eating", "dias", Number(dias));
+    }, [monto, personas, dias, updateManualCost]);
 
     return(
         <>

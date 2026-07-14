@@ -5,16 +5,31 @@ import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
-export function SCTR_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
+export function SCTR_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+}){
     const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.sctr.descripcion);
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.sctr.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.sctr.precio_unitario));
 
     useEffect(() => {
+        // sincronizar los valores de la tabla con los valores del manual de costos
         setDescripcion(manualResourceCosts.sctr.descripcion);
         setCantidad(Number(manualResourceCosts.sctr.cantidad));
         setPrecio_unitario(Number(manualResourceCosts.sctr.precio_unitario));
     }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("sctr", "descripcion", String(descripcion));
+        updateManualCost("sctr", "cantidad", Number(cantidad));
+        updateManualCost("sctr", "precio_unitario", Number(precio_unitario));
+    }, [cantidad, precio_unitario, descripcion, updateManualCost]);
 
     return(
         <>

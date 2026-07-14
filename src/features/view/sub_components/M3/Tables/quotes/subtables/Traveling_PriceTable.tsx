@@ -1,21 +1,37 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
+import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useState } from "react";
 import { useEffect } from "react";
 
-export function Traveling_PriceTable(){
+export function Traveling_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+}){
 
-    const [monto, setMonto] = useState<number>(Number(0));
-    const [personas, setPersonas] = useState<number>(Number(0));
-    const [dias, setDias] = useState<number>(Number(0));
+    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.traveling?.monto ?? 0));
+    const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.traveling?.personas ?? 0));
+    const [dias, setDias] = useState<number>(Number(manualResourceCosts.traveling?.dias ?? 0));
 
     useEffect(() => {
-        setMonto(Number(monto));
-        setPersonas(Number(personas));
-        setDias(Number(dias));
-    }, [monto, personas, dias]);
+        // sincronizar los valores de la tabla con los valores del manual de costos
+        setMonto(Number(manualResourceCosts.traveling?.monto ?? 0));
+        setPersonas(Number(manualResourceCosts.traveling?.personas ?? 0));
+        setDias(Number(manualResourceCosts.traveling?.dias ?? 0));
+    }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("traveling", "monto", Number(monto));
+        updateManualCost("traveling", "personas", Number(personas));
+        updateManualCost("traveling", "dias", Number(dias));
+    }, [monto, personas, dias, updateManualCost]);
 
     return(
         <>

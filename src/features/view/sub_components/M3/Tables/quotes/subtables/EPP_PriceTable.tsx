@@ -6,17 +6,32 @@ import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
 
-export function EPP_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
+export function EPP_PriceTable({ manualResourceCosts, updateManualCost }: 
+    { manualResourceCosts: ManualResourceCosts, 
+        updateManualCost: <K extends keyof ManualResourceCosts>(
+            section: K,
+            field: keyof ManualResourceCosts[K],
+            value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+        ) => void,
+    }){
 
     const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.epp.descripcion);
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.epp.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.epp.precio_unitario));
     
     useEffect(() => {
+        // sincronizar los valores de la tabla con los valores del manual de costos
         setDescripcion(manualResourceCosts.epp.descripcion);
-        setCantidad(manualResourceCosts.epp.cantidad);
-        setPrecio_unitario(manualResourceCosts.epp.precio_unitario);
+        setCantidad(Number(manualResourceCosts.epp.cantidad));
+        setPrecio_unitario(Number(manualResourceCosts.epp.precio_unitario));
     }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("epp", "descripcion", String(descripcion));
+        updateManualCost("epp", "cantidad", Number(cantidad));
+        updateManualCost("epp", "precio_unitario", Number(precio_unitario));
+    }, [cantidad, precio_unitario, descripcion, updateManualCost]);
 
     return(
         <>

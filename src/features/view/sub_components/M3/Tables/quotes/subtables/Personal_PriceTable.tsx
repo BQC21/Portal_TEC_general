@@ -5,18 +5,34 @@ import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { useEffect, useState } from "react";
 
-export function Personal_PriceTable({ manualResourceCosts }: { manualResourceCosts: ManualResourceCosts }){
+export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: { 
+    manualResourceCosts: ManualResourceCosts, 
+    updateManualCost: <K extends keyof ManualResourceCosts>(
+        section: K,
+        field: keyof ManualResourceCosts[K],
+        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+    ) => void,
+}){
     const [dias, setDias] = useState<number>(Number(manualResourceCosts.personal.dias));
     const [precio_dia, setPrecio_dia] = useState<number>(Number(manualResourceCosts.personal.precio_dia));
     const [nombre, setNombre] = useState<string>(manualResourceCosts.personal.nombre);
     const [puesto, setPuesto] = useState<string>(manualResourceCosts.personal.puesto);
 
     useEffect(() => {
+        // sincronizar los valores de la tabla con los valores del manual de costos
         setNombre(manualResourceCosts.personal.nombre);
         setPuesto(manualResourceCosts.personal.puesto);
         setDias(Number(manualResourceCosts.personal.dias));
         setPrecio_dia(Number(manualResourceCosts.personal.precio_dia));
     }, [manualResourceCosts]);
+
+    useEffect(() => {
+        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
+        updateManualCost("personal", "dias", Number(dias));
+        updateManualCost("personal", "precio_dia", Number(precio_dia));
+        updateManualCost("personal", "nombre", String(nombre));
+        updateManualCost("personal", "puesto", String(puesto));
+    }, [dias, precio_dia, nombre, puesto, updateManualCost]);
 
     return(
         <>
