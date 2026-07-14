@@ -136,7 +136,7 @@ export function useCostComputes(
 
     // ALIMENTACIÓN
     const eatingTotal = useMemo(() =>
-        Number(manualResourceCosts.eating.cantidad) * Number(manualResourceCosts.eating.precio_unitario),
+        Number(manualResourceCosts.eating?.monto ?? 0) * Number(manualResourceCosts.eating?.personas ?? 0) * Number(manualResourceCosts.eating?.dias ?? 0),
         [manualResourceCosts],
     );
     const eatingTotalIgv = useMemo(() =>
@@ -146,7 +146,7 @@ export function useCostComputes(
 
     // VIAJE Y MOVILIDAD
     const travelingTotal = useMemo(() =>
-        Number(manualResourceCosts.traveling.cantidad) * Number(manualResourceCosts.traveling.precio_unitario),
+        Number(manualResourceCosts.traveling?.monto ?? 0) * Number(manualResourceCosts.traveling?.personas ?? 0) * Number(manualResourceCosts.traveling?.dias ?? 0),
         [manualResourceCosts],
     );
     const travelingTotalIgv = useMemo(() =>
