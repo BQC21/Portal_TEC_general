@@ -3,7 +3,7 @@ import {
     computeMargenRiesgoViaticos,
     computeSubtotalViaticos,
     computeVentaViaticos,
-} from "../computes";
+} from "../../../../../../../lib/utils/helpers/computes/quote_computes";
 import { ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
 
 export type SummaryCostTable2_props = ViaticosCostsInput & {

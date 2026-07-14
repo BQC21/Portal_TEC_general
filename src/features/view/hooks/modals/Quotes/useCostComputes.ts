@@ -1,4 +1,4 @@
-import { computeGrossMargin, computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/features/view/sub_components/M3/Tables/quotes/computes";
+import { computeGrossMargin, computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
 import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";

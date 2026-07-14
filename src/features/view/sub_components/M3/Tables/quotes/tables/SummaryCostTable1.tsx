@@ -5,7 +5,7 @@ import {
     computeSubtotalConMargenRecursos,
     computeSubtotalRecursos,
     computeVentaRecursos,
-} from "../computes";
+} from "../../../../../../../lib/utils/helpers/computes/quote_computes";
 import { RecursosCostsInput } from "@/lib/types/components/finantial_computes";
 
 
