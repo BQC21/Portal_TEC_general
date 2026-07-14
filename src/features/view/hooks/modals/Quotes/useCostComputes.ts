@@ -282,22 +282,10 @@ export function useCostComputes(
         [subtotal_viaticos, gm_viaticos],
     );
 
-    // Subtotal con Margen de Riesgo
-    const subtotalConMargenRiesgo_viaticos = useMemo(() =>
-        subtotal_viaticos + margenRiesgo_viaticos,
-        [subtotal_viaticos, margenRiesgo_viaticos],
-    );
-
-    // MarkUp
-    const markUp_viaticos = useMemo(() =>
-        subtotalConMargenRiesgo_viaticos * markup,
-        [subtotalConMargenRiesgo_viaticos, markup],
-    );
-
     // Venta (s/.)
     const ventaSoles_viaticos = useMemo(() =>
-        subtotalConMargenRiesgo_viaticos + markUp_viaticos,
-        [subtotalConMargenRiesgo_viaticos, markUp_viaticos],
+        subtotal_viaticos + margenRiesgo_viaticos,
+        [subtotal_viaticos, margenRiesgo_viaticos],
     );
     const ventaSolesIgv_viaticos = useMemo(() =>
         ventaSoles_viaticos * 1.18,
@@ -390,8 +378,6 @@ export function useCostComputes(
         // TOTALES PRINCIPALES VIÁTICOS
         subtotal_viaticos,
         margenRiesgo_viaticos,
-        subtotalConMargenRiesgo_viaticos,
-        markUp_viaticos,
         ventaSoles_viaticos,
         ventaSolesIgv_viaticos,
         ventaDolares_viaticos,
