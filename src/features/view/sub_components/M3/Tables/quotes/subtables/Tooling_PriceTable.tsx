@@ -3,7 +3,6 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { useEffect, useState } from "react";
 
 export function Tooling_PriceTable({ manualResourceCosts, updateManualCost }: { 
     manualResourceCosts: ManualResourceCosts, 
@@ -13,23 +12,6 @@ export function Tooling_PriceTable({ manualResourceCosts, updateManualCost }: {
         value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
     ) => void,
 }){
-    const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.tooling.descripcion);
-    const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.tooling.cantidad));
-    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.tooling.precio_unitario));
-
-    // useEffect(() => {
-    //     // sincronizar los valores de la tabla con los valores del manual de costos
-    //     setDescripcion(manualResourceCosts.tooling.descripcion);
-    //     setCantidad(Number(manualResourceCosts.tooling.cantidad));
-    //     setPrecio_unitario(Number(manualResourceCosts.tooling.precio_unitario));
-    // }, [manualResourceCosts]);
-
-    useEffect(() => {
-        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
-        updateManualCost("tooling", "descripcion", String(descripcion));
-        updateManualCost("tooling", "cantidad", Number(cantidad));
-        updateManualCost("tooling", "precio_unitario", Number(precio_unitario));
-    }, [cantidad, precio_unitario, descripcion, updateManualCost]);
 
     return(
         <>
@@ -59,29 +41,30 @@ export function Tooling_PriceTable({ manualResourceCosts, updateManualCost }: {
                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
-                                            value={descripcion}
-                                            onChange={(value) => setDescripcion(value)}
+                                            value={manualResourceCosts.tooling.descripcion}
+                                            onChange={(value) => updateManualCost("tooling", "descripcion", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Cantidad"
-                                            value={cantidad} min={0}
-                                            onChange={(value) => setCantidad(value)}
+                                            value={Number(manualResourceCosts.tooling.cantidad ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("tooling", "cantidad", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio Unidad (s/.)"
-                                            value={precio_unitario} min={0}
-                                            onChange={(value) => setPrecio_unitario(value)}
+                                            value={Number(manualResourceCosts.tooling.precio_unitario ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("tooling", "precio_unitario", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {/* El precio total se calcula como la cantidad por el precio unitario */}
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(cantidad) * Number(precio_unitario), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.tooling.cantidad ?? 0) * 
+                                                Number(manualResourceCosts.tooling.precio_unitario ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>

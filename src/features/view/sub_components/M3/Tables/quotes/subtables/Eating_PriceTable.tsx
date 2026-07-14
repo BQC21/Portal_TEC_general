@@ -2,8 +2,6 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { useEffect } from "react";
-import { useState } from "react";
 
 export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: { 
     manualResourceCosts: ManualResourceCosts, 
@@ -13,23 +11,6 @@ export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: {
         value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
     ) => void,
 }){
-    const [monto, setMonto] = useState<number>(Number(manualResourceCosts.eating?.monto ?? 0));
-    const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.eating?.personas ?? 0));
-    const [dias, setDias] = useState<number>(Number(manualResourceCosts.eating?.dias ?? 0));
-
-    // useEffect(() => {
-    //     // sincronizar los valores de la tabla con los valores del manual de costos
-    //     setMonto(Number(manualResourceCosts.eating?.monto ?? 0));
-    //     setPersonas(Number(manualResourceCosts.eating?.personas ?? 0));
-    //     setDias(Number(manualResourceCosts.eating?.dias ?? 0));
-    // }, [manualResourceCosts]);
-
-    useEffect(() => {
-        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
-        updateManualCost("eating", "monto", Number(monto));
-        updateManualCost("eating", "personas", Number(personas));
-        updateManualCost("eating", "dias", Number(dias));
-    }, [monto, personas, dias, updateManualCost]);
 
     return(
         <>
@@ -59,28 +40,30 @@ export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={monto} min={0}
-                                            onChange={(value) => setMonto(value)}
+                                            value={Number(manualResourceCosts.eating?.monto ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("eating", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Personas"
-                                            value={personas} min={0}
-                                            onChange={(value) => setPersonas(value)}
+                                            value={Number(manualResourceCosts.eating?.personas ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("eating", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={dias} min={0}
-                                            onChange={(value) => setDias(value)}
+                                            value={Number(manualResourceCosts.eating?.dias ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("eating", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(monto) * Number(personas) * Number(dias), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.eating?.monto ?? 0) * 
+                                                Number(manualResourceCosts.eating?.personas ?? 0) * 
+                                                Number(manualResourceCosts.eating?.dias ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>

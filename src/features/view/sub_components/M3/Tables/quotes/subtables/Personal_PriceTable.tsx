@@ -3,7 +3,6 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { useEffect, useState } from "react";
 
 export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: { 
     manualResourceCosts: ManualResourceCosts, 
@@ -13,26 +12,6 @@ export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: {
         value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
     ) => void,
 }){
-    const [dias, setDias] = useState<number>(Number(manualResourceCosts.personal.dias));
-    const [precio_dia, setPrecio_dia] = useState<number>(Number(manualResourceCosts.personal.precio_dia));
-    const [nombre, setNombre] = useState<string>(manualResourceCosts.personal.nombre);
-    const [puesto, setPuesto] = useState<string>(manualResourceCosts.personal.puesto);
-
-    // useEffect(() => {
-    //     // sincronizar los valores de la tabla con los valores del manual de costos
-    //     setNombre(manualResourceCosts.personal.nombre);
-    //     setPuesto(manualResourceCosts.personal.puesto);
-    //     setDias(Number(manualResourceCosts.personal.dias));
-    //     setPrecio_dia(Number(manualResourceCosts.personal.precio_dia));
-    // }, [manualResourceCosts]);
-
-    useEffect(() => {
-        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
-        updateManualCost("personal", "dias", Number(dias));
-        updateManualCost("personal", "precio_dia", Number(precio_dia));
-        updateManualCost("personal", "nombre", String(nombre));
-        updateManualCost("personal", "puesto", String(puesto));
-    }, [dias, precio_dia, nombre, puesto, updateManualCost]);
 
     return(
         <>
@@ -65,35 +44,36 @@ export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Nombre"
-                                            value={nombre}
-                                            onChange={(value) => setNombre(value)}
+                                            value={manualResourceCosts.personal.nombre}
+                                            onChange={(value) => updateManualCost("personal", "nombre", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Puesto"
-                                            value={puesto}
-                                            onChange={(value) => setPuesto(value)}
+                                            value={manualResourceCosts.personal.puesto}
+                                            onChange={(value) => updateManualCost("personal", "puesto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={dias} min={0}
-                                            onChange={(value) => setDias(value)}
+                                            value={Number(manualResourceCosts.personal.dias ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("personal", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio x Día"
-                                            value={precio_dia} min={0}
-                                            onChange={(value) => setPrecio_dia(value)}
+                                            value={Number(manualResourceCosts.personal.precio_dia ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("personal", "precio_dia", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(dias) * Number(precio_dia), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.personal.dias ?? 0) * 
+                                                Number(manualResourceCosts.personal.precio_dia ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>

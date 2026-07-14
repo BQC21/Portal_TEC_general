@@ -3,8 +3,6 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { useState } from "react";
-import { useEffect } from "react";
 
 export function Courier_PriceTable({ manualResourceCosts, updateManualCost }: { 
     manualResourceCosts: ManualResourceCosts, 
@@ -14,23 +12,6 @@ export function Courier_PriceTable({ manualResourceCosts, updateManualCost }: {
         value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
     ) => void,
 }){
-    const [descripcion, setDescripcion] = useState<string>(manualResourceCosts.courier.descripcion);
-    const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.courier.cantidad));
-    const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.courier.precio_unitario));
-
-    // useEffect(() => {
-    //     // sincronizar los valores de la tabla con los valores del manual de costos
-    //     setDescripcion(manualResourceCosts.courier.descripcion);
-    //     setCantidad(Number(manualResourceCosts.courier.cantidad));
-    //     setPrecio_unitario(Number(manualResourceCosts.courier.precio_unitario));
-    // }, [cantidad, precio_unitario, descripcion, manualResourceCosts]);
-
-    useEffect(() => {
-        // actualizar los valores del manual de costos cuando los valores de la tabla cambian
-        updateManualCost("courier", "descripcion", String(descripcion));
-        updateManualCost("courier", "cantidad", Number(cantidad));
-        updateManualCost("courier", "precio_unitario", Number(precio_unitario));
-    }, [cantidad, precio_unitario, descripcion, updateManualCost]);
 
     return(
         <>
@@ -60,28 +41,29 @@ export function Courier_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
-                                            value={descripcion}
-                                            onChange={(value) => setDescripcion(value)}
+                                            value={manualResourceCosts.courier.descripcion}
+                                            onChange={(value) => updateManualCost("courier", "descripcion", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Cantidad"
-                                            value={cantidad} min={0}
-                                            onChange={(value) => setCantidad(value)}
+                                            value={Number(manualResourceCosts.courier.cantidad ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("courier", "cantidad", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio Total (s/.)"
-                                            value={precio_unitario} min={0}
-                                            onChange={(value) => setPrecio_unitario(value)}
+                                            value={Number(manualResourceCosts.courier.precio_unitario ?? 0)} min={0}
+                                            onChange={(value) => updateManualCost("courier", "precio_unitario", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(cantidad) * Number(precio_unitario), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.courier.cantidad ?? 0) * 
+                                                Number(manualResourceCosts.courier.precio_unitario ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>
