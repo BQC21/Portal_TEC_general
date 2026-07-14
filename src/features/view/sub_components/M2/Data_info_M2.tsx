@@ -7,7 +7,7 @@ import { AddProductNumberField } from "../../components/Form_fields/AddNumberFie
 import { AddProductRadioField } from "../../components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
 import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
-import { computedRequirements } from "@/lib/types/components/computes";
+import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
 import { MONTH_LABELS, useMonthlyDemand } from "../../hooks/modals/Sizing/useMonthlyDemand";
 

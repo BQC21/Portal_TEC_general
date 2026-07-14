@@ -1,4 +1,4 @@
-import { computedRequirements } from "@/lib/types/components/computes";
+import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectOption } from "@/lib/types/components/form_fields";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";

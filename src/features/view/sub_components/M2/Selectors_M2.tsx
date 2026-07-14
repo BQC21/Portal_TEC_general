@@ -2,7 +2,7 @@ import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectionRow } from "../../components/Form_fields/AddSelectionRow";
 import { handlerSelector } from "../../hooks/modals/Sizing/useHandlerSelector";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
-import { computedRequirements } from "@/lib/types/components/computes";
+import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 

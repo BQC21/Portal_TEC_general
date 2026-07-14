@@ -1,4 +1,4 @@
-import { computedRequirements } from "@/lib/types/components/computes";
+import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { SetStateAction, useEffect } from "react";
