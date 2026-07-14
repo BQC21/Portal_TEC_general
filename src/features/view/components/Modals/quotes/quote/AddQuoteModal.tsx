@@ -22,9 +22,9 @@ import { Tooling_PriceTable } from "@/features/view/sub_components/M3/Tables/quo
 import { Hotel_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Hotel_PriceTable";
 import { Personal_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Personal_PriceTable";
 import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/SCTR_PriceTable";
-import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Traveling_PriceTable";
-import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Courier_PriceTable";
-import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Eating_PriceTable";
+import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
+import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Courier_PriceTable";
+import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
