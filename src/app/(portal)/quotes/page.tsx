@@ -30,13 +30,10 @@ export default function QuotesPage(){
 
 
     // JOIN EQUIPOS <---> PROYECTOS
-    const { projects_equipos: project_equipos,
-        refetch: fetchProjectEquipos } = useProjectEquipos();
+    const { projects_equipos: project_equipos} = useProjectEquipos();
 
     // JOIN MATERIALES <---> PROYECTOS    
-    const { projects_materiales: project_materiales,
-        refetch: fetchProjectMateriales
-    } = useProjectMateriales();
+    const { projects_materiales: project_materiales} = useProjectMateriales();
 
     // ---------------------------------
     // ---- Lista de eventos ----
