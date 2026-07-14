@@ -27,8 +27,8 @@ export function computeMargenRiesgoRecursos(
     gm_general: number
 ) {
     return {
-        soles:  computeSubtotalRecursos(costs).soles * gm_general, 
-        igv: computeSubtotalRecursos(costs).igv * gm_general
+        soles:  computeSubtotalRecursos(costs).soles * gm_general/100, 
+        igv: computeSubtotalRecursos(costs).igv * gm_general/100,
     }
 }
 
@@ -44,8 +44,8 @@ export function computeSubtotalConMargenRecursos(costs: RecursosCostsInput, gm_g
 export function computeMarkUpRecursos(costs: RecursosCostsInput, markup: number,  gm_general: number) {
     
     return {
-        soles:  computeSubtotalConMargenRecursos(costs, gm_general).soles * markup, 
-        igv: computeSubtotalConMargenRecursos(costs, gm_general).igv * markup, 
+        soles:  computeSubtotalConMargenRecursos(costs, gm_general).soles * markup/100, 
+        igv: computeSubtotalConMargenRecursos(costs, gm_general).igv * markup/100,
     };
 }
 
@@ -91,8 +91,8 @@ export function computeVentaViaticos(
 ) {
     const subtotal = computeSubtotalViaticos(costs);
     return {
-        ventaSoles: subtotal.soles * gm_viaticos + subtotal.soles,
-        ventaSolesIgv: subtotal.igv * gm_viaticos + subtotal.igv,
+        ventaSoles: subtotal.soles * gm_viaticos/100 + subtotal.soles,
+        ventaSolesIgv: subtotal.igv * gm_viaticos/100 + subtotal.igv,
     };
 }
 

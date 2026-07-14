@@ -179,14 +179,8 @@ export default function AddQuoteModal({
     console.log("valor del grossMargin", GrossMargin.gm);
     // RECURSOS
     console.log("valor del precio de venta soles", ventaSoles_recursos);
-    console.log("valor del precio de venta soles IGV", ventaSolesIgv_recursos);
-    console.log("valor del precio de venta dolares", ventaDolares_recursos);
-    console.log("valor del precio de venta dolares IGV", ventaDolaresIgv_recursos);
     // VIÁTICOS
     console.log("valor del precio de venta soles", ventaSoles_viaticos);
-    console.log("valor del precio de venta soles IGV", ventaSolesIgv_viaticos);
-    console.log("valor del precio de venta dolares", ventaDolares_viaticos);
-    console.log("valor del precio de venta dolares IGV", ventaDolaresIgv_viaticos);
     // DEFINITIVO
     console.log("valor del precio final", precioFinal);
     console.log("valor del precio final IGV", precioFinalIgv);
