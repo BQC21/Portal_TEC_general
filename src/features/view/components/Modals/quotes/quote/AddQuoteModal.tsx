@@ -77,15 +77,16 @@ export default function AddQuoteModal({
     // CÁLCULOS MANUALES
     const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS);
 
+    //-- actualización de los cálculos manuales
     function updateManualCost<K extends keyof ManualResourceCosts>(
         section: K,
         field: keyof ManualResourceCosts[K],
         value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
     ) {
-    setManualResourceCosts((current) => ({
-        ...current,
-        [section]: { ...current[section], [field]: value },
-    }));
+        setManualResourceCosts((current) => ({
+            ...current,
+            [section]: { ...current[section], [field]: value },
+        }));
     }
 
     // CÁLCULOS TOTALES
@@ -109,6 +110,9 @@ export default function AddQuoteModal({
         projectEquipos, projectMateriales, manualResourceCosts, 
         Number(form.igv), Number(form.tasa_cambio), Number(form.gm_general), Number(form.gm_viaticos)
     );
+
+    // SINCRONIZAR CANTIDADES
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -250,18 +254,23 @@ export default function AddQuoteModal({
                                 />
                                 <EPP_PriceTable
                                     manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
                                 />
                                 <Tooling_PriceTable
                                     manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
                                 />
                                 <Hotel_PriceTable
                                     manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
                                 />
                                 <Personal_PriceTable
                                     manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
                                 />
                                 <SCTR_PriceTable
                                     manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
                                 />
                             </div>
                         </div>
@@ -281,9 +290,18 @@ export default function AddQuoteModal({
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
-                                <Courier_PriceTable/>
-                                <Eating_PriceTable/>
-                                <Traveling_PriceTable/>
+                                <Courier_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
+                                />
+                                <Eating_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
+                                />
+                                <Traveling_PriceTable
+                                    manualResourceCosts={manualResourceCosts}
+                                    updateManualCost={updateManualCost}
+                                />
                             </div>
                         </div>
                         
