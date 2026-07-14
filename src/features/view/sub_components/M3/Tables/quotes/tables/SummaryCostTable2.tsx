@@ -4,12 +4,7 @@ import {
     computeSubtotalViaticos,
     computeVentaViaticos,
 } from "../../../../../../../lib/utils/helpers/computes/quote_computes";
-import { ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
-
-export type SummaryCostTable2_props = ViaticosCostsInput & {
-    gm_viaticos: number;
-    tasa_cambio: number;
-}
+import { ViaticosCostsInput, ViaticosSubtotalInput } from "@/lib/types/components/Quotes/finantial_computes";
 
 export function SummaryCostTable2({
     eatingTotal,
@@ -18,9 +13,21 @@ export function SummaryCostTable2({
     travelingTotalIgv,
     courierTotal,
     courierTotalIgv,
-    gm_viaticos,
+    // PARÁMETROS
+    igv,
     tasa_cambio,
-}: SummaryCostTable2_props){
+    // SUBTOTALES
+    subtotal_viaticos,
+    margenRiesgo_viaticos,
+    ventaSoles_viaticos,
+    ventaSolesIgv_viaticos,
+    ventaDolares_viaticos,
+    ventaDolaresIgv_viaticos,
+}: ViaticosCostsInput & {
+    igv: number;
+    tasa_cambio: number;
+} & ViaticosSubtotalInput){
+
     const costs: ViaticosCostsInput = {
         eatingTotal: Number(eatingTotal),
         eatingTotalIgv: Number(eatingTotalIgv),
@@ -30,9 +37,14 @@ export function SummaryCostTable2({
         courierTotalIgv: Number(courierTotalIgv),
     };
 
-    const subtotal = computeSubtotalViaticos(costs);
-    const margenRiesgo = computeMargenRiesgoViaticos(costs, Number(gm_viaticos));
-    const venta = computeVentaViaticos(costs, Number(gm_viaticos));
+    const subtotales: ViaticosSubtotalInput = {
+        subtotal_viaticos: Number(subtotal_viaticos),
+        margenRiesgo_viaticos: Number(margenRiesgo_viaticos),
+        ventaSoles_viaticos: Number(ventaSoles_viaticos),
+        ventaSolesIgv_viaticos: Number(ventaSolesIgv_viaticos),
+        ventaDolares_viaticos: Number(ventaDolares_viaticos),
+        ventaDolaresIgv_viaticos: Number(ventaDolaresIgv_viaticos),
+    }
 
     return(
         <>
@@ -60,10 +72,10 @@ export function SummaryCostTable2({
                                         Viaje y Movilidad
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(eatingTotal, "PEN")}
+                                        {formatCurrency(costs.eatingTotal, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(eatingTotalIgv, "PEN")}
+                                        {formatCurrency(costs.eatingTotalIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -71,10 +83,10 @@ export function SummaryCostTable2({
                                         Alimentación
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(travelingTotal, "PEN")}
+                                        {formatCurrency(costs.travelingTotal, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(travelingTotalIgv, "PEN")}
+                                        {formatCurrency(costs.travelingTotalIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -82,10 +94,10 @@ export function SummaryCostTable2({
                                         Courier
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(courierTotal, "PEN")}
+                                        {formatCurrency(costs.courierTotal, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(courierTotalIgv, "PEN")}
+                                        {formatCurrency(costs.courierTotalIgv, "PEN")}
                                     </td>
                                 </tr>
                                 
@@ -96,10 +108,10 @@ export function SummaryCostTable2({
                                         subtotal
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotal.soles, "PEN")}
+                                        {formatCurrency(subtotales.subtotal_viaticos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotal.igv, "PEN")}
+                                        {formatCurrency(subtotales.subtotal_viaticos * (1+igv), "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -107,10 +119,10 @@ export function SummaryCostTable2({
                                         Margen de riesgo
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(margenRiesgo.soles, "PEN")}
+                                        {formatCurrency(subtotales.margenRiesgo_viaticos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(margenRiesgo.igv, "PEN")}
+                                        {formatCurrency(subtotales.margenRiesgo_viaticos * (1+igv), "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -118,10 +130,10 @@ export function SummaryCostTable2({
                                         Venta (s/.)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(venta.ventaSoles, "PEN")}
+                                        {formatCurrency(subtotales.ventaSoles_viaticos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(venta.ventaSolesIgv, "PEN")}
+                                        {formatCurrency(subtotales.ventaSolesIgv_viaticos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -129,10 +141,10 @@ export function SummaryCostTable2({
                                         Venta ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(venta.ventaSoles/Number(tasa_cambio), "USD") : 0}
+                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSoles_viaticos/Number(tasa_cambio), "USD") : 0}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(venta.ventaSolesIgv/Number(tasa_cambio), "USD") : 0}
+                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSolesIgv_viaticos/Number(tasa_cambio), "USD") : 0}
                                     </td>
                                 </tr>
 

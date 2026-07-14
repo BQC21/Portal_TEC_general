@@ -40,22 +40,8 @@ export type RecursosSubtotalInput = {
 export type ViaticosSubtotalInput = {
     subtotal_viaticos: number;
     margenRiesgo_viaticos: number;
-    subtotalConMargenRiesgo_viaticos: number;
-    markUp_viaticos: number;
     ventaSoles_viaticos: number;
     ventaSolesIgv_viaticos: number;
     ventaDolares_viaticos: number;
     ventaDolaresIgv_viaticos: number;   
 };
-
-export type SummaryCostTable1_props = RecursosCostsInput & {
-    gm_general: number;
-    markup: number;
-    tasa_cambio: number;
-} & RecursosSubtotalInput;
-
-export type SummaryCostTable2_props = ViaticosCostsInput & {
-    gm_general: number;
-    markup: number;
-    tasa_cambio: number;
-} & ViaticosSubtotalInput;
