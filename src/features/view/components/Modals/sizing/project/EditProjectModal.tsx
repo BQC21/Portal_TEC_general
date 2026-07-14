@@ -33,13 +33,13 @@ import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabas
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
 import { EditProjectModalProps } from "@/lib/types/components/modals";
-import { useComputedRequirements } from "@/features/view/hooks/modals/useComputedRequirements";
-import { useSyncQuantities } from "@/features/view/hooks/modals/useSyncQuantities";
-import { useSelectionHandlers } from "@/features/view/hooks/modals/useSelectionHandlers";
-import { ZoneSelection } from "@/features/view/hooks/modals/useZoneSelection";
+import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
+import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
+import { useSelectionHandlers } from "@/features/view/hooks/modals/Sizing/useSelectionHandlers";
+import { ZoneSelection } from "@/features/view/hooks/modals/Sizing/useZoneSelection";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
-import { handlerSelector } from "@/features/view/hooks/modals/useHandlerSelector";
+import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";
 import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 import { General_info_M2 } from "@/features/view/sub_components/M2/General_info_M2";
 import { Tables_M2 } from "@/features/view/sub_components/M2/Tables_M2";

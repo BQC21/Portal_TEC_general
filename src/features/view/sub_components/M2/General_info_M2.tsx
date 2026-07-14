@@ -7,7 +7,7 @@ import { INSTALL_TYPE_OPTIONS } from "@/lib/utils/options";
 import { Zone, ZoneFormState } from "@/lib/types/supabase/zone-types";
 import { SetStateAction } from "react";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
-import { ZoneSelection } from "../../hooks/modals/useZoneSelection";
+import { ZoneSelection } from "../../hooks/modals/Sizing/useZoneSelection";
 
 export type General_info_M2Props = {
     form: ProjectFormState;

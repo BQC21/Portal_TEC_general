@@ -1,6 +1,6 @@
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectionRow } from "../../components/Form_fields/AddSelectionRow";
-import { handlerSelector } from "../../hooks/modals/useHandlerSelector";
+import { handlerSelector } from "../../hooks/modals/Sizing/useHandlerSelector";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { computedRequirements } from "@/lib/types/components/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";

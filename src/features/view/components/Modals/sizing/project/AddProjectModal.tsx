@@ -22,10 +22,10 @@ import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateria
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddMProjectodalProps } from "@/lib/types/components/modals";
-import { useComputedRequirements } from "@/features/view/hooks/modals/useComputedRequirements";
-import { useSyncQuantities } from "@/features/view/hooks/modals/useSyncQuantities";
-import { handlerSelector } from "@/features/view/hooks/modals/useHandlerSelector";
-import { useSelectionHandlers } from "@/features/view/hooks/modals/useSelectionHandlers";
+import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
+import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
+import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";
+import { useSelectionHandlers } from "@/features/view/hooks/modals/Sizing/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
 import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
