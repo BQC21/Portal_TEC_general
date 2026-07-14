@@ -143,7 +143,7 @@ export default function AddQuoteModal({
     // console.log("valor del precio de venta Recursos", ventaSoles);
     // console.log("valor del precio de MarkUp", markUp);
 
-    // // CODIFICACIÓN AUTOMÁTICA 
+    // CODIFICACIÓN AUTOMÁTICA 
     useEffect(() => {
         updateField("cod_cotizacion", getQuoteCode());
     }, []); // solo al montar
