@@ -6,7 +6,7 @@ import {
     computeSubtotalRecursos,
     computeVentaRecursos,
 } from "../../../../../../../lib/utils/helpers/computes/quote_computes";
-import { RecursosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
+import { RecursosCostsInput, RecursosSubtotalInput } from "@/lib/types/components/Quotes/finantial_computes";
 
 
 export function SummaryCostTable1({
@@ -26,14 +26,21 @@ export function SummaryCostTable1({
     personalCostIgv,
     sctrCost,
     sctrCostIgv,
-    gm_general,
-    markup,
+    // PARÁMETROS
     tasa_cambio,
+    // SUBTOTALES
+    subtotal_recursos,
+    margenRiesgo_recursos,
+    subtotalConMargenRiesgo_recursos,
+    markUp_recursos,
+    ventaSoles_recursos,
+    ventaSolesIgv_recursos,
+    ventaDolares_recursos,
+    ventaDolaresIgv_recursos,
 }: RecursosCostsInput & {
-    gm_general: number;
-    markup: number;
     tasa_cambio: number;
-}){
+} & RecursosSubtotalInput){
+
     const costs: RecursosCostsInput = {
         equiposPrincipalesCost: Number(equiposPrincipalesCost),
         equiposPrincipalesCostIgv: Number(equiposPrincipalesCostIgv),
@@ -53,11 +60,16 @@ export function SummaryCostTable1({
         sctrCostIgv: Number(sctrCostIgv),
     };
 
-    const subtotal = computeSubtotalRecursos(costs);
-    const margenRiesgo = computeMargenRiesgoRecursos(costs, Number(gm_general));
-    const subtotalConMargen = computeSubtotalConMargenRecursos(costs, Number(gm_general));
-    const markUp = computeMarkUpRecursos(costs, Number(markup), Number(gm_general));
-    const venta = computeVentaRecursos(costs, Number(markup), Number(tasa_cambio), Number(gm_general));
+    const subtotales: RecursosSubtotalInput = {
+        subtotal_recursos: Number(subtotal_recursos),
+        margenRiesgo_recursos: Number(margenRiesgo_recursos),
+        subtotalConMargenRiesgo_recursos: Number(subtotalConMargenRiesgo_recursos),
+        markUp_recursos: Number(markUp_recursos),
+        ventaSoles_recursos: Number(ventaSoles_recursos),
+        ventaSolesIgv_recursos: Number(ventaSolesIgv_recursos),
+        ventaDolares_recursos: Number(ventaDolares_recursos),
+        ventaDolaresIgv_recursos: Number(ventaDolaresIgv_recursos),
+    }
 
     return(
         <>
@@ -85,10 +97,10 @@ export function SummaryCostTable1({
                                         Equipos Principales
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(equiposPrincipalesCost, "PEN")}
+                                        {formatCurrency(costs.equiposPrincipalesCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(equiposPrincipalesCostIgv, "PEN")}
+                                        {formatCurrency(costs.equiposPrincipalesCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -96,10 +108,10 @@ export function SummaryCostTable1({
                                         Estructuras
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(estructurasCost, "PEN")}
+                                        {formatCurrency(costs.estructurasCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(estructurasCostIgv, "PEN")}
+                                        {formatCurrency(costs.estructurasCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -107,10 +119,10 @@ export function SummaryCostTable1({
                                         Consumibles
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(consumiblesCost, "PEN")}
+                                        {formatCurrency(costs.consumiblesCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(consumiblesCostIgv, "PEN")}
+                                        {formatCurrency(costs.consumiblesCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -118,10 +130,10 @@ export function SummaryCostTable1({
                                         EPPs
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(eppCost, "PEN")}
+                                        {formatCurrency(costs.eppCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(eppCostIgv, "PEN")}
+                                        {formatCurrency(costs.eppCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -129,10 +141,10 @@ export function SummaryCostTable1({
                                         Herramientas
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(toolingCost, "PEN")}
+                                        {formatCurrency(costs.toolingCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(toolingCostIgv, "PEN")}
+                                        {formatCurrency(costs.toolingCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -140,10 +152,10 @@ export function SummaryCostTable1({
                                         Hotel
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(hotelCost, "PEN")}
+                                        {formatCurrency(costs.hotelCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(hotelCostIgv, "PEN")}
+                                        {formatCurrency(costs.hotelCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -151,10 +163,10 @@ export function SummaryCostTable1({
                                         Personal
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(personalCost, "PEN")}
+                                        {formatCurrency(costs.personalCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(personalCostIgv, "PEN")}
+                                        {formatCurrency(costs.personalCostIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -162,10 +174,10 @@ export function SummaryCostTable1({
                                         SCTR
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(sctrCost, "PEN")}
+                                        {formatCurrency(costs.sctrCost, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(sctrCostIgv, "PEN")}
+                                        {formatCurrency(costs.sctrCostIgv, "PEN")}
                                     </td>
                                 </tr>
 
@@ -175,10 +187,10 @@ export function SummaryCostTable1({
                                         subtotal
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotal.soles, "PEN")}
+                                        {formatCurrency(subtotales.subtotal_recursos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotal.igv, "PEN")}
+                                        {formatCurrency(subtotales.subtotalConMargenRiesgo_recursos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -186,10 +198,10 @@ export function SummaryCostTable1({
                                         Margen de riesgo
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(margenRiesgo.soles, "PEN")}
+                                        {formatCurrency(subtotales.margenRiesgo_recursos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(margenRiesgo.igv, "PEN")}
+                                        {formatCurrency(subtotales.subtotalConMargenRiesgo_recursos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -197,10 +209,10 @@ export function SummaryCostTable1({
                                         Subtotal con Margen de riesgo
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotalConMargen.soles, "PEN")}
+                                        {formatCurrency(subtotales.subtotalConMargenRiesgo_recursos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotalConMargen.igv, "PEN")}
+                                        {formatCurrency(subtotales.subtotalConMargenRiesgo_recursos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -208,10 +220,10 @@ export function SummaryCostTable1({
                                         Mark Up
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(markUp.soles, "PEN")}
+                                        {formatCurrency(subtotales.markUp_recursos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(markUp.igv, "PEN")}
+                                        {formatCurrency(subtotales.markUp_recursos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -219,10 +231,10 @@ export function SummaryCostTable1({
                                         Venta (s/.)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(venta.ventaSoles, "PEN")}
+                                        {formatCurrency(subtotales.ventaSoles_recursos, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(venta.ventaSolesIgv, "PEN")}
+                                        {formatCurrency(subtotales.ventaSolesIgv_recursos, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -230,10 +242,10 @@ export function SummaryCostTable1({
                                         Venta ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(venta.ventaSoles/(Number(tasa_cambio)), "USD") : 0}
+                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSoles_recursos/(Number(tasa_cambio)), "USD") : 0}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {Number(tasa_cambio) > 0 ? formatCurrency(venta.ventaSolesIgv/(Number(tasa_cambio)), "USD") : 0}
+                                        {Number(tasa_cambio) > 0 ? formatCurrency(subtotales.ventaSolesIgv_recursos/(Number(tasa_cambio)), "USD") : 0}
                                     </td>
                                 </tr>
 
