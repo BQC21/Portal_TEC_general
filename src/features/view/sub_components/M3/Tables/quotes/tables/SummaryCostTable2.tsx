@@ -16,12 +16,14 @@ export function SummaryCostTable2({
     // PARÁMETROS
     igv,
     // SUBTOTALES
-    subtotal_viaticos,
-    margenRiesgo_viaticos,
-    ventaSoles_viaticos,
-    ventaSolesIgv_viaticos,
-    ventaDolares_viaticos,
-    ventaDolaresIgv_viaticos,
+    subtotal_viaticos_soles,
+    subtotal_viaticos_igv,
+    margenRiesgo_viaticos_soles,
+    margenRiesgo_viaticos_igv,
+    ventaSoles_viaticos_soles,
+    ventaSoles_viaticos_igv,
+    ventaDolares_viaticos_soles,
+    ventaDolares_viaticos_igv,
 }: ViaticosCostsInput & {
     igv: number;
 } & ViaticosSubtotalInput){
@@ -36,12 +38,14 @@ export function SummaryCostTable2({
     };
 
     const subtotales: ViaticosSubtotalInput = {
-        subtotal_viaticos: Number(subtotal_viaticos),
-        margenRiesgo_viaticos: Number(margenRiesgo_viaticos),
-        ventaSoles_viaticos: Number(ventaSoles_viaticos),
-        ventaSolesIgv_viaticos: Number(ventaSolesIgv_viaticos),
-        ventaDolares_viaticos: Number(ventaDolares_viaticos),
-        ventaDolaresIgv_viaticos: Number(ventaDolaresIgv_viaticos),
+        subtotal_viaticos_soles: Number(subtotal_viaticos_soles),
+        subtotal_viaticos_igv: Number(subtotal_viaticos_igv),
+        margenRiesgo_viaticos_soles: Number(margenRiesgo_viaticos_soles),
+        margenRiesgo_viaticos_igv: Number(margenRiesgo_viaticos_igv),
+        ventaSoles_viaticos_soles: Number(ventaSoles_viaticos_soles),
+        ventaSoles_viaticos_igv: Number(ventaSoles_viaticos_igv),
+        ventaDolares_viaticos_soles: Number(ventaDolares_viaticos_soles),
+        ventaDolares_viaticos_igv: Number(ventaDolares_viaticos_igv),
     }
 
     return(
@@ -106,10 +110,10 @@ export function SummaryCostTable2({
                                         subtotal
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.subtotal_viaticos, "PEN")}
+                                        {formatCurrency(subtotales.subtotal_viaticos_soles, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.subtotal_viaticos * (1+igv), "PEN")}
+                                        {formatCurrency(subtotales.subtotal_viaticos_igv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -117,10 +121,10 @@ export function SummaryCostTable2({
                                         Margen de riesgo
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.margenRiesgo_viaticos, "PEN")}
+                                        {formatCurrency(subtotales.margenRiesgo_viaticos_soles, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.margenRiesgo_viaticos * (1+igv), "PEN")}
+                                        {formatCurrency(subtotales.margenRiesgo_viaticos_igv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -128,10 +132,10 @@ export function SummaryCostTable2({
                                         Venta (s/.)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.ventaSoles_viaticos, "PEN")}
+                                        {formatCurrency(subtotales.ventaSoles_viaticos_soles, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.ventaSolesIgv_viaticos, "PEN")}
+                                        {formatCurrency(subtotales.ventaSoles_viaticos_igv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-800 text-white font-bold text-left">
@@ -139,10 +143,10 @@ export function SummaryCostTable2({
                                         Venta ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.ventaDolares_viaticos, "USD")}
+                                        {formatCurrency(subtotales.ventaDolares_viaticos_soles, "USD")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(subtotales.ventaDolaresIgv_viaticos, "USD")}
+                                        {formatCurrency(subtotales.ventaDolares_viaticos_igv, "USD")}
                                     </td>
                                 </tr>
 

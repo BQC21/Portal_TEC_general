@@ -1,4 +1,4 @@
-import { computeGrossMargin, computePrecioFinal, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
+import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoViaticos, computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos, computeSubtotalRecursos, computeSubtotalViaticos, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
 import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
@@ -222,86 +222,84 @@ export function useCostComputes(
 
     // subtotal
     const subtotal_recursos = useMemo(() =>
-        recursosCosts.equiposPrincipalesCost + recursosCosts.estructurasCost + 
-        recursosCosts.consumiblesCost + recursosCosts.eppCost + recursosCosts.toolingCost + 
-        recursosCosts.hotelCost + recursosCosts.personalCost + recursosCosts.sctrCost,
+        computeSubtotalRecursos(recursosCosts),
         [recursosCosts],
     );
 
     // Margen de riesgo
     const margenRiesgo_recursos = useMemo(() =>
-        subtotal_recursos * gm_general,
-        [subtotal_recursos, gm_general],
+        computeMargenRiesgoRecursos(recursosCosts, gm_general),
+        [recursosCosts, gm_general],
     );
 
     // Subtotal con Margen de Riesgo
     const subtotalConMargenRiesgo_recursos = useMemo(() =>
-        subtotal_recursos + margenRiesgo_recursos,
-        [subtotal_recursos, margenRiesgo_recursos],
+        computeSubtotalConMargenRecursos(recursosCosts, gm_general),
+        [recursosCosts, gm_general],
     );
 
     // MarkUp
     const markUp_recursos = useMemo(() =>
-        subtotalConMargenRiesgo_recursos * markup,
-        [subtotalConMargenRiesgo_recursos, markup],
+        computeMarkUpRecursos(recursosCosts, markup, gm_general),
+        [recursosCosts, markup, gm_general],
     );
 
     // Venta (s/.)
     const ventaSoles_recursos = useMemo(() =>
-        subtotalConMargenRiesgo_recursos + markUp_recursos,
-        [subtotalConMargenRiesgo_recursos, markUp_recursos],
+        computeVentaRecursos(recursosCosts, markup, tasa_cambio, gm_general),
+        [recursosCosts, markup, tasa_cambio, gm_general],
     );
     const ventaSolesIgv_recursos = useMemo(() =>
-        ventaSoles_recursos * 1.18,
-        [ventaSoles_recursos],
+        computeVentaRecursos(recursosCosts, markup, tasa_cambio, gm_general).ventaSolesIgv,
+        [recursosCosts, markup, tasa_cambio, gm_general],
     );
 
     // venta ($)
     const ventaDolares_recursos = useMemo(() =>
-        ventaSoles_recursos / tasa_cambio,
-        [ventaSoles_recursos, tasa_cambio],
+        computeVentaRecursos(recursosCosts, markup, tasa_cambio, gm_general).ventaSoles/tasa_cambio,
+        [recursosCosts, markup, tasa_cambio, gm_general],
     );
 
     // venta ($ IGV)
     const ventaDolaresIgv_recursos = useMemo(() =>
-        ventaSolesIgv_recursos / tasa_cambio,
-        [ventaSolesIgv_recursos, tasa_cambio],
+        computeVentaRecursos(recursosCosts, markup, tasa_cambio, gm_general).ventaSolesIgv/tasa_cambio,
+        [recursosCosts, markup, tasa_cambio, gm_general],
     );
 
     // -------- VIÁTICOS
 
     // subtotal
     const subtotal_viaticos = useMemo(() =>
-        viaticosCosts.courierTotal + viaticosCosts.eatingTotal + viaticosCosts.travelingTotal,
+        computeSubtotalViaticos(viaticosCosts),
         [viaticosCosts],
     );
 
     // Margen de riesgo
     const margenRiesgo_viaticos  = useMemo(() =>
-        subtotal_viaticos * gm_viaticos,
-        [subtotal_viaticos, gm_viaticos],
+        computeMargenRiesgoViaticos(viaticosCosts, gm_viaticos),
+        [viaticosCosts, gm_viaticos],
     );
 
     // Venta (s/.)
     const ventaSoles_viaticos = useMemo(() =>
-        subtotal_viaticos + margenRiesgo_viaticos,
-        [subtotal_viaticos, margenRiesgo_viaticos],
+        computeVentaViaticos(viaticosCosts, gm_viaticos),
+        [viaticosCosts, gm_viaticos],
     );
     const ventaSolesIgv_viaticos = useMemo(() =>
-        ventaSoles_viaticos * 1.18,
-        [ventaSoles_viaticos],
+        computeVentaViaticos(viaticosCosts, gm_viaticos).ventaSolesIgv,
+        [viaticosCosts, gm_viaticos],
     );
 
     // venta ($)
     const ventaDolares_viaticos = useMemo(() =>
-        ventaSoles_viaticos / tasa_cambio,
-        [ventaSoles_viaticos, tasa_cambio],
+        computeVentaViaticos(viaticosCosts, gm_viaticos).ventaSoles/tasa_cambio,
+        [viaticosCosts, gm_viaticos, tasa_cambio],
     );
 
     // venta ($ IGV)
     const ventaDolaresIgv_viaticos = useMemo(() =>
-            ventaSolesIgv_viaticos / tasa_cambio,
-        [ventaSolesIgv_viaticos, tasa_cambio],
+        computeVentaViaticos(viaticosCosts, gm_viaticos).ventaSolesIgv/tasa_cambio,
+        [viaticosCosts, gm_viaticos, tasa_cambio],
     );
 
     // -----------------

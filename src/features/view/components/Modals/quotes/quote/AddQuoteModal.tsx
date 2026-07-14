@@ -318,14 +318,18 @@ export default function AddQuoteModal({
                                     // PARÁMETROS
                                     igv={Number(form.igv)}
                                     // TOTALES RECURSOS
-                                    subtotal_recursos={subtotal_recursos}
-                                    margenRiesgo_recursos={margenRiesgo_recursos}
-                                    subtotalConMargenRiesgo_recursos={subtotalConMargenRiesgo_recursos}
-                                    markUp_recursos={markUp_recursos}
-                                    ventaSoles_recursos={ventaSoles_recursos}
-                                    ventaSolesIgv_recursos={ventaSolesIgv_recursos}
-                                    ventaDolares_recursos={ventaDolares_recursos}
-                                    ventaDolaresIgv_recursos={ventaDolaresIgv_recursos}
+                                    subtotal_recursos_soles={subtotal_recursos.soles}
+                                    subtotal_recursos_igv={subtotal_recursos.igv}
+                                    margenRiesgo_recursos_soles={margenRiesgo_recursos.soles}
+                                    margenRiesgo_recursos_igv={margenRiesgo_recursos.igv}
+                                    subtotalConMargenRiesgo_recursos_soles={subtotalConMargenRiesgo_recursos.soles}
+                                    subtotalConMargenRiesgo_recursos_igv={subtotalConMargenRiesgo_recursos.igv}
+                                    markUp_recursos_soles={markUp_recursos.soles}
+                                    markUp_recursos_igv={markUp_recursos.igv}
+                                    ventaSoles_recursos_soles={ventaSoles_recursos.ventaSoles}
+                                    ventaSoles_recursos_igv={ventaSoles_recursos.ventaSolesIgv}
+                                    ventaDolares_recursos_soles={ventaSoles_recursos.ventaSoles/Number(form.tasa_cambio)}
+                                    ventaDolares_recursos_igv={ventaSoles_recursos.ventaSolesIgv/Number(form.tasa_cambio)}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
@@ -374,12 +378,14 @@ export default function AddQuoteModal({
                                     // PARÁMETROS
                                     igv={Number(form.igv)}
                                     // TOTALES VIÁTICOS
-                                    subtotal_viaticos={subtotal_viaticos}
-                                    margenRiesgo_viaticos={margenRiesgo_viaticos}
-                                    ventaSoles_viaticos={ventaSoles_viaticos}
-                                    ventaSolesIgv_viaticos={ventaSolesIgv_viaticos}
-                                    ventaDolares_viaticos={ventaDolares_viaticos}
-                                    ventaDolaresIgv_viaticos={ventaDolaresIgv_viaticos}
+                                    subtotal_viaticos_soles={subtotal_viaticos.soles}
+                                    subtotal_viaticos_igv={subtotal_viaticos.igv}
+                                    margenRiesgo_viaticos_soles={margenRiesgo_viaticos.soles}
+                                    margenRiesgo_viaticos_igv={margenRiesgo_viaticos.igv}
+                                    ventaSoles_viaticos_soles={ventaSoles_viaticos.ventaSoles}
+                                    ventaSoles_viaticos_igv={ventaSoles_viaticos.ventaSolesIgv}
+                                    ventaDolares_viaticos_soles={ventaSoles_viaticos.ventaSoles/Number(form.tasa_cambio)}
+                                    ventaDolares_viaticos_igv={ventaSoles_viaticos.ventaSolesIgv/Number(form.tasa_cambio)}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
