@@ -37,13 +37,19 @@ export default function AddQuoteModal({
     existing_project_materiales,
 }: AddQuoteModalProps) {
 
+    // ----------
     // ESTADOS
-    const { projects } = useProjects();
+    // ----------
 
     const [form, setForm] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
+    
+    const { projects } = useProjects();
     const [form_project, setForm_project] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
 
-    // SELECCIONADOS
+    // ----------
+    // TECNOLOGÍA SELECCIONADA
+    // ----------
+
     const hasSelectedProject = Boolean(form.proyecto_id);
 
     const projectEquipos = hasSelectedProject
@@ -54,6 +60,7 @@ export default function AddQuoteModal({
         ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
         : [];
 
+    // --- rescatamos su descripción
     const equiposDescriptions = projectEquipos
         .map((item) => item.equipo_info?.descripcion)
         .filter((description): description is string => Boolean(description));
@@ -62,7 +69,10 @@ export default function AddQuoteModal({
         .map((item) => item.material_info?.descripcion)
         .filter((description): description is string => Boolean(description));
 
+    // ----------
     // EVENTOS
+    // ----------
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         await onAddQuote({ ...form });
@@ -75,8 +85,11 @@ export default function AddQuoteModal({
         });
     }
 
+    // ----------
     // CÁLCULOS MANUALES
-    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS);
+    // ----------
+
+    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS); // valores iniciales
 
     //-- actualización de los cálculos manuales
     function updateManualCost<K extends keyof ManualResourceCosts>(
@@ -90,7 +103,10 @@ export default function AddQuoteModal({
         }));
     }
 
+    // ----------
     // CÁLCULOS TOTALES
+    // ----------
+
     const { 
         // TOTALES RECURSOS
         equiposPrincipalesTotal, equiposPrincipalesTotalIgv, 
@@ -105,17 +121,24 @@ export default function AddQuoteModal({
         eatingTotal, eatingTotalIgv,
         travelingTotal, travelingTotalIgv,
         courierTotal, courierTotalIgv, 
-        // GrossMargin
+        // GROSSMARGIN
         GrossMargin,
-        // TOTALES PRINCIPALES
-        subtotal,
-        margenRiesgo,
-        subtotalConMargenRiesgo,
-        markUp,
-        ventaSoles,
-        ventaSolesIgv,
-        ventaDolares,
-        ventaDolaresIgv,
+        // TOTALES PRINCIPALES RECURSOS
+        subtotal_recursos,
+        margenRiesgo_recursos,
+        subtotalConMargenRiesgo_recursos,
+        markUp_recursos,
+        ventaSoles_recursos,
+        ventaSolesIgv_recursos,
+        ventaDolares_recursos,
+        ventaDolaresIgv_recursos,
+        // TOTALES PRINCIPALES VIÁTICOS
+        subtotal_viaticos,
+        margenRiesgo_viaticos,
+        ventaSoles_viaticos,
+        ventaSolesIgv_viaticos,
+        ventaDolares_viaticos,
+        ventaDolaresIgv_viaticos,
         // TOTALES DEFINITIVOS
         precioFinal,
         precioFinalIgv,
@@ -131,22 +154,45 @@ export default function AddQuoteModal({
         Number(form.tasa_cambio),
     );
 
-
+    // ----------
     // SINCRONIZAR GROSS MARGIN
+    // ----------
+
     useEffect(() => {
         const nextGm = String(GrossMargin.gm);
         if (GrossMargin.gm > 0 && form.gm !== nextGm) {
             updateField("gm", String(GrossMargin.gm));
         }
     }, [GrossMargin.gm]);
-    // console.log("valor del grossMargin", GrossMargin.gm);
-    // console.log("valor del precio de venta Recursos", ventaSoles);
-    // console.log("valor del precio de MarkUp", markUp);
 
-    // CODIFICACIÓN AUTOMÁTICA 
+    // ----------
+    // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
+    // ----------
     useEffect(() => {
         updateField("cod_cotizacion", getQuoteCode());
     }, []); // solo al montar
+
+    // ----------
+    // LOGS
+    // ----------
+
+    console.log("valor del grossMargin", GrossMargin.gm);
+    // RECURSOS
+    console.log("valor del precio de venta soles", ventaSoles_recursos);
+    console.log("valor del precio de venta soles IGV", ventaSolesIgv_recursos);
+    console.log("valor del precio de venta dolares", ventaDolares_recursos);
+    console.log("valor del precio de venta dolares IGV", ventaDolaresIgv_recursos);
+    // VIÁTICOS
+    console.log("valor del precio de venta soles", ventaSoles_viaticos);
+    console.log("valor del precio de venta soles IGV", ventaSolesIgv_viaticos);
+    console.log("valor del precio de venta dolares", ventaDolares_viaticos);
+    console.log("valor del precio de venta dolares IGV", ventaDolaresIgv_viaticos);
+    // DEFINITIVO
+    console.log("valor del precio final", precioFinal);
+    console.log("valor del precio final IGV", precioFinalIgv);
+    console.log("valor del precio final dolares", precioFinalDolares);
+    console.log("valor del precio final dolares IGV", precioFinalDolaresIgv);
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -233,7 +279,7 @@ export default function AddQuoteModal({
                                     required
                                     value={Number(form.igv) > 0 ? Number(form.igv) : ""}
                                     onChange={(value) => updateField("igv", String(value))}
-                                    step={0.01}   min={0.1}   max={0.2}
+                                    step={0.01}   min={0.15}   max={0.18}
                                 />
                                 <AddProductNumberField
                                     label="Tasa de cambio"
@@ -269,9 +315,18 @@ export default function AddQuoteModal({
                                     personalCostIgv={personalTotalIgv}
                                     sctrCost={sctrTotal}
                                     sctrCostIgv={sctrTotalIgv}
-                                    gm_general={Number(form.gm_general)}
-                                    markup={Number(form.markup)}
+                                    // PARÁMETROS
+                                    igv={Number(form.igv)}
                                     tasa_cambio={Number(form.tasa_cambio)}
+                                    // TOTALES RECURSOS
+                                    subtotal_recursos={subtotal_recursos}
+                                    margenRiesgo_recursos={margenRiesgo_recursos}
+                                    subtotalConMargenRiesgo_recursos={subtotalConMargenRiesgo_recursos}
+                                    markUp_recursos={markUp_recursos}
+                                    ventaSoles_recursos={ventaSoles_recursos}
+                                    ventaSolesIgv_recursos={ventaSolesIgv_recursos}
+                                    ventaDolares_recursos={ventaDolares_recursos}
+                                    ventaDolaresIgv_recursos={ventaDolaresIgv_recursos}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
@@ -317,8 +372,16 @@ export default function AddQuoteModal({
                                     travelingTotalIgv={travelingTotalIgv}
                                     courierTotal={courierTotal}
                                     courierTotalIgv={courierTotalIgv}
-                                    gm_viaticos={Number(form.gm_viaticos)}
+                                    // PARÁMETROS
+                                    igv={Number(form.igv)}
                                     tasa_cambio={Number(form.tasa_cambio)}
+                                    // TOTALES VIÁTICOS
+                                    subtotal_viaticos={subtotal_viaticos}
+                                    margenRiesgo_viaticos={margenRiesgo_viaticos}
+                                    ventaSoles_viaticos={ventaSoles_viaticos}
+                                    ventaSolesIgv_viaticos={ventaSolesIgv_viaticos}
+                                    ventaDolares_viaticos={ventaDolares_viaticos}
+                                    ventaDolaresIgv_viaticos={ventaDolaresIgv_viaticos}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
