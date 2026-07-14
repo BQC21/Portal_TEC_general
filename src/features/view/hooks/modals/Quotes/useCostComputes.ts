@@ -105,7 +105,8 @@ export function useCostComputes(
 
     // HOTEL
     const hotelTotal = useMemo(() =>
-        Number(manualResourceCosts.hotel.monto) * Number(manualResourceCosts.hotel.personas) * Number(manualResourceCosts.hotel.dias),
+        Number(manualResourceCosts.hotel.monto) * Number(manualResourceCosts.hotel.personas) * 
+            Number(manualResourceCosts.hotel.dias),
         [manualResourceCosts],
     );
     const hotelTotalIgv = useMemo(() =>
@@ -136,7 +137,9 @@ export function useCostComputes(
 
     // ALIMENTACIÓN
     const eatingTotal = useMemo(() =>
-        Number(manualResourceCosts.eating?.monto ?? 0) * Number(manualResourceCosts.eating?.personas ?? 0) * Number(manualResourceCosts.eating?.dias ?? 0),
+        Number(manualResourceCosts.eating?.monto ?? 0) * 
+        Number(manualResourceCosts.eating?.personas ?? 0) * 
+        Number(manualResourceCosts.eating?.dias ?? 0),
         [manualResourceCosts],
     );
     const eatingTotalIgv = useMemo(() =>
@@ -146,7 +149,9 @@ export function useCostComputes(
 
     // VIAJE Y MOVILIDAD
     const travelingTotal = useMemo(() =>
-        Number(manualResourceCosts.traveling?.monto ?? 0) * Number(manualResourceCosts.traveling?.personas ?? 0) * Number(manualResourceCosts.traveling?.dias ?? 0),
+        Number(manualResourceCosts.traveling?.monto ?? 0) * 
+        Number(manualResourceCosts.traveling?.personas ?? 0) * 
+        Number(manualResourceCosts.traveling?.dias ?? 0),
         [manualResourceCosts],
     );
     const travelingTotalIgv = useMemo(() =>
@@ -213,50 +218,102 @@ export function useCostComputes(
     // ALMACENAR CÁLCULOS EN LAS TABLAS PRINCIPALES
     // -----------------
 
+    // -------- RECURSOS
+
     // subtotal
-    const subtotal = useMemo(() =>
-        recursosCosts.equiposPrincipalesCost + recursosCosts.estructurasCost + recursosCosts.consumiblesCost + recursosCosts.eppCost + recursosCosts.toolingCost + recursosCosts.hotelCost + recursosCosts.personalCost + recursosCosts.sctrCost + viaticosCosts.eatingTotal + viaticosCosts.travelingTotal + viaticosCosts.courierTotal,
-        [recursosCosts, viaticosCosts],
+    const subtotal_recursos = useMemo(() =>
+        recursosCosts.equiposPrincipalesCost + recursosCosts.estructurasCost + 
+        recursosCosts.consumiblesCost + recursosCosts.eppCost + recursosCosts.toolingCost + 
+        recursosCosts.hotelCost + recursosCosts.personalCost + recursosCosts.sctrCost,
+        [recursosCosts],
     );
 
     // Margen de riesgo
-    const margenRiesgo = useMemo(() =>
-        subtotal * gm_general,
-        [subtotal, gm_general],
+    const margenRiesgo_recursos = useMemo(() =>
+        subtotal_recursos * gm_general,
+        [subtotal_recursos, gm_general],
     );
 
     // Subtotal con Margen de Riesgo
-    const subtotalConMargenRiesgo = useMemo(() =>
-        subtotal + margenRiesgo,
-        [subtotal, margenRiesgo],
+    const subtotalConMargenRiesgo_recursos = useMemo(() =>
+        subtotal_recursos + margenRiesgo_recursos,
+        [subtotal_recursos, margenRiesgo_recursos],
     );
 
     // MarkUp
-    const markUp = useMemo(() =>
-        subtotalConMargenRiesgo * markup,
-        [subtotalConMargenRiesgo, markup],
+    const markUp_recursos = useMemo(() =>
+        subtotalConMargenRiesgo_recursos * markup,
+        [subtotalConMargenRiesgo_recursos, markup],
     );
 
     // Venta (s/.)
-    const ventaSoles = useMemo(() =>
-        markUp,
-        [subtotalConMargenRiesgo, markup],
+    const ventaSoles_recursos = useMemo(() =>
+        subtotalConMargenRiesgo_recursos + markUp_recursos,
+        [subtotalConMargenRiesgo_recursos, markUp_recursos],
     );
-    const ventaSolesIgv = useMemo(() =>
-        ventaSoles * 1.18,
-        [ventaSoles],
+    const ventaSolesIgv_recursos = useMemo(() =>
+        ventaSoles_recursos * 1.18,
+        [ventaSoles_recursos],
     );
 
     // venta ($)
-    const ventaDolares = useMemo(() =>
-        ventaSoles / tasa_cambio,
-        [ventaSoles, tasa_cambio],
+    const ventaDolares_recursos = useMemo(() =>
+        ventaSoles_recursos / tasa_cambio,
+        [ventaSoles_recursos, tasa_cambio],
     );
 
     // venta ($ IGV)
-    const ventaDolaresIgv = useMemo(() =>
-        ventaSoles / tasa_cambio,
-        [ventaSoles, tasa_cambio],
+    const ventaDolaresIgv_recursos = useMemo(() =>
+        ventaSolesIgv_recursos / tasa_cambio,
+        [ventaSolesIgv_recursos, tasa_cambio],
+    );
+
+    // -------- VIÁTICOS
+
+    // subtotal
+    const subtotal_viaticos = useMemo(() =>
+        viaticosCosts.courierTotal + viaticosCosts.eatingTotal + viaticosCosts.travelingTotal,
+        [viaticosCosts],
+    );
+
+    // Margen de riesgo
+    const margenRiesgo_viaticos  = useMemo(() =>
+        subtotal_viaticos * gm_viaticos,
+        [subtotal_viaticos, gm_viaticos],
+    );
+
+    // Subtotal con Margen de Riesgo
+    const subtotalConMargenRiesgo_viaticos = useMemo(() =>
+        subtotal_viaticos + margenRiesgo_viaticos,
+        [subtotal_viaticos, margenRiesgo_viaticos],
+    );
+
+    // MarkUp
+    const markUp_viaticos = useMemo(() =>
+        subtotalConMargenRiesgo_viaticos * markup,
+        [subtotalConMargenRiesgo_viaticos, markup],
+    );
+
+    // Venta (s/.)
+    const ventaSoles_viaticos = useMemo(() =>
+        subtotalConMargenRiesgo_viaticos + markUp_viaticos,
+        [subtotalConMargenRiesgo_viaticos, markUp_viaticos],
+    );
+    const ventaSolesIgv_viaticos = useMemo(() =>
+        ventaSoles_viaticos * 1.18,
+        [ventaSoles_viaticos],
+    );
+
+    // venta ($)
+    const ventaDolares_viaticos = useMemo(() =>
+        ventaSoles_viaticos / tasa_cambio,
+        [ventaSoles_viaticos, tasa_cambio],
+    );
+
+    // venta ($ IGV)
+    const ventaDolaresIgv_viaticos = useMemo(() =>
+            ventaSolesIgv_viaticos / tasa_cambio,
+        [ventaSolesIgv_viaticos, tasa_cambio],
     );
 
     // -----------------
@@ -321,15 +378,24 @@ export function useCostComputes(
         travelingTotalIgv,
         courierTotal,
         courierTotalIgv,
-        // TOTALES PRINCIPALES
-        subtotal,
-        margenRiesgo,
-        subtotalConMargenRiesgo,
-        markUp,
-        ventaSoles,
-        ventaSolesIgv,
-        ventaDolares,
-        ventaDolaresIgv,
+        // TOTALES PRINCIPALES RECURSOS
+        subtotal_recursos,
+        margenRiesgo_recursos,
+        subtotalConMargenRiesgo_recursos,
+        markUp_recursos,
+        ventaSoles_recursos,
+        ventaSolesIgv_recursos,
+        ventaDolares_recursos,
+        ventaDolaresIgv_recursos,
+        // TOTALES PRINCIPALES VIÁTICOS
+        subtotal_viaticos,
+        margenRiesgo_viaticos,
+        subtotalConMargenRiesgo_viaticos,
+        markUp_viaticos,
+        ventaSoles_viaticos,
+        ventaSolesIgv_viaticos,
+        ventaDolares_viaticos,
+        ventaDolaresIgv_viaticos,
         // TOTALES DEFINITIVOS
         precioFinal,
         precioFinalIgv,
