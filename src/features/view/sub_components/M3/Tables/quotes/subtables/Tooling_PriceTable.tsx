@@ -17,12 +17,12 @@ export function Tooling_PriceTable({ manualResourceCosts, updateManualCost }: {
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.tooling.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.tooling.precio_unitario));
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setDescripcion(manualResourceCosts.tooling.descripcion);
-        setCantidad(Number(manualResourceCosts.tooling.cantidad));
-        setPrecio_unitario(Number(manualResourceCosts.tooling.precio_unitario));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setDescripcion(manualResourceCosts.tooling.descripcion);
+    //     setCantidad(Number(manualResourceCosts.tooling.cantidad));
+    //     setPrecio_unitario(Number(manualResourceCosts.tooling.precio_unitario));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

@@ -17,12 +17,12 @@ export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: {
     const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.eating?.personas ?? 0));
     const [dias, setDias] = useState<number>(Number(manualResourceCosts.eating?.dias ?? 0));
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setMonto(Number(manualResourceCosts.eating?.monto ?? 0));
-        setPersonas(Number(manualResourceCosts.eating?.personas ?? 0));
-        setDias(Number(manualResourceCosts.eating?.dias ?? 0));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setMonto(Number(manualResourceCosts.eating?.monto ?? 0));
+    //     setPersonas(Number(manualResourceCosts.eating?.personas ?? 0));
+    //     setDias(Number(manualResourceCosts.eating?.dias ?? 0));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

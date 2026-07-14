@@ -17,12 +17,12 @@ export function SCTR_PriceTable({ manualResourceCosts, updateManualCost }: {
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.sctr.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.sctr.precio_unitario));
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setDescripcion(manualResourceCosts.sctr.descripcion);
-        setCantidad(Number(manualResourceCosts.sctr.cantidad));
-        setPrecio_unitario(Number(manualResourceCosts.sctr.precio_unitario));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setDescripcion(manualResourceCosts.sctr.descripcion);
+    //     setCantidad(Number(manualResourceCosts.sctr.cantidad));
+    //     setPrecio_unitario(Number(manualResourceCosts.sctr.precio_unitario));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

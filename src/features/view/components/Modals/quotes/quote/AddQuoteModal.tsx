@@ -28,6 +28,7 @@ import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quot
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
+import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -141,6 +142,8 @@ export default function AddQuoteModal({
     // console.log("valor del precio de venta Recursos", ventaSoles);
     // console.log("valor del precio de MarkUp", markUp);
 
+    // CODIFICACIÓN AUTOMÁTICA 
+    form.cod_cotizacion = getQuoteCode();
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -236,11 +239,9 @@ export default function AddQuoteModal({
                                     onChange={(value) => updateField("tasa_cambio", String(value))}
                                     step={0.01}   min={3.00}   max={4.50}
                                 />
-                                <AddProductTextField
+                                <AddProductReadonlyField
                                     label="Código de cotización"
-                                    placeholder="C001-YYYYMMDDD"
                                     value={form.cod_cotizacion ?? ""}
-                                    onChange={(value) => updateField("cod_cotizacion", value)}
                                 />
                             </div>
                         </div>

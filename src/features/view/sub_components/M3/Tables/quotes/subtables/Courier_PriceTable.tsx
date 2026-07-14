@@ -18,12 +18,12 @@ export function Courier_PriceTable({ manualResourceCosts, updateManualCost }: {
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.courier.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.courier.precio_unitario));
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setDescripcion(manualResourceCosts.courier.descripcion);
-        setCantidad(Number(manualResourceCosts.courier.cantidad));
-        setPrecio_unitario(Number(manualResourceCosts.courier.precio_unitario));
-    }, [cantidad, precio_unitario, descripcion, manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setDescripcion(manualResourceCosts.courier.descripcion);
+    //     setCantidad(Number(manualResourceCosts.courier.cantidad));
+    //     setPrecio_unitario(Number(manualResourceCosts.courier.precio_unitario));
+    // }, [cantidad, precio_unitario, descripcion, manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

@@ -19,12 +19,12 @@ export function Traveling_PriceTable({ manualResourceCosts, updateManualCost }: 
     const [personas, setPersonas] = useState<number>(Number(manualResourceCosts.traveling?.personas ?? 0));
     const [dias, setDias] = useState<number>(Number(manualResourceCosts.traveling?.dias ?? 0));
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setMonto(Number(manualResourceCosts.traveling?.monto ?? 0));
-        setPersonas(Number(manualResourceCosts.traveling?.personas ?? 0));
-        setDias(Number(manualResourceCosts.traveling?.dias ?? 0));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setMonto(Number(manualResourceCosts.traveling?.monto ?? 0));
+    //     setPersonas(Number(manualResourceCosts.traveling?.personas ?? 0));
+    //     setDias(Number(manualResourceCosts.traveling?.dias ?? 0));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

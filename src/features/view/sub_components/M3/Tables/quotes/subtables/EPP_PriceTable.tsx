@@ -19,12 +19,12 @@ export function EPP_PriceTable({ manualResourceCosts, updateManualCost }:
     const [cantidad, setCantidad] = useState<number>(Number(manualResourceCosts.epp.cantidad));
     const [precio_unitario, setPrecio_unitario] = useState<number>(Number(manualResourceCosts.epp.precio_unitario));
     
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setDescripcion(manualResourceCosts.epp.descripcion);
-        setCantidad(Number(manualResourceCosts.epp.cantidad));
-        setPrecio_unitario(Number(manualResourceCosts.epp.precio_unitario));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setDescripcion(manualResourceCosts.epp.descripcion);
+    //     setCantidad(Number(manualResourceCosts.epp.cantidad));
+    //     setPrecio_unitario(Number(manualResourceCosts.epp.precio_unitario));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian

@@ -18,13 +18,13 @@ export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: {
     const [nombre, setNombre] = useState<string>(manualResourceCosts.personal.nombre);
     const [puesto, setPuesto] = useState<string>(manualResourceCosts.personal.puesto);
 
-    useEffect(() => {
-        // sincronizar los valores de la tabla con los valores del manual de costos
-        setNombre(manualResourceCosts.personal.nombre);
-        setPuesto(manualResourceCosts.personal.puesto);
-        setDias(Number(manualResourceCosts.personal.dias));
-        setPrecio_dia(Number(manualResourceCosts.personal.precio_dia));
-    }, [manualResourceCosts]);
+    // useEffect(() => {
+    //     // sincronizar los valores de la tabla con los valores del manual de costos
+    //     setNombre(manualResourceCosts.personal.nombre);
+    //     setPuesto(manualResourceCosts.personal.puesto);
+    //     setDias(Number(manualResourceCosts.personal.dias));
+    //     setPrecio_dia(Number(manualResourceCosts.personal.precio_dia));
+    // }, [manualResourceCosts]);
 
     useEffect(() => {
         // actualizar los valores del manual de costos cuando los valores de la tabla cambian
