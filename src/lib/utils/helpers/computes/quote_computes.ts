@@ -107,7 +107,7 @@ export function computePrecioFinal(
 ) {
     const precioFinal = ventaRecursos.ventaSoles + ventaViaticos.ventaSoles;
     const precioFinalIgv = ventaRecursos.ventaSolesIgv + ventaViaticos.ventaSolesIgv;
-    const tasa = Number(tasa_cambio) || 1;
+    const tasa = Number(tasa_cambio) || 0;
 
     return {
         precioFinal,
