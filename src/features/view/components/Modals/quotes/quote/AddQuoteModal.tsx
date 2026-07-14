@@ -134,7 +134,8 @@ export default function AddQuoteModal({
 
     // SINCRONIZAR GROSS MARGIN
     useEffect(() => {
-        if (GrossMargin.gm > 0) {
+        const nextGm = String(GrossMargin.gm);
+        if (GrossMargin.gm > 0 && form.gm !== nextGm) {
             updateField("gm", String(GrossMargin.gm));
         }
     }, [GrossMargin.gm]);
