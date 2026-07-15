@@ -1,6 +1,7 @@
 import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoViaticos, 
     computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos,
-    computeSubtotalRecursos, computeSubtotalViaticos, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
+    computeSubtotalRecursos, computeSubtotalViaticos, 
+    computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
 import { recursos, viaticos, precioFinal, grossMargin } from "@/lib/types/components/Quotes/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
@@ -210,29 +211,17 @@ export function useCostComputes(
             igv: sctrTotalIgv,
         },
         resumen: {
-            subtotal: {
-                soles: subtotal_recursos.soles,
-                igv: subtotal_recursos.igv,
-            },
-            margenRiesgo: {
-                soles: margenRiesgo_recursos.soles,
-                igv: margenRiesgo_recursos.igv,
-            },
-            subtotalConMargenRiesgo: {
-                soles: subtotalConMargenRiesgo_recursos.soles,
-                igv: subtotalConMargenRiesgo_recursos.igv,
-            },
-            markUp: {
-                soles: markUp_recursos.soles,
-                igv: markUp_recursos.igv,
-            },
+            subtotal: subtotal_recursos,
+            margenRiesgo: margenRiesgo_recursos,
+            subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos,
+            markUp: markUp_recursos,
             ventaSoles: {
                 ventaSoles: ventaRecursos.ventaSoles,
                 ventaSolesIgv: ventaRecursos.ventaSolesIgv,
                 ventaDolares: ventaRecursos.ventaDolares,
                 ventaDolaresIgv: ventaRecursos.ventaDolaresIgv,
             },
-        },
+        },    
     }), [
         equiposPrincipalesTotal, equiposPrincipalesTotalIgv,
         estructurasTotal, estructurasTotalIgv,
@@ -261,19 +250,13 @@ export function useCostComputes(
             igv: courierTotalIgv,
         },
         resumen: {
-            subtotal: {
-                soles: subtotal_viaticos.soles,
-                igv: subtotal_viaticos.igv,
-            },
-            margenRiesgo: {
-                soles: margenRiesgo_viaticos.soles,
-                igv: margenRiesgo_viaticos.igv,
-            },
+            subtotal: subtotal_viaticos,
+            margenRiesgo: margenRiesgo_viaticos,
             ventaSoles: {
                 ventaSoles: ventaViaticos.ventaSoles,
                 ventaSolesIgv: ventaViaticos.ventaSolesIgv,
-                ventaDolares: ventaViaticos.ventaSoles / tasa_cambio,
-                ventaDolaresIgv: ventaViaticos.ventaSolesIgv / tasa_cambio,
+                ventaDolares: ventaViaticos.ventaDolares,
+                ventaDolaresIgv: ventaViaticos.ventaDolaresIgv,
             },
         },
     }), [eatingTotal, eatingTotalIgv, 
@@ -317,7 +300,7 @@ export function useCostComputes(
         [viaticosCosts, gm_viaticos],
     );
     const ventaViaticos = useMemo(
-        () => computeVentaViaticos(viaticosCosts, gm_viaticos),
+        () => computeVentaViaticos(viaticosCosts, gm_viaticos, tasa_cambio),
         [viaticosCosts, gm_viaticos],
     );
     // -------- TOTAL FINAL + GROSS MARGIN
@@ -335,15 +318,6 @@ export function useCostComputes(
         [recursosCosts, markup, gm_general, tasa_cambio],
     );
 
-    // -------- Alias (compatibilidad con el return)
-    const ventaSoles_recursos = ventaRecursos;
-    const ventaSoles_viaticos = ventaViaticos;
-    const ventaSolesIgv_recursos = ventaRecursos.ventaSolesIgv;
-    const ventaDolares_recursos = ventaRecursos.ventaDolares;
-    const ventaDolaresIgv_recursos = ventaRecursos.ventaDolaresIgv;
-    const ventaSolesIgv_viaticos = ventaViaticos.ventaSolesIgv;
-    const ventaDolares_viaticos = ventaViaticos.ventaSoles / tasa_cambio;
-    const ventaDolaresIgv_viaticos = ventaViaticos.ventaSolesIgv / tasa_cambio;
 
     // -----------------
     // OUTPUT
@@ -389,10 +363,12 @@ export function useCostComputes(
                 margenRiesgo: margenRiesgo_recursos,
                 subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos,
                 markUp: markUp_recursos,
-                ventaSoles: ventaSoles_recursos,
-                ventaSolesIgv: ventaSolesIgv_recursos,
-                ventaDolares: ventaDolares_recursos,
-                ventaDolaresIgv: ventaDolaresIgv_recursos,
+                ventaSoles: {
+                    ventaSoles: ventaRecursos.ventaSoles,
+                    ventaSolesIgv: ventaRecursos.ventaSolesIgv,
+                    ventaDolares: ventaRecursos.ventaDolares,
+                    ventaDolaresIgv: ventaRecursos.ventaDolaresIgv,
+                },
             },
         },
 
@@ -413,10 +389,12 @@ export function useCostComputes(
             resumen: {
                 subtotal: subtotal_viaticos,
                 margenRiesgo: margenRiesgo_viaticos,
-                ventaSoles: ventaSoles_viaticos,
-                ventaSolesIgv: ventaSolesIgv_viaticos,
-                ventaDolares: ventaDolares_viaticos,
-                ventaDolaresIgv: ventaDolaresIgv_viaticos,
+                ventaSoles: {
+                    ventaSoles: ventaViaticos.ventaSoles,
+                    ventaSolesIgv: ventaViaticos.ventaSolesIgv,
+                    ventaDolares: ventaViaticos.ventaDolares,
+                    ventaDolaresIgv: ventaViaticos.ventaDolaresIgv,
+                },
             },
         },
 
