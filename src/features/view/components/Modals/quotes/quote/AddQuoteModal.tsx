@@ -107,51 +107,9 @@ export default function AddQuoteModal({
     // CÁLCULOS TOTALES
     // ----------
 
-    const { 
-        // TOTALES RECURSOS
-        equiposPrincipalesTotal, equiposPrincipalesTotalIgv, 
-        estructurasTotal, estructurasTotalIgv, 
-        consumiblesTotal, consumiblesTotalIgv,
-        eppTotal, eppTotalIgv,
-        toolingTotal, toolingTotalIgv,
-        hotelTotal, hotelTotalIgv,
-        personalTotal, personalTotalIgv,
-        sctrTotal, sctrTotalIgv,
-        // TOTALES VIÁTICOS
-        eatingTotal, eatingTotalIgv,
-        travelingTotal, travelingTotalIgv,
-        courierTotal, courierTotalIgv, 
-        // GROSSMARGIN
-        GrossMargin,
-        // TOTALES PRINCIPALES RECURSOS
-        subtotal_recursos,
-        margenRiesgo_recursos,
-        subtotalConMargenRiesgo_recursos,
-        markUp_recursos,
-        ventaSoles_recursos,
-        ventaSolesIgv_recursos,
-        ventaDolares_recursos,
-        ventaDolaresIgv_recursos,
-        // TOTALES PRINCIPALES VIÁTICOS
-        subtotal_viaticos,
-        margenRiesgo_viaticos,
-        ventaSoles_viaticos,
-        ventaSolesIgv_viaticos,
-        ventaDolares_viaticos,
-        ventaDolaresIgv_viaticos,
-        // TOTALES DEFINITIVOS
-        precioFinal,
-        precioFinalIgv,
-        precioFinalDolares,
-        precioFinalDolaresIgv,
-    } = useCostComputes(
-        projectEquipos,
-        projectMateriales,
-        manualResourceCosts,
-        Number(form.gm_general),
-        Number(form.markup),
-        Number(form.gm_viaticos),
-        Number(form.tasa_cambio),
+    const { recursos, viaticos, precioFinal, grossMargin } = useCostComputes(
+        projectEquipos, projectMateriales, manualResourceCosts,
+        Number(form.gm_general), Number(form.markup), Number(form.gm_viaticos), Number(form.tasa_cambio),
     );
 
     // ----------
@@ -159,11 +117,11 @@ export default function AddQuoteModal({
     // ----------
 
     useEffect(() => {
-        const nextGm = String(GrossMargin.gm);
-        if (GrossMargin.gm > 0 && form.gm !== nextGm) {
-            updateField("gm", String(GrossMargin.gm));
+        const nextGm = String(grossMargin.gm);
+        if (Number(grossMargin.gm) > 0 && form.gm !== nextGm) {
+            updateField("gm", String(grossMargin.gm));
         }
-    }, [GrossMargin.gm]);
+    }, [grossMargin.gm]);
 
     // ----------
     // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
@@ -176,16 +134,16 @@ export default function AddQuoteModal({
     // LOGS
     // ----------
 
-    console.log("valor del grossMargin", GrossMargin.gm);
+    console.log("valor del grossMargin", grossMargin.gm);
     // RECURSOS
-    console.log("valor del precio de venta soles", ventaSoles_recursos);
+    console.log("valor del precio de venta soles", recursos.resumen.ventaSoles);
     // VIÁTICOS
-    console.log("valor del precio de venta soles", ventaSoles_viaticos);
+    console.log("valor del precio de venta soles", viaticos.resumen.ventaSoles);
     // DEFINITIVO
-    console.log("valor del precio final", precioFinal);
-    console.log("valor del precio final IGV", precioFinalIgv);
-    console.log("valor del precio final dolares", precioFinalDolares);
-    console.log("valor del precio final dolares IGV", precioFinalDolaresIgv);
+    console.log("valor del precio final", precioFinal.soles);
+    console.log("valor del precio final IGV", precioFinal.solesIgv);
+    console.log("valor del precio final dolares", precioFinal.dolares);
+    console.log("valor del precio final dolares IGV", precioFinal.dolaresIgv);
 
 
     return (
@@ -262,7 +220,7 @@ export default function AddQuoteModal({
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin (%)"
-                                    value={Number(GrossMargin.gm) > 0 ? String(Number(GrossMargin.gm * 100).toFixed(2)) : ""}
+                                    value={Number(grossMargin.gm) > 0 ? String((Number(grossMargin.gm) * 100).toFixed(2)) : ""}
                                 />
                             </div>
 
@@ -293,37 +251,7 @@ export default function AddQuoteModal({
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1
-                                    equiposPrincipalesCost={equiposPrincipalesTotal}
-                                    equiposPrincipalesCostIgv={equiposPrincipalesTotalIgv}
-                                    estructurasCost={estructurasTotal}
-                                    estructurasCostIgv={estructurasTotalIgv}
-                                    consumiblesCost={consumiblesTotal}
-                                    consumiblesCostIgv={consumiblesTotalIgv}
-                                    eppCost={eppTotal}
-                                    eppCostIgv={eppTotalIgv}
-                                    toolingCost={toolingTotal}
-                                    toolingCostIgv={toolingTotalIgv}
-                                    hotelCost={hotelTotal}
-                                    hotelCostIgv={hotelTotalIgv}
-                                    personalCost={personalTotal}
-                                    personalCostIgv={personalTotalIgv}
-                                    sctrCost={sctrTotal}
-                                    sctrCostIgv={sctrTotalIgv}
-                                    // PARÁMETROS
-                                    igv={Number(form.igv)}
-                                    // TOTALES RECURSOS
-                                    subtotal_recursos_soles={subtotal_recursos.soles}
-                                    subtotal_recursos_igv={subtotal_recursos.igv}
-                                    margenRiesgo_recursos_soles={margenRiesgo_recursos.soles}
-                                    margenRiesgo_recursos_igv={margenRiesgo_recursos.igv}
-                                    subtotalConMargenRiesgo_recursos_soles={subtotalConMargenRiesgo_recursos.soles}
-                                    subtotalConMargenRiesgo_recursos_igv={subtotalConMargenRiesgo_recursos.igv}
-                                    markUp_recursos_soles={markUp_recursos.soles}
-                                    markUp_recursos_igv={markUp_recursos.igv}
-                                    ventaSoles_recursos_soles={ventaSoles_recursos.ventaSoles}
-                                    ventaSoles_recursos_igv={ventaSoles_recursos.ventaSolesIgv}
-                                    ventaDolares_recursos_soles={ventaSoles_recursos.ventaSoles/Number(form.tasa_cambio)}
-                                    ventaDolares_recursos_igv={ventaSoles_recursos.ventaSolesIgv/Number(form.tasa_cambio)}
+                                    recursosCosts={recursos}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
@@ -363,23 +291,7 @@ export default function AddQuoteModal({
                         <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2
-                                    eatingTotal={eatingTotal}
-                                    eatingTotalIgv={eatingTotalIgv}
-                                    travelingTotal={travelingTotal}
-                                    travelingTotalIgv={travelingTotalIgv}
-                                    courierTotal={courierTotal}
-                                    courierTotalIgv={courierTotalIgv}
-                                    // PARÁMETROS
-                                    igv={Number(form.igv)}
-                                    // TOTALES VIÁTICOS
-                                    subtotal_viaticos_soles={subtotal_viaticos.soles}
-                                    subtotal_viaticos_igv={subtotal_viaticos.igv}
-                                    margenRiesgo_viaticos_soles={margenRiesgo_viaticos.soles}
-                                    margenRiesgo_viaticos_igv={margenRiesgo_viaticos.igv}
-                                    ventaSoles_viaticos_soles={ventaSoles_viaticos.ventaSoles}
-                                    ventaSoles_viaticos_igv={ventaSoles_viaticos.ventaSolesIgv}
-                                    ventaDolares_viaticos_soles={ventaSoles_viaticos.ventaSoles/Number(form.tasa_cambio)}
-                                    ventaDolares_viaticos_igv={ventaSoles_viaticos.ventaSolesIgv/Number(form.tasa_cambio)}
+                                    viaticosCosts={viaticos}
                                 />
                             </div>
                             <div className="rounded-2xl border border-slate-200 p-4">
@@ -401,10 +313,7 @@ export default function AddQuoteModal({
                         {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
                             <SummaryCostTable
-                                PrecioFinal={precioFinal}
-                                PrecioFinalIgv={precioFinalIgv}
-                                PrecioFinalDolares={precioFinalDolares}
-                                PrecioFinalDolaresIgv={precioFinalDolaresIgv}
+                                precioFinal={precioFinal}
                             />
                         </div>
                         </>
