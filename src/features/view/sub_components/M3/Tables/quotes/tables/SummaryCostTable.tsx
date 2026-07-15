@@ -1,17 +1,12 @@
+import { precioFinal } from "@/lib/types/components/Quotes/finantial_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export type SummaryCostTable_props = {
-    PrecioFinal: number;
-    PrecioFinalIgv: number;
-    PrecioFinalDolares: number;
-    PrecioFinalDolaresIgv: number;
+    precioFinal: precioFinal;
 }
 
 export function SummaryCostTable({
-    PrecioFinal,
-    PrecioFinalIgv,
-    PrecioFinalDolares,
-    PrecioFinalDolaresIgv,
+    precioFinal,
 }: SummaryCostTable_props){
     return(
         <>
@@ -39,10 +34,10 @@ export function SummaryCostTable({
                                         Venta Final (s/.)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(Number(PrecioFinal), "PEN")}
+                                        {formatCurrency(precioFinal.soles, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(Number(PrecioFinalIgv), "PEN")}
+                                        {formatCurrency(precioFinal.solesIgv, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -50,10 +45,10 @@ export function SummaryCostTable({
                                     Venta Final ($)
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(Number(PrecioFinalDolares), "USD")}
+                                        {formatCurrency(precioFinal.dolares, "USD")}
                                     </td>
                                     <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                        {formatCurrency(Number(PrecioFinalDolaresIgv), "USD")}
+                                        {formatCurrency(precioFinal.dolaresIgv, "USD")}
                                     </td>
                                 </tr>
 
