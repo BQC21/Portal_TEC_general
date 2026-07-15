@@ -281,55 +281,82 @@ export function useCostComputes(
     // OUTPUT
     // -----------------
 
-    return{
-        // TOTALES RECURSOS
-        equiposPrincipalesTotal,
-        equiposPrincipalesTotalIgv,
-        estructurasTotal,
-        estructurasTotalIgv,
-        consumiblesTotal,
-        consumiblesTotalIgv,
-        eppTotal,
-        eppTotalIgv,
-        toolingTotal,
-        toolingTotalIgv,
-        hotelTotal,
-        hotelTotalIgv,
-        personalTotal,
-        personalTotalIgv,
-        sctrTotal,
-        sctrTotalIgv,
-        // TOTALES VIÁTICOS
-        eatingTotal,
-        eatingTotalIgv,
-        travelingTotal,
-        travelingTotalIgv,
-        courierTotal,
-        courierTotalIgv,
-        // TOTALES PRINCIPALES RECURSOS
-        subtotal_recursos,
-        margenRiesgo_recursos,
-        subtotalConMargenRiesgo_recursos,
-        markUp_recursos,
-        ventaSoles_recursos,
-        ventaSolesIgv_recursos,
-        ventaDolares_recursos,
-        ventaDolaresIgv_recursos,
-        // TOTALES PRINCIPALES VIÁTICOS
-        subtotal_viaticos,
-        margenRiesgo_viaticos,
-        ventaSoles_viaticos,
-        ventaSolesIgv_viaticos,
-        ventaDolares_viaticos,
-        ventaDolaresIgv_viaticos,
-        // TOTALES DEFINITIVOS
-        precioFinal,
-        precioFinalIgv,
-        precioFinalDolares,
-        precioFinalDolaresIgv,
-        // Gross Margin
-        GrossMargin
-    }
+    recursos: {
+        equiposPrincipales: {
+            total: equiposPrincipalesTotal;
+            igv: equiposPrincipalesTotalIgv;
+        };
+        estructuras: {
+            total: estructurasTotal;
+            igv: estructurasTotalIgv;
+        };
+        consumibles: {
+            total: consumiblesTotal;
+            igv: consumiblesTotalIgv;
+        };
+        epp: {
+            total: eppTotal;
+            igv: eppTotalIgv;
+        };
+        tooling: {
+            total: toolingTotal;
+            igv: toolingTotalIgv;
+        };
+        hotel: {
+            total: hotelTotal;
+            igv: hotelTotalIgv;
+        };
+        personal: {
+            total: personalTotal;
+            igv: personalTotalIgv;
+        };
+        sctr: {
+            total: sctrTotal;
+            igv: sctrTotalIgv;
+        };
 
-    
-}
+        resumen: {
+            subtotal: subtotal_recursos;
+            margenRiesgo: margenRiesgo_recursos;
+            subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos;
+            markUp: markUp_recursos;
+            ventaSoles: ventaSoles_recursos;
+            ventaSolesIgv: ventaSolesIgv_recursos;
+            ventaDolares: ventaDolares_recursos;
+            ventaDolaresIgv: ventaDolaresIgv_recursos;
+        };
+    };
+
+    viaticos: {
+        eating: {
+            total: eatingTotal;
+            igv: eatingTotalIgv;
+        };
+        traveling: {
+            total: travelingTotal;
+            igv: travelingTotalIgv;
+        };
+        courier: {
+            total: courierTotal;
+            igv: courierTotalIgv;
+        };
+
+        resumen: {
+            subtotal: subtotal_viaticos;
+            margenRiesgo: margenRiesgo_viaticos;
+            ventaSoles: ventaSoles_viaticos;
+            ventaSolesIgv: ventaSolesIgv_viaticos;
+            ventaDolares: ventaDolares_viaticos;
+            ventaDolaresIgv: ventaDolaresIgv_viaticos;
+        };
+    };
+
+    precioFinal: {
+        soles: precioFinal;
+        solesIgv: precioFinalIgv;
+        dolares: precioFinalDolares;
+        dolaresIgv: precioFinalDolaresIgv;
+    };
+
+    grossMargin: GrossMargin;
+};
