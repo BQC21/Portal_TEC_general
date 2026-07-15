@@ -1,7 +1,7 @@
 import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoViaticos, 
     computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos,
     computeSubtotalRecursos, computeSubtotalViaticos, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
-import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
+import { recursos, viaticos, precioFinal, grossMargin } from "@/lib/types/components/Quotes/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
@@ -176,23 +176,63 @@ export function useCostComputes(
     // -----------------
 
     // RECURSOS
-    const recursosCosts: RecursosCostsInput = useMemo(() => ({
-        equiposPrincipalesCost: equiposPrincipalesTotal,
-        equiposPrincipalesCostIgv: equiposPrincipalesTotalIgv,
-        estructurasCost: estructurasTotal,
-        estructurasCostIgv: estructurasTotalIgv,
-        consumiblesCost: consumiblesTotal,
-        consumiblesCostIgv: consumiblesTotalIgv,
-        eppCost: eppTotal,
-        eppCostIgv: eppTotalIgv,
-        toolingCost: toolingTotal,
-        toolingCostIgv: toolingTotalIgv,
-        hotelCost: hotelTotal,
-        hotelCostIgv: hotelTotalIgv,
-        personalCost: personalTotal,
-        personalCostIgv: personalTotalIgv,
-        sctrCost: sctrTotal,
-        sctrCostIgv: sctrTotalIgv,
+    const recursosCosts: recursos = useMemo(() => ({
+        equiposPrincipales: {
+            total: equiposPrincipalesTotal,
+            igv: equiposPrincipalesTotalIgv,
+        },
+        estructuras: {
+            total: estructurasTotal,
+            igv: estructurasTotalIgv,
+        },
+        consumibles: {
+            total: consumiblesTotal,
+            igv: consumiblesTotalIgv,
+        },
+        epp: {
+            total: eppTotal,
+            igv: eppTotalIgv,
+        },
+        tooling: {
+            total: toolingTotal,
+            igv: toolingTotalIgv,
+        },
+        hotel: {
+            total: hotelTotal,
+            igv: hotelTotalIgv,
+        },
+        personal: {
+            total: personalTotal,
+            igv: personalTotalIgv,
+        },
+        sctr: {
+            total: sctrTotal,
+            igv: sctrTotalIgv,
+        },
+        resumen: {
+            subtotal: {
+                soles: subtotal_recursos.soles,
+                igv: subtotal_recursos.igv,
+            },
+            margenRiesgo: {
+                soles: margenRiesgo_recursos.soles,
+                igv: margenRiesgo_recursos.igv,
+            },
+            subtotalConMargenRiesgo: {
+                soles: subtotalConMargenRiesgo_recursos.soles,
+                igv: subtotalConMargenRiesgo_recursos.igv,
+            },
+            markUp: {
+                soles: markUp_recursos.soles,
+                igv: markUp_recursos.igv,
+            },
+            ventaSoles: {
+                ventaSoles: ventaRecursos.ventaSoles,
+                ventaSolesIgv: ventaRecursos.ventaSolesIgv,
+                ventaDolares: ventaRecursos.ventaDolares,
+                ventaDolaresIgv: ventaRecursos.ventaDolaresIgv,
+            },
+        },
     }), [
         equiposPrincipalesTotal, equiposPrincipalesTotalIgv,
         estructurasTotal, estructurasTotalIgv,
@@ -202,19 +242,45 @@ export function useCostComputes(
         hotelTotal, hotelTotalIgv,
         personalTotal, personalTotalIgv,
         sctrTotal, sctrTotalIgv,
+        eatingTotal, eatingTotalIgv,
+        travelingTotal, travelingTotalIgv,
     ]);
 
     // VIÁTICOS
-    const viaticosCosts: ViaticosCostsInput = useMemo(() => ({
-        eatingTotal,
-        eatingTotalIgv,
-        travelingTotal,
-        travelingTotalIgv,
-        courierTotal,
-        courierTotalIgv,
+    const viaticosCosts: viaticos = useMemo(() => ({
+        eating: {
+            total: eatingTotal,
+            igv: eatingTotalIgv,
+        },
+        traveling: {
+            total: travelingTotal,
+            igv: travelingTotalIgv,
+        },
+        courier: {
+            total: courierTotal,
+            igv: courierTotalIgv,
+        },
+        resumen: {
+            subtotal: {
+                soles: subtotal_viaticos.soles,
+                igv: subtotal_viaticos.igv,
+            },
+            margenRiesgo: {
+                soles: margenRiesgo_viaticos.soles,
+                igv: margenRiesgo_viaticos.igv,
+            },
+            ventaSoles: {
+                ventaSoles: ventaViaticos.ventaSoles,
+                ventaSolesIgv: ventaViaticos.ventaSolesIgv,
+                ventaDolares: ventaViaticos.ventaSoles / tasa_cambio,
+                ventaDolaresIgv: ventaViaticos.ventaSolesIgv / tasa_cambio,
+            },
+        },
     }), [eatingTotal, eatingTotalIgv, 
         travelingTotal, travelingTotalIgv, 
-        courierTotal, courierTotalIgv]);
+        courierTotal, courierTotalIgv,
+        tasa_cambio,
+    ]);
 
     // -----------------
     // ALMACENAR CÁLCULOS EN LAS TABLAS PRINCIPALES

@@ -1,53 +1,100 @@
-export type RecursosCostsInput = {
-    equiposPrincipalesCost: number;
-    equiposPrincipalesCostIgv: number;
-    estructurasCost: number;
-    estructurasCostIgv: number;
-    consumiblesCost: number;
-    consumiblesCostIgv: number;
-    eppCost: number;
-    eppCostIgv: number;
-    toolingCost: number;
-    toolingCostIgv: number;
-    hotelCost: number;
-    hotelCostIgv: number;
-    personalCost: number;
-    personalCostIgv: number;
-    sctrCost: number;
-    sctrCostIgv: number;
-};
+export type recursos = {
+    equiposPrincipales: {
+        total: number;
+        igv: number;
+    };
+    estructuras: {
+        total: number;
+        igv: number;
+    };
+    consumibles: {
+        total: number;
+        igv: number;
+    };
+    epp: {
+        total: number;
+        igv: number;
+    };
+    tooling: {
+        total: number;
+        igv: number;
+    };
+    hotel: {
+        total: number;
+        igv: number;
+    };
+    personal: {
+        total: number;
+        igv: number;
+    };
+    sctr: {
+        total: number;
+        igv: number;
+    };
+    resumen: {
+        subtotal: {
+            soles: number;
+            igv: number;
+        };
+        margenRiesgo: {
+            soles: number;
+            igv: number;
+        };
+        subtotalConMargenRiesgo: {
+            soles: number;
+            igv: number;
+        };
+        markUp: {
+            soles: number;
+            igv: number;
+        };
+        ventaSoles: {
+            ventaSoles: number;
+            ventaSolesIgv: number;
+            ventaDolares: number;
+            ventaDolaresIgv: number;
+        };
+    };
+}
 
-export type ViaticosCostsInput = {
-    eatingTotal: number;
-    eatingTotalIgv: number;
-    travelingTotal: number;
-    travelingTotalIgv: number;
-    courierTotal: number;
-    courierTotalIgv: number;
-};
+export type viaticos = {
+    eating: {
+        total: number;
+        igv: number;
+    };
+    traveling: {
+        total: number;
+        igv: number;
+    };
+    courier: {
+        total: number;
+        igv: number;
+    };
+    resumen: {
+        subtotal: {
+            soles: number;
+            igv: number;
+        };
+        margenRiesgo: {
+            soles: number;
+            igv: number;
+        };
+        ventaSoles: {
+            ventaSoles: number;
+            ventaSolesIgv: number;
+            ventaDolares: number;
+            ventaDolaresIgv: number;
+        };
+    };
+}
 
-export type RecursosSubtotalInput = {
-    subtotal_recursos_soles: number;
-    subtotal_recursos_igv: number;
-    margenRiesgo_recursos_soles: number;
-    margenRiesgo_recursos_igv: number;
-    subtotalConMargenRiesgo_recursos_soles: number;
-    subtotalConMargenRiesgo_recursos_igv: number;
-    markUp_recursos_soles: number;
-    markUp_recursos_igv: number;
-    ventaSoles_recursos_soles: number;
-    ventaSoles_recursos_igv: number;
-    ventaDolares_recursos_soles: number;
-    ventaDolares_recursos_igv: number;
-};
+export type precioFinal = {
+    soles: number;
+    solesIgv: number;
+    dolares: number;
+    dolaresIgv: number;
+}
 
-export type ViaticosSubtotalInput = {
-    subtotal_viaticos_soles: number;
-    subtotal_viaticos_igv: number;
-    margenRiesgo_viaticos_soles: number;
-    margenRiesgo_viaticos_igv: number;
-    ventaSoles_viaticos_soles: number;
-    ventaSoles_viaticos_igv: number;
-    ventaDolares_viaticos_soles: number;
-    ventaDolares_viaticos_igv: number;
-};
+export type grossMargin = {
+    gm: number;
+}
