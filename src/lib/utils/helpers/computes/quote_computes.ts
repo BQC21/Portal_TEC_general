@@ -6,17 +6,15 @@ import { recursosItems, viaticosItems } from "@/lib/types/components/Quotes/fina
 
 // Calcular precios de los subtotales 
 export function computeSubtotalRecursos(costs: recursosItems) {
-    let soles = 0; let igv = 0;
+    let soles = 0;
+    let igv = 0;
 
-    for (const [key, value] of Object.entries(costs) as [
-        keyof recursosItems, { total: number; igv: number; }
-    ][]) {
-        if (key.endsWith("Igv")) {
-            igv += value.igv;
-        } else {
-            soles += value.total;
-        }
+    for (const [key, value] of Object.entries(costs)) {
+        if (key === "resumen") continue;
+        soles += value.total;
+        igv += value.igv;
     }
+
     return { soles, igv };
 }
 
@@ -54,13 +52,17 @@ export function computeVentaRecursos(
     markup: number, gm_general: number,
     tasa_cambio: number,
 ) {
-    const subtotal = computeSubtotalRecursos(costs);
+    const subtotal = computeSubtotalConMargenRecursos(costs, gm_general);
     const markUp = computeMarkUpRecursos(costs, markup, gm_general);
+    const tasa = Number(tasa_cambio) || 1;
+    const ventaSoles = markUp.soles + subtotal.soles;
+    const ventaSolesIgv = markUp.igv + subtotal.igv;
+
     return {
-        ventaSoles: markUp.soles + subtotal.soles,
-        ventaSolesIgv: markUp.igv + subtotal.igv,
-        ventaDolares: (markUp.soles + subtotal.soles) / Number(tasa_cambio) || 1,
-        ventaDolaresIgv: (markUp.igv + subtotal.igv) / Number(tasa_cambio) || 1,
+        ventaSoles,
+        ventaSolesIgv,
+        ventaDolares: ventaSoles / tasa,
+        ventaDolaresIgv: ventaSolesIgv / tasa,
     };
 }
 
@@ -91,12 +93,15 @@ export function computeVentaViaticos(
 ) {
     const subtotal = computeSubtotalViaticos(costs);
     const margenRiesgo_viaticos = computeMargenRiesgoViaticos(costs, gm_viaticos);
+    const tasa = Number(tasa_cambio) || 1;
+    const ventaSoles = subtotal.soles + margenRiesgo_viaticos.soles;
+    const ventaSolesIgv = subtotal.igv + margenRiesgo_viaticos.igv;
 
     return {
-        ventaSoles: subtotal.soles + margenRiesgo_viaticos.soles,
-        ventaSolesIgv: subtotal.igv + margenRiesgo_viaticos.igv,
-        ventaDolares: (subtotal.soles + margenRiesgo_viaticos.soles) / Number(tasa_cambio) || 1,
-        ventaDolaresIgv: (subtotal.igv + margenRiesgo_viaticos.igv) / Number(tasa_cambio) || 1,
+        ventaSoles,
+        ventaSolesIgv,
+        ventaDolares: ventaSoles / tasa,
+        ventaDolaresIgv: ventaSolesIgv / tasa,
     };
 }
 
