@@ -98,3 +98,6 @@ export type precioFinal = {
 export type grossMargin = {
     gm: number;
 }
+
+export type recursosItems = Omit<recursos, 'resumen'>;
+export type viaticosItems = Omit<viaticos, 'resumen'>;

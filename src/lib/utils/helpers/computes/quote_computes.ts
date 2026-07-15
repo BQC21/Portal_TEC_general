@@ -1,15 +1,15 @@
-import { recursos, viaticos } from "@/lib/types/components/Quotes/finantial_computes";
+import { recursosItems, viaticosItems } from "@/lib/types/components/Quotes/finantial_computes";
 
 // -----------------
 // RECURSOS
 // -----------------
 
 // Calcular precios de los subtotales 
-export function computeSubtotalRecursos(costs: recursos) {
+export function computeSubtotalRecursos(costs: recursosItems) {
     let soles = 0; let igv = 0;
 
     for (const [key, value] of Object.entries(costs) as [
-        keyof recursos, { total: number; igv: number; }
+        keyof recursosItems, { total: number; igv: number; }
     ][]) {
         if (key.endsWith("Igv")) {
             igv += value.igv;
@@ -22,7 +22,7 @@ export function computeSubtotalRecursos(costs: recursos) {
 
 // Calcular márgenes de riesgos 
 export function computeMargenRiesgoRecursos(
-    costs: recursos,
+    costs: recursosItems,
     gm_general: number
 ) {
     return {
@@ -32,7 +32,7 @@ export function computeMargenRiesgoRecursos(
 }
 
 // Cálculo del subtotal con margen 
-export function computeSubtotalConMargenRecursos(costs: recursos, gm_general: number) {
+export function computeSubtotalConMargenRecursos(costs: recursosItems, gm_general: number) {
     return {
         soles: computeSubtotalRecursos(costs).soles + computeMargenRiesgoRecursos(costs, gm_general).soles,
         igv: computeSubtotalRecursos(costs).igv + computeMargenRiesgoRecursos(costs, gm_general).igv,
@@ -40,7 +40,7 @@ export function computeSubtotalConMargenRecursos(costs: recursos, gm_general: nu
 }
 
 // Cálculo del Markup
-export function computeMarkUpRecursos(costs: recursos, markup: number,  gm_general: number) {
+export function computeMarkUpRecursos(costs: recursosItems, markup: number,  gm_general: number) {
     
     return {
         soles:  computeSubtotalConMargenRecursos(costs, gm_general).soles * markup/100, 
@@ -50,7 +50,7 @@ export function computeMarkUpRecursos(costs: recursos, markup: number,  gm_gener
 
 // Cálculo del precio de cotización final
 export function computeVentaRecursos(
-    costs: recursos,
+    costs: recursosItems,
     markup: number, gm_general: number,
     tasa_cambio: number,
 ) {
@@ -69,14 +69,14 @@ export function computeVentaRecursos(
 // -----------------
 
 
-export function computeSubtotalViaticos(costs: viaticos) {
+export function computeSubtotalViaticos(costs: viaticosItems) {
     return {
         soles: costs.eating.total + costs.traveling.total + costs.courier.total,
         igv: costs.eating.igv + costs.traveling.igv + costs.courier.igv,
     };
 }
 
-export function computeMargenRiesgoViaticos(costs: viaticos, gm_viaticos: number) {
+export function computeMargenRiesgoViaticos(costs: viaticosItems, gm_viaticos: number) {
     const subtotal = computeSubtotalViaticos(costs);
     return {
         soles: subtotal.soles * gm_viaticos/100,
@@ -85,7 +85,7 @@ export function computeMargenRiesgoViaticos(costs: viaticos, gm_viaticos: number
 }
 
 export function computeVentaViaticos(
-    costs: viaticos,
+    costs: viaticosItems,
     gm_viaticos: number,
     tasa_cambio: number,
 ) {
@@ -126,7 +126,7 @@ export function computePrecioFinal(
 // -----------------
 
 export function computeGrossMargin(
-    costs: recursos,
+    costs: recursosItems,
     markup: number, gm_general: number,
     tasa_cambio: number,
 ) {

@@ -2,7 +2,6 @@ import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoVia
     computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos,
     computeSubtotalRecursos, computeSubtotalViaticos, 
     computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
-import { recursos, viaticos, precioFinal, grossMargin } from "@/lib/types/components/Quotes/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
@@ -176,8 +175,8 @@ export function useCostComputes(
     // AGREGACIÓN DE COSTOS
     // -----------------
 
-    // RECURSOS
-    const recursosCosts: recursos = useMemo(() => ({
+    // RECURSOS (solo ítems; el resumen se calcula después)
+    const recursosCosts = useMemo(() => ({
         equiposPrincipales: {
             total: equiposPrincipalesTotal,
             igv: equiposPrincipalesTotalIgv,
@@ -210,18 +209,6 @@ export function useCostComputes(
             total: sctrTotal,
             igv: sctrTotalIgv,
         },
-        resumen: {
-            subtotal: subtotal_recursos,
-            margenRiesgo: margenRiesgo_recursos,
-            subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos,
-            markUp: markUp_recursos,
-            ventaSoles: {
-                ventaSoles: ventaRecursos.ventaSoles,
-                ventaSolesIgv: ventaRecursos.ventaSolesIgv,
-                ventaDolares: ventaRecursos.ventaDolares,
-                ventaDolaresIgv: ventaRecursos.ventaDolaresIgv,
-            },
-        },    
     }), [
         equiposPrincipalesTotal, equiposPrincipalesTotalIgv,
         estructurasTotal, estructurasTotalIgv,
@@ -235,8 +222,8 @@ export function useCostComputes(
         travelingTotal, travelingTotalIgv,
     ]);
 
-    // VIÁTICOS
-    const viaticosCosts: viaticos = useMemo(() => ({
+    // VIÁTICOS (solo ítems; el resumen se calcula después)
+    const viaticosCosts = useMemo(() => ({
         eating: {
             total: eatingTotal,
             igv: eatingTotalIgv,
@@ -249,20 +236,9 @@ export function useCostComputes(
             total: courierTotal,
             igv: courierTotalIgv,
         },
-        resumen: {
-            subtotal: subtotal_viaticos,
-            margenRiesgo: margenRiesgo_viaticos,
-            ventaSoles: {
-                ventaSoles: ventaViaticos.ventaSoles,
-                ventaSolesIgv: ventaViaticos.ventaSolesIgv,
-                ventaDolares: ventaViaticos.ventaDolares,
-                ventaDolaresIgv: ventaViaticos.ventaDolaresIgv,
-            },
-        },
     }), [eatingTotal, eatingTotalIgv, 
         travelingTotal, travelingTotalIgv, 
         courierTotal, courierTotalIgv,
-        tasa_cambio,
     ]);
 
     // -----------------
