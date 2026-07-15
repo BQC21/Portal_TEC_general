@@ -1,4 +1,6 @@
-import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoViaticos, computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos, computeSubtotalRecursos, computeSubtotalViaticos, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
+import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoViaticos, 
+    computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos,
+    computeSubtotalRecursos, computeSubtotalViaticos, computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
 import { RecursosCostsInput, ViaticosCostsInput } from "@/lib/types/components/Quotes/finantial_computes";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
@@ -281,82 +283,86 @@ export function useCostComputes(
     // OUTPUT
     // -----------------
 
-    recursos: {
-        equiposPrincipales: {
-            total: equiposPrincipalesTotal;
-            igv: equiposPrincipalesTotalIgv;
-        };
-        estructuras: {
-            total: estructurasTotal;
-            igv: estructurasTotalIgv;
-        };
-        consumibles: {
-            total: consumiblesTotal;
-            igv: consumiblesTotalIgv;
-        };
-        epp: {
-            total: eppTotal;
-            igv: eppTotalIgv;
-        };
-        tooling: {
-            total: toolingTotal;
-            igv: toolingTotalIgv;
-        };
-        hotel: {
-            total: hotelTotal;
-            igv: hotelTotalIgv;
-        };
-        personal: {
-            total: personalTotal;
-            igv: personalTotalIgv;
-        };
-        sctr: {
-            total: sctrTotal;
-            igv: sctrTotalIgv;
-        };
+    return {
+        recursos: {
+            equiposPrincipales: {
+                total: equiposPrincipalesTotal,
+                igv: equiposPrincipalesTotalIgv,
+            },
+            estructuras: {
+                total: estructurasTotal,
+                igv: estructurasTotalIgv,
+            },
+            consumibles: {
+                total: consumiblesTotal,
+                igv: consumiblesTotalIgv,
+            },
+            epp: {
+                total: eppTotal,
+                igv: eppTotalIgv,
+            },
+            tooling: {
+                total: toolingTotal,
+                igv: toolingTotalIgv,
+            },
+            hotel: {
+                total: hotelTotal,
+                igv: hotelTotalIgv,
+            },
+            personal: {
+                total: personalTotal,
+                igv: personalTotalIgv,
+            },
+            sctr: {
+                total: sctrTotal,
+                igv: sctrTotalIgv,
+            },
 
-        resumen: {
-            subtotal: subtotal_recursos;
-            margenRiesgo: margenRiesgo_recursos;
-            subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos;
-            markUp: markUp_recursos;
-            ventaSoles: ventaSoles_recursos;
-            ventaSolesIgv: ventaSolesIgv_recursos;
-            ventaDolares: ventaDolares_recursos;
-            ventaDolaresIgv: ventaDolaresIgv_recursos;
-        };
-    };
+            resumen: {
+                subtotal: subtotal_recursos,
+                margenRiesgo: margenRiesgo_recursos,
+                subtotalConMargenRiesgo: subtotalConMargenRiesgo_recursos,
+                markUp: markUp_recursos,
+                ventaSoles: ventaSoles_recursos,
+                ventaSolesIgv: ventaSolesIgv_recursos,
+                ventaDolares: ventaDolares_recursos,
+                ventaDolaresIgv: ventaDolaresIgv_recursos,
+            },
+        },
 
-    viaticos: {
-        eating: {
-            total: eatingTotal;
-            igv: eatingTotalIgv;
-        };
-        traveling: {
-            total: travelingTotal;
-            igv: travelingTotalIgv;
-        };
-        courier: {
-            total: courierTotal;
-            igv: courierTotalIgv;
-        };
+        viaticos: {
+            eating: {
+                total: eatingTotal,
+                igv: eatingTotalIgv,
+            },
+            traveling: {
+                total: travelingTotal,
+                igv: travelingTotalIgv,
+            },
+            courier: {
+                total: courierTotal,
+                igv: courierTotalIgv,
+            },
 
-        resumen: {
-            subtotal: subtotal_viaticos;
-            margenRiesgo: margenRiesgo_viaticos;
-            ventaSoles: ventaSoles_viaticos;
-            ventaSolesIgv: ventaSolesIgv_viaticos;
-            ventaDolares: ventaDolares_viaticos;
-            ventaDolaresIgv: ventaDolaresIgv_viaticos;
-        };
-    };
+            resumen: {
+                subtotal: subtotal_viaticos,
+                margenRiesgo: margenRiesgo_viaticos,
+                ventaSoles: ventaSoles_viaticos,
+                ventaSolesIgv: ventaSolesIgv_viaticos,
+                ventaDolares: ventaDolares_viaticos,
+                ventaDolaresIgv: ventaDolaresIgv_viaticos,
+            },
+        },
 
-    precioFinal: {
-        soles: precioFinal;
-        solesIgv: precioFinalIgv;
-        dolares: precioFinalDolares;
-        dolaresIgv: precioFinalDolaresIgv;
-    };
+        precioFinal: {
+            soles: precioFinal,
+            solesIgv: precioFinalIgv,
+            dolares: precioFinalDolares,
+            dolaresIgv: precioFinalDolaresIgv,
+        },
 
-    grossMargin: GrossMargin;
-};
+        grossMargin: {
+            gm: GrossMargin,
+        },
+    }
+}
