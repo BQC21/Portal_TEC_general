@@ -147,8 +147,8 @@ export default function AddQuoteModal({
 
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-            <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
+            <div className="max-h-[96vh] w-[96vw] max-w-[1800px] overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                     <h2 className="text-2xl font-bold text-slate-900">Añadir Nueva Cotización</h2>
                     <button
@@ -161,7 +161,7 @@ export default function AddQuoteModal({
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                <form onSubmit={handleSubmit} className="max-h-[calc(96vh-88px)] overflow-y-auto px-6 py-6">
                     <AddProductSelectField
                         label="Seleccionar Proyecto"
                         required
@@ -177,7 +177,7 @@ export default function AddQuoteModal({
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
                                     Equipos seleccionados
                                 </h3>
-                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
+                                <p className="max-h-64 overflow-y-auto whitespace-pre-line text-slate-700">
                                     {equiposDescriptions.length > 0
                                         ? equiposDescriptions.join("\n")
                                         : "No hay equipos registrados para este proyecto."}
@@ -188,7 +188,7 @@ export default function AddQuoteModal({
                                 <h3 className="mb-3 text-lg font-semibold text-slate-900">
                                     Materiales seleccionados
                                 </h3>
-                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
+                                <p className="max-h-64 overflow-y-auto whitespace-pre-line text-slate-700">
                                     {materialesDescriptions.length > 0
                                         ? materialesDescriptions.join("\n")
                                         : "No hay materiales registrados para este proyecto."}
