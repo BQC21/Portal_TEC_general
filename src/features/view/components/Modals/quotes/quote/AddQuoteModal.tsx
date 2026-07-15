@@ -25,10 +25,10 @@ import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
+import { CollapsibleTableSection } from "@/features/view/components/CollapsibleTableSection";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -248,65 +248,87 @@ export default function AddQuoteModal({
                         </div>
 
                         {/* TABLA RECURSOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1
                                     recursosCosts={recursos}
                                 />
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <EP_PriceTable
-                                    selected_equipos={projectEquipos}
-                                />
-                                <Structure_PriceTable
-                                    selected_equipos={projectEquipos}
-                                />
-                                <Consume_PriceTable
-                                    selected_materiales={projectMateriales}
-                                />
-                                <EPP_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <Tooling_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <Hotel_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <Personal_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <SCTR_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
+                            <div className="overflow-hidden rounded-2xl border border-slate-200">
+                                <CollapsibleTableSection title="Equipos Principales">
+                                    <EP_PriceTable
+                                        selected_equipos={projectEquipos}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Estructuras">
+                                    <Structure_PriceTable
+                                        selected_equipos={projectEquipos}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Consumibles">
+                                    <Consume_PriceTable
+                                        selected_materiales={projectMateriales}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="EPPs">
+                                    <EPP_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Herramientas">
+                                    <Tooling_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Hotel">
+                                    <Hotel_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Personal">
+                                    <Personal_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="SCTR">
+                                    <SCTR_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
                             </div>
                         </div>
 
                         {/* TABLA VIÁTICOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2
                                     viaticosCosts={viaticos}
                                 />
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <Courier_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <Eating_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
-                                <Traveling_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                    updateManualCost={updateManualCost}
-                                />
+                            <div className="overflow-hidden rounded-2xl border border-slate-200">
+                                <CollapsibleTableSection title="Courier">
+                                    <Courier_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Alimentación">
+                                    <Eating_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Viajes y movilidad">
+                                    <Traveling_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCost={updateManualCost}
+                                    />
+                                </CollapsibleTableSection>
                             </div>
                         </div>
                         
