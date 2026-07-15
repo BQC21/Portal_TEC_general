@@ -117,11 +117,11 @@ export default function AddQuoteModal({
     // ----------
 
     useEffect(() => {
-        const nextGm = String(grossMargin.gm);
-        if (Number(grossMargin.gm) > 0 && form.gm !== nextGm) {
-            updateField("gm", String(grossMargin.gm));
+        const nextGm = String(grossMargin.gm.gm);
+        if (Number(grossMargin.gm.gm) > 0 && form.gm !== nextGm) {
+            updateField("gm", String(grossMargin.gm.gm));
         }
-    }, [grossMargin.gm]);
+    }, [grossMargin.gm.gm]);
 
     // ----------
     // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
@@ -134,7 +134,7 @@ export default function AddQuoteModal({
     // LOGS
     // ----------
 
-    console.log("valor del grossMargin", grossMargin.gm);
+    console.log("valor del grossMargin", (grossMargin.gm.gm * 100).toFixed(2));
     // RECURSOS
     console.log("valor del precio de venta soles", recursos.resumen.ventaSoles);
     // VIÁTICOS
@@ -220,7 +220,7 @@ export default function AddQuoteModal({
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin (%)"
-                                    value={Number(grossMargin.gm) >= 0 ? String((Number(grossMargin.gm) * 100).toFixed(2)) : "0.00"}
+                                    value={Number(grossMargin.gm.gm) >= 0 ? String((Number(grossMargin.gm.gm) * 100).toFixed(2)) : "0.00"}
                                 />
                             </div>
 
