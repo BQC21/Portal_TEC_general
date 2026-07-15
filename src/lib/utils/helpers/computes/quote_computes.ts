@@ -60,8 +60,8 @@ export function computeVentaRecursos(
     return {
         ventaSoles: markUp.soles + subtotal.soles,
         ventaSolesIgv: markUp.igv + subtotal.igv,
-        ventaDolares: markUp.soles + subtotal.soles / Number(tasa_cambio) || 1,
-        ventaDolaresIgv: markUp.igv + subtotal.igv / Number(tasa_cambio) || 1,
+        ventaDolares: (markUp.soles + subtotal.soles) / Number(tasa_cambio) || 1,
+        ventaDolaresIgv: (markUp.igv + subtotal.igv) / Number(tasa_cambio) || 1,
     };
 }
 
@@ -80,8 +80,8 @@ export function computeSubtotalViaticos(costs: ViaticosCostsInput) {
 export function computeMargenRiesgoViaticos(costs: ViaticosCostsInput, gm_viaticos: number) {
     const subtotal = computeSubtotalViaticos(costs);
     return {
-        soles: subtotal.soles * gm_viaticos,
-        igv: subtotal.igv * gm_viaticos,
+        soles: subtotal.soles * gm_viaticos/100,
+        igv: subtotal.igv * gm_viaticos/100,
     };
 }
 
@@ -90,9 +90,11 @@ export function computeVentaViaticos(
     gm_viaticos: number,
 ) {
     const subtotal = computeSubtotalViaticos(costs);
+    const margenRiesgo_viaticos = computeMargenRiesgoViaticos(costs, gm_viaticos);
+
     return {
-        ventaSoles: subtotal.soles * gm_viaticos/100 + subtotal.soles,
-        ventaSolesIgv: subtotal.igv * gm_viaticos/100 + subtotal.igv,
+        ventaSoles: subtotal.soles + margenRiesgo_viaticos.soles,
+        ventaSolesIgv: subtotal.igv + margenRiesgo_viaticos.igv,
     };
 }
 
