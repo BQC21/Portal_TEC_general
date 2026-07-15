@@ -220,7 +220,7 @@ export default function AddQuoteModal({
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin (%)"
-                                    value={Number(grossMargin.gm) > 0 ? String((Number(grossMargin.gm) * 100).toFixed(2)) : ""}
+                                    value={Number(grossMargin.gm) >= 0 ? String((Number(grossMargin.gm) * 100).toFixed(2)) : "0.00"}
                                 />
                             </div>
 
