@@ -38,7 +38,9 @@ import { BrandFormstate } from "../types/supabase/brand.types";
 import { TypeFormstate } from "../types/supabase/type-types";
 import { QuoteFormState } from "../types/supabase/quote-types";
 import { ReportFormState } from "../types/supabase/report-types";
-import { ManualResourceCosts } from "../types/components/Quotes/manual_resources";
+import { ManualCosts } from "../types/components/Quotes/manual_resources";
+
+// ------ M!
 
 // valores iniciales para el estado de form de productos
 export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
@@ -93,6 +95,39 @@ export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
     created_at: new Date(),
     updated_at: new Date(),
 };
+
+export const INITIAL_SUPPLIER_FORM: SupplierFormstate = {
+    // propiedades generales
+    nombre: "",        
+    ruc: "",  
+    contacto: "",  
+    telefono: "",  
+    categoria: "",  
+    codigo: "",
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}
+
+export const INITIAL_BRAND_FORM: BrandFormstate = {
+    // propiedades generales
+    nombre: "",        
+    categoria: "",  
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}
+
+export const INITIAL_TYPE_FORM: TypeFormstate = {
+    // propiedades generales
+    nombre: "",        
+    categoria: "",  
+    // fechas
+    created_at: new Date(),
+    updated_at: new Date(),
+}
+
+// ------ M2
 
 // valores iniciales para el estado de form de proyectos
 export const INITIAL_PROJECT_FORM: ProjectFormState = {
@@ -174,36 +209,7 @@ export const INITIAL_PROJECT_MATERIAL_FORM: Project_MaterialesFormState = {
     cantidad: ""
 } 
 
-export const INITIAL_SUPPLIER_FORM: SupplierFormstate = {
-    // propiedades generales
-    nombre: "",        
-    ruc: "",  
-    contacto: "",  
-    telefono: "",  
-    categoria: "",  
-    codigo: "",
-    // fechas
-    created_at: new Date(),
-    updated_at: new Date(),
-}
-
-export const INITIAL_BRAND_FORM: BrandFormstate = {
-    // propiedades generales
-    nombre: "",        
-    categoria: "",  
-    // fechas
-    created_at: new Date(),
-    updated_at: new Date(),
-}
-
-export const INITIAL_TYPE_FORM: TypeFormstate = {
-    // propiedades generales
-    nombre: "",        
-    categoria: "",  
-    // fechas
-    created_at: new Date(),
-    updated_at: new Date(),
-}
+// ------ M3
 
 export const INITIAL_QUOTE_FORM: QuoteFormState = {
         created_at: new Date(),
@@ -235,13 +241,18 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     precio_cotizacion: "",
 }
 
-export const INITIAL_MANUAL_RESOURCE_COSTS: ManualResourceCosts = { 
-    epp: { descripcion: "", cantidad: 0, precio_unitario: 0 },
-    tooling: { descripcion: "", cantidad: 0, precio_unitario: 0 },
-    hotel: { monto: 0, personas: 0, dias: 0 },
-    personal: { nombre: "", puesto: "", dias: 0, precio_dia: 0 },
-    sctr: { descripcion: "", cantidad: 0, precio_unitario: 0 },
-    eating: { descripcion: "", cantidad: 0, precio_unitario: 0 },
-    traveling: { descripcion: "", cantidad: 0, precio_unitario: 0 },
-    courier: { descripcion: "", cantidad: 0, precio_unitario: 0 },
+export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 
+    Recursos: {
+        epp: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+        tooling: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+        personal: [{ id: crypto.randomUUID(), nombre: "", puesto: "", dias: 0, precio_dia: 0 }],
+        sctr: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+        hotel: { monto: 0, personas: 0, dias: 0 },
+    },
+    
+    Viaticos: {
+        eating: { monto: 0, personas: 0, dias: 0 },
+        traveling: { monto: 0, personas: 0, dias: 0 },
+        courier: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+    }
 };
