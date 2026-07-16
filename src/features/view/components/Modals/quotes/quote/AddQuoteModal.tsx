@@ -25,10 +25,11 @@ import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Courier_PriceTable";
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
+import { EMPTY_PERSONAL_ITEM, EMPTY_QUANTITY_PRICE_ITEM, ManualCosts, PersonalItem, QuantityPriceItem } from "@/lib/types/components/Quotes/manual_resources";
+import { ManageLocalCosts } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -89,19 +90,14 @@ export default function AddQuoteModal({
     // CÁLCULOS MANUALES
     // ----------
 
-    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS); // valores iniciales
+    const [manualResourceCosts, setManualResourceCosts] = 
+    useState<ManualCosts>(INITIAL_MANUAL_RESOURCE_COSTS); // valores iniciales
 
-    //-- actualización de los cálculos manuales
-    function updateManualCost<K extends keyof ManualResourceCosts>(
-        section: K,
-        field: keyof ManualResourceCosts[K],
-        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
-    ) {
-        setManualResourceCosts((current) => ({
-            ...current,
-            [section]: { ...current[section], [field]: value },
-        }));
-    }
+    const { updateManualCostItem, 
+        updateManualCostMonto,
+        addManualCostItem, 
+        removeManualCostItem 
+    } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
     // CÁLCULOS TOTALES
@@ -272,32 +268,40 @@ export default function AddQuoteModal({
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="EPPs">
                                     <EPP_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        items={manualResourceCosts.Recursos.epp}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.epp", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.epp")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.epp", index)}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="Herramientas">
                                     <Tooling_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        items={manualResourceCosts.Recursos.tooling}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.tooling", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.tooling")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.tooling", index)}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="Hotel">
                                     <Hotel_PriceTable
                                         manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        updateManualCostMonto={updateManualCostMonto}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="Personal">
                                     <Personal_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        items={manualResourceCosts.Recursos.personal}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.personal", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.personal")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.personal", index)}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="SCTR">
                                     <SCTR_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        items={manualResourceCosts.Recursos.sctr}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.sctr", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.sctr")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.sctr", index)}
                                     />
                                 </CollapsibleTableSection>
                             </div>
@@ -313,20 +317,22 @@ export default function AddQuoteModal({
                             <div className="overflow-hidden rounded-2xl border border-slate-200">
                                 <CollapsibleTableSection title="Courier">
                                     <Courier_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        items={manualResourceCosts.Viaticos.courier}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Viaticos.courier")}
+                                        onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="Alimentación">
                                     <Eating_PriceTable
                                         manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        updateManualCostMonto={updateManualCostMonto}
                                     />
                                 </CollapsibleTableSection>
                                 <CollapsibleTableSection title="Viajes y movilidad">
                                     <Traveling_PriceTable
                                         manualResourceCosts={manualResourceCosts}
-                                        updateManualCost={updateManualCost}
+                                        updateManualCostMonto={updateManualCostMonto}
                                     />
                                 </CollapsibleTableSection>
                             </div>
