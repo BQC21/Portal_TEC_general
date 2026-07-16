@@ -99,7 +99,7 @@ export function Personal_PriceTable({ items, onUpdateItem, onAddItem, onRemoveIt
                                     ))
                                 ) : (
                                     <tr>
-                                        <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
+                                        <td colSpan={6} className="px-4 py-10 text-center text-slate-500">
                                             No hay ítems registrados.
                                         </td>
                                     </tr>
