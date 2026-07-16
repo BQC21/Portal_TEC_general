@@ -81,7 +81,8 @@ export default function AddQuoteModal({
 
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
         setForm((current) => {
-            const updated = { ...current, [field]: value };
+            const updated = { ...current, [field]: value, 
+                precio_dolares: String(precioFinal.dolares.toFixed(2)) };
             return updated;
         });
     }
