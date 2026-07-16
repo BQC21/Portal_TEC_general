@@ -1,17 +1,19 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { QuantityPriceItem } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 
-export function EPP_PriceTable({ manualResourceCosts, updateManualCost }: 
-    { manualResourceCosts: ManualResourceCosts, 
-        updateManualCost: <K extends keyof ManualResourceCosts>(
-            section: K,
-            field: keyof ManualResourceCosts[K],
-            value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+export function EPP_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: 
+    { items: QuantityPriceItem[], 
+        onUpdateItem: (
+            index: number, 
+            field: keyof QuantityPriceItem, 
+            value: QuantityPriceItem[keyof QuantityPriceItem]
         ) => void,
+        onAddItem: () => void,
+        onRemoveItem: (index: number) => void,
     }){
 
     return(
@@ -43,29 +45,29 @@ export function EPP_PriceTable({ manualResourceCosts, updateManualCost }:
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
-                                            value={manualResourceCosts.epp.descripcion}
-                                            onChange={(value) => updateManualCost("epp", "descripcion", value)}
+                                            value={items[0].descripcion}
+                                            onChange={(value) => onUpdateItem(0, "descripcion", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Cantidad"
-                                            value={Number(manualResourceCosts.epp.cantidad)} min={0}
-                                            onChange={(value) => updateManualCost("epp", "cantidad", value)}
+                                            value={Number(items[0].cantidad)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "cantidad", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio Unidad (s/.)"
-                                            value={Number(manualResourceCosts.epp.precio_unitario)} min={0}
-                                            onChange={(value) => updateManualCost("epp", "precio_unitario", value)}
+                                            value={Number(items[0].precio_unitario)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "precio_unitario", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {/* El precio total se calcula como la cantidad por el precio unitario */}
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(manualResourceCosts.epp.cantidad) * Number(manualResourceCosts.epp.precio_unitario), "PEN")}
+                                            value={formatCurrency(Number(items[0].cantidad) * Number(items[0].precio_unitario), "PEN")}
                                         />
                                     </td>
                                 </tr>

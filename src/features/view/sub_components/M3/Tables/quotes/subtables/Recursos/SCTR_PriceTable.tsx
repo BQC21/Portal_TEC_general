@@ -1,16 +1,18 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { QuantityPriceItem } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export function SCTR_PriceTable({ manualResourceCosts, updateManualCost }: { 
-    manualResourceCosts: ManualResourceCosts, 
-    updateManualCost: <K extends keyof ManualResourceCosts>(
-        section: K,
-        field: keyof ManualResourceCosts[K],
-        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+export function SCTR_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: { 
+    items: QuantityPriceItem[], 
+    onUpdateItem: (
+        index: number, 
+        field: keyof QuantityPriceItem, 
+        value: QuantityPriceItem[keyof QuantityPriceItem]
     ) => void,
+    onAddItem: () => void,
+    onRemoveItem: (index: number) => void,
 }){
 
     return(
@@ -42,29 +44,29 @@ export function SCTR_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
-                                            value={manualResourceCosts.sctr.descripcion}
-                                            onChange={(value) => updateManualCost("sctr", "descripcion", value)}
+                                            value={items[0].descripcion}
+                                            onChange={(value) => onUpdateItem(0, "descripcion", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Cantidad"
-                                            value={Number(manualResourceCosts.sctr.cantidad ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("sctr", "cantidad", value)}
+                                            value={Number(items[0].cantidad)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "cantidad", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio Unidad (s/.)"
-                                            value={Number(manualResourceCosts.sctr.precio_unitario ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("sctr", "precio_unitario", value)}
+                                            value={Number(items[0].precio_unitario)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "precio_unitario", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(manualResourceCosts.sctr.cantidad ?? 0) * 
-                                                Number(manualResourceCosts.sctr.precio_unitario ?? 0), "PEN")}
+                                            value={formatCurrency(Number(items[0].cantidad) * 
+                                                Number(items[0].precio_unitario), "PEN")}
                                         />
                                     </td>
                                 </tr>
