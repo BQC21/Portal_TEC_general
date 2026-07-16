@@ -8,9 +8,9 @@ import { createClient } from "@/lib/supabase/client";
 
 import  TECIcon  from "@/features/view/components/Images/TEC_Icon";
 
-import type { PortalShellProps } from "@/lib/types/components/portalShell";
+import type { PortalShellProps } from "@/lib/types/components/Shell";
 
-import { navigation } from "@/lib/types/components/portalShell";
+import { navigation } from "@/lib/types/components/Shell";
 
 export function PortalShell({ title, subtitle, activePath, children }: PortalShellProps) {
     const router = useRouter();

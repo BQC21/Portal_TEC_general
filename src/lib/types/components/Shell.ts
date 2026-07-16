@@ -21,3 +21,10 @@ export const navigation: PortalNavItem[] = [
     { label: "Dimensionamiento", href: "/sizing" },
     { label: "Cotizaciones", href: "/quotes" }
 ];
+
+// mostrar el contenido de las tablas desplegables 
+export type CollapsibleTableSectionProps = {
+    title: string;
+    defaultOpen?: boolean;
+    children: ReactNode;
+};
