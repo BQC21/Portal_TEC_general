@@ -2,7 +2,7 @@ import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoVia
     computeMarkUpRecursos, computePrecioFinal, computeSubtotalConMargenRecursos,
     computeSubtotalRecursos, computeSubtotalViaticos, 
     computeVentaRecursos, computeVentaViaticos } from "@/lib/utils/helpers/computes/quote_computes";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { useMemo } from "react";
@@ -10,7 +10,7 @@ import { useMemo } from "react";
 export function useCostComputes(
     projectEquipos: Project_Equipos[],
     projectMateriales: Project_Materiales[],
-    manualResourceCosts: ManualResourceCosts,
+    manualCosts: ManualCosts,
     gm_general: number,
     markup: number,
     gm_viaticos: number,
@@ -87,8 +87,8 @@ export function useCostComputes(
     
     // EPPs
     const eppTotal = useMemo(() =>
-        Number(manualResourceCosts.epp.cantidad) * Number(manualResourceCosts.epp.precio_unitario),
-        [manualResourceCosts],
+        manualCosts.Recursos.epp.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const eppTotalIgv = useMemo(() =>
         Number(eppTotal) * Number(1.18),
@@ -97,8 +97,8 @@ export function useCostComputes(
 
     // HERRAMIENTAS
     const toolingTotal = useMemo(() =>
-        Number(manualResourceCosts.tooling.cantidad) * Number(manualResourceCosts.tooling.precio_unitario),
-        [manualResourceCosts],
+        manualCosts.Recursos.tooling.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const toolingTotalIgv = useMemo(() =>
         Number(toolingTotal) * Number(1.18),
@@ -107,9 +107,9 @@ export function useCostComputes(
 
     // HOTEL
     const hotelTotal = useMemo(() =>
-        Number(manualResourceCosts.hotel.monto) * Number(manualResourceCosts.hotel.personas) * 
-            Number(manualResourceCosts.hotel.dias),
-        [manualResourceCosts],
+        Number(manualCosts.Recursos.hotel?.monto ?? 0) * Number(manualCosts.Recursos.hotel?.personas ?? 0) * 
+            Number(manualCosts.Recursos.hotel?.dias ?? 0),
+        [manualCosts],
     );
     const hotelTotalIgv = useMemo(() =>
         Number(hotelTotal) * Number(1.18),
@@ -118,8 +118,8 @@ export function useCostComputes(
 
     // PERSONAL
     const personalTotal = useMemo(() =>
-        Number(manualResourceCosts.personal.dias) * Number(manualResourceCosts.personal.precio_dia),
-        [manualResourceCosts],
+        manualCosts.Recursos.personal.reduce((sum, item) => sum + Number(item.dias) * Number(item.precio_dia), 0),
+        [manualCosts],
     );
     const personalTotalIgv = useMemo(() =>
         Number(personalTotal) * Number(1.18),
@@ -128,8 +128,8 @@ export function useCostComputes(
 
     // SCTR
     const sctrTotal = useMemo(() =>
-        Number(manualResourceCosts.sctr.cantidad) * Number(manualResourceCosts.sctr.precio_unitario),
-        [manualResourceCosts],
+        manualCosts.Recursos.sctr.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const sctrTotalIgv = useMemo(() =>
         Number(sctrTotal) * Number(1.18),
@@ -139,10 +139,10 @@ export function useCostComputes(
 
     // ALIMENTACIÓN
     const eatingTotal = useMemo(() =>
-        Number(manualResourceCosts.eating?.monto ?? 0) * 
-        Number(manualResourceCosts.eating?.personas ?? 0) * 
-        Number(manualResourceCosts.eating?.dias ?? 0),
-        [manualResourceCosts],
+        Number(manualCosts.Viaticos.eating?.monto ?? 0) * 
+        Number(manualCosts.Viaticos.eating?.personas ?? 0) * 
+        Number(manualCosts.Viaticos.eating?.dias ?? 0),
+        [manualCosts],
     );
     const eatingTotalIgv = useMemo(() =>
         Number(eatingTotal) * Number(1.18),
@@ -151,10 +151,8 @@ export function useCostComputes(
 
     // VIAJE Y MOVILIDAD
     const travelingTotal = useMemo(() =>
-        Number(manualResourceCosts.traveling?.monto ?? 0) * 
-        Number(manualResourceCosts.traveling?.personas ?? 0) * 
-        Number(manualResourceCosts.traveling?.dias ?? 0),
-        [manualResourceCosts],
+        Number(manualCosts.Viaticos.traveling?.monto ?? 0) * Number(manualCosts.Viaticos.traveling?.personas ?? 0) * Number(manualCosts.Viaticos.traveling?.dias ?? 0),
+        [manualCosts],
     );
     const travelingTotalIgv = useMemo(() =>
         Number(travelingTotal) * Number(1.18),
@@ -163,12 +161,11 @@ export function useCostComputes(
 
     // COURIER
     const courierTotal = useMemo(() =>
-        Number(manualResourceCosts.courier.cantidad) * Number(manualResourceCosts.courier.precio_unitario),
-        [manualResourceCosts],
+        manualCosts.Viaticos.courier.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const courierTotalIgv = useMemo(() =>
-        Number(courierTotal) * Number(1.18),
-        [courierTotal],
+        Number(courierTotal) * Number(1.18), [courierTotal],
     );
 
     // -----------------
