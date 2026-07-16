@@ -1,15 +1,17 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
+import { MontoItem } from "@/lib/types/components/Quotes/manual_resources";
+import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: { 
-    manualResourceCosts: ManualResourceCosts, 
-    updateManualCost: <K extends keyof ManualResourceCosts>(
-        section: K,
-        field: keyof ManualResourceCosts[K],
-        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
-    ) => void,
+export function Eating_PriceTable({ manualResourceCosts, updateManualCostMonto }: { 
+    manualResourceCosts: ManualCosts, 
+    updateManualCostMonto: (
+        section: ManualCostMontoSection, 
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
+    ) => void
 }){
 
     return(
@@ -40,30 +42,30 @@ export function Eating_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={Number(manualResourceCosts.eating?.monto ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("eating", "monto", value)}
+                                            value={Number(manualResourceCosts.Viaticos.eating.monto ?? 0)} min={0}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.eating", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Personas"
-                                            value={Number(manualResourceCosts.eating?.personas ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("eating", "personas", value)}
+                                            value={Number(manualResourceCosts.Viaticos.eating.personas ?? 0)} min={0}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.eating", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={Number(manualResourceCosts.eating?.dias ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("eating", "dias", value)}
+                                            value={Number(manualResourceCosts.Viaticos.eating.dias ?? 0)} min={0}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.eating", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(manualResourceCosts.eating?.monto ?? 0) * 
-                                                Number(manualResourceCosts.eating?.personas ?? 0) * 
-                                                Number(manualResourceCosts.eating?.dias ?? 0), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.Viaticos.eating.monto ?? 0) * 
+                                                Number(manualResourceCosts.Viaticos.eating.personas ?? 0) * 
+                                                Number(manualResourceCosts.Viaticos.eating.dias ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>
