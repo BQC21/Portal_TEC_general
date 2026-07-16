@@ -1,27 +1,50 @@
-import { EMPTY_PERSONAL_ITEM, EMPTY_QUANTITY_PRICE_ITEM, ManualCosts, PersonalItem } from "@/lib/types/components/Quotes/manual_resources";
+import {
+    EMPTY_PERSONAL_ITEM,
+    EMPTY_QUANTITY_PRICE_ITEM,
+    ManualCosts,
+    MontoItem,
+    PersonalItem,
+    QuantityPriceItem,
+} from "@/lib/types/components/Quotes/manual_resources";
 import { SetStateAction } from "react";
 
-type QuantityPriceSection =
-        | "Recursos.epp"
-        | "Recursos.tooling"
-        | "Recursos.sctr"
-        | "Viaticos.courier"
-        | "Recursos.personal";
+type ManualCostArraySection =
+    | "Recursos.epp"
+    | "Recursos.tooling"
+    | "Recursos.sctr"
+    | "Recursos.personal"
+    | "Viaticos.courier";
 
-type NoPersonalQutantityPriceSection = Omit<QuantityPriceSection, "Recursos.personal">;
+type ManualCostMontoSection =
+    | "Recursos.hotel"
+    | "Viaticos.eating"
+    | "Viaticos.traveling";
+
+type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;
 
 export function ManageLocalCosts(
-    setManualResourceCosts: (value: SetStateAction<ManualCosts>) => void)
-{
-
-    // Editar un campo de una fila específica
+    setManualResourceCosts: (value: SetStateAction<ManualCosts>) => void,
+) {
+    // Editar un campo de una fila en secciones con arrays
     function updateManualCostItem(
-        section: NoPersonalQutantityPriceSection,
+        section: ManualCostArraySection,
         index: number,
-        field: keyof NoPersonalQutantityPriceSection,
-        value: NoPersonalQutantityPriceSection[keyof NoPersonalQutantityPriceSection],
+        field: keyof QuantityPriceItem | keyof PersonalItem,
+        value: QuantityPriceItem[keyof QuantityPriceItem] | PersonalItem[keyof PersonalItem],
     ) {
         setManualResourceCosts((current) => {
+            if (section === "Recursos.personal") {
+                return {
+                    ...current,
+                    Recursos: {
+                        ...current.Recursos,
+                        personal: current.Recursos.personal.map((item, i) =>
+                            i === index ? { ...item, [field]: value } : item,
+                        ),
+                    },
+                };
+            }
+
             if (section.startsWith("Recursos.")) {
                 const subcategory = section.replace("Recursos.", "") as "epp" | "tooling" | "sctr";
 
@@ -30,9 +53,7 @@ export function ManageLocalCosts(
                     Recursos: {
                         ...current.Recursos,
                         [subcategory]: current.Recursos[subcategory].map((item, i) =>
-                            i === index
-                                ? { ...item, [field]: value }
-                                : item
+                            i === index ? { ...item, [field]: value } : item,
                         ),
                     },
                 };
@@ -43,35 +64,52 @@ export function ManageLocalCosts(
                 Viaticos: {
                     ...current.Viaticos,
                     courier: current.Viaticos.courier.map((item, i) =>
-                        i === index
-                            ? { ...item, [field]: value }
-                            : item
+                        i === index ? { ...item, [field]: value } : item,
                     ),
                 },
             };
         });
     }
 
-    function updateManualCostItem_personal(
-        index: number,
-        field: keyof PersonalItem,
-        value: PersonalItem[keyof PersonalItem],
+    // Editar un campo en secciones de monto único (hotel, alimentación, viajes)
+    function updateManualCostMonto(
+        section: ManualCostMontoSection,
+        field: keyof MontoItem,
+        value: MontoItem[keyof MontoItem],
     ) {
-        setManualResourceCosts((current) => ({
-            ...current,
-            Recursos: {
-                ...current.Recursos,
-                personal: current.Recursos.personal.map((item, i) =>
-                    i === index
-                        ? { ...item, [field]: value }
-                        : item
-                ),
-            },
-        }));
+        setManualResourceCosts((current) => {
+            if (section === "Recursos.hotel") {
+                return {
+                    ...current,
+                    Recursos: {
+                        ...current.Recursos,
+                        hotel: { ...current.Recursos.hotel, [field]: value },
+                    },
+                };
+            }
+
+            if (section === "Viaticos.eating") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        eating: { ...current.Viaticos.eating, [field]: value },
+                    },
+                };
+            }
+
+            return {
+                ...current,
+                Viaticos: {
+                    ...current.Viaticos,
+                    traveling: { ...current.Viaticos.traveling, [field]: value },
+                },
+            };
+        });
     }
 
-    // Agregar fila vacía
-    function addManualCostItem(section: QuantityPriceSection) {
+    // Agregar fila vacía (solo secciones con arrays)
+    function addManualCostItem(section: ManualCostArraySection) {
         setManualResourceCosts((current) => {
             if (section === "Recursos.personal") {
                 return {
@@ -85,8 +123,10 @@ export function ManageLocalCosts(
                     },
                 };
             }
+
             if (section.startsWith("Recursos.")) {
                 const subcategory = section.replace("Recursos.", "") as "epp" | "tooling" | "sctr";
+
                 return {
                     ...current,
                     Recursos: {
@@ -98,6 +138,7 @@ export function ManageLocalCosts(
                     },
                 };
             }
+
             return {
                 ...current,
                 Viaticos: {
@@ -112,10 +153,11 @@ export function ManageLocalCosts(
     }
 
     // Eliminar fila por índice (mantiene al menos una fila)
-    function removeManualCostItem(section: QuantityPriceSection, index: number) {
+    function removeManualCostItem(section: ManualCostArraySection, index: number) {
         setManualResourceCosts((current) => {
             if (section === "Recursos.personal") {
                 if (current.Recursos.personal.length <= 1) return current;
+
                 return {
                     ...current,
                     Recursos: {
@@ -124,8 +166,11 @@ export function ManageLocalCosts(
                     },
                 };
             }
+
             if (section.startsWith("Recursos.")) {
                 const subcategory = section.replace("Recursos.", "") as "epp" | "tooling" | "sctr";
+                if (current.Recursos[subcategory].length <= 1) return current;
+
                 return {
                     ...current,
                     Recursos: {
@@ -134,6 +179,9 @@ export function ManageLocalCosts(
                     },
                 };
             }
+
+            if (current.Viaticos.courier.length <= 1) return current;
+
             return {
                 ...current,
                 Viaticos: {
@@ -144,10 +192,12 @@ export function ManageLocalCosts(
         });
     }
 
-    return{
+    return {
         updateManualCostItem,
-        updateManualCostItem_personal,
+        updateManualCostMonto,
         addManualCostItem,
-        removeManualCostItem
-    }
+        removeManualCostItem,
+    };
 }
+
+export type { ManualCostArraySection, ManualCostMontoSection, QuantityPriceSection };
