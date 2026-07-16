@@ -1,6 +1,6 @@
 "use client";
 
-import { PortalShell } from "@/features/view/components/PortalShell";
+import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 
 import { useProjects,
     useProjectMutations

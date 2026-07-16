@@ -37,6 +37,7 @@ export function SCTR_PriceTable({ manualResourceCosts, updateManualCost }: {
                                 </tr>
                             </thead>
                             <tbody>
+                                {/* Permitir un CRUD interno (solo agregar / eliminar) */}
                                 <tr className="bg-slate-100 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField

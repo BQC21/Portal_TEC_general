@@ -28,7 +28,7 @@ import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quot
 import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
-import { CollapsibleTableSection } from "@/features/view/components/CollapsibleTableSection";
+import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 
 export default function AddQuoteModal({
     onAddQuote,

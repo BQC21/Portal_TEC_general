@@ -3,7 +3,7 @@
 import Button2Modal_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2Add";
 import Button2Modal_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2Add";
 import Button2Modal_type from "@/features/view/components/Buttons/Proveedores/tipo/button2Add";
-import { PortalShell } from "@/features/view/components/PortalShell";
+import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import BrandTable from "@/features/view/components/Tables/Proveedores/BrandTable";
 import SupplierTable from "@/features/view/components/Tables/Proveedores/SupplierTable";
 import TypeTable from "@/features/view/components/Tables/Proveedores/TypeTable";

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { PortalShell } from "@/features/view/components/PortalShell";
+import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 
 import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
 import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
