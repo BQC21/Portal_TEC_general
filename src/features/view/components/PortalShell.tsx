@@ -17,6 +17,7 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
     const [userEmail, setUserEmail] = useState<string | null>(null); // mostrar email del usuario
     const [isSigningOut, setIsSigningOut] = useState(false); // indica si el usuario salió de la cuenta
 
+    // sincronización con el usuario autenticado
     useEffect(() => {
         const supabase = createClient();
         let isMounted = true;
