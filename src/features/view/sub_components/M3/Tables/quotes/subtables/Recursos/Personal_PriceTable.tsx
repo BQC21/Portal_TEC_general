@@ -1,16 +1,18 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { PersonalItem } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: { 
-    manualResourceCosts: ManualResourceCosts, 
-    updateManualCost: <K extends keyof ManualResourceCosts>(
-        section: K,
-        field: keyof ManualResourceCosts[K],
-        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
+export function Personal_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: { 
+    items: PersonalItem[], 
+    onUpdateItem: (
+        index: number, 
+        field: keyof PersonalItem, 
+        value: PersonalItem[keyof PersonalItem]
     ) => void,
+    onAddItem: () => void,
+    onRemoveItem: (index: number) => void,
 }){
 
     return(
@@ -45,36 +47,36 @@ export function Personal_PriceTable({ manualResourceCosts, updateManualCost }: {
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Nombre"
-                                            value={manualResourceCosts.personal.nombre}
-                                            onChange={(value) => updateManualCost("personal", "nombre", value)}
+                                            value={items[0].nombre}
+                                            onChange={(value) => onUpdateItem(0, "nombre", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Puesto"
-                                            value={manualResourceCosts.personal.puesto}
-                                            onChange={(value) => updateManualCost("personal", "puesto", value)}
+                                            value={items[0].puesto}
+                                            onChange={(value) => onUpdateItem(0, "puesto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Días"
-                                            value={Number(manualResourceCosts.personal.dias ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("personal", "dias", value)}
+                                            value={Number(items[0].dias ?? 0)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Precio x Día"
-                                            value={Number(manualResourceCosts.personal.precio_dia ?? 0)} min={0}
-                                            onChange={(value) => updateManualCost("personal", "precio_dia", value)}
+                                            value={Number(items[0].precio_dia ?? 0)} min={0}
+                                            onChange={(value) => onUpdateItem(0, "precio_dia", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label="Precio Total (s/.)"
-                                            value={formatCurrency(Number(manualResourceCosts.personal.dias ?? 0) * 
-                                                Number(manualResourceCosts.personal.precio_dia ?? 0), "PEN")}
+                                            value={formatCurrency(Number(items[0].dias ?? 0) * 
+                                                Number(items[0].precio_dia ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>
