@@ -76,7 +76,10 @@ export default function AddQuoteModal({
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await onAddQuote({ ...form });
+        await onAddQuote({ 
+            ...form, 
+            costos_manuales: manualResourceCosts,
+        });
     }
 
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
