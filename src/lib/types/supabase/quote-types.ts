@@ -1,3 +1,4 @@
+import { ManualCosts } from "../components/Quotes/manual_resources";
 import { Project, SupabaseProjectRow } from "./project-types";
 
 // estado del formulario
@@ -22,6 +23,8 @@ export type SupabaseQuoteRow = {
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
+    // costos manuales
+    costos_manuales?: ManualCosts | null;
 }
 
 // visualización de la tabla
@@ -41,6 +44,8 @@ export type Quote = {
     // fechas
     created_at: Date;
     updated_at: Date;
+    // costos manuales
+    costos_manuales: ManualCosts;
 }
 
 // manejo de la visualización
