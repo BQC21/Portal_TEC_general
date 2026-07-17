@@ -3,6 +3,7 @@
 import { DeleteQuoteModalProps } from "@/lib/types/components/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteModalProps){
     // Aceptar actualización
@@ -43,7 +44,7 @@ export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteMod
                 />
                 <AddProductReadonlyField
                     label="Precio de venta"
-                    value={quote.precio_dolares} 
+                    value={formatCurrency(Number(quote.precio_dolares), "USD")} 
                 />
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                     <button
