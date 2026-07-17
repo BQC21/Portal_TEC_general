@@ -3,7 +3,7 @@
 import { EditQuoteModalProps } from "@/lib/types/components/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
@@ -27,22 +27,23 @@ import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quo
 import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
 import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { ManualResourceCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
+import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { ManageLocalCosts } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
+import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
+import { CollapsibleTableSection } from "../../../Shells/CollapsibleTableSection";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
     existing_project_equipos, existing_project_materiales,
 }: EditQuoteModalProps){
-    // ----------------------------
-    // ------- Estados ------------
-    // ----------------------------
-
-    // usar información de otras tabla
-    const { projects } = useProjects();
+    // ----------
+    // ESTADOS
+    // ----------
 
     const [form, setForm] = useState<QuoteFormState>(() => createQuoteFormStateFromQuote(existingQuote))
+    
+    const { projects } = useProjects();
     const [form_project, setForm_project] = useState<ProjectFormState>(() => 
         existingQuote.proyecto_info ? {
             ...INITIAL_PROJECT_FORM,
@@ -50,7 +51,10 @@ export default function EditQuoteModal({
         } : INITIAL_PROJECT_FORM
     );
 
-    // SELECCIONADOS
+    // ----------
+    // TECNOLOGÍA SELECCIONADA
+    // ----------    
+    
     const hasSelectedProject = Boolean(form.proyecto_id);
 
     const projectEquipos = hasSelectedProject
@@ -61,6 +65,7 @@ export default function EditQuoteModal({
         ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
         : [];
 
+    // --- rescatamos su descripción
     const equiposDescriptions = projectEquipos
         .map((item) => item.equipo_info?.descripcion)
         .filter((description): description is string => Boolean(description));
@@ -69,7 +74,10 @@ export default function EditQuoteModal({
         .map((item) => item.material_info?.descripcion)
         .filter((description): description is string => Boolean(description));
 
+    // ----------
     // EVENTOS
+    // ----------
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         await onUpdateQuote({ ...form });
@@ -77,46 +85,67 @@ export default function EditQuoteModal({
 
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
         setForm((current) => {
-            const updated = { ...current, [field]: value };
+            const updated = { ...current, [field]: value,
+                precio_dolares: String(precioFinal.dolares.toFixed(2))
+            };
             return updated;
         });
     }
 
+    // ----------
     // CÁLCULOS MANUALES
-    const [manualResourceCosts, setManualResourceCosts] = useState<ManualResourceCosts>(INITIAL_MANUAL_RESOURCE_COSTS);
+    // ----------
 
-    function updateManualCost<K extends keyof ManualResourceCosts>(
-        section: K,
-        field: keyof ManualResourceCosts[K],
-        value: ManualResourceCosts[K][keyof ManualResourceCosts[K]],
-    ) {
-    setManualResourceCosts((current) => ({
-        ...current,
-        [section]: { ...current[section], [field]: value },
-    }));
-    }
+    const [manualResourceCosts, setManualResourceCosts] = 
+        useState<ManualCosts>(INITIAL_MANUAL_RESOURCE_COSTS); // valores iniciales
 
+    const { updateManualCostItem, 
+        updateManualCostMonto,
+        addManualCostItem, 
+        removeManualCostItem 
+    } = ManageLocalCosts(setManualResourceCosts);
+
+    // ----------
     // CÁLCULOS TOTALES
-    const { 
-        // TOTALES RECURSOS
-        equiposPrincipalesTotal, equiposPrincipalesTotalIgv, 
-        estructurasTotal, estructurasTotalIgv, 
-        consumiblesTotal, consumiblesTotalIgv,
-        eppTotal, eppTotalIgv,
-        toolingTotal, toolingTotalIgv,
-        hotelTotal, hotelTotalIgv,
-        personalTotal, personalTotalIgv,
-        sctrTotal, sctrTotalIgv,
-        // TOTALES VIÁTICOS
-        eatingTotal, eatingTotalIgv,
-        travelingTotal, travelingTotalIgv,
-        courierTotal, courierTotalIgv, 
-        // GrossMargin
-        GrossMargin
-    } = useCostComputes(
-        projectEquipos, projectMateriales, manualResourceCosts, 
-        Number(form.igv), Number(form.tasa_cambio), Number(form.gm_general), Number(form.gm_viaticos)
+    // ----------
+
+    const { recursos, viaticos, precioFinal, grossMargin } = useCostComputes(
+        projectEquipos, projectMateriales, manualResourceCosts,
+        Number(form.gm_general), Number(form.markup), Number(form.gm_viaticos), Number(form.tasa_cambio),
     );
+
+    // ----------
+    // SINCRONIZAR GROSS MARGIN
+    // ----------
+
+    useEffect(() => {
+        const nextGm = String(grossMargin.gm.gm);
+        if (Number(grossMargin.gm.gm) > 0 && form.gm !== nextGm) {
+            updateField("gm", String(grossMargin.gm.gm));
+        }
+    }, [grossMargin.gm.gm]);
+
+    // ----------
+    // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
+    // ----------
+    useEffect(() => {
+        updateField("cod_cotizacion", getQuoteCode());
+    }, []); // solo al montar
+
+    // ----------
+    // LOGS
+    // ----------
+
+    console.log("valor del grossMargin", (grossMargin.gm.gm * 100).toFixed(2));
+    // RECURSOS
+    console.log("valor del precio de venta soles", recursos.resumen.ventaSoles);
+    // VIÁTICOS
+    console.log("valor del precio de venta soles", viaticos.resumen.ventaSoles);
+    // DEFINITIVO
+    console.log("valor del precio final", precioFinal.soles);
+    console.log("valor del precio final IGV", precioFinal.solesIgv);
+    console.log("valor del precio final dolares", precioFinal.dolares);
+    console.log("valor del precio final dolares IGV", precioFinal.dolaresIgv);
 
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
@@ -168,6 +197,7 @@ export default function EditQuoteModal({
                                         : "No hay materiales registrados para este proyecto."}
                                 </p>
                             </div>
+
                             <div className="grid gap-6">
                                 <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Márgenes financieros</h2>
                                 <AddProductNumberField
@@ -193,7 +223,7 @@ export default function EditQuoteModal({
                                 />
                                 <AddProductReadonlyField
                                     label="Gross Margin"
-                                    value={Number(GrossMargin) > 0 ? String(Number(GrossMargin).toFixed(2)) : ""}
+                                    value={Number(grossMargin.gm.gm) > 0 ? String(Number(grossMargin.gm.gm).toFixed(2)) : ""}
                                 />
                             </div>
 
@@ -204,7 +234,7 @@ export default function EditQuoteModal({
                                     required
                                     value={Number(form.igv) > 0 ? Number(form.igv) : ""}
                                     onChange={(value) => updateField("igv", String(value))}
-                                    step={0.01}   min={0.1}   max={0.2}
+                                    step={0.01}   min={0.15}   max={0.18}
                                 />
                                 <AddProductNumberField
                                     label="Tasa de cambio"
@@ -213,96 +243,112 @@ export default function EditQuoteModal({
                                     onChange={(value) => updateField("tasa_cambio", String(value))}
                                     step={0.01}   min={3.00}   max={4.50}
                                 />
-                                <AddProductTextField
+                                <AddProductReadonlyField
                                     label="Código de cotización"
-                                    placeholder="C001-YYYYMMDDD"
                                     value={form.cod_cotizacion ?? ""}
-                                    onChange={(value) => updateField("cod_cotizacion", value)}
                                 />
                             </div>
                         </div>
 
                         {/* TABLA RECURSOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable1
-                                    equiposPrincipalesCost={equiposPrincipalesTotal}
-                                    equiposPrincipalesCostIgv={equiposPrincipalesTotalIgv}
-                                    estructurasCost={estructurasTotal}
-                                    estructurasCostIgv={estructurasTotalIgv}
-                                    consumiblesCost={consumiblesTotal}
-                                    consumiblesCostIgv={consumiblesTotalIgv}
-                                    eppCost={eppTotal}
-                                    eppCostIgv={eppTotalIgv}
-                                    toolingCost={toolingTotal}
-                                    toolingCostIgv={toolingTotalIgv}
-                                    hotelCost={hotelTotal}
-                                    hotelCostIgv={hotelTotalIgv}
-                                    personalCost={personalTotal}
-                                    personalCostIgv={personalTotalIgv}
-                                    sctrCost={sctrTotal}
-                                    sctrCostIgv={sctrTotalIgv}
-                                    gm_general={Number(form.gm_general)}
-                                    markup={Number(form.markup)}
-                                    tasa_cambio={Number(form.tasa_cambio)}
+                                    recursosCosts={recursos}
                                 />
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <EP_PriceTable
-                                    selected_equipos={projectEquipos}
-                                />
-                                <Structure_PriceTable
-                                    selected_equipos={projectEquipos}
-                                />
-                                <Consume_PriceTable
-                                    selected_materiales={projectMateriales}
-                                />
-                                <EPP_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                />
-                                <Tooling_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                />
-                                <Hotel_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                />
-                                <Personal_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                />
-                                <SCTR_PriceTable
-                                    manualResourceCosts={manualResourceCosts}
-                                />
+                            <div className="overflow-hidden rounded-2xl border border-slate-200">
+                                <CollapsibleTableSection title="Equipos Principales">
+                                    <EP_PriceTable
+                                        selected_equipos={projectEquipos}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Estructuras">
+                                    <Structure_PriceTable
+                                        selected_equipos={projectEquipos}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Consumibles">
+                                    <Consume_PriceTable
+                                        selected_materiales={projectMateriales}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="EPPs">
+                                    <EPP_PriceTable
+                                        items={manualResourceCosts.Recursos.epp}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.epp", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.epp")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.epp", index)}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Herramientas">
+                                    <Tooling_PriceTable
+                                        items={manualResourceCosts.Recursos.tooling}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.tooling", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.tooling")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.tooling", index)}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Hotel">
+                                    <Hotel_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCostMonto={updateManualCostMonto}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Personal">
+                                    <Personal_PriceTable
+                                        items={manualResourceCosts.Recursos.personal}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.personal", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.personal")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.personal", index)}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="SCTR">
+                                    <SCTR_PriceTable
+                                        items={manualResourceCosts.Recursos.sctr}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.sctr", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Recursos.sctr")}
+                                        onRemoveItem={(index) => removeManualCostItem("Recursos.sctr", index)}
+                                    />
+                                </CollapsibleTableSection>
                             </div>
                         </div>
 
                         {/* TABLA VIÁTICOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                             <div className="rounded-2xl border border-slate-200 p-4">
                                 <SummaryCostTable2
-                                    eatingTotal={eatingTotal}
-                                    eatingTotalIgv={eatingTotalIgv}
-                                    travelingTotal={travelingTotal}
-                                    travelingTotalIgv={travelingTotalIgv}
-                                    courierTotal={courierTotal}
-                                    courierTotalIgv={courierTotalIgv}
-                                    gm_viaticos={Number(form.gm_viaticos)}
-                                    tasa_cambio={Number(form.tasa_cambio)}
+                                    viaticosCosts={viaticos}
                                 />
                             </div>
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <Courier_PriceTable/>
-                                <Eating_PriceTable/>
-                                <Traveling_PriceTable/>
+                            <div className="overflow-hidden rounded-2xl border border-slate-200">
+                                <CollapsibleTableSection title="Courier">
+                                    <Courier_PriceTable
+                                        items={manualResourceCosts.Viaticos.courier}
+                                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
+                                        onAddItem={() => addManualCostItem("Viaticos.courier")}
+                                        onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Alimentación">
+                                    <Eating_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCostMonto={updateManualCostMonto}
+                                    />
+                                </CollapsibleTableSection>
+                                <CollapsibleTableSection title="Viajes y movilidad">
+                                    <Traveling_PriceTable
+                                        manualResourceCosts={manualResourceCosts}
+                                        updateManualCostMonto={updateManualCostMonto}
+                                    />
+                                </CollapsibleTableSection>
                             </div>
                         </div>
                         
                         {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
                             <SummaryCostTable
-                                PrecioFinal={equiposPrincipalesTotal}
-                                PrecioFinalIgv={equiposPrincipalesTotalIgv}
-                                PrecioFinalDolares={equiposPrincipalesTotalIgv}
-                                PrecioFinalDolaresIgv={equiposPrincipalesTotalIgv}
+                                precioFinal={precioFinal}
                             />
                         </div>
                         </>
