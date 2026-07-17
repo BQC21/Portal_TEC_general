@@ -5,7 +5,7 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
 import { useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
+import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
@@ -80,7 +80,10 @@ export default function EditQuoteModal({
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await onUpdateQuote({ ...form });
+        await onUpdateQuote({ 
+            ...form,
+            costos_manuales: manualResourceCosts, 
+        });
     }
 
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
@@ -97,7 +100,7 @@ export default function EditQuoteModal({
     // ----------
 
     const [manualResourceCosts, setManualResourceCosts] = 
-        useState<ManualCosts>(INITIAL_MANUAL_RESOURCE_COSTS); // valores iniciales
+        useState<ManualCosts>(() => createManualCostsFromQuote(existingQuote)); // valores iniciales
 
     const { updateManualCostItem, 
         updateManualCostMonto,
