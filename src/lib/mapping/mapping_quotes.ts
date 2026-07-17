@@ -1,8 +1,15 @@
+import { ManualCosts } from "../types/components/Quotes/manual_resources";
 import { SupabaseProjectRow } from "../types/supabase/project-types";
 import { Quote, QuoteFormData, QuoteFormState, SupabaseQuoteRow } from "../types/supabase/quote-types";
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
+import { INITIAL_MANUAL_RESOURCE_COSTS } from "../utils/initialValues";
 import { parseNumber } from "../utils/normalization";
 import { mapSupabaseRowToProject } from "./project_mapping";
+
+// Creador de valores por defecto asociado a costos manuales
+export function createManualCostsFromQuote(quote: Quote): ManualCosts {
+    return quote.costos_manuales ?? INITIAL_MANUAL_RESOURCE_COSTS;
+}
 
 // Creador de valores por defecto a partir del formulario
 export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
@@ -19,6 +26,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         gm: quote.gm,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
+        costos_manuales: quote.costos_manuales,
     }
 }
 
@@ -42,6 +50,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         gm: row.gm?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
+        costos_manuales: (row.costos_manuales as ManualCosts) ?? INITIAL_MANUAL_RESOURCE_COSTS,
     }
 }
 
@@ -59,5 +68,6 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         gm: parseNumber(quote.gm) ?? 0,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
+        costos_manuales: quote.costos_manuales,
     }
 }
