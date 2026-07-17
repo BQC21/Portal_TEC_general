@@ -32,17 +32,17 @@ export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteMod
                 </p>
             </div>
             <form onSubmit={handleDeleteQuote} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                <h2>Detalles de la cotización</h2>
+                <h2 className="mb-10">Detalles de la cotización</h2>
                 <AddProductReadonlyField
-                    label=""
+                    label="Código de cotización"
                     value={quote.cod_cotizacion} 
                 />
                 <AddProductReadonlyField
-                    label=""
+                    label="Nombre del proyecto"
                     value={quote.proyecto_info?.nombre || ""} 
                 />
                 <AddProductReadonlyField
-                    label=""
+                    label="Precio de venta"
                     value={quote.precio_dolares} 
                 />
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
