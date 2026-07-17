@@ -211,21 +211,6 @@ export const INITIAL_PROJECT_MATERIAL_FORM: Project_MaterialesFormState = {
 
 // ------ M3
 
-export const INITIAL_QUOTE_FORM: QuoteFormState = {
-        created_at: new Date(),
-        updated_at: new Date(),
-        proyecto_id: "",
-        proyecto_info: undefined,
-        cod_cotizacion: "",
-        igv: "",
-        tasa_cambio: "",
-        precio_dolares: "",
-        markup: "",
-        gm_general: "",
-        gm_viaticos: "",
-        gm: "",
-}
-
 export const INITIAL_REPORT_FORM: ReportFormState = {
     created_at: new Date(),
     updated_at: new Date(),
@@ -256,3 +241,19 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
         courier: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
     }
 };
+
+export const INITIAL_QUOTE_FORM: QuoteFormState = {
+    created_at: new Date(),
+    updated_at: new Date(),
+    proyecto_id: "",
+    proyecto_info: undefined,
+    cod_cotizacion: "",
+    igv: "",
+    tasa_cambio: "",
+    precio_dolares: "",
+    markup: "",
+    gm_general: "",
+    gm_viaticos: "",
+    gm: "",
+    costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
+}
