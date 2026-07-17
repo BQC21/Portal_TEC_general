@@ -9,6 +9,8 @@ import { ProjectFormState } from "../supabase/project-types";
 import { Equipos } from "../supabase/equipos-types";
 import { Materiales } from "../supabase/materiales-types";
 import { Zone, ZoneFormState } from "../supabase/zone-types";
+import { QuoteFormState } from "../supabase/quote-types";
+import { ManualCosts } from "./Quotes/manual_resources";
 
 export type Tables_M2_props = {
     // equipos seleccionados (TABLA)
@@ -92,3 +94,30 @@ export type Data_info_M2Props = {
 // M3
 // -----
 
+export type Product_selectedProps = {
+    equiposDescriptions: string[],
+    materialesDescriptions: string[],
+    form: QuoteFormState,
+    updateField: (field: string, value: string) => void,
+    grossMargin: Number,
+}
+
+export type ResourcesTablesProps = {
+    recursos: ManualCosts,
+    projectEquipos: Equipos[],
+    projectMateriales: Materiales[],
+    manualResourceCosts: ManualCosts,
+    updateManualCostMonto: (field: string, value: number) => void,
+    updateManualCostItem: (field: string, value: number) => void,
+    addManualCostItem: (field: string, value: number) => void,
+    removeManualCostItem: (field: string, value: number) => void,
+}
+
+export type ViaticosTablesProps = {
+    viaticos: ManualCosts,
+    manualResourceCosts: ManualCosts,
+    updateManualCostMonto: (field: string, value: number) => void,
+    updateManualCostItem: (field: string, value: number) => void,
+    addManualCostItem: (field: string, value: number) => void,
+    removeManualCostItem: (field: string, value: number) => void,
+}
