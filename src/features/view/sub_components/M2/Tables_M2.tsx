@@ -3,15 +3,7 @@ import { AddProductNumberField } from "../../components/Form_fields/AddNumberFie
 import { SetStateAction } from "react";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-
-export type Tables_M2_props = {
-    selectedEquipmentTable: SelectedEquipmentItem[],
-    setSelectedEquipmentTable: (value: SetStateAction<SelectedEquipmentItem[]>) => void,
-    selectedMaterialTable: SelectedMaterialItem[],
-    setSelectedMaterialTable: (value: SetStateAction<SelectedMaterialItem[]>) => void,
-    computedRequirements: computedRequirements,
-    form: ProjectFormState
-}
+import { Tables_M2_props } from "@/lib/types/components/module_render";
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){

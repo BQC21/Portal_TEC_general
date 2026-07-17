@@ -5,25 +5,7 @@ import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-
-export type Selectors_M2Props = {
-    equipmentRows: string[];
-    materialRows: string[];
-    selectedEquipmentTable: SelectedEquipmentItem[];
-    selectedMaterialTable: SelectedMaterialItem[];
-    form: ProjectFormState;
-    computedRequirements: computedRequirements;
-    equipos: Equipos[];
-    materiales: Materiales[];
-    selectedEquipmentByRow: Record<string, { equipoId: string; description: string }>;
-    selectedMaterialByRow: Record<string, { materialId: string; description: string }>;
-    isEquipmentTypeSelected: (label: string) => boolean;
-    showModuleSelector: boolean;
-    showInverterSelector: boolean;
-    showBatterySelector: boolean;
-    handle_onChange: (value: string, label: string, index: string | number, product_type: string) => void;
-    handle_click: (label: string, index: string | number, product_type: string) => void;
-}
+import { Selectors_M2Props } from "@/lib/types/components/module_render";
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
     form, computedRequirements, equipos, materiales, selectedEquipmentByRow, selectedMaterialByRow, 

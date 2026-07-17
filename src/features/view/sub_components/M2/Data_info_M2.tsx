@@ -10,21 +10,7 @@ import { AddProductSelectField } from "../../components/Form_fields/AddSelectFie
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
 import { MONTH_LABELS, useMonthlyDemand } from "../../hooks/modals/Sizing/useMonthlyDemand";
-
-export type Data_info_M2Props = {
-    form: ProjectFormState;
-    updateField: (field: string, value: string) => void;
-    handleOpcionLlenadoChange: (value: string) => void;
-    computedRequirements: computedRequirements;
-    getFieldValueLightClass: (value: string) => string;
-    getFieldValueDarkClass: (value: string) => string;
-    shouldRender_M2_battery_properties: (value: string) => boolean;
-    shouldRender_M2_configuration: (value: string) => boolean;
-    CONNECTION_TYPE_OPTIONS: string[];
-    selectedEquipment: SelectedEquipmentItem;
-    selectedInverter: SelectedEquipmentItem;
-    selectedBattery: SelectedEquipmentItem;
-}
+import { Data_info_M2Props } from "@/lib/types/components/module_render";
 
 export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 

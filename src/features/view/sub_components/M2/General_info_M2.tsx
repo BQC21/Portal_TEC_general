@@ -8,18 +8,7 @@ import { Zone, ZoneFormState } from "@/lib/types/supabase/zone-types";
 import { SetStateAction } from "react";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
 import { ZoneSelection } from "../../hooks/modals/Sizing/useZoneSelection";
-
-export type General_info_M2Props = {
-    form: ProjectFormState;
-    updateField: (field: string, value: string) => void;
-    form_zone: ZoneFormState;
-    zones: Zone[];
-    setForm_zone: (value: SetStateAction<ZoneFormState>) => void;
-    setForm: (value: SetStateAction<ProjectFormState>) => void;
-    ANGLE_OPTIONS: string[];
-    selectedZone: string;
-    selectedAngle: string;
-}
+import { General_info_M2Props } from "@/lib/types/components/module_render";
 
 export function General_info_M2({ form, updateField, form_zone, zones, setForm_zone, setForm, 
     ANGLE_OPTIONS, selectedZone, selectedAngle }: General_info_M2Props) {
