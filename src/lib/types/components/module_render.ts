@@ -10,7 +10,23 @@ import { Equipos } from "../supabase/equipos-types";
 import { Materiales } from "../supabase/materiales-types";
 import { Zone, ZoneFormState } from "../supabase/zone-types";
 import { QuoteFormState } from "../supabase/quote-types";
-import { ManualCosts } from "./Quotes/manual_resources";
+import {
+    ManualCosts,
+    MontoItem,
+    PersonalItem,
+    QuantityPriceItem,
+} from "./Quotes/manual_resources";
+import {
+    grossMargin as GrossMarginCompute,
+    recursos,
+    viaticos,
+} from "./Quotes/finantial_computes";
+import { Project_Equipos } from "../supabase/project_equipos_join";
+import { Project_Materiales } from "../supabase/project_materiales_join";
+import {
+    ManualCostArraySection,
+    ManualCostMontoSection,
+} from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
 
 export type Tables_M2_props = {
     // equipos seleccionados (TABLA)
@@ -95,29 +111,37 @@ export type Data_info_M2Props = {
 // -----
 
 export type Product_selectedProps = {
-    equiposDescriptions: string[],
-    materialesDescriptions: string[],
-    form: QuoteFormState,
-    updateField: (field: string, value: string) => void,
-    grossMargin: Number,
-}
+    equiposDescriptions: string[];
+    materialesDescriptions: string[];
+    form: QuoteFormState;
+    updateField: <K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) => void;
+    grossMargin: { gm: GrossMarginCompute };
+};
+
+type ManualCostHandlers = {
+    updateManualCostMonto: (
+        section: ManualCostMontoSection,
+        field: keyof MontoItem,
+        value: MontoItem[keyof MontoItem],
+    ) => void;
+    updateManualCostItem: (
+        section: ManualCostArraySection,
+        index: number,
+        field: keyof QuantityPriceItem | keyof PersonalItem,
+        value: QuantityPriceItem[keyof QuantityPriceItem] | PersonalItem[keyof PersonalItem],
+    ) => void;
+    addManualCostItem: (section: ManualCostArraySection) => void;
+    removeManualCostItem: (section: ManualCostArraySection, index: number) => void;
+};
 
 export type ResourcesTablesProps = {
-    recursos: ManualCosts,
-    projectEquipos: Equipos[],
-    projectMateriales: Materiales[],
-    manualResourceCosts: ManualCosts,
-    updateManualCostMonto: (field: string, value: number) => void,
-    updateManualCostItem: (field: string, value: number) => void,
-    addManualCostItem: (field: string, value: number) => void,
-    removeManualCostItem: (field: string, value: number) => void,
-}
+    recursos: recursos;
+    projectEquipos: Project_Equipos[];
+    projectMateriales: Project_Materiales[];
+    manualResourceCosts: ManualCosts;
+} & ManualCostHandlers;
 
 export type ViaticosTablesProps = {
-    viaticos: ManualCosts,
-    manualResourceCosts: ManualCosts,
-    updateManualCostMonto: (field: string, value: number) => void,
-    updateManualCostItem: (field: string, value: number) => void,
-    addManualCostItem: (field: string, value: number) => void,
-    removeManualCostItem: (field: string, value: number) => void,
-}
+    viaticos: viaticos;
+    manualResourceCosts: ManualCosts;
+} & ManualCostHandlers;

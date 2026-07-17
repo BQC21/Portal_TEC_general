@@ -6,32 +6,18 @@ import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects"
 import { useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
-import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
-import { AddProductNumberField } from "../../../Form_fields/AddNumberField";
-import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
-import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable1";
-import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable2";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
-import { EP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/EP_PriceTable";
-import { Structure_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/Structure_PriceTable";
-import { Consume_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/Consume_PriceTable";
-import { EPP_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/EPP_PriceTable";
-import { Tooling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/Tooling_PriceTable";
-import { Hotel_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/Hotel_PriceTable";
-import { Personal_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/Personal_PriceTable";
-import { SCTR_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Recursos/SCTR_PriceTable";
-import { Courier_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Courier_PriceTable";
-import { Eating_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Eating_PriceTable";
-import { Traveling_PriceTable } from "@/features/view/sub_components/M3/Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { ManageLocalCosts } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
-import { CollapsibleTableSection } from "../../../Shells/CollapsibleTableSection";
+import { Product_selected } from "@/features/view/sub_components/M3/refactor/Product_selected";
+import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
+import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -178,175 +164,33 @@ export default function EditQuoteModal({
 
                     {hasSelectedProject && (
                         <>
-                        <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr_1fr_1fr]">
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <h3 className="mb-3 text-lg font-semibold text-slate-900">
-                                    Equipos seleccionados
-                                </h3>
-                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
-                                    {equiposDescriptions.length > 0
-                                        ? equiposDescriptions.join("\n")
-                                        : "No hay equipos registrados para este proyecto."}
-                                </p>
-                            </div>
+                        <Product_selected
+                            equiposDescriptions={equiposDescriptions}
+                            materialesDescriptions={materialesDescriptions}
+                            form={form}
+                            updateField={updateField}
+                            grossMargin={grossMargin}
+                        />
 
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <h3 className="mb-3 text-lg font-semibold text-slate-900">
-                                    Materiales seleccionados
-                                </h3>
-                                <p className="max-h-48 overflow-y-auto whitespace-pre-line text-slate-700">
-                                    {materialesDescriptions.length > 0
-                                        ? materialesDescriptions.join("\n")
-                                        : "No hay materiales registrados para este proyecto."}
-                                </p>
-                            </div>
+                        <ResourcesTables
+                            recursos={recursos}
+                            projectEquipos={projectEquipos}
+                            projectMateriales={projectMateriales}
+                            manualResourceCosts={manualResourceCosts}
+                            updateManualCostMonto={updateManualCostMonto}
+                            updateManualCostItem={updateManualCostItem}
+                            addManualCostItem={addManualCostItem}
+                            removeManualCostItem={removeManualCostItem}
+                        />
 
-                            <div className="grid gap-6">
-                                <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Márgenes financieros</h2>
-                                <AddProductNumberField
-                                    label="Porcentaje de MarkUp (%)"
-                                    required
-                                    value={Number(form.markup) > 0 ? Number(form.markup) : ""}
-                                    onChange={(value) => updateField("markup", String(value))}
-                                    step={1}   min={30}   max={50}
-                                />
-                                <AddProductNumberField
-                                    label="Porcentaje del margen de riesgos para la tabla de recursos (%)"
-                                    required
-                                    value={Number(form.gm_general) > 0 ? Number(form.gm_general) : ""}
-                                    onChange={(value) => updateField("gm_general", String(value))}
-                                    step={1}   min={1}   max={10}
-                                />
-                                <AddProductNumberField
-                                    label="Porcentaje del margen de riesgos para la tabla de viáticos (%)"
-                                    required
-                                    value={Number(form.gm_viaticos) > 0 ? Number(form.gm_viaticos) : ""}
-                                    onChange={(value) => updateField("gm_viaticos", String(value))}
-                                    step={1}   min={1}   max={10}
-                                />
-                                <AddProductReadonlyField
-                                    label="Gross Margin"
-                                    value={Number(grossMargin.gm.gm) > 0 ? String(Number(grossMargin.gm.gm).toFixed(2)) : ""}
-                                />
-                            </div>
-
-                            <div className="grid gap-6">
-                                <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Parámetros financieros</h2>
-                                <AddProductNumberField
-                                    label="IGV (Impuesto General a la Venta)"
-                                    required
-                                    value={Number(form.igv) > 0 ? Number(form.igv) : ""}
-                                    onChange={(value) => updateField("igv", String(value))}
-                                    step={0.01}   min={0.15}   max={0.18}
-                                />
-                                <AddProductNumberField
-                                    label="Tasa de cambio"
-                                    required
-                                    value={Number(form.tasa_cambio) > 0 ? Number(form.tasa_cambio) : ""}
-                                    onChange={(value) => updateField("tasa_cambio", String(value))}
-                                    step={0.01}   min={3.00}   max={4.50}
-                                />
-                                <AddProductReadonlyField
-                                    label="Código de cotización"
-                                    value={form.cod_cotizacion ?? ""}
-                                />
-                            </div>
-                        </div>
-
-                        {/* TABLA RECURSOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable1
-                                    recursosCosts={recursos}
-                                />
-                            </div>
-                            <div className="overflow-hidden rounded-2xl border border-slate-200">
-                                <CollapsibleTableSection title="Equipos Principales">
-                                    <EP_PriceTable
-                                        selected_equipos={projectEquipos}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Estructuras">
-                                    <Structure_PriceTable
-                                        selected_equipos={projectEquipos}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Consumibles">
-                                    <Consume_PriceTable
-                                        selected_materiales={projectMateriales}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="EPPs">
-                                    <EPP_PriceTable
-                                        items={manualResourceCosts.Recursos.epp}
-                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.epp", index, field, value)}
-                                        onAddItem={() => addManualCostItem("Recursos.epp")}
-                                        onRemoveItem={(index) => removeManualCostItem("Recursos.epp", index)}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Herramientas">
-                                    <Tooling_PriceTable
-                                        items={manualResourceCosts.Recursos.tooling}
-                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.tooling", index, field, value)}
-                                        onAddItem={() => addManualCostItem("Recursos.tooling")}
-                                        onRemoveItem={(index) => removeManualCostItem("Recursos.tooling", index)}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Hotel">
-                                    <Hotel_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCostMonto={updateManualCostMonto}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Personal">
-                                    <Personal_PriceTable
-                                        items={manualResourceCosts.Recursos.personal}
-                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.personal", index, field, value)}
-                                        onAddItem={() => addManualCostItem("Recursos.personal")}
-                                        onRemoveItem={(index) => removeManualCostItem("Recursos.personal", index)}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="SCTR">
-                                    <SCTR_PriceTable
-                                        items={manualResourceCosts.Recursos.sctr}
-                                        onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.sctr", index, field, value)}
-                                        onAddItem={() => addManualCostItem("Recursos.sctr")}
-                                        onRemoveItem={(index) => removeManualCostItem("Recursos.sctr", index)}
-                                    />
-                                </CollapsibleTableSection>
-                            </div>
-                        </div>
-
-                        {/* TABLA VIÁTICOS */}
-                        <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
-                            <div className="rounded-2xl border border-slate-200 p-4">
-                                <SummaryCostTable2
-                                    viaticosCosts={viaticos}
-                                />
-                            </div>
-                            <div className="overflow-hidden rounded-2xl border border-slate-200">
-                                <CollapsibleTableSection title="Courier">
-                                    <Courier_PriceTable
-                                        items={manualResourceCosts.Viaticos.courier}
-                                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
-                                        onAddItem={() => addManualCostItem("Viaticos.courier")}
-                                        onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Alimentación">
-                                    <Eating_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCostMonto={updateManualCostMonto}
-                                    />
-                                </CollapsibleTableSection>
-                                <CollapsibleTableSection title="Viajes y movilidad">
-                                    <Traveling_PriceTable
-                                        manualResourceCosts={manualResourceCosts}
-                                        updateManualCostMonto={updateManualCostMonto}
-                                    />
-                                </CollapsibleTableSection>
-                            </div>
-                        </div>
+                        <ViaticosTables
+                            viaticos={viaticos}
+                            manualResourceCosts={manualResourceCosts}
+                            updateManualCostMonto={updateManualCostMonto}
+                            updateManualCostItem={updateManualCostItem}
+                            addManualCostItem={addManualCostItem}
+                            removeManualCostItem={removeManualCostItem}
+                        />
                         
                         {/* TABLA FINAL */}
                         <div className="mt-6 grid gap-6 grid-cols">
