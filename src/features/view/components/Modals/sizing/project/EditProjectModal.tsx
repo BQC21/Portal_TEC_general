@@ -41,10 +41,10 @@ import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/hel
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
 import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";
 import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
-import { General_info_M2 } from "@/features/view/sub_components/M2/General_info_M2";
-import { Tables_M2 } from "@/features/view/sub_components/M2/Tables_M2";
-import { Data_info_M2 } from "@/features/view/sub_components/M2/Data_info_M2";
-import { Selectors_M2 } from "@/features/view/sub_components/M2/Selectors_M2";
+import { General_info_M2 } from "@/features/view/sub_components/M2/refactor/General_info_M2";
+import { Tables_M2 } from "@/features/view/sub_components/M2/refactor/Tables_M2";
+import { Data_info_M2 } from "@/features/view/sub_components/M2/refactor/Data_info_M2";
+import { Selectors_M2 } from "@/features/view/sub_components/M2/refactor/Selectors_M2";
 
 export default function EditProjectModal({
     existingProject,

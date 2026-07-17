@@ -2,14 +2,14 @@
 
 import { useCallback } from "react";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { AddEquipoReadonlyField } from "../../components/Form_fields/AddEquipoReadOnlyField";
-import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
-import { AddProductRadioField } from "../../components/Form_fields/AddRadioField";
-import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
-import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
+import { AddEquipoReadonlyField } from "../../../components/Form_fields/AddEquipoReadOnlyField";
+import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
+import { AddProductRadioField } from "../../../components/Form_fields/AddRadioField";
+import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
+import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
-import { MONTH_LABELS, useMonthlyDemand } from "../../hooks/modals/Sizing/useMonthlyDemand";
+import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/module_render";
 
 export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, computedRequirements, getFieldValueLightClass, 

@@ -1,5 +1,5 @@
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
+import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { SetStateAction } from "react";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
