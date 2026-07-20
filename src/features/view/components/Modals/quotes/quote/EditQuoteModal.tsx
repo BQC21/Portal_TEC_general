@@ -69,6 +69,7 @@ export default function EditQuoteModal({
         await onUpdateQuote({ 
             ...form,
             costos_manuales: manualResourceCosts, 
+            updated_at: new Date(),
         });
     }
 
