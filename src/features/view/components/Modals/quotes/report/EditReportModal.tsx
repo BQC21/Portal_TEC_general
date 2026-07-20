@@ -7,8 +7,12 @@ import { useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { createReportFormStateFromReport } from "@/lib/mapping/mapping_reports";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 
-export default function EditReportModal({existingReport, onUpdateReport, onClose}: EditReportModalProps){
+export default function EditReportModal({existingReport, onUpdateReport, onClose,
+    existing_project_equipos, existing_project_materiales
+}: EditReportModalProps){
     // ----------------------------
     // ------- Estados ------------
     // ----------------------------
@@ -18,7 +22,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
     // valores iniciales
     const [form, setForm] = useState<ReportFormState>(() => createReportFormStateFromReport(existingReport))
-    const [form_quote, setForm_quote] = useState<ReportFormState>(() => 
+    const [form_quotes, setForm_quote] = useState<QuoteFormState>(() => 
         existingReport.cotizacion_info ? {
             ...INITIAL_QUOTE_FORM,
             ...existingReport.cotizacion_info,
@@ -30,7 +34,15 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // ------- INFORMACIÓN SELECTA ------------
     // ----------------------------------------
     // proyecto seleccionado
-    const selectedProject = form_quote.cotizacion_info?.proyecto_info?.nombre;
+    const hasSelectedQuote = Boolean(form.cotizacion_id);
+
+    const projectEquipos = hasSelectedQuote
+    ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
+    : [];
+
+    const projectMateriales = hasSelectedQuote
+        ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
+        : [];
 
     // ----------------------------------------
     // ------- EVENTOS ------------------------
@@ -72,7 +84,26 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                 </div>
 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                
+                    <AddProductSelectField
+                        label="Seleccionar Cotización"
+                        required
+                        value={form_quotes.cod_cotizacion}
+                        options={["Seleccione cotización", ...quotes.map((quote) => quote.cod_cotizacion)]}
+                        onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
+                    />
+
+                    {hasSelectedQuote && (
+                        <>
+                        {/* Inputación de datos */}
+
+                        {/* Quote Report Table */}
+
+                        {/* Contenido de Equipos y Materiales */}
+
+                        {/* Contenido de Mano de Obra */}
+
+                        </>
+                    )}
 
 
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">

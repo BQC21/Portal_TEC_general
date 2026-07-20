@@ -7,7 +7,7 @@ import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import EditReportModal from "../../../Modals/quotes/report/EditReportModal";
 
 export default function Button2Edit_report({ report,
-    onUpdateReport }: EditReportModalProps) {
+    onUpdateReport, project_equipos, project_materiales }: EditReportModalProps) {
     const [open, setOpen] = useState(false);
 
     return (
@@ -29,6 +29,8 @@ export default function Button2Edit_report({ report,
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}
+                    existing_project_equipos={project_equipos}
+                    existing_project_materiales={project_materiales}
                 />
             )}
         </div>

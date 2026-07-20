@@ -118,6 +118,8 @@ export default function QuotesPage(){
                         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                             <Button2Add_report
                                 onAddReport={handleAddReport}
+                                project_equipos={project_equipos}
+                                project_materiales={project_materiales}
                             />
                         </div>
                     </section>
@@ -126,6 +128,8 @@ export default function QuotesPage(){
                         totalReport={reports.length}
                         onUpdateReport={handleEditReport}
                         onDeleteReport={handleDeleteReport}
+                        projects_equipos={project_equipos}
+                        projects_materiales={project_materiales}
                     />
                 </div>
             </main>

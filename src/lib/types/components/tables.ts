@@ -91,4 +91,6 @@ export type ReportTableProps = {
     totalReport: number;
     onUpdateReport: (report: Report) => void;
     onDeleteReport: (reportId: string) => void;
+    projects_equipos: Project_Equipos[];
+    projects_materiales: Project_Materiales[];
 }

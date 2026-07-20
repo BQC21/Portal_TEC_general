@@ -5,7 +5,8 @@ import { PlusIcon } from "../../../Icons/PlusIcon";
 import { Button2ModalPropsReport } from "@/lib/types/components/buttons";
 import AddReportModal from "../../../Modals/quotes/report/AddReportModal";
 
-export default function Button2Add_report({onAddReport}: Button2ModalPropsReport){
+export default function Button2Add_report({onAddReport, 
+    project_equipos, project_materiales}: Button2ModalPropsReport){
     const [open, setOpen] = useState(false);
 
     return(
@@ -25,6 +26,8 @@ export default function Button2Add_report({onAddReport}: Button2ModalPropsReport
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}
+                    existing_project_equipos={project_equipos}
+                    existing_project_materiales={project_materiales}
                 />
             )}
         </div>

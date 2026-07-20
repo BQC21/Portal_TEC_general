@@ -68,6 +68,8 @@ export type AddQuoteModalProps = {
 export type AddReportModalProps = {
     onAddReport: (report: ReportFormData) => void;
     onClose: () => void;
+    existing_project_equipos: Project_Equipos[];
+    existing_project_materiales: Project_Materiales[];
 }
 
 // ------------------
@@ -133,6 +135,8 @@ export type EditReportModalProps = {
     existingReport: Report;
     onUpdateReport: (report: ReportFormData) => void;
     onClose: () => void;
+    existing_project_equipos: Project_Equipos[];
+    existing_project_materiales: Project_Materiales[];
 }
 
 // ------------------

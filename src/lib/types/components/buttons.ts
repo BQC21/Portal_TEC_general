@@ -1,7 +1,7 @@
 import { Brand, BrandFormData } from "../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../supabase/equipos-types";
 import { Materiales, MaterialesFormData } from "../supabase/materiales-types";
-import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
 import { Project, ProjectFormData } from "../supabase/project-types";
 import { Project_Equipos } from "../supabase/project_equipos_join";
 import { Project_Materiales } from "../supabase/project_materiales_join";
@@ -57,6 +57,8 @@ export type Button2ModalPropsQuote = {
 
 export type Button2ModalPropsReport = {
     onAddReport: (Report: ReportFormData) => void;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
 }
 
 // ------------------
@@ -114,6 +116,8 @@ export type EditQuoteModalProps = {
 export type EditReportModalProps = {
     report: Report;
     onUpdateReport: (report: Report) => void;
+    project_equipos: Project_Equipos[];
+    project_materiales: Project_Materiales[];
 }
 
 // ------------------

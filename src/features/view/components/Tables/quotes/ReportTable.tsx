@@ -6,7 +6,8 @@ import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
 
 
 export default function ReportTable({report, totalReport, 
-    onUpdateReport, onDeleteReport}: ReportTableProps){
+    onUpdateReport, onDeleteReport,
+    projects_equipos, projects_materiales}: ReportTableProps){
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -41,6 +42,8 @@ export default function ReportTable({report, totalReport,
                                                 <Button2Edit_report
                                                     report={report}
                                                     onUpdateReport={onUpdateReport}
+                                                    project_equipos={projects_equipos}
+                                                    project_materiales={projects_materiales}
                                                 />
                                                 <Button2Trash_report
                                                     report={report}

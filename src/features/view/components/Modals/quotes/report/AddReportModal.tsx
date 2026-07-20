@@ -7,8 +7,11 @@ import { useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 
-export default function AddReportModal({onAddReport, onClose}: AddReportModalProps){
+export default function AddReportModal({onAddReport, onClose,
+    existing_project_equipos, existing_project_materiales
+}: AddReportModalProps){
     // ----------------------------
     // ------- Estados ------------
     // ----------------------------
@@ -24,7 +27,15 @@ export default function AddReportModal({onAddReport, onClose}: AddReportModalPro
     // ------- INFORMACIÓN SELECTA ------------
     // ----------------------------------------
     // proyecto seleccionado
-    const selectedQuote = form_quotes.proyecto_info?.nombre;
+    const hasSelectedQuote = Boolean(form.cotizacion_id);
+
+    const projectEquipos = hasSelectedQuote
+        ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
+        : [];
+
+    const projectMateriales = hasSelectedQuote
+        ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
+        : [];
 
     // ----------------------------------------
     // ------- EVENTOS ------------------------
@@ -66,8 +77,38 @@ export default function AddReportModal({onAddReport, onClose}: AddReportModalPro
 
                 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                    <AddProductSelectField
+                        label="Seleccionar Cotización"
+                        required
+                        value={form_quotes.cod_cotizacion}
+                        options={["Seleccione cotización", ...quotes.map((quote) => quote.cod_cotizacion)]}
+                        onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
+                    />
 
+                    {hasSelectedQuote && (
+                        <>
+                        {/* Inputación de datos */}
+                        <ReportDataInput
 
+                        />
+
+                        {/* Quote Report Table */}
+                        <QuoteReportTable
+
+                        />
+
+                        {/* Contenido de Equipos y Materiales */}
+                        <Eq_Mat_Content
+
+                        />
+
+                        {/* Contenido de Mano de Obra */}
+                        <MO_Content
+
+                        />
+
+                        </>
+                    )}
 
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button
