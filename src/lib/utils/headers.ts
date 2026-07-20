@@ -123,5 +123,6 @@ export const TABLE_HEADERS_REPORT = [
     "Precio de cotización",
     "Creado",
     "Actualizado",
-    "Acciones"
+    "Acciones",
+    "Generar PDF"
 ]
