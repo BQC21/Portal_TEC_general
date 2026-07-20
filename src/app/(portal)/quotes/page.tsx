@@ -22,18 +22,19 @@ export default function QuotesPage(){
         remove: remove_quote
     } = useQuoteMutations();
 
-    const { reports, refetch: refetch_report } = useReports();
-    const { create: create_report,
-        update: update_report,
-        remove: remove_report,
-    } = useReportMutations();
-
 
     // JOIN EQUIPOS <---> PROYECTOS
     const { projects_equipos: project_equipos} = useProjectEquipos();
 
     // JOIN MATERIALES <---> PROYECTOS    
     const { projects_materiales: project_materiales} = useProjectMateriales();
+
+    // REPORTES
+    const { reports, refetch: refetch_report } = useReports();
+    const { create: create_report,
+        update: update_report,
+        remove: remove_report,
+    } = useReportMutations();
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -47,6 +48,7 @@ export default function QuotesPage(){
         await refetch_quote();
     }
 
+    // REPORTES
     async function handleAddReport(
         report: ReportFormData,
     ) {
@@ -63,6 +65,7 @@ export default function QuotesPage(){
         await refetch_quote();
     }
 
+    // REPORTES
     async function handleEditReport(
         updatedReport: Report,
     ) {
@@ -77,6 +80,7 @@ export default function QuotesPage(){
         await refetch_quote();
     }
 
+    // REPORTES
     async function handleDeleteReport(reportId: string){
         await remove_report(reportId);
         await refetch_report();
