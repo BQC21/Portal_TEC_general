@@ -32,9 +32,11 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         cotizacion_id: row.cotizacion_id?.toString() || "",
         cotizacion_info: row.cotizacion_info ?
             mapSupabaseRowtoQuote(row.cotizacion_info as SupabaseQuoteRow)
-            : row.cotizaciones
-                ? mapSupabaseRowtoQuote(row.cotizaciones as SupabaseQuoteRow)
-                : undefined,
+            : row.cotizacion
+                ? mapSupabaseRowtoQuote(row.cotizacion as SupabaseQuoteRow)
+                : row.cotizaciones
+                    ? mapSupabaseRowtoQuote(row.cotizaciones as SupabaseQuoteRow)
+                    : undefined,
         // datos del cliente
         cliente: row.cliente?.toString() || "",
         ruc_dni: row.ruc_dni?.toString() || "",

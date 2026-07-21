@@ -10,6 +10,7 @@ export type SupabaseReportRow = {
     cotizacion_id?: number | string;
     cotizacion_info?: SupabaseQuoteRow;
     cotizaciones?: SupabaseQuoteRow;
+    cotizacion?: SupabaseQuoteRow; // nombre de la tabla real
     // datos del cliente
     cliente?: string;
     ruc_dni?: string;
