@@ -28,8 +28,17 @@ export function ReportDataInput({
             />
             <AddProductDateField
                 label="Fecha de cotización"
-                value={formatDate_DMY(form.fecha)}
-                onChange={(value) => updateField("fecha", value ? new Date(value) : undefined)}
+                value={form.fecha? 
+                    `${form.fecha.getFullYear()}-${String(form.fecha.getMonth() + 1).padStart(2, "0")}-${String(form.fecha.getDate()).padStart(2, "0")}`
+                    : ""} // {/* TS lee los meses desde 0 a 11*/}
+                onChange={(value) => {
+                    if (!value) {
+                        updateField("fecha", undefined);
+                        return;
+                    }
+                    const [year, month, day] = value.split("-").map(Number);
+                    updateField("fecha", new Date(year, month - 1, day));
+                }}
             />
             <AddProductTextField
                 label = "Lugar del proyecto"

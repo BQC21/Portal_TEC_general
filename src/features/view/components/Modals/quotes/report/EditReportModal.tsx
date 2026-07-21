@@ -70,6 +70,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
         await onUpdateReport({
             ...form,
+            updated_at: new Date(),
         });
     }
 
