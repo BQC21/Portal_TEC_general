@@ -3,15 +3,15 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/module_render";
-import { formatDate, formatDate_DMY } from "@/lib/utils/helpers/manage_info/date_manage";
+import { formatDate_DMY } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export function ReportDataInput({
     form, 
     updateField,
 }: Quote_selectedProps){
     return(
-        <>
-            <h2 className="mt-2 mb-2 text-1xl font-bold text-red-900">Ingrese datos</h2>
+        <div className="grid gap-2">
+            <h2 className="mt-2 mb-1 text-xl font-bold text-red-900">Ingrese datos</h2>
             <AddProductTextField
                 label = "Nombre del cliente"
                 value = {form.cliente || ""}
@@ -55,6 +55,6 @@ export function ReportDataInput({
                 onChange={(value) => updateField("porcentaje_inst", String(value))}
                 step={1} min={1} max={100}
             />
-        </>
+        </div>
     )
 }
