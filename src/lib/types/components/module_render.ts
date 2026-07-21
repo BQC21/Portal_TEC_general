@@ -168,6 +168,8 @@ export type Eq_Mat_Content_Props = {
     title: string;
     precioFinal: number;
     Eq_Mt: number;
+    selectedEquipos: Project_Equipos[];
+    selectedMateriales: Project_Materiales[];
 }
 
 export type MO_Content_Props = {

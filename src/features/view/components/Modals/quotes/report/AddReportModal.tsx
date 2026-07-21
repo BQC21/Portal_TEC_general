@@ -112,6 +112,8 @@ export default function AddReportModal({onAddReport, onClose,
                                         title={"EQUIPOS Y MATERIALES"}
                                         precioFinal={Number(form.cotizacion_info?.precio_dolares)}
                                         Eq_Mt={Number(form.porcentaje_eqmt)}
+                                        selectedEquipos={projectEquipos}
+                                        selectedMateriales={projectMateriales}
                                     />
 
                                     {/* Contenido de Mano de Obra */}
