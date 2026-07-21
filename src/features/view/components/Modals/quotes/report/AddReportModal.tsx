@@ -12,6 +12,7 @@ import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSel
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
+import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -114,9 +115,11 @@ export default function AddReportModal({onAddReport, onClose,
                                     />
 
                                     {/* Contenido de Mano de Obra */}
-                                    {/* <MO_Content
-
-                                    /> */}
+                                    <MO_Content
+                                        title={"PUESTA EN MARCHA"}
+                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        MO={Number(form.porcentaje_inst)}
+                                    />
                                 </div>
                             </div>
                         </>

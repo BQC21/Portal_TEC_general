@@ -169,3 +169,9 @@ export type Eq_Mat_Content_Props = {
     precioFinal: number;
     Eq_Mt: number;
 }
+
+export type MO_Content_Props = {
+    title: string;
+    precioFinal: number;
+    MO: number;
+}
