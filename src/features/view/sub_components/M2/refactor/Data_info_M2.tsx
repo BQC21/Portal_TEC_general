@@ -118,19 +118,19 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             <>
                                                 <AddProductNumberField
                                                     label="Energía requerida"    required
-                                                    value={Number(form.energia_requerida) > 0 ? Number(form.energia_requerida) : ""}
+                                                    value={Number(form.energia_requerida) > 0 ? Number(Number(form.energia_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("energia_requerida", String(value))}
                                                     step={1} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia DC requerida (KW)"    required
-                                                    value={Number(form.potencia_dc_requerida) > 0 ? Number(form.potencia_dc_requerida) : ""}
+                                                    value={Number(form.potencia_dc_requerida) > 0 ? Number(Number(form.potencia_dc_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("potencia_dc_requerida", String(value))}
                                                     step={1} min={0} 
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia AC requerida (KW)"    required
-                                                    value={Number(form.potencia_ac_requerida) > 0 ? Number(form.potencia_ac_requerida) : ""}
+                                                    value={Number(form.potencia_ac_requerida) > 0 ? Number(Number(form.potencia_ac_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("potencia_ac_requerida", String(value))}
                                                     step={1} min={0} 
                                                 />
