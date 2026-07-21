@@ -66,8 +66,8 @@ export default function AddReportModal({onAddReport, onClose,
 
 
     return(
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
-            <div className="max-h-[95vh] w-full max-w-7xl overflow-hidden rounded-3xl bg-white shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
+            <div className="max-h-[96vh] w-[96vw] max-w-[1800px] overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                     <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Reporte</h2>
                         <button
@@ -81,7 +81,7 @@ export default function AddReportModal({onAddReport, onClose,
                 </div>
 
                 
-                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                <form onSubmit={handleSubmit} className="max-h-[calc(96vh-88px)] overflow-y-auto px-6 py-6">
                     <AddProductSelectField
                         label="Seleccionar Cotización"
                         required
@@ -92,7 +92,7 @@ export default function AddReportModal({onAddReport, onClose,
 
                     {hasSelectedQuote && (
                         <>
-                            <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
+                            <div className="mt-6 grid gap-6 grid-cols-[1fr_1fr_1fr]">
                                 <div className="grid gap-6">
                                     {/* Inputación de datos */}
                                     <ReportDataInput
@@ -115,7 +115,8 @@ export default function AddReportModal({onAddReport, onClose,
                                         selectedEquipos={projectEquipos}
                                         selectedMateriales={projectMateriales}
                                     />
-
+                                </div>
+                                <div className="grid gap-6">
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
