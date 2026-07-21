@@ -163,3 +163,9 @@ export type QuoteReportTable_Props = {
     precioFinal: number;
     igv: number;
 };
+
+export type Eq_Mat_Content_Props = {
+    title: string;
+    precioFinal: number;
+    Eq_Mt: number;
+}

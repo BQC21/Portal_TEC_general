@@ -11,6 +11,7 @@ import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
+import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -106,9 +107,11 @@ export default function AddReportModal({onAddReport, onClose,
                                 </div>
                                 <div className="grid gap-6">
                                     {/* Contenido de Equipos y Materiales */}
-                                    {/* <Eq_Mat_Content
-
-                                    /> */}
+                                    <Eq_Mat_Content
+                                        title={"EQUIPOS Y MATERIALES"}
+                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        Eq_Mt={Number(form.porcentaje_eqmt)}
+                                    />
 
                                     {/* Contenido de Mano de Obra */}
                                     {/* <MO_Content
