@@ -18,6 +18,7 @@ import {
 } from "./Quotes/manual_resources";
 import {
     grossMargin as GrossMarginCompute,
+    precioFinal,
     recursos,
     viaticos,
 } from "./Quotes/finantial_computes";
@@ -153,3 +154,7 @@ export type ViaticosTablesProps = {
     viaticos: viaticos;
     manualResourceCosts: ManualCosts;
 } & ManualCostHandlers;
+
+export type SummaryCostTable_props = {
+    precioFinal: precioFinal;
+}

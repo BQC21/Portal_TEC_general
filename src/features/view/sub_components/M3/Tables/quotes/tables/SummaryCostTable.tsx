@@ -1,9 +1,6 @@
+import { SummaryCostTable_props } from "@/lib/types/components/module_render";
 import { precioFinal } from "@/lib/types/components/Quotes/finantial_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
-
-export type SummaryCostTable_props = {
-    precioFinal: precioFinal;
-}
 
 export function SummaryCostTable({
     precioFinal,
