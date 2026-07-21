@@ -116,7 +116,7 @@ export const TABLE_HEADERS_QUOTE = [
 ]
 
 export const TABLE_HEADERS_REPORT = [
-    "Cotización asociada",
+    "Proyecto asociado",
     "Nombre del cliente",
     "(%) Eq y Mat",
     "(%) Instalación",

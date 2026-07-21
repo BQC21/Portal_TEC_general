@@ -3,7 +3,7 @@
 import { AddReportModalProps } from "@/lib/types/components/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
@@ -13,6 +13,7 @@ import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/repo
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
+import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -49,7 +50,10 @@ export default function AddReportModal({onAddReport, onClose,
     // Actualizar Form
     function updatedField<K extends keyof ReportFormState>(field: K, value: ReportFormState[K]){
         setForm((current) => {
-            const updated = { ...current, [field]: value };
+            const updated = { ...current, [field]: value,
+                precio_cotizacion: String(Number(form_quotes.precio_dolares).toFixed(2),
+                ) 
+            };
             return updated;
         })
     }
@@ -59,15 +63,13 @@ export default function AddReportModal({onAddReport, onClose,
         event.preventDefault();
 
         await onAddReport({
-            ...form
+            ...form,
         })
     }
 
-
-
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
-            <div className="max-h-[96vh] w-[96vw] max-w-[1800px] overflow-hidden rounded-3xl bg-white shadow-2xl">
+            <div className="max-h-[96vh] w-[96vw] max-w-[1800px]     overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                     <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Reporte</h2>
                         <button
