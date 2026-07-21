@@ -172,6 +172,8 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     enlace: "",
     // llenado
     opcion_llenado: FILL_OPTIONS[0],
+    // demandas mensuales
+    demanda_mensual: [],
 }
 
 // valores iniciales para el estado de form de zonas

@@ -57,6 +57,8 @@ export type SupabaseProjectRow = {
     enlace?: string;
     // llenado
     opcion_llenado?: string;
+    // demandas mensuales
+    demanda_mensual?: number[];
 };
 
 // Campos para la base de datos a visualizarse en el frontend
@@ -103,6 +105,8 @@ export type Project = {
     enlace: string;
     // llenado
     opcion_llenado: string;
+    // demandas mensuales
+    demanda_mensual: number[];
 };
 
 
