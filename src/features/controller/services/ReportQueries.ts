@@ -18,7 +18,7 @@ export async function createReport(report: ReportFormData): Promise<Report> {
         return supabase
             .from(REPORT_TABLE)
             .insert(row)
-            .select("*,cotizacion(*)");
+            .select("*,cotizacion(*, proyectos(*))");
     };
 
     let { data, error } = await insertReport(baseRow);
@@ -68,7 +68,7 @@ export async function getReports(): Promise<Report[]> {
 
     const { data, error } = await supabase
         .from(REPORT_TABLE)
-        .select("*,cotizacion(*)");
+        .select("*,cotizacion(*, proyectos(*))");
 
     if (error) {
         throw new Error(`Error al obtener los reportes: ${error.message}`);
@@ -82,7 +82,7 @@ export async function getReportById(id: string): Promise<Report> {
     const supabase = createClient();
 
     const { data, error } = await supabase.from(REPORT_TABLE)
-        .select("*,cotizacion(*)")
+        .select("*,cotizacion(*, proyectos(*))")
         .eq("id", id)
         .single()
 
