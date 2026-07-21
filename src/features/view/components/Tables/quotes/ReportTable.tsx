@@ -3,6 +3,7 @@ import { TABLE_HEADERS_REPORT } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";
 import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 
 export default function ReportTable({report, totalReport, 
@@ -30,11 +31,11 @@ export default function ReportTable({report, totalReport,
                                 report.map((report) => {
                                     return (
                                     <tr key={report.id} className="bg-white">
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.proyecto_info?.nombre}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cliente}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.porcentaje_eqmt}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.porcentaje_inst}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.precio_cotizacion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(report.precio_cotizacion), "USD")}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
