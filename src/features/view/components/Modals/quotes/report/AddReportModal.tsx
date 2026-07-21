@@ -8,6 +8,7 @@ import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -30,11 +31,11 @@ export default function AddReportModal({onAddReport, onClose,
     const hasSelectedQuote = Boolean(form.cotizacion_id);
 
     const projectEquipos = hasSelectedQuote
-        ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
+        ? existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
         : [];
 
     const projectMateriales = hasSelectedQuote
-        ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
+        ? existing_project_materiales.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
         : [];
 
     // ----------------------------------------
