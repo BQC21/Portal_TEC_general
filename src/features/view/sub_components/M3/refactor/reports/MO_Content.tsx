@@ -33,51 +33,51 @@ export function MO_Content({
                             <tbody>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Acarreo de materiales para instalación</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">2</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Realizar trazos y medidas</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">3</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Montaje de estructura metálica</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">4</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de paneles (Estructura)</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">5</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de panele (Conexionado)</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">6</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de tablero FV</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">7</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de inversor</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">8</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Canalización de acometida DC</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">9</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Canalización de acometida AC</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">10</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Mediciones, pruebas eléctricas, ajustes y optimización</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">11</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Conexión, programación, control y puesta en marcha</td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">12</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Viáticos</td>
                                 </tr>
                             </tbody>
                         </table>
