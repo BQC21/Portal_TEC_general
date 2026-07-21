@@ -27,6 +27,7 @@ import {
     ManualCostArraySection,
     ManualCostMontoSection,
 } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
+import { ReportFormState } from "../supabase/report-types";
 
 export type Tables_M2_props = {
     // equipos seleccionados (TABLA)
@@ -114,9 +115,16 @@ export type Product_selectedProps = {
     equiposDescriptions: string[];
     materialesDescriptions: string[];
     form: QuoteFormState;
-    updateField: <K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) => void;
+    updateField: <K extends keyof QuoteFormState>
+                (field: K, value: QuoteFormState[K]) => void;
     grossMargin: { gm: GrossMarginCompute };
 };
+
+export type Quote_selectedProps = {
+    form: ReportFormState;
+    updateField: <K extends keyof ReportFormState>
+                (field: K, value: ReportFormState[K]) => void;
+}
 
 type ManualCostHandlers = {
     updateManualCostMonto: (
