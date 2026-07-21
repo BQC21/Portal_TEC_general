@@ -3,6 +3,7 @@
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { DeleteReportModalProps } from "@/lib/types/components/modals";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 export function DeleteReportModal({report, onDeleteReport, onClose}: DeleteReportModalProps){
     // Aceptar actualización
@@ -32,18 +33,18 @@ export function DeleteReportModal({report, onDeleteReport, onClose}: DeleteRepor
                 </p>
             </div>
             <form onSubmit={handleDeleteReport} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                <h2>Detalles del reporte</h2>
+                <h2 className="mb-15">Detalles del reporte</h2>
                 <AddProductReadonlyField
-                    label=""
+                    label="Código de cotización"
                     value={report.cotizacion_info?.cod_cotizacion || ""} 
                 />
                 <AddProductReadonlyField
-                    label=""
+                    label="Nombre del proyecto"
                     value={report.cotizacion_info?.proyecto_info?.nombre || ""} 
                 />
                 <AddProductReadonlyField
-                    label=""
-                    value={report.cotizacion_info?.precio_dolares || ""} 
+                    label="Precio de cotización ($)"
+                    value={formatCurrency(Number(report.cotizacion_info?.precio_dolares), "USD")} 
                 />
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                     <button
