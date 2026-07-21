@@ -10,6 +10,7 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
+import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -89,7 +90,7 @@ export default function AddReportModal({onAddReport, onClose,
 
                     {hasSelectedQuote && (
                         <>
-                            <div className="mt-6 grid gap-6 grid-cols-[2fr_2fr]">
+                            <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
                                 <div className="grid gap-6">
                                     {/* Inputación de datos */}
                                     <ReportDataInput
@@ -98,9 +99,10 @@ export default function AddReportModal({onAddReport, onClose,
                                     />
 
                                     {/* Quote Report Table */}
-                                    {/* <QuoteReportTable
-
-                                    /> */}
+                                    <QuoteReportTable
+                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        igv={Number(form.cotizacion_info?.igv)}
+                                    />
                                 </div>
                                 <div className="grid gap-6">
                                     {/* Contenido de Equipos y Materiales */}

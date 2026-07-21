@@ -158,3 +158,8 @@ export type ViaticosTablesProps = {
 export type SummaryCostTable_props = {
     precioFinal: precioFinal;
 }
+
+export type QuoteReportTable_Props = {
+    precioFinal: number;
+    igv: number;
+};
