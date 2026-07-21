@@ -40,7 +40,30 @@ export function Eq_Mat_Content({
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            {selectedEquipos.length > 0 ? (
+                                selectedEquipos.map((item) => (
+                                    <tr key={`${item.id}`} className="bg-white">
+                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                            {item.equipo_info?.cod_producto}
+                                        </td>
+                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                            {item.equipo_info?.descripcion}
+                                        </td>
+                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                            {item.equipo_info?.unidad}
+                                        </td>
+                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                            {item.cantidad}
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr className="bg-white">
+                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                        No hay equipos seleccionados todavía.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
 
@@ -63,7 +86,34 @@ export function Eq_Mat_Content({
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            {selectedMateriales.length > 0 ? (
+                                selectedMateriales.map((item) => (
+                                    <tr key={`${item.id}`} className="bg-white">
+                                        {(item.material_info?.tipo_de_producto === "PROTECCIÓN" ||
+                                        item.material_info?.tipo_de_producto === "CABLE") && (
+                                            <>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.cod_producto}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.descripcion}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.unidad}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.cantidad}
+                                                </td>
+                                            </>
+                                        )}        
+                                    </tr>
+                                ))) : (
+                                <tr className="bg-white">
+                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                        No hay materiales seleccionados todavía.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
 
@@ -86,7 +136,33 @@ export function Eq_Mat_Content({
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            {selectedMateriales.length > 0 ? (
+                                selectedMateriales.map((item) => (
+                                    <tr key={`${item.id}`} className="bg-white">
+                                        {item.material_info?.tipo_de_producto === "CANALIZACIÓN" && (
+                                            <>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.cod_producto}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.descripcion}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.material_info?.unidad}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.cantidad}
+                                                </td>
+                                            </>
+                                        )}        
+                                    </tr>
+                                ))) : (
+                                <tr className="bg-white">
+                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                        No hay materiales seleccionados todavía.
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                 </div>
