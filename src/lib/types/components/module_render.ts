@@ -90,7 +90,10 @@ export type Data_info_M2Props = {
     // form del proyecto
     form: ProjectFormState;
     // actualizador
-    updateField: (field: string, value: string) => void;
+    updateField: <K extends keyof ProjectFormState>(
+        field: K,
+        value: ProjectFormState[K],
+    ) => void;
     // handler
     handleOpcionLlenadoChange: (value: string) => void;
     // calculos

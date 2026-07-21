@@ -21,7 +21,13 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
         [updateField],
     );
 
-    const { monthlyValues, updateMonth, annualTotal } = useMonthlyDemand(handleAnnualDemandChange);
+    const handleMonthlyDemandChange = useCallback(
+        (value: number[]) => updateField("demanda_mensual", value),
+        [updateField],
+    );
+
+    const { monthlyValues, updateMonth, annualTotal } = useMonthlyDemand
+    (handleAnnualDemandChange, handleMonthlyDemandChange, form.demanda_mensual);
 
     const displayedAnnualDemand = annualTotal > 0
         ? String(annualTotal)
