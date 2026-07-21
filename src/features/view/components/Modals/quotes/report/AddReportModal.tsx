@@ -69,7 +69,7 @@ export default function AddReportModal({onAddReport, onClose,
 
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
-            <div className="max-h-[96vh] w-[96vw] max-w-[1800px]     overflow-hidden rounded-3xl bg-white shadow-2xl">
+            <div className="max-h-[96vh] w-[96vw] max-w-[1800px] overflow-hidden rounded-3xl bg-white shadow-2xl">
                 <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                     <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Reporte</h2>
                         <button
