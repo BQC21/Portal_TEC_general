@@ -5,14 +5,19 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
+import { EyeIcon } from "./Form_fields/EyeIcon";
+import { EyeSlashIcon } from "./Form_fields/EyeSlashIcon";
 
 export function LoginForm() {
     // variables de estado
     const router = useRouter(); // permite navegación entre rutas
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
+    
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
     // lógica del evento al ingresar al dashboard desde auth
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -74,16 +79,26 @@ export function LoginForm() {
                 <label htmlFor="password" className="text-sm font-semibold text-slate-700">
                     Contraseña
                 </label>
-                <input
-                    id="password"
-                    type="password"
-                    value={password}
-                    onChange={(event) => setPassword(event.target.value)}
-                    autoComplete="current-password"
-                    placeholder="Tu contraseña"
-                    className="input-focus-brand w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 transition placeholder:text-slate-400"
-                    required
-                />
+                <div className="relative">
+                    <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        autoComplete="current-password"
+                        placeholder="Tu contraseña"
+                        className="input-focus-brand w-full rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-900 transition placeholder:text-slate-400"
+                        required
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        className="absolute inset-y-0 right-3 flex items-center text-slate-500 hover:text-slate-700"
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                    >
+                        {showPassword ? <EyeIcon /> : <EyeSlashIcon />}
+                    </button>
+                </div>
             </div>
 
             {/* Mostrar mensaje de error en caso el usuario haya intentado ingresar con credenciales inválidas o campos vacíos */}
