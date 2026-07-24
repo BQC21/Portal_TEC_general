@@ -115,6 +115,13 @@ export function LoginForm() {
             >
                 {isLoading ? "Ingresando..." : "Ingresar al portal"}
             </button>
+            <button
+                type="button"
+                onClick={() => router.push("/save_password")}
+                className="text-sm font-medium text-brand-500 hover:underline flex justify-center" 
+            >
+                <span className="text-center">¿Olvidaste tu contraseña?</span>
+            </button>
         </form>
     );
 }

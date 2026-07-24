@@ -28,22 +28,24 @@ export async function middleware(request: NextRequest) {
 
     const { pathname } = request.nextUrl;
     const isRootRoute = pathname === "/";
-    const isProtectedRoute = pathname.startsWith("/dashboard") || pathname.startsWith("/proveedores") 
-            || pathname.startsWith("/equipos") || pathname.startsWith("/materiales") || pathname.startsWith("/sizing")
-            || pathname.startsWith("/quotes");
-    const isLoginRoute = pathname.startsWith("/login");
+    const isProtectedRoute = 
+        pathname.startsWith("/dashboard") || 
+        pathname.startsWith("/proveedores") ||
+        pathname.startsWith("/equipos") || 
+        pathname.startsWith("/materiales") || 
+        pathname.startsWith("/sizing") || 
+        pathname.startsWith("/quotes");
 
-
-    // direccionamiento a login
-    if ((isProtectedRoute || isRootRoute) && !user) {
+    // Sin sesión: solo bloquear rutas protegidas (y la raíz)
+    if ((isProtectedRoute  || isRootRoute) && !user) {
         const loginUrl = request.nextUrl.clone();
         loginUrl.pathname = "/login";
         loginUrl.search = "";
         return NextResponse.redirect(loginUrl);
     }
 
-    // direccionamiento a dashboard
-    if (isLoginRoute && user) {
+    // Con sesión: sacar de /login, pero NO de /update_password ni /save_password
+    if (pathname.startsWith("/login") && user) {
         const dashboardUrl = request.nextUrl.clone();
         dashboardUrl.pathname = "/dashboard";
         dashboardUrl.search = "";
@@ -53,8 +55,19 @@ export async function middleware(request: NextRequest) {
     return response;
 }
 
+
 export const config = {
-    matcher: ["/", "/dashboard/:path*", "/proveedores/:path*",
-        "/equipos/:path*", "/materiales/:path*", "/sizing/:path*", 
-        "/quotes/:path", "/login"],
+    matcher: [
+        "/",
+        "/dashboard/:path*",
+        "/proveedores/:path*",
+        "/equipos/:path*",
+        "/materiales/:path*",
+        "/sizing/:path*",
+        "/quotes/:path*",
+        "/login",
+        "/save_password",
+        "/update_password",
+        "/callback",
+    ],
 };
