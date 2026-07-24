@@ -29,9 +29,9 @@ import { useProveedores } from "@/features/view/hooks/services/useRealtimeProvee
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
-import { useTypeSelection } from "@/features/view/hooks/modals/Sizing/useTypeSelection";
-import { useBrandSelection } from "@/features/view/hooks/modals/Sizing/useBrandSelection";
-import { useSuplierSelection } from "@/features/view/hooks/modals/Sizing/useSupplierSelection";
+import { useTypeSelection } from "@/features/view/hooks/modals/equipos/useTypeSelection";
+import { useBrandSelection } from "@/features/view/hooks/modals/equipos/useBrandSelection";
+import { useSuplierSelection } from "@/features/view/hooks/modals/equipos/useSupplierSelection";
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
     
