@@ -58,7 +58,7 @@ export async function getEquipos(): Promise<Equipos[]> {
 
 	const { data, error } = await supabase
 		.from(EQUIPOS_TABLE)
-		.select("*, tipos(*), marcas(*), proveedores(*)");
+		.select("*, tipo(*), marcas(*), proveedores(*)");
 
 	if (error) {
 		throw new Error(`Error al obtener los equipos: ${error.message}`);

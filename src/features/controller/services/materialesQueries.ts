@@ -49,7 +49,7 @@ export async function getMateriales(): Promise<Materiales[]> {
 
 	const { data, error } = await supabase
 		.from(MATERIALES_TABLE)
-		.select("*, tipos(*), marcas(*), proveedores(*)");
+		.select("*, tipo(*), marcas(*), proveedores(*)");
 
 	if (error) {
 		throw new Error(`Error al obtener los materiales: ${error.message}`);
