@@ -18,7 +18,8 @@ export default async function LoginPage() {
                                     Acceso seguro al portal corporativo
                                 </h1>
                                 <p className="max-w-xl text-base leading-7 text-slate-300 md:text-lg">
-                                    Ingresa para consultar productos, controlar proyectos y administrar la información operativa de la empresa desde una sesión autenticada.
+                                    Ingresa para consultar productos, controlar proyectos y 
+                                    administrar la información operativa de la empresa.
                                 </p>
                             </div>
                         </div>
@@ -29,7 +30,7 @@ export default async function LoginPage() {
                             <div className="mb-8 space-y-2">
                                 <h2 className="text-2xl font-bold tracking-tight text-slate-900">Iniciar sesión</h2>
                                 <p className="text-sm leading-6 text-slate-500">
-                                    Usa tu correo corporativo y tu contraseña para entrar al portal.
+                                    Usa tu correo corporativo y tu contraseña.
                                 </p>
                             </div>
 
