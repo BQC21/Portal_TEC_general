@@ -71,6 +71,10 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
+    // conexión con otras tablas
+    tipo_id: "",
+    marca_id: "",
+    proveedor_id: "",
 };
 
 // valores iniciales para el estado de form de productos
@@ -94,6 +98,10 @@ export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
+    // conexión con otras tablas
+    tipo_id: "",
+    marca_id: "",
+    proveedor_id: "",
 };
 
 export const INITIAL_SUPPLIER_FORM: SupplierFormstate = {
