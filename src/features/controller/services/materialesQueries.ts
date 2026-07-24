@@ -25,6 +25,10 @@ export async function createMaterial(material: MaterialesFormData): Promise<Mate
 		precio_dolares_igv: material.precio_dolares_igv,
 		created_at: material.created_at ? new Date(material.created_at) : new Date(),
 		updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
+		// conexión con otras tablas
+        tipo_id: material.tipo_id,
+        marca_id: material.marca_id,
+        proveedor_id: material.proveedor_id,
 	};
 
 	const { data, error } = await supabase
@@ -45,7 +49,7 @@ export async function getMateriales(): Promise<Materiales[]> {
 
 	const { data, error } = await supabase
 		.from(MATERIALES_TABLE)
-		.select("*");
+		.select("*, tipos(*), marcas(*), proveedores(*)");
 
 	if (error) {
 		throw new Error(`Error al obtener los materiales: ${error.message}`);
@@ -88,6 +92,10 @@ export async function updateMaterial(id: string, material: MaterialesFormData): 
 		precio_dolares_igv: material.precio_dolares_igv,
 		created_at: material.created_at ? new Date(material.created_at) : new Date(),
 		updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
+		// conexión con otras tablas
+        tipo_id: material.tipo_id,
+        marca_id: material.marca_id,
+        proveedor_id: material.proveedor_id,
 	};
 
 	const { data, error } = await supabase

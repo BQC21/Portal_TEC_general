@@ -33,6 +33,11 @@ export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
 		precio_dolares_igv: equipo.precio_dolares_igv,
 		created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
 		updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
+		// conexión con otras tablas
+        tipo_id: equipo.tipo_id,
+        marca_id: equipo.marca_id,
+        proveedor_id: equipo.proveedor_id,
+
 	};
 
 	const { data, error } = await supabase
@@ -53,7 +58,7 @@ export async function getEquipos(): Promise<Equipos[]> {
 
 	const { data, error } = await supabase
 		.from(EQUIPOS_TABLE)
-		.select("*");
+		.select("*, tipos(*), marcas(*), proveedores(*)");
 
 	if (error) {
 		throw new Error(`Error al obtener los equipos: ${error.message}`);
@@ -104,6 +109,10 @@ export async function updateEquipo(id: string, equipo: EquiposFormData): Promise
 		precio_dolares_igv: equipo.precio_dolares_igv,
 		created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
 		updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
+		// conexión con otras tablas
+        tipo_id: equipo.tipo_id,
+        marca_id: equipo.marca_id,
+        proveedor_id: equipo.proveedor_id,
 	};
 
 	const { data, error } = await supabase
