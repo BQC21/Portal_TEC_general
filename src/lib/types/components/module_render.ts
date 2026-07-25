@@ -6,8 +6,8 @@ import { SetStateAction } from "react";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
 import { computedRequirements } from "./Sizing/computes";
 import { ProjectFormState } from "../supabase/project-types";
-import { Equipos } from "../supabase/equipos-types";
-import { Materiales } from "../supabase/materiales-types";
+import { Equipos, EquiposFormState } from "../supabase/equipos-types";
+import { Materiales, MaterialesFormState } from "../supabase/materiales-types";
 import { Zone, ZoneFormState } from "../supabase/zone-types";
 import { QuoteFormState } from "../supabase/quote-types";
 import {
@@ -29,6 +29,86 @@ import {
     ManualCostMontoSection,
 } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
 import { ReportFormState } from "../supabase/report-types";
+import { Brand, BrandFormstate } from "../supabase/brand.types";
+import { Supplier, SupplierFormstate } from "../supabase/supplier-types";
+import { Type, TypeFormstate } from "../supabase/type-types";
+
+// -----
+// M1
+// -----
+
+export type ProductCategoryFilter = "Equipos" | "Materiales";
+
+type M1ProductForm = EquiposFormState | MaterialesFormState;
+
+export type Data_info_M1_props = {
+    form: M1ProductForm;
+    setForm: (value: SetStateAction<M1ProductForm>) => void;
+    form_proveedor: SupplierFormstate;
+    form_marca: BrandFormstate;
+    form_tipo: TypeFormstate;
+    setForm_proveedor: (value: SetStateAction<SupplierFormstate>) => void;
+    setForm_marca: (value: SetStateAction<BrandFormstate>) => void;
+    setForm_tipo: (value: SetStateAction<TypeFormstate>) => void;
+    selectedSupplier: string | undefined;
+    selectedBrand: string | undefined;
+    selectedType: string | undefined;
+    supplier: Supplier[];
+    brand: Brand[];
+    type: Type[];
+    productCategory: ProductCategoryFilter;
+    showProductCode?: boolean;
+    useSuplierSelection: (
+        value: string,
+        supplier: Supplier[],
+        setForm_proveedor: (value: SetStateAction<SupplierFormstate>) => void,
+        setForm: (value: SetStateAction<M1ProductForm>) => void,
+    ) => void;
+    useBrandSelection: (
+        value: string,
+        brand: Brand[],
+        setForm_marca: (value: SetStateAction<BrandFormstate>) => void,
+        setForm: (value: SetStateAction<M1ProductForm>) => void,
+    ) => void;
+    useTypeSelection: (
+        value: string,
+        type: Type[],
+        setForm_tipo: (value: SetStateAction<TypeFormstate>) => void,
+        setForm: (value: SetStateAction<M1ProductForm>) => void,
+    ) => void;
+    updateField: <K extends keyof M1ProductForm>(
+        field: K,
+        value: M1ProductForm[K],
+    ) => void;
+};
+
+export type General_info_M1_props_EQ = {
+    form: EquiposFormState;
+    updateField: <K extends keyof EquiposFormState>(
+        field: K,
+        value: EquiposFormState[K],
+    ) => void;
+};
+
+export type General_info_M1_props_MAT = {
+    form: MaterialesFormState;
+    updateField: <K extends keyof MaterialesFormState>(
+        field: K,
+        value: MaterialesFormState[K],
+    ) => void;
+};
+
+export type Price_info_M1_props = {
+    form: M1ProductForm;
+    updateField: <K extends keyof M1ProductForm>(
+        field: K,
+        value: M1ProductForm[K],
+    ) => void;
+};
+
+// -----
+// M2
+// -----
 
 export type Tables_M2_props = {
     // equipos seleccionados (TABLA)
