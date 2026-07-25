@@ -1,33 +1,44 @@
-import { Type, TypeFormstate } from "@/lib/types/supabase/type-types";
-import { SetStateAction } from "react";
-import { INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
+import { Type, TypeFormstate } from "@/lib/types/supabase/type-types";
+import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
+import { INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
+import { SetStateAction } from "react";
 
-export function useTypeSelection(    
-    value: string, type: Type[],
-    setForm_type:  (value: SetStateAction<TypeFormstate>) => void,
-    setForm: (value: SetStateAction<MaterialesFormState>) => void
+export function useTypeSelection(
+    value: string,
+    type: Type[],
+    setForm_tipo: (value: SetStateAction<TypeFormstate>) => void,
+    setForm: (value: SetStateAction<MaterialesFormState>) => void,
 ) {
-    function updateField<K extends keyof TypeFormstate>(field: K, value: TypeFormstate[K]) {
-        setForm((current) => {
-            const updated = { ...current, [field]: value };
-            return updated;
-        });
-    }
-
-    if (value === "Seleccione marca") {
-        setForm_type(INITIAL_TYPE_FORM);
+    if (value === "Seleccione tipo de producto") {
+        setForm_tipo(INITIAL_TYPE_FORM);
+        setForm((current) => ({
+            ...current,
+            tipo_de_producto: "",
+            tipo_id: "",
+            unidad: "",
+        }));
         return;
     }
 
-    const selected = type.find((type) => type.nombre === value);
+    const selected = type.find((item) => item.nombre === value);
 
-    if (selected) {
-        setForm_type({
-            nombre: selected.nombre,
-            categoria: selected.categoria,
-            created_at: selected.created_at,
-            updated_at: selected.updated_at,
-        });
-    }
+    if (!selected) return;
+
+    const tipoNombre = selected.nombre ?? "";
+    const { unit } = shouldRender_MaterialInfoSelection(tipoNombre);
+
+    setForm_tipo({
+        nombre: selected.nombre,
+        categoria: selected.categoria,
+        created_at: selected.created_at,
+        updated_at: selected.updated_at,
+    });
+
+    setForm((current) => ({
+        ...current,
+        tipo_de_producto: tipoNombre,
+        tipo_id: selected.id?.toString() ?? "",
+        unidad: unit || "",
+    }));
 }

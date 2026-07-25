@@ -4,30 +4,41 @@ import { INITIAL_BRAND_FORM } from "@/lib/utils/initialValues";
 import { SetStateAction } from "react";
 
 export function useBrandSelection(
-    value: string, brand: Brand[],
-    setForm_marca:  (value: SetStateAction<BrandFormstate>) => void,
-    setForm: (value: SetStateAction<MaterialesFormState>) => void
+    value: string,
+    brand: Brand[],
+    setForm_marca: (value: SetStateAction<BrandFormstate>) => void,
+    setForm: (value: SetStateAction<MaterialesFormState>) => void,
 ) {
-    function updateField<K extends keyof BrandFormstate>(field: K, value: BrandFormstate[K]) {
-        setForm((current) => {
-            const updated = { ...current, [field]: value };
-            return updated;
-        });
-    }
-
     if (value === "Seleccione marca") {
         setForm_marca(INITIAL_BRAND_FORM);
+        setForm((current) => ({
+            ...current,
+            marca: "",
+            marca_id: "",
+            tipo_de_producto: "",
+            tipo_id: "",
+            unidad: "",
+        }));
         return;
     }
 
-    const selected = brand.find((brand) => brand.nombre === value);
+    const selected = brand.find((item) => item.nombre === value);
 
-    if (selected) {
-        setForm_marca({
-            nombre: selected.nombre,
-            categoria: selected.categoria,
-            created_at: selected.created_at,
-            updated_at: selected.updated_at,
-        });
-    }
+    if (!selected) return;
+
+    setForm_marca({
+        nombre: selected.nombre,
+        categoria: selected.categoria,
+        created_at: selected.created_at,
+        updated_at: selected.updated_at,
+    });
+
+    setForm((current) => ({
+        ...current,
+        marca: selected.nombre ?? "",
+        marca_id: selected.id?.toString() ?? "",
+        tipo_de_producto: "",
+        tipo_id: "",
+        unidad: "",
+    }));
 }

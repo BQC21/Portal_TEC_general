@@ -1,24 +1,16 @@
 "use client";
 
 import { AddProductCloseIcon } from "../../Icons/AddCloseIcon";
-import { INITIAL_BRAND_FORM, INITIAL_MATERIALES_FORM, INITIAL_SUPPLIER_FORM, INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
-import { useMemo, useState } from "react";
-import { POWER_SOURCE_OPTIONS } from "@/lib/utils/options";
-import { AddProductSelectField } from "../../Form_fields/AddSelectField";
-import { AddProductReadonlyField } from "../../Form_fields/AddReadonlyField";
-import { shouldRender_SupplyInfoSelection } from "@/lib/utils/helpers/render/render_modals";
-import { AddProductSectionTitle } from "../../Form_fields/AddSectionTitle";
-import { AddProductTextAreaField } from "../../Form_fields/AddTextAreaField";
-import { AddProductNumberField } from "../../Form_fields/AddNumberField";
+import {
+    INITIAL_BRAND_FORM,
+    INITIAL_MATERIALES_FORM,
+    INITIAL_SUPPLIER_FORM,
+    INITIAL_TYPE_FORM,
+} from "@/lib/utils/initialValues";
+import { useState } from "react";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
-import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddMaterialModalProps } from "@/lib/types/components/modals";
-import {
-    getModalCascadeOptions,
-    resolveFormCascadeFilters,
-    withCascadePlaceholder,
-} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
@@ -28,16 +20,22 @@ import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { useSuplierSelection } from "@/features/view/hooks/modals/materiales/useSupplierSelection";
 import { useBrandSelection } from "@/features/view/hooks/modals/materiales/useBrandSelection";
 import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTypeSelection";
+import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
+import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
+import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
 
-export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose }: AddMaterialModalProps) {
- // ----------------------------
+export function AddMaterialModal({
+    existingMateriales,
+    onAddMateriales,
+    onClose,
+}: AddMaterialModalProps) {
+    // ----------------------------
     // ------- Estados ------------
     // ----------------------------
-    // usar información de la tabla
     const { type } = useTypes();
     const { brand } = useBrands();
-    const { supplier } = useProveedores();   
-    // valores iniciales
+    const { supplier } = useProveedores();
+
     const [form, setForm] = useState<MaterialesFormState>(INITIAL_MATERIALES_FORM);
     const [form_tipo, setForm_tipo] = useState<TypeFormstate>(INITIAL_TYPE_FORM);
     const [form_marca, setForm_marca] = useState<BrandFormstate>(INITIAL_BRAND_FORM);
@@ -49,57 +47,26 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
     const selectedType = form_tipo.nombre;
     const selectedBrand = form_marca.nombre;
     const selectedSupplier = form_proveedor.nombre;
-    
-    // ----------------------------------------
-    // ------- CONDICIONAMIENTO ---------------
-    // ----------------------------------------
-
-    const cascadeOptions = useMemo(
-        () => getModalCascadeOptions(existingMateriales, form.proveedor, form.marca),
-        [existingMateriales, form.proveedor, form.marca],
-    );
 
     // ----------------------------------------
     // ------- EVENTOS ------------------------
     // ----------------------------------------
+    function updateField<K extends keyof MaterialesFormState>(
+        field: K,
+        value: MaterialesFormState[K],
+    ) {
+        setForm((current) => ({ ...current, [field]: value }));
+    }
 
-    // Actualizar campos del formulario
-    function updateField<K extends keyof MaterialesFormState>(field: K, value: MaterialesFormState[K]) {
-        setForm((current) => {
-            const updated = { ...current, [field]: value };
+    const supplierProductCount = existingMateriales.filter(
+        (material) => material.proveedor === form.proveedor,
+    ).length;
+    const generatedCode = buildProductCode(
+        form.tipo_de_producto,
+        form.proveedor,
+        supplierProductCount + 1,
+    );
 
-            if (field === "proveedor" || field === "marca" || field === "tipo_de_producto") {
-                const cascaded = resolveFormCascadeFilters(
-                    existingMateriales,
-                    current,
-                    field,
-                    String(value),
-                );
-                updated.proveedor = cascaded.proveedor;
-                updated.marca = cascaded.marca;
-                updated.tipo_de_producto = cascaded.tipo_de_producto;
-            }
-
-            if (field === "proveedor" || updated.proveedor !== current.proveedor) {
-                const { supplierCode } = shouldRender_SupplyInfoSelection(String(updated.proveedor));
-                updated.cod_prov = supplierCode;
-            }
-
-            if (field === "tipo_de_producto" || updated.tipo_de_producto !== current.tipo_de_producto) {
-                const { unit } = shouldRender_MaterialInfoSelection(String(updated.tipo_de_producto));
-                updated.unidad = unit || "";
-            }
-
-            return updated;
-        });
-    }    
-
-    // contar productos con la cantidad de proveedores de interés
-    const supplierProductCount = existingMateriales.filter((material) => material.proveedor === form.proveedor).length;
-    // código generado para el material por asignarse
-    const generatedCode = buildProductCode(form.tipo_de_producto, form.proveedor, supplierProductCount + 1);
-
-    // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -126,189 +93,93 @@ export function AddMaterialModal({ existingMateriales, onAddMateriales, onClose 
 
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                     <div className="space-y-8">
-                        <section className="space-y-5">
-                            <AddProductSectionTitle title="Información Básica" />
-                                <div className="grid gap-5 md:grid-cols-2">
-                                    <AddProductSelectField
-                                        label="PROVEEDOR"
-                                        required
-                                        value={form_proveedor.nombre ?? ""}
-                                        options={[
-                                            "Seleccione proveedor",
-                                            ...supplier
-                                                .filter((s) => s.categoria === "Materiales" || s.categoria === "Ambas")
-                                                .map((s) => s.nombre ?? ""),
-                                        ]}
-                                        onChange={(value) => useSuplierSelection(value, supplier, setForm_proveedor, setForm)}
-                                    />
-                                    {selectedSupplier && (
-                                        <>
-                                        <AddProductReadonlyField
-                                            label="COD PROV"
-                                            value={form.cod_prov}
-                                        />
-                                        <AddProductSelectField
-                                            label="MARCA"
-                                            required
-                                            value={form_marca.nombre ?? ""}
-                                            options={["Seleccione marca", ...brand.map((b) => b.nombre ?? "")]}
-                                            onChange={(value) => useBrandSelection(value, brand, setForm_marca, setForm)}
-                                        />
-                                        {selectedBrand && (
-                                            <>
-                                            <AddProductSelectField
-                                                label="TIPO DE PRODUCTO"
-                                                required
-                                                value={form_tipo.nombre ?? ""}
-                                                options={["Seleccione tipo de producto", ...type.map((t) => t.nombre ?? "")]}
-                                                onChange={(value) => useTypeSelection(value, type, setForm_tipo, setForm)}
-                                            />
-                                            {selectedType && (
-                                                <>
-                                                <AddProductReadonlyField
-                                                    label="UNIDAD"
-                                                    value={form.unidad}
-                                                />
-                                                <div className="md:col-span-2">
-                                                    <AddProductTextAreaField
-                                                        label="Descripción"
-                                                        required
-                                                        placeholder="Descripción detallada del producto"
-                                                        value={form.descripcion}
-                                                        onChange={(value) => updateField("descripcion", value)}
-                                                    />
-                                                </div>
-                                                </>
-                                                
-                                            )}
-                                            </>
-                                        )}
-                                        </>
-                                    )}
-                                </div>
-                        </section>
-                        
-                        {(selectedSupplier && selectedBrand && selectedType) && (
+                        <Data_info_M1
+                            form={form}
+                            setForm={(value) => setForm(value as MaterialesFormState)}
+                            form_proveedor={form_proveedor}
+                            form_marca={form_marca}
+                            form_tipo={form_tipo}
+                            setForm_proveedor={setForm_proveedor}
+                            setForm_marca={setForm_marca}
+                            setForm_tipo={setForm_tipo}
+                            selectedSupplier={selectedSupplier}
+                            selectedBrand={selectedBrand}
+                            selectedType={selectedType}
+                            supplier={supplier}
+                            brand={brand}
+                            type={type}
+                            productCategory="Materiales"
+                            useSuplierSelection={(value, supplierList, setProveedor, setProductForm) => {
+                                useSuplierSelection(
+                                    value,
+                                    supplierList,
+                                    setProveedor,
+                                    setProductForm as typeof setForm,
+                                );
+                                setForm_marca(INITIAL_BRAND_FORM);
+                                setForm_tipo(INITIAL_TYPE_FORM);
+                            }}
+                            useBrandSelection={(value, brandList, setMarca, setProductForm) => {
+                                useBrandSelection(
+                                    value,
+                                    brandList,
+                                    setMarca,
+                                    setProductForm as typeof setForm,
+                                );
+                                setForm_tipo(INITIAL_TYPE_FORM);
+                            }}
+                            useTypeSelection={(value, typeList, setTipo, setProductForm) => {
+                                useTypeSelection(
+                                    value,
+                                    typeList,
+                                    setTipo,
+                                    setProductForm as typeof setForm,
+                                );
+                            }}
+                            updateField={(field, value) => {
+                                updateField(
+                                    field as keyof MaterialesFormState,
+                                    value as MaterialesFormState[keyof MaterialesFormState],
+                                );
+                            }}
+                        />
+
+                        {selectedSupplier && selectedBrand && selectedType && (
                             <>
-
-                                <section className="space-y-5">
-                                    <AddProductSectionTitle title="Propiedades Técnicas" />
-                                    <div className="grid gap-5 md:grid-cols-2">
-                                        <AddProductSelectField
-                                            label="Tipo de Conexión"
-                                            value={form.parte_electrica || POWER_SOURCE_OPTIONS[0]}
-                                            options={POWER_SOURCE_OPTIONS}
-                                            onChange={(value) =>
-                                                updateField("parte_electrica", value === POWER_SOURCE_OPTIONS[0] ? "" : value)
-                                            }
-                                        />
-                                    </div>
-                                </section>
-
-                                {/* Precios */}
-                                <section className="space-y-5">
-                                <AddProductSectionTitle title="Información de Precios" />
-                                <div className="space-y-5">
-                                    {/* <AddProductSelectField
-                                        label="Fuente de tasa de cambio"
-                                        value={form.priceInputCurrency}
-                                        options={[...PRICE_CURRENCY_OPTIONS]}
-                                        onChange={(value) => updateField("priceInputCurrency", value as CurrencyCode)}
-                                    />
-                                    <div className="space-y-3">
-                                        <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
-                                        <div className="flex flex-wrap gap-6">
-                                            <AddProductRadioField
-                                                label="Soles (S/.)"
-                                                checked={form.priceInputCurrency === "PEN"}
-                                                onChange={() => handleCurrencyModeChange("PEN")}
-                                            />
-                                            <AddProductRadioField
-                                                label="Dólares ($)"
-                                                checked={form.priceInputCurrency === "USD"}
-                                                onChange={() => handleCurrencyModeChange("USD")}
-                                            />
-                                        </div>
-                                    </div> */}
-
-                                    <div className="grid gap-5 md:grid-cols-2">
-                                            <AddProductNumberField
-                                                label="Precio ($)"
-                                                // required
-                                                step={0.01}
-                                                min={0.00}
-                                                // disabled={form.priceInputCurrency !== "USD"}
-                                                value={form.precio_dolares > 0 ? form.precio_dolares : ""}
-                                                onChange={(value) => updateField("precio_dolares", value)}
-                                            />
-                                            <AddProductNumberField
-                                                label="Precio (S/.)"
-                                                // required
-                                                step={0.01}
-                                                min={0.00}
-                                                // disabled={form.priceInputCurrency !== "PEN"}
-                                                value={form.precio_soles > 0 ? form.precio_soles : ""}
-                                                onChange={(value) => updateField("precio_soles", value)}
-                                            /> 
-                                            <AddProductNumberField
-                                                label="IGV (%)"
-                                                required
-                                                step={1}
-                                                min={0}
-                                                value={form.igv}
-                                                onChange={(value) => updateField("igv", value)}
-                                            />
-                                            <div />
-                                                {/* <AddProductReadonlyField
-                                                    label="Precio + IGV ($)"
-                                                    value={formatReadonlyCurrency("$", computedPrices.totalUsd)}
-                                                /> */}
-                                                <AddProductNumberField
-                                                    label="Precio ($) + IGV"
-                                                    // required
-                                                    step={0.01}
-                                                    min={0.00}
-                                                    // disabled={form.priceInputCurrency !== "PEN"}
-                                                    value={form.precio_dolares_igv > 0 ? form.precio_dolares_igv : ""}
-                                                    onChange={(value) => updateField("precio_dolares_igv", value)}
-                                                /> 
-                                                {/* <AddProductReadonlyField
-                                                    label="Precio + IGV (S/.)"
-                                                    value={3.412*formatReadonlyCurrency("S/.", computedPrices.totalPen)}
-                                                /> */}
-                                                <AddProductNumberField
-                                                    label="Precio (S/.) + IGV"
-                                                    // required
-                                                    step={0.01}
-                                                    min={0.00}
-                                                    // disabled={form.priceInputCurrency !== "PEN"}
-                                                    value={form.precio_soles_igv > 0 ? form.precio_soles_igv : ""}
-                                                    onChange={(value) => updateField("precio_soles_igv", value)}
-                                                /> 
-                                            </div>
-                                </div>
-                                </section>
+                                <General_info_M1_MAT
+                                    form={form}
+                                    updateField={updateField}
+                                />
+                                <Price_info_M1
+                                    form={form}
+                                    updateField={(field, value) => {
+                                        updateField(
+                                            field as keyof MaterialesFormState,
+                                            value as MaterialesFormState[keyof MaterialesFormState],
+                                        );
+                                    }}
+                                />
                             </>
                         )}
                     </div>
 
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            type="button"
+                            onClick={onClose}
+                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
                         >
-                        Cancelar
+                            Cancelar
                         </button>
                         <button
-                        type="submit"
-                        className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
+                            type="submit"
+                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                         >
-                        Añadir Material
+                            Añadir Material
                         </button>
                     </div>
                 </form>
             </div>
-        </div>    
+        </div>
     );
 }
