@@ -14,6 +14,7 @@ function matchesProductCategory(
 export function Data_info_M1({
     form,
     setForm,
+    cascadeOptions,
     form_proveedor,
     form_marca,
     form_tipo,
@@ -36,12 +37,16 @@ export function Data_info_M1({
     const filteredSuppliers = supplier.filter((item) =>
         matchesProductCategory(item.categoria, productCategory),
     );
-    const filteredBrands = brand.filter((item) =>
-        matchesProductCategory(item.categoria, productCategory),
-    );
-    const filteredTypes = type.filter((item) =>
-        matchesProductCategory(item.categoria, productCategory),
-    );
+    const filteredBrands = brand.filter((item) => {
+        const matchesCategory = matchesProductCategory(item.categoria, productCategory);
+        if (!cascadeOptions) return matchesCategory;
+        return matchesCategory && cascadeOptions.brands.includes(item.nombre ?? "");
+    });
+    const filteredTypes = type.filter((item) => {
+        const matchesCategory = matchesProductCategory(item.categoria, productCategory);
+        if (!cascadeOptions) return matchesCategory;
+        return matchesCategory && cascadeOptions.types.includes(item.nombre ?? "");
+    });
 
     return (
         <>
