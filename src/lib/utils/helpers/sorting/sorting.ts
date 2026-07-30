@@ -3,11 +3,11 @@ import { ProductSortingOrder } from "../../options";
 // ordenamiento según precio y código del proveedor
 export function shouldRender_ProductSortingSelection(currentOrder: ProductSortingOrder) {
     if (currentOrder === "asc") {
-        return { label: "Orden ascendente", nextOrder: "desc" as const };
+        return { label: "Orden ascendente (precio)", nextOrder: "desc" as const };
     }
 
     if (currentOrder === "desc") {
-        return { label: "Orden descendente", nextOrder: "codigo" as const };
+        return { label: "Orden descendente (precio)", nextOrder: "codigo" as const };
     }
 
     if (currentOrder === "codigo") {
