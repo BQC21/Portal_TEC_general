@@ -21,7 +21,7 @@ import {
 } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
-import { Sorting_IGV_USD } from "@/features/view/components/SortingIGVUSD";
+import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
