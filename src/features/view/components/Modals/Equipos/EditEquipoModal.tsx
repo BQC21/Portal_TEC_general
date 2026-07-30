@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
@@ -13,6 +13,7 @@ import {
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
@@ -22,6 +23,8 @@ import { useSuplierSelection } from "@/features/view/hooks/modals/equipos/useSup
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
+import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
+import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 
 function buildSupplierForm(equipo: EquiposFormState): SupplierFormstate {
     if (equipo.proveedor_info) {
@@ -86,6 +89,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
     const { type } = useTypes();
     const { brand } = useBrands();
     const { supplier } = useProveedores();
+    const { equipos: existingEquipos } = useEquipos();
 
     const [form, setForm] = useState<EquiposFormState>(() => createEquiposFormStateFromEquipos(equipo));
     const [form_tipo, setForm_tipo] = useState<TypeFormstate>(() =>
@@ -120,12 +124,63 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
         setForm((current) => ({ ...current, [field]: value }));
     }
 
+    // Opciones en cascada (mismo criterio que AddEquipoModal)
+    const cascadeOptions = useMemo(
+        () => getModalCascadeOptions(existingEquipos, form.proveedor, form.marca),
+        [existingEquipos, form.proveedor, form.marca],
+    );
+
+    // Código de producto dinámico al cambiar proveedor / tipo
+    const generatedCode = useMemo(() => {
+        if (!form.proveedor || !form.tipo_de_producto) return "";
+
+        const unchanged =
+            form.proveedor === equipo.proveedor &&
+            form.tipo_de_producto === equipo.tipo_de_producto;
+
+        if (unchanged) return equipo.cod_producto;
+
+        const supplierEquipoCount = existingEquipos.filter(
+            (item) => item.proveedor === form.proveedor && item.id !== equipo.id,
+        ).length;
+
+        return buildProductCode(
+            form.tipo_de_producto,
+            form.proveedor,
+            supplierEquipoCount + 1,
+        );
+    }, [
+        existingEquipos,
+        form.proveedor,
+        form.tipo_de_producto,
+        equipo.id,
+        equipo.proveedor,
+        equipo.tipo_de_producto,
+        equipo.cod_producto,
+    ]);
+
+    // generación automática de código
+    useEffect(() => {
+        setForm((current) => {
+            const nextCode = generatedCode;
+            // Si aún no hay tipo (p. ej. tras cambiar proveedor), limpiar código obsoleto
+            if (!form.tipo_de_producto) {
+                return current.cod_producto === ""
+                    ? current
+                    : { ...current, cod_producto: "" };
+            }
+            if (!nextCode || current.cod_producto === nextCode) return current;
+            return { ...current, cod_producto: nextCode };
+        });
+    }, [generatedCode, form.tipo_de_producto]);
+
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         await onUpdateEquipo({
             id: equipo.id,
             ...form,
+            cod_producto: generatedCode || form.cod_producto,
             updated_at: new Date(),
         });
 
@@ -152,6 +207,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                         <Data_info_M1
                             form={form}
                             setForm={(value) => setForm(value as EquiposFormState)}
+                            cascadeOptions={cascadeOptions}
                             form_proveedor={form_proveedor}
                             form_marca={form_marca}
                             form_tipo={form_tipo}
