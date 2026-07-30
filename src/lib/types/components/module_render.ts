@@ -1,7 +1,3 @@
-// -----
-// M1
-// -----
-
 import { SetStateAction } from "react";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
 import { computedRequirements } from "./Sizing/computes";
