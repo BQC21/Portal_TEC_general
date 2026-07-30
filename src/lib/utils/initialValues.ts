@@ -250,6 +250,7 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
     Viaticos: {
         eating: { monto: 0, personas: 0, dias: 0 },
         traveling: { monto: 0, personas: 0, dias: 0 },
+        mobility: { monto: 0, personas: 0, dias: 0 },
         courier: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
     }
 };

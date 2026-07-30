@@ -73,8 +73,16 @@ export function computeVentaRecursos(
 
 export function computeSubtotalViaticos(costs: viaticosItems) {
     return {
-        soles: costs.eating.total + costs.traveling.total + costs.courier.total,
-        igv: costs.eating.igv + costs.traveling.igv + costs.courier.igv,
+        soles:
+            costs.eating.total +
+            costs.traveling.total +
+            costs.mobility.total +
+            costs.courier.total,
+        igv:
+            costs.eating.igv +
+            costs.traveling.igv +
+            costs.mobility.igv +
+            costs.courier.igv,
     };
 }
 

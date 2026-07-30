@@ -28,7 +28,12 @@ export type MontoItem = {
     monto: number;
     personas: number;
     dias: number;
-}
+};
+export const EMPTY_MONTO_ITEM: MontoItem = {
+    monto: 0,
+    personas: 0,
+    dias: 0,
+};
 
 
 
@@ -46,6 +51,7 @@ export type ManualCosts = {
     Viaticos: {
         eating: MontoItem;
         traveling: MontoItem;
+        mobility: MontoItem;
         courier: QuantityPriceItem[];
     }
 };

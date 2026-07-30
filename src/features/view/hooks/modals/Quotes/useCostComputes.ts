@@ -149,7 +149,7 @@ export function useCostComputes(
         [eatingTotal],
     );
 
-    // VIAJE Y MOVILIDAD
+    // VIAJE
     const travelingTotal = useMemo(() =>
         Number(manualCosts.Viaticos.traveling?.monto ?? 0) * Number(manualCosts.Viaticos.traveling?.personas ?? 0) * Number(manualCosts.Viaticos.traveling?.dias ?? 0),
         [manualCosts],
@@ -158,6 +158,17 @@ export function useCostComputes(
         Number(travelingTotal) * Number(1.18),
         [travelingTotal],
     );
+
+    // MOVILIDAD
+    const mobilityTotal = useMemo(() =>
+        Number(manualCosts.Viaticos.mobility?.monto ?? 0) * Number(manualCosts.Viaticos.mobility?.personas ?? 0) * Number(manualCosts.Viaticos.mobility?.dias ?? 0),
+        [manualCosts],
+    );
+    const mobilityTotalIgv = useMemo(() =>
+        Number(mobilityTotal) * Number(1.18),
+        [mobilityTotal],
+    );
+
 
     // COURIER
     const courierTotal = useMemo(() =>
@@ -229,12 +240,18 @@ export function useCostComputes(
             total: travelingTotal,
             igv: travelingTotalIgv,
         },
+        mobility: {
+            total: mobilityTotal,
+            igv: mobilityTotalIgv,
+        },
         courier: {
             total: courierTotal,
             igv: courierTotalIgv,
         },
-    }), [eatingTotal, eatingTotalIgv, 
-        travelingTotal, travelingTotalIgv, 
+    }), [
+        eatingTotal, eatingTotalIgv,
+        travelingTotal, travelingTotalIgv,
+        mobilityTotal, mobilityTotalIgv,
         courierTotal, courierTotalIgv,
     ]);
 
@@ -353,6 +370,10 @@ export function useCostComputes(
             traveling: {
                 total: travelingTotal,
                 igv: travelingTotalIgv,
+            },
+            mobility: {
+                total: mobilityTotal,
+                igv: mobilityTotalIgv,
             },
             courier: {
                 total: courierTotal,

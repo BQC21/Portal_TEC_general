@@ -66,6 +66,10 @@ export type viaticos = {
         total: number;
         igv: number;
     };
+    mobility: {
+        total: number;
+        igv: number;
+    };
     courier: {
         total: number;
         igv: number;

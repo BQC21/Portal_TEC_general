@@ -1,4 +1,5 @@
 import {
+    EMPTY_MONTO_ITEM,
     EMPTY_PERSONAL_ITEM,
     EMPTY_QUANTITY_PRICE_ITEM,
     ManualCosts,
@@ -18,7 +19,8 @@ type ManualCostArraySection =
 type ManualCostMontoSection =
     | "Recursos.hotel"
     | "Viaticos.eating"
-    | "Viaticos.traveling";
+    | "Viaticos.traveling"
+    | "Viaticos.mobility";
 
 type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;
 
@@ -83,7 +85,7 @@ export function ManageLocalCosts(
                     ...current,
                     Recursos: {
                         ...current.Recursos,
-                        hotel: { ...current.Recursos.hotel, [field]: value },
+                        hotel: { ...(current.Recursos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
                     },
                 };
             }
@@ -93,7 +95,17 @@ export function ManageLocalCosts(
                     ...current,
                     Viaticos: {
                         ...current.Viaticos,
-                        eating: { ...current.Viaticos.eating, [field]: value },
+                        eating: { ...(current.Viaticos.eating ?? EMPTY_MONTO_ITEM), [field]: value },
+                    },
+                };
+            }
+
+            if (section === "Viaticos.mobility") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        mobility: { ...(current.Viaticos.mobility ?? EMPTY_MONTO_ITEM), [field]: value },
                     },
                 };
             }
@@ -102,7 +114,7 @@ export function ManageLocalCosts(
                 ...current,
                 Viaticos: {
                     ...current.Viaticos,
-                    traveling: { ...current.Viaticos.traveling, [field]: value },
+                    traveling: { ...(current.Viaticos.traveling ?? EMPTY_MONTO_ITEM), [field]: value },
                 },
             };
         });

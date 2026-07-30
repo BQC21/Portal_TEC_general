@@ -6,9 +6,48 @@ import { INITIAL_MANUAL_RESOURCE_COSTS } from "../utils/initialValues";
 import { parseNumber } from "../utils/normalization";
 import { mapSupabaseRowToProject } from "./project_mapping";
 
+function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
+    const defaults = INITIAL_MANUAL_RESOURCE_COSTS;
+    const saved = costs ?? defaults;
+
+    return {
+        Recursos: {
+            ...defaults.Recursos,
+            ...saved.Recursos,
+            epp: saved.Recursos?.epp?.length ? saved.Recursos.epp : defaults.Recursos.epp,
+            tooling: saved.Recursos?.tooling?.length ? saved.Recursos.tooling : defaults.Recursos.tooling,
+            personal: saved.Recursos?.personal?.length ? saved.Recursos.personal : defaults.Recursos.personal,
+            sctr: saved.Recursos?.sctr?.length ? saved.Recursos.sctr : defaults.Recursos.sctr,
+            hotel: {
+                ...defaults.Recursos.hotel,
+                ...saved.Recursos?.hotel,
+            },
+        },
+        Viaticos: {
+            ...defaults.Viaticos,
+            ...saved.Viaticos,
+            eating: {
+                ...defaults.Viaticos.eating,
+                ...saved.Viaticos?.eating,
+            },
+            traveling: {
+                ...defaults.Viaticos.traveling,
+                ...saved.Viaticos?.traveling,
+            },
+            mobility: {
+                ...defaults.Viaticos.mobility,
+                ...saved.Viaticos?.mobility,
+            },
+            courier: saved.Viaticos?.courier?.length
+                ? saved.Viaticos.courier
+                : defaults.Viaticos.courier,
+        },
+    };
+}
+
 // Creador de valores por defecto asociado a costos manuales
 export function createManualCostsFromQuote(quote: Quote): ManualCosts {
-    return quote.costos_manuales ?? INITIAL_MANUAL_RESOURCE_COSTS;
+    return normalizeManualCosts(quote.costos_manuales);
 }
 
 // Creador de valores por defecto a partir del formulario
@@ -26,7 +65,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         gm: quote.gm,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
-        costos_manuales: quote.costos_manuales,
+        costos_manuales: normalizeManualCosts(quote.costos_manuales),
     }
 }
 
@@ -50,7 +89,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         gm: row.gm?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
-        costos_manuales: (row.costos_manuales as ManualCosts) ?? INITIAL_MANUAL_RESOURCE_COSTS,
+        costos_manuales: normalizeManualCosts(row.costos_manuales as ManualCosts | null),
     }
 }
 

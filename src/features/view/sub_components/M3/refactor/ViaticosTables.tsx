@@ -4,6 +4,7 @@ import { CollapsibleTableSection } from "@/features/view/components/Shells/Colla
 import { Courier_PriceTable } from "../Tables/quotes/subtables/Viaticos/Courier_PriceTable";
 import { Eating_PriceTable } from "../Tables/quotes/subtables/Viaticos/Eating_PriceTable";
 import { Traveling_PriceTable } from "../Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
+import { Mobility_PriceTable } from "../Tables/quotes/subtables/Viaticos/Mobility_PriceTable";
 
 export function ViaticosTables({
     viaticos,
@@ -35,8 +36,14 @@ export function ViaticosTables({
                         updateManualCostMonto={updateManualCostMonto}
                     />
                 </CollapsibleTableSection>
-                <CollapsibleTableSection title="Viajes y movilidad">
+                <CollapsibleTableSection title="Viajes">
                     <Traveling_PriceTable
+                        manualResourceCosts={manualResourceCosts}
+                        updateManualCostMonto={updateManualCostMonto}
+                    />
+                </CollapsibleTableSection>
+                <CollapsibleTableSection title="Movilidad">
+                    <Mobility_PriceTable
                         manualResourceCosts={manualResourceCosts}
                         updateManualCostMonto={updateManualCostMonto}
                     />
