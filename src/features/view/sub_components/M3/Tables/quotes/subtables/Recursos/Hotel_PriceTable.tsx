@@ -42,7 +42,7 @@ export function Hotel_PriceTable({ manualResourceCosts, updateManualCostMonto }:
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={Number(manualResourceCosts.Recursos.hotel.monto ?? 0)}
+                                            value={Number(manualResourceCosts.Recursos.hotel.monto ?? 0)} step={0.01}
                                             onChange={(value) => updateManualCostMonto("Recursos.hotel", "monto", value)}
                                         />
                                     </td>

@@ -57,14 +57,14 @@ export function SCTR_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
                                                 label="Cantidad"
-                                                value={Number(item.cantidad)} min={0}
+                                                value={Number(item.cantidad)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "cantidad", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
                                                 label="Precio Unidad (s/.)"
-                                                value={Number(item.precio_unitario)} min={0}
+                                                value={Number(item.precio_unitario)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "precio_unitario", value)}
                                             />
                                         </td>

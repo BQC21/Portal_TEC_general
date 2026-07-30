@@ -42,7 +42,7 @@ export function Eating_PriceTable({ manualResourceCosts, updateManualCostMonto }
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label="Monto"
-                                            value={Number(manualResourceCosts.Viaticos.eating.monto ?? 0)} min={0}
+                                            value={Number(manualResourceCosts.Viaticos.eating.monto ?? 0)} min={0} step={0.01}
                                             onChange={(value) => updateManualCostMonto("Viaticos.eating", "monto", value)}
                                         />
                                     </td>

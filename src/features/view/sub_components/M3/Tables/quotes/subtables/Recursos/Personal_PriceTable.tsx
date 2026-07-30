@@ -67,13 +67,13 @@ export function Personal_PriceTable({ items, onUpdateItem, onAddItem, onRemoveIt
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
                                                 label="Cantidad"
-                                                value={Number(item.dias)} min={0}
+                                                value={Number(item.dias)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "dias", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
-                                                label="Precio Unidad (s/.)"
+                                                label="Precio Unidad (s/.)" step={0.01}
                                                 value={Number(item.precio_dia)} min={0}
                                                 onChange={(value) => onUpdateItem(index, "precio_dia", value)}
                                             />
