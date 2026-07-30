@@ -25,62 +25,7 @@ import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_e
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
 import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
-
-function buildSupplierForm(equipo: EquiposFormState): SupplierFormstate {
-    if (equipo.proveedor_info) {
-        const info = equipo.proveedor_info;
-        return {
-            nombre: info.nombre,
-            ruc: info.ruc,
-            contacto: info.contacto,
-            telefono: info.telefono,
-            categoria: info.categoria,
-            codigo: info.codigo,
-            created_at: info.created_at,
-            updated_at: info.updated_at,
-        };
-    }
-
-    return {
-        ...INITIAL_SUPPLIER_FORM,
-        nombre: equipo.proveedor,
-        codigo: equipo.cod_prov,
-    };
-}
-
-function buildBrandForm(equipo: EquiposFormState): BrandFormstate {
-    if (equipo.marca_info) {
-        const info = equipo.marca_info;
-        return {
-            nombre: info.nombre,
-            categoria: info.categoria,
-            created_at: info.created_at,
-            updated_at: info.updated_at,
-        };
-    }
-
-    return {
-        ...INITIAL_BRAND_FORM,
-        nombre: equipo.marca,
-    };
-}
-
-function buildTypeForm(equipo: EquiposFormState): TypeFormstate {
-    if (equipo.tipo_info) {
-        const info = equipo.tipo_info;
-        return {
-            nombre: info.nombre,
-            categoria: info.categoria,
-            created_at: info.created_at,
-            updated_at: info.updated_at,
-        };
-    }
-
-    return {
-        ...INITIAL_TYPE_FORM,
-        nombre: equipo.tipo_de_producto,
-    };
-}
+import { buildBrandForm, buildSupplierForm, buildTypeForm } from "@/lib/utils/helpers/buildForm/buildForm_functions";
 
 export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoModalProps) {
     // ----------------------------
