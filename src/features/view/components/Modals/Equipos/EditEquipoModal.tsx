@@ -24,7 +24,7 @@ import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
 import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
-import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { buildBrandForm, buildSupplierForm, buildTypeForm } from "@/lib/utils/helpers/buildForm/buildForm_functions";
 
 export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoModalProps) {
@@ -85,14 +85,10 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
 
         if (unchanged) return equipo.cod_producto;
 
-        const supplierEquipoCount = existingEquipos.filter(
-            (item) => item.proveedor === form.proveedor && item.id !== equipo.id,
-        ).length;
-
-        return buildProductCode(
+        return buildNextProductCode(
+            existingEquipos.filter((item) => item.id !== equipo.id),
             form.tipo_de_producto,
             form.proveedor,
-            supplierEquipoCount + 1,
         );
     }, [
         existingEquipos,

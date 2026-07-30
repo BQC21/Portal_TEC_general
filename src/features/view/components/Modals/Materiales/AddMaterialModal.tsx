@@ -9,7 +9,7 @@ import {
 } from "@/lib/utils/initialValues";
 import { useMemo, useState } from "react";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
-import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddMaterialModalProps } from "@/lib/types/components/modals";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
@@ -81,13 +81,10 @@ export function AddMaterialModal({
     }, [existingMateriales, form.proveedor, form.marca]);
 
     // Generación automático para el código del producto
-    const supplierProductCount = existingMateriales.filter(
-        (material) => material.proveedor === form.proveedor,
-    ).length;
-    const generatedCode = buildProductCode(
+    const generatedCode = buildNextProductCode(
+        existingMateriales,
         form.tipo_de_producto,
         form.proveedor,
-        supplierProductCount + 1,
     );
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

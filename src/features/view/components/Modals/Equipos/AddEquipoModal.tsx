@@ -9,7 +9,7 @@ import {
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
 import { useMemo, useState } from "react";
-import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddEquipoModalProps } from "@/lib/types/components/modals";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
@@ -62,13 +62,10 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
     );
 
     // Generación automático para el código del producto
-    const supplierEquipoCount = existingEquipos.filter(
-        (equipo) => equipo.proveedor === form.proveedor,
-    ).length;
-    const generatedCode = buildProductCode(
+    const generatedCode = buildNextProductCode(
+        existingEquipos,
         form.tipo_de_producto,
         form.proveedor,
-        supplierEquipoCount + 1,
     );
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {

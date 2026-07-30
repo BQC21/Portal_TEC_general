@@ -31,7 +31,7 @@ import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { buildBrandForm, buildSupplierForm, buildTypeForm } from "@/lib/utils/helpers/buildForm/buildForm_functions";
-import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
+import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
@@ -117,14 +117,10 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
 
         if (unchanged) return material.cod_producto;
 
-        const supplierMaterialCount = existingMateriales.filter(
-            (item) => item.proveedor === form.proveedor && item.id !== material.id,
-        ).length;
-
-        return buildProductCode(
+        return buildNextProductCode(
+            existingMateriales.filter((item) => item.id !== material.id),
             form.tipo_de_producto,
             form.proveedor,
-            supplierMaterialCount + 1,
         );
     }, [
         existingMateriales,
