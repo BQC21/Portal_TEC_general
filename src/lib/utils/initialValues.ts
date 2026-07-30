@@ -68,6 +68,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     igv: 18,
     precio_soles_igv: 0,
     precio_dolares_igv: 0,
+    priceInputCurrency: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
@@ -95,6 +96,7 @@ export const INITIAL_MATERIALES_FORM: MaterialesFormState = {
     igv: 18,
     precio_soles_igv: 0,
     precio_dolares_igv: 0,
+    priceInputCurrency: "",
     // fechas
     created_at: new Date(),
     updated_at: new Date(),

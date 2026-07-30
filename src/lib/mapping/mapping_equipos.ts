@@ -34,6 +34,7 @@ export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormS
         igv: equipo.igv,
         precio_soles_igv: equipo.precio_soles_igv,
         precio_dolares_igv: equipo.precio_dolares_igv,
+        priceInputCurrency: equipo.priceInputCurrency,
         // fechas
         created_at: equipo.created_at,
         updated_at: equipo.updated_at,
@@ -101,6 +102,7 @@ export function mapSupabaseRowToEquipos(
             : row.proveedores
                 ? mapSupabaseRowToSupplier(row.proveedores as SupabaseSupplierRow)
                 : undefined,
+        priceInputCurrency: row.priceInputCurrency || "",
     };
 }
 
@@ -133,6 +135,7 @@ export function mapEquiposToSupabaseRow(
         precio_soles: equipo.precio_soles,
         precio_dolares: equipo.precio_dolares,
         igv: equipo.igv / 100,
+        priceInputCurrency: equipo.priceInputCurrency,
         // fechas
         created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
         updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),

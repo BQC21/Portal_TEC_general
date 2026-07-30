@@ -36,6 +36,7 @@ export type SupabaseEquiposRow = {
     igv?: number;
     precio_soles_igv?: number;
     precio_dolares_igv?: number;
+    priceInputCurrency?: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -78,6 +79,7 @@ export type Equipos = {
     igv: number;
     precio_soles_igv: number;
     precio_dolares_igv: number;
+    priceInputCurrency?: string;
     // fechas
     created_at: Date | string | null;
     updated_at: Date | string | null;

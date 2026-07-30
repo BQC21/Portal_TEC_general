@@ -36,6 +36,7 @@ export function createMaterialesFormStateFromMateriales(material: Materiales): M
     marca_info: material.marca_info,
     proveedor_id: material.proveedor_id,
     proveedor_info: material.proveedor_info,
+    priceInputCurrency: material.priceInputCurrency,
     };
 }
 
@@ -85,6 +86,7 @@ export function mapSupabaseRowToMateriales(
             : row.proveedores
                 ? mapSupabaseRowToSupplier(row.proveedores as SupabaseSupplierRow)
                 : undefined,
+        priceInputCurrency: row.priceInputCurrency || "",
     };
 }
 
@@ -109,6 +111,7 @@ export function mapMaterialesToSupabaseRow(
         precio_soles: material.precio_soles,
         precio_dolares: material.precio_dolares,
         igv: material.igv / 100,
+        priceInputCurrency: material.priceInputCurrency,
         // fechas
         created_at: material.created_at ? new Date(material.created_at) : new Date(),
         updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
