@@ -7,7 +7,7 @@ import {
     INITIAL_SUPPLIER_FORM,
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddMaterialModalProps } from "@/lib/types/components/modals";
@@ -23,6 +23,7 @@ import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTyp
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
+import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 export function AddMaterialModal({
     existingMateriales,
@@ -58,6 +59,13 @@ export function AddMaterialModal({
         setForm((current) => ({ ...current, [field]: value }));
     }
 
+    // Opciones en cascada
+    const cascadeOptions = useMemo(
+        () => getModalCascadeOptions(existingMateriales, form.proveedor, form.marca),
+        [existingMateriales, form.proveedor, form.marca],
+    );
+
+    // Generación automático para el código del producto
     const supplierProductCount = existingMateriales.filter(
         (material) => material.proveedor === form.proveedor,
     ).length;
@@ -96,6 +104,7 @@ export function AddMaterialModal({
                         <Data_info_M1
                             form={form}
                             setForm={(value) => setForm(value as MaterialesFormState)}
+                            cascadeOptions={cascadeOptions}
                             form_proveedor={form_proveedor}
                             form_marca={form_marca}
                             form_tipo={form_tipo}

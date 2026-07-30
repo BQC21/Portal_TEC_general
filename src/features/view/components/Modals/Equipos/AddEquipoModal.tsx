@@ -48,7 +48,10 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
     // ----------------------------------------
     // ------- EVENTOS ------------------------
     // ----------------------------------------
-    function updateField<K extends keyof EquiposFormState>(field: K, value: EquiposFormState[K]) {
+    function updateField<K extends keyof EquiposFormState>(
+        field: K, 
+        value: EquiposFormState[K]
+    ) {
         setForm((current) => ({ ...current, [field]: value }));
     }
 
