@@ -44,6 +44,11 @@ type M1ProductForm = EquiposFormState | MaterialesFormState;
 export type Data_info_M1_props = {
     form: M1ProductForm;
     setForm: (value: SetStateAction<M1ProductForm>) => void;
+    cascadeOptions?: {
+        suppliers: string[];
+        brands: string[];
+        types: string[];
+    };
     form_proveedor: SupplierFormstate;
     form_marca: BrandFormstate;
     form_tipo: TypeFormstate;
