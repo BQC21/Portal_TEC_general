@@ -1,13 +1,8 @@
+import { CASCADE_SELECT_PLACEHOLDER, CascadeFilterValues, FilterableItem, 
+	FORM_FIELD_TO_FILTER_KEY, FormCascadeField, FormCascadeValues } from "@/lib/types/components/cascadeFilter";
 import type { FilterKey } from "@/lib/utils/options";
 
-type FilterableItem = {
-	proveedor: string;
-	marca: string;
-	tipo_de_producto: string;
-};
-
-type CascadeFilterValues = Record<FilterKey, string>;
-
+// Distintos valores
 function getDistinctValues<T extends FilterableItem>(
 	items: T[],
 	field: keyof FilterableItem,
@@ -17,6 +12,7 @@ function getDistinctValues<T extends FilterableItem>(
 	).sort((a, b) => a.localeCompare(b, "es"));
 }
 
+// Proveedores filtrados y marcas filtradas
 function filterItemsBySelections<T extends FilterableItem>(
 	items: T[],
 	supplier?: string,
@@ -29,10 +25,13 @@ function filterItemsBySelections<T extends FilterableItem>(
 	});
 }
 
+////////////////////////////////////////////////////////////////////
+
+// Obtener proveedores filtradas
 export function getSupplierOptions<T extends FilterableItem>(items: T[]): string[] {
 	return getDistinctValues(items, "proveedor");
 }
-
+// Obtener marcas filtradas
 export function getBrandOptions<T extends FilterableItem>(
 	items: T[],
 	supplier?: string,
@@ -40,7 +39,7 @@ export function getBrandOptions<T extends FilterableItem>(
 	const subset = filterItemsBySelections(items, supplier);
 	return getDistinctValues(subset, "marca");
 }
-
+// Obtener tipos filtrados
 export function getTypeOptions<T extends FilterableItem>(
 	items: T[],
 	supplier?: string,
@@ -50,6 +49,10 @@ export function getTypeOptions<T extends FilterableItem>(
 	return getDistinctValues(subset, "tipo_de_producto");
 }
 
+
+/////////////////////////////////////////
+
+// Filtrado en cascada (siguiente valor)
 export function resolveCascadeFilters<T extends FilterableItem>(
 	items: T[],
 	current: CascadeFilterValues,
@@ -72,21 +75,7 @@ export function resolveCascadeFilters<T extends FilterableItem>(
 
 	return next;
 }
-
-type FormCascadeValues = {
-	proveedor: string;
-	marca: string;
-	tipo_de_producto: string;
-};
-
-type FormCascadeField = keyof FormCascadeValues;
-
-const FORM_FIELD_TO_FILTER_KEY: Record<FormCascadeField, FilterKey> = {
-	proveedor: "supplier",
-	marca: "brand",
-	tipo_de_producto: "type",
-};
-
+// Filtrado en cascada (nombres de formulario)
 export function resolveFormCascadeFilters<T extends FilterableItem>(
 	items: T[],
 	current: FormCascadeValues,
@@ -107,7 +96,7 @@ export function resolveFormCascadeFilters<T extends FilterableItem>(
 		tipo_de_producto: resolved.type,
 	};
 }
-
+// Devuelve la lista de proveedores, marcas y tipos según lo seleccionado
 export function getModalCascadeOptions<T extends FilterableItem>(
 	items: T[],
 	proveedor: string,
@@ -119,9 +108,7 @@ export function getModalCascadeOptions<T extends FilterableItem>(
 		types: proveedor && marca ? getTypeOptions(items, proveedor, marca) : [],
 	};
 }
-
-export const CASCADE_SELECT_PLACEHOLDER = { value: "", label: "Seleccionar..." };
-
+// Array de opciones anteponiendo "Seleccionar ..."
 export function withCascadePlaceholder(options: string[]) {
 	return [
 		CASCADE_SELECT_PLACEHOLDER,
