@@ -8,7 +8,7 @@ import {
     INITIAL_SUPPLIER_FORM,
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { buildProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddEquipoModalProps } from "@/lib/types/components/modals";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
@@ -23,6 +23,7 @@ import { useSuplierSelection } from "@/features/view/hooks/modals/equipos/useSup
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
+import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
     // ----------------------------
@@ -51,6 +52,13 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
         setForm((current) => ({ ...current, [field]: value }));
     }
 
+    // Opciones en cascada
+    const cascadeOptions = useMemo(
+        () => getModalCascadeOptions(existingEquipos, form.proveedor, form.marca),
+        [existingEquipos, form.proveedor, form.marca],
+    );
+
+    // Generación automático para el código del producto
     const supplierEquipoCount = existingEquipos.filter(
         (equipo) => equipo.proveedor === form.proveedor,
     ).length;
@@ -89,6 +97,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                         <Data_info_M1
                             form={form}
                             setForm={(value) => setForm(value as EquiposFormState)}
+                            cascadeOptions={cascadeOptions}
                             form_proveedor={form_proveedor}
                             form_marca={form_marca}
                             form_tipo={form_tipo}
