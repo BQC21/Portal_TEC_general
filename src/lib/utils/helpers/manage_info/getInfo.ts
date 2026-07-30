@@ -6,6 +6,8 @@ export function getSupplierInfo(productSupplier: string) {
         "AutoSolar Energía del Perú S.A.C.": { RUC: "20602492118", supplierCode: "AUTO" },
         "Novum Solar S.A.C.": { RUC: "20601873894", supplierCode: "NOVU" },
         "Caral Soluciones Energéticas S.A.C.": { RUC: "20603087675", supplierCode: "CARA" },
+        "FelicitySolar Perú E.I.R.L.": { RUC: "20611054069", supplierCode: "FELI" },
+        // Alias de grafías antiguas (mismo proveedor FELI)
         "Felicitysolar Peru E.I.R.L.": { RUC: "20611054069", supplierCode: "FELI" },
         "RE & GE Import S.A.C.": { RUC: "20502234693", supplierCode: "REGE" },
         "Grupo Coinp S.A.C.": { RUC: "20548407991", supplierCode: "COIN" },

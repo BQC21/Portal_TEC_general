@@ -22,7 +22,7 @@ export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 export const SUPPLIER_OPTIONS_EQUIPOS = [
     "Andet S.A.C.",
     "Caral Soluciones Energéticas S.A.C.",
-    "Felicitysolar Peru E.I.R.L.",
+    "FelicitySolar Perú E.I.R.L.",
     "Sigelec S.A.C.",
     "Tienda Solar S.A.C.",
 ] // proveedores
