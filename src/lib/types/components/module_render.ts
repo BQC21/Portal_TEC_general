@@ -233,6 +233,8 @@ export type ResourcesTablesProps = {
     projectMateriales: Project_Materiales[];
     form: QuoteFormState;
     manualResourceCosts: ManualCosts;
+    onUpdateEquipoCantidad: (id: string | number, cantidad: number) => void;
+    onUpdateMaterialCantidad: (id: string | number, cantidad: number) => void;  
 } & ManualCostHandlers;
 
 export type ViaticosTablesProps = {
