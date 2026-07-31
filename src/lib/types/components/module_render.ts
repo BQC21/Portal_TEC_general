@@ -231,6 +231,7 @@ export type ResourcesTablesProps = {
     recursos: recursos;
     projectEquipos: Project_Equipos[];
     projectMateriales: Project_Materiales[];
+    form: QuoteFormState;
     manualResourceCosts: ManualCosts;
 } & ManualCostHandlers;
 

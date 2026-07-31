@@ -14,6 +14,7 @@ export function ResourcesTables({
     recursos,
     projectEquipos,
     projectMateriales,
+    form,
     manualResourceCosts,
     updateManualCostMonto,
     updateManualCostItem,
@@ -25,6 +26,7 @@ export function ResourcesTables({
             <div className="rounded-2xl border border-slate-200 p-4">
                 <SummaryCostTable1
                     recursosCosts={recursos}
+                    form={form}
                 />
             </div>
             <div className="overflow-hidden rounded-2xl border border-slate-200">

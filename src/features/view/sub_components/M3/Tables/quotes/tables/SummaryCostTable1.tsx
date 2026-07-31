@@ -1,11 +1,14 @@
 import { formatCurrency } from "@/lib/utils/normalization";
 import { recursos } from "@/lib/types/components/Quotes/finantial_computes";
+import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 
 
 export function SummaryCostTable1({
     recursosCosts,
+    form,
 }: {
     recursosCosts: recursos;
+    form: QuoteFormState;
 }){
 
     return(
@@ -78,10 +81,10 @@ export function SummaryCostTable1({
                                         Herramientas
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(recursosCosts.tooling.total, "PEN")}
+                                        {formatCurrency(recursosCosts.tooling.total / Number(form.depre_tool), "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(recursosCosts.tooling.igv, "PEN")}
+                                        {formatCurrency(recursosCosts.tooling.igv / Number(form.depre_tool), "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">

@@ -171,6 +171,7 @@ export default function AddQuoteModal({
                             recursos={recursos}
                             projectEquipos={projectEquipos}
                             projectMateriales={projectMateriales}
+                            form={form}
                             manualResourceCosts={manualResourceCosts}
                             updateManualCostMonto={updateManualCostMonto}
                             updateManualCostItem={updateManualCostItem}
