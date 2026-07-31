@@ -1,12 +1,15 @@
+import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { formatCurrency } from "@/lib/utils/normalization"
 
 export type Consume_PriceTable_props = {
     selected_materiales: Project_Materiales[]
+    onUpdateCantidad: (id: string | number, cantidad: number) => void
 }
 
 export function Consume_PriceTable({
-        selected_materiales
+        selected_materiales,
+        onUpdateCantidad,
     }: Consume_PriceTable_props){
     return(
         <>
@@ -26,7 +29,7 @@ export function Consume_PriceTable({
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Unidad
                                     </th>
-                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.2rem] font-bold text-slate-900">
                                         Cantidad
                                     </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
@@ -69,7 +72,13 @@ export function Consume_PriceTable({
                                                     {item.material_info?.unidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.cantidad}
+                                                    <AddProductNumberField
+                                                        label="Cantidad"
+                                                        value={Number(item.cantidad)}
+                                                        min={0}
+                                                        step={0.01}
+                                                        onChange={(value) => onUpdateCantidad(item.id, value)}
+                                                    />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.material_info?.precio_soles), "PEN")}

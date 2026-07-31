@@ -3,7 +3,7 @@
 import { EditQuoteModalProps } from "@/lib/types/components/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
@@ -18,6 +18,8 @@ import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { Product_selected } from "@/features/view/sub_components/M3/refactor/Product_selected";
 import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
 import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -43,13 +45,49 @@ export default function EditQuoteModal({
     
     const hasSelectedProject = Boolean(form.proyecto_id);
 
-    const projectEquipos = hasSelectedProject
-        ? existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id)
-        : [];
+    const [projectEquipos, setProjectEquipos] = useState<Project_Equipos[]>(() =>
+        existingQuote.proyecto_id
+            ? existing_project_equipos.filter((item) => item.proyecto_id === existingQuote.proyecto_id)
+            : [],
+    );
+    const [projectMateriales, setProjectMateriales] = useState<Project_Materiales[]>(() =>
+        existingQuote.proyecto_id
+            ? existing_project_materiales.filter((item) => item.proyecto_id === existingQuote.proyecto_id)
+            : [],
+    );
 
-    const projectMateriales = hasSelectedProject
-        ? existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id)
-        : [];
+    useEffect(() => {
+        if (!form.proyecto_id) {
+            setProjectEquipos([]);
+            setProjectMateriales([]);
+            return;
+        }
+
+        setProjectEquipos(
+            existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id),
+        );
+        setProjectMateriales(
+            existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id),
+        );
+        // Solo al elegir/cambiar proyecto: no sobrescribir ediciones locales de cantidad.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [form.proyecto_id]);
+
+    const onUpdateEquipoCantidad = useCallback((id: string | number, cantidad: number) => {
+        setProjectEquipos((current) =>
+            current.map((item) =>
+                item.id === id ? { ...item, cantidad: String(cantidad) } : item,
+            ),
+        );
+    }, []);
+
+    const onUpdateMaterialCantidad = useCallback((id: string | number, cantidad: number) => {
+        setProjectMateriales((current) =>
+            current.map((item) =>
+                item.id === id ? { ...item, cantidad: String(cantidad) } : item,
+            ),
+        );
+    }, []);
 
     // --- rescatamos su descripción
     const equiposDescriptions = projectEquipos
@@ -183,6 +221,8 @@ export default function EditQuoteModal({
                             updateManualCostItem={updateManualCostItem}
                             addManualCostItem={addManualCostItem}
                             removeManualCostItem={removeManualCostItem}
+                            onUpdateEquipoCantidad={onUpdateEquipoCantidad}
+                            onUpdateMaterialCantidad={onUpdateMaterialCantidad}
                         />
 
                         <ViaticosTables

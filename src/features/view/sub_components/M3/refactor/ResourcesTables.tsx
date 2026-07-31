@@ -20,6 +20,8 @@ export function ResourcesTables({
     updateManualCostItem,
     addManualCostItem,
     removeManualCostItem,
+    onUpdateEquipoCantidad,
+    onUpdateMaterialCantidad,
 }: ResourcesTablesProps) {
     return(
         <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
@@ -33,16 +35,19 @@ export function ResourcesTables({
                 <CollapsibleTableSection title="Equipos Principales">
                     <EP_PriceTable
                         selected_equipos={projectEquipos}
+                        onUpdateCantidad={onUpdateEquipoCantidad}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Estructuras">
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
+                        onUpdateCantidad={onUpdateEquipoCantidad}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Consumibles">
                     <Consume_PriceTable
                         selected_materiales={projectMateriales}
+                        onUpdateCantidad={onUpdateMaterialCantidad}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="EPPs">
