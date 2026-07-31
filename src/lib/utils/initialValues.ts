@@ -269,4 +269,5 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
     gm_viaticos: "",
     gm: "",
     costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
+    depre_tool: "",
 }

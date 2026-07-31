@@ -25,6 +25,8 @@ export type SupabaseQuoteRow = {
     updated_at?: Date | string | null;
     // costos manuales
     costos_manuales?: ManualCosts | null;
+    // parámetros adicionales
+    depre_tool?: number;
 }
 
 // visualización de la tabla
@@ -46,6 +48,8 @@ export type Quote = {
     updated_at: Date;
     // costos manuales
     costos_manuales: ManualCosts;
+    // parámetros adicionales
+    depre_tool: string;
 }
 
 // manejo de la visualización

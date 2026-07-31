@@ -66,6 +66,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         created_at: quote.created_at,
         updated_at: quote.updated_at,
         costos_manuales: normalizeManualCosts(quote.costos_manuales),
+        depre_tool: quote.depre_tool,
     }
 }
 
@@ -90,6 +91,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
         costos_manuales: normalizeManualCosts(row.costos_manuales as ManualCosts | null),
+        depre_tool: row.depre_tool?.toString() || "",
     }
 }
 
@@ -108,5 +110,6 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         created_at: quote.created_at,
         updated_at: quote.updated_at,
         costos_manuales: quote.costos_manuales,
+        depre_tool: parseNumber(quote.depre_tool) ?? 0,
     }
 }

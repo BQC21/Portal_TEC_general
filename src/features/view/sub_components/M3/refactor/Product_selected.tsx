@@ -82,6 +82,13 @@ export function Product_selected({
                     label="Código de cotización"
                     value={form.cod_cotizacion ?? ""}
                 />
+                <AddProductNumberField
+                    label="Meses de depreciación de las herramientas"
+                    required
+                    value={Number(form.depre_tool) > 0 ? Number(form.depre_tool) : ""}
+                    onChange={(value) => updateField("depre_tool", String(value))}
+                    step={0.1}   min={1}   max={12}
+                />
             </div>
         </div>
     )
