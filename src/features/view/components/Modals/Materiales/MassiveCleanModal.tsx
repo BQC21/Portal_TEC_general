@@ -8,16 +8,28 @@ import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 import { bulkDeleteAllRows } from "@/lib/utils/helpers/massive/massiveClean";
 import { MassiveCleanModalProps } from "@/lib/types/components/modals";
 
-const CONFIRM_PASSWORD = "BORRAR";
+const CONFIRM_PASSWORD = "LIMPIEZA";
 
 export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveCleanModalProps) {
+
+	// ----------
+	// Estados
+	// ----------
+
 	const [isCleaning, setIsCleaning] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 	const [confirmText, setConfirmText] = useState("");
+
+	// ----------
+	// Almacenamiento
+	// ----------
 	const totalRows = useMemo(() => currentCount, [currentCount]);
 	const canDelete = confirmText === CONFIRM_PASSWORD;
 
+	// ----------
+	// Eventos
+	// ----------
 	function handleOpenPasswordConfirm() {
 		if (totalRows <= 0) {
 			setError("No hay registros para eliminar.");
@@ -38,7 +50,7 @@ export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveC
 
 	async function handleClean() {
 		if (!canDelete) {
-			setError(`Escribe ${CONFIRM_PASSWORD} para confirmar el borrado.`);
+			setError(`Escribe la contraseña para confirmar el borrado.`);
 			return;
 		}
 
@@ -121,7 +133,7 @@ export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveC
 							<div>
 								<h2 className="text-xl font-bold text-slate-900">Confirmación de seguridad</h2>
 								<p className="text-sm text-slate-600">
-									Escribe <span className="font-semibold text-rose-700">{CONFIRM_PASSWORD}</span> para ejecutar el borrado masivo.
+									Escribe la contraseña para ejecutar el borrado masivo.
 								</p>
 							</div>
 							<button
@@ -137,13 +149,12 @@ export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveC
 
 						<div className="space-y-5 px-6 py-6">
 							<p className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-900">
-								Esta acción no se puede deshacer. Se eliminarán {totalRows} registros de materiales.
+								Se eliminarán {totalRows} registros de materiales.
 							</p>
 
 							<AddProductTextField
-								label={`Contraseña de confirmación (${CONFIRM_PASSWORD})`}
+								label={`Contraseña de confirmación`}
 								required
-								placeholder={CONFIRM_PASSWORD}
 								value={confirmText}
 								onChange={setConfirmText}
 							/>
