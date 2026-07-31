@@ -11,6 +11,10 @@ import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
 
 export default function DashboardPage() {
 
+    //-------
+    // Estados
+    // ------
+
     // const { products } = useProducts();
     const { equipos } = useEquipos();
     const { materiales } = useMateriales();
@@ -18,6 +22,11 @@ export default function DashboardPage() {
     const { zones } = useZone();
     const { quotes } = useQuotes();
     const { reports } = useReports();
+
+    //-------
+    // Metricas
+    // ------
+
     const metrics = [
         // {
         //     title: "Productos Activos",
