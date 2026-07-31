@@ -5,8 +5,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { createClient } from "@/lib/supabase/client";
-import { EyeIcon } from "./Form_fields/EyeIcon";
-import { EyeSlashIcon } from "./Form_fields/EyeSlashIcon";
+import { EyeIcon } from "../Form_fields/EyeIcon";
+import { EyeSlashIcon } from "../Form_fields/EyeSlashIcon";
 
 export function LoginForm() {
     // variables de estado
