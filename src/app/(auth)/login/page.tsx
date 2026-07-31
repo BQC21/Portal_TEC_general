@@ -1,4 +1,4 @@
-import { LoginForm } from "@/features/view/components/LoginForm";
+import { LoginForm } from "@/features/view/components/auth/LoginForm";
 
 import TECLogo from "@/features/view/components/Images/TEC_logo";
 
