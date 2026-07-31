@@ -7,8 +7,7 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 import { bulkDeleteAllRows } from "@/lib/utils/helpers/massive/massiveClean";
 import { MassiveCleanModalProps } from "@/lib/types/components/modals";
-
-const CONFIRM_PASSWORD = "LIMPIEZA";
+import { CONFIRM_PASSWORD } from "@/passwords/keys";
 
 export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveCleanModalProps) {
 
