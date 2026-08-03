@@ -1,16 +1,65 @@
+"use client"
+
+import { useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
+import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
+import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
+import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
+import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
+import { Equipos } from "@/lib/types/supabase/equipos-types"
 import { formatCurrency } from "@/lib/utils/normalization"
 
 export type Structure_PriceTable_props = {
     selected_equipos: Project_Equipos[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
+    onAddEquipo: (equipo: Equipos) => void
+    onRemoveEquipo: (id: string | number) => void
 }
 
 export function Structure_PriceTable({
         selected_equipos,
         onUpdateCantidad,
+        onAddEquipo,
+        onRemoveEquipo,
     }: Structure_PriceTable_props){
+    const { equipos } = useEquipos()
+    const [equipoToAdd, setEquipoToAdd] = useState("")
+
+    const estructuraEquipos = useMemo(
+        () => selected_equipos.filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA"),
+        [selected_equipos],
+    )
+
+    const availableEquipoOptions = useMemo(() => {
+        const selectedIds = new Set(
+            selected_equipos.map((item) => String(item.equipo_id)),
+        )
+
+        return [
+            { value: "", label: "Seleccione una estructura" },
+            ...equipos
+                .filter((equipo) =>
+                    equipo.tipo_de_producto === "ESTRUCTURA"
+                    && !selectedIds.has(String(equipo.id)),
+                )
+                .map((equipo) => ({
+                    value: String(equipo.id),
+                    label: `${equipo.cod_producto} — ${equipo.descripcion}`,
+                })),
+        ]
+    }, [equipos, selected_equipos])
+
+    function handleAddEquipo() {
+        if (!equipoToAdd) return
+
+        const equipo = equipos.find((item) => String(item.id) === equipoToAdd)
+        if (!equipo || equipo.tipo_de_producto !== "ESTRUCTURA") return
+
+        onAddEquipo(equipo)
+        setEquipoToAdd("")
+    }
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -56,64 +105,73 @@ export function Structure_PriceTable({
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Precio Total ($) + IGV
                                     </th>
+                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                        Acciones
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                    {selected_equipos.length > 0 ? (
-                                        selected_equipos.map((item) => (
+                                    {estructuraEquipos.length > 0 ? (
+                                        estructuraEquipos.map((item) => (
                                             <tr key={`${item.id}`} className="bg-white">
-                                            {item.equipo_info?.tipo_de_producto === "ESTRUCTURA" && (
-                                                <>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {item.equipo_info?.cod_producto}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {item.equipo_info?.descripcion}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {item.equipo_info?.unidad}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        <AddProductNumberField
-                                                            label="Cantidad"
-                                                            value={Number(item.cantidad)}
-                                                            min={0}
-                                                            step={0.01}
-                                                            onChange={(value) => onUpdateCantidad(item.id, value)}
-                                                        />
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_soles), "PEN")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_soles_igv), "PEN")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_dolares), "USD")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_dolares_igv), "USD")}
-                                                    </td>
-                                                    {/* Cálculo automático */}
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_soles)*Number(item.cantidad), "PEN")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_soles_igv)*Number(item.cantidad), "PEN")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_dolares)*Number(item.cantidad), "USD")}
-                                                    </td>
-                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                        {formatCurrency(Number(item.equipo_info?.precio_dolares_igv)*Number(item.cantidad), "USD")}
-                                                    </td>
-                                                </>
-                                            )}
-                                        </tr>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.equipo_info?.cod_producto}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.equipo_info?.descripcion}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.equipo_info?.unidad}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    <AddProductNumberField
+                                                        label="Cantidad"
+                                                        value={Number(item.cantidad)}
+                                                        min={0}
+                                                        step={0.01}
+                                                        onChange={(value) => onUpdateCantidad(item.id, value)}
+                                                    />
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles), "PEN")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles_igv), "PEN")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares), "USD")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares_igv), "USD")}
+                                                </td>
+                                                {/* Cálculo automático */}
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles)*Number(item.cantidad), "PEN")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles_igv)*Number(item.cantidad), "PEN")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares)*Number(item.cantidad), "USD")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares_igv)*Number(item.cantidad), "USD")}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onRemoveEquipo(item.id)}
+                                                        className="table-icon-button"
+                                                        aria-label="Eliminar ítem"
+                                                    >
+                                                        <TrashIcon />
+                                                    </button>
+                                                </td>
+                                            </tr>
                                         ))
                                     ) : (
                                         <tr className="bg-white">
-                                            <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                            <td colSpan={13} className="px-4 py-10 text-center text-slate-500">
                                                 No hay estructuras seleccionadas todavía.
                                             </td>
                                         </tr>
@@ -121,6 +179,25 @@ export function Structure_PriceTable({
 
                             </tbody>
                         </table>
+                        <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-end">
+                            <div className="min-w-0 flex-1">
+                                <AddProductSelectField
+                                    label="Agregar estructura"
+                                    value={equipoToAdd}
+                                    options={availableEquipoOptions}
+                                    onChange={setEquipoToAdd}
+                                />
+                            </div>
+                            <button
+                                type="button"
+                                onClick={handleAddEquipo}
+                                disabled={!equipoToAdd}
+                                className="table-icon-button"
+                                aria-label="Agregar ítem"
+                            >
+                                <PlusIcon />
+                            </button>
+                        </div>
                     </div>
                 </section>
             </div>

@@ -234,7 +234,11 @@ export type ResourcesTablesProps = {
     form: QuoteFormState;
     manualResourceCosts: ManualCosts;
     onUpdateEquipoCantidad: (id: string | number, cantidad: number) => void;
-    onUpdateMaterialCantidad: (id: string | number, cantidad: number) => void;  
+    onUpdateMaterialCantidad: (id: string | number, cantidad: number) => void;
+    onAddEquipo: (equipo: Equipos) => void;
+    onRemoveEquipo: (id: string | number) => void;
+    onAddMaterial: (material: Materiales) => void;
+    onRemoveMaterial: (id: string | number) => void;
 } & ManualCostHandlers;
 
 export type ViaticosTablesProps = {

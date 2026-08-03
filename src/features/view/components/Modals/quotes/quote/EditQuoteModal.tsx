@@ -20,6 +20,8 @@ import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/Reso
 import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
+import { Materiales } from "@/lib/types/supabase/materiales-types";
+import { Equipos } from "@/lib/types/supabase/equipos-types";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -81,12 +83,58 @@ export default function EditQuoteModal({
         );
     }, []);
 
+    const onAddEquipo = useCallback((equipo: Equipos) => {
+        setProjectEquipos((current) => {
+            if (current.some((item) => String(item.equipo_id) === String(equipo.id))) {
+                return current;
+            }
+
+            const nextItem: Project_Equipos = {
+                id: `local-equipo-${equipo.id}-${Date.now()}`,
+                equipo_id: String(equipo.id),
+                equipo_info: equipo,
+                proyecto_id: form.proyecto_id,
+                fecha_agregado: new Date(),
+                cantidad: "1",
+            };
+
+            return [...current, nextItem];
+        });
+    }, [form.proyecto_id]);
+
+    const onRemoveEquipo = useCallback((id: string | number) => {
+        setProjectEquipos((current) => current.filter((item) => item.id !== id));
+    }, []);
+
     const onUpdateMaterialCantidad = useCallback((id: string | number, cantidad: number) => {
         setProjectMateriales((current) =>
             current.map((item) =>
                 item.id === id ? { ...item, cantidad: String(cantidad) } : item,
             ),
         );
+    }, []);
+
+    const onAddMaterial = useCallback((material: Materiales) => {
+        setProjectMateriales((current) => {
+            if (current.some((item) => String(item.material_id) === String(material.id))) {
+                return current;
+            }
+
+            const nextItem: Project_Materiales = {
+                id: `local-material-${material.id}-${Date.now()}`,
+                material_id: String(material.id),
+                material_info: material,
+                proyecto_id: form.proyecto_id,
+                fecha_agregado: new Date(),
+                cantidad: "1",
+            };
+
+            return [...current, nextItem];
+        });
+    }, [form.proyecto_id]);
+
+    const onRemoveMaterial = useCallback((id: string | number) => {
+        setProjectMateriales((current) => current.filter((item) => item.id !== id));
     }, []);
 
     // --- rescatamos su descripción
@@ -223,6 +271,10 @@ export default function EditQuoteModal({
                             removeManualCostItem={removeManualCostItem}
                             onUpdateEquipoCantidad={onUpdateEquipoCantidad}
                             onUpdateMaterialCantidad={onUpdateMaterialCantidad}
+                            onAddEquipo={onAddEquipo}
+                            onRemoveEquipo={onRemoveEquipo}
+                            onAddMaterial={onAddMaterial}
+                            onRemoveMaterial={onRemoveMaterial}
                         />
 
                         <ViaticosTables
