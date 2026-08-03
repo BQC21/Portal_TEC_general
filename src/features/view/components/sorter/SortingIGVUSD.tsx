@@ -1,6 +1,6 @@
 import { SortingIcon } from "@/features/view/components/Icons/SortingIcon";
 import { shouldRender_ProductSortingSelection } from "@/lib/utils/helpers/sorting/sorting";
-import type { ProductSortingProps } from "@/lib/types/components/sorting"; // Tipados
+import type { ProductSortingProps } from "@/lib/types/components/Filter/sorting"; // Tipados
 
 export function Sorting_IGV_USD({ value, onSortingChange }: ProductSortingProps) {
     const { label, nextOrder } = shouldRender_ProductSortingSelection(value);
