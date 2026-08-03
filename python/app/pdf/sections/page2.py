@@ -9,24 +9,29 @@ from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
 
 from app.schemas.report import ReportPdfData
 
-
+## formatear el valor del precio
 def _money(value: float, symbol: str) -> str:
     return f"{symbol} {value:,.2f}"
 
-
+## encabezado 
 def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
-    left = [
-        Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
-        Paragraph("RUC: 20612681466", styles["small"]),
-        Paragraph("Calle Cnel Luis Arias Schreiber 135, Miraflores", styles["small"]),
-    ]
-    right = [
-        Paragraph("Pág Web: www.tec-renovables.pe", styles["right"]),
-        Paragraph("Tel: 944590566", styles["right"]),
-        Paragraph("", styles["right"]),
+    ## Añadir imagen (logo de TEC)
+    rows: list[list[Paragraph]] = [
+        [
+            Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
+            Paragraph("", styles["right"]),
+        ],
+        [
+            Paragraph("RUC: 20612681466", styles["small"]),
+            Paragraph("Pág Web: www.tec-renovables.pe", styles["right"]),
+        ],
+        [
+            Paragraph("Calle Cnel Luis Arias Schreiber 135, Miraflores", styles["small"]),
+            Paragraph("Tel: 944590566", styles["right"]),
+        ],
     ]
     table = Table(
-        [[left[0], right[0]], [left[1], right[1]], [left[2], right[2]]],
+        rows,
         colWidths=[11 * cm, 7 * cm],
     )
     table.setStyle(
@@ -43,7 +48,7 @@ def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
     )
     return table
 
-
+## Datos de cotización
 def _client_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -82,7 +87,7 @@ def _client_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
     )
     return table
 
-
+## Tablas de montos
 def _section_amount_row(title: str, amount: str, styles: dict[str, ParagraphStyle]) -> Table:
     compact_section = ParagraphStyle(
         "CompactSection",
@@ -107,7 +112,7 @@ def _section_amount_row(title: str, amount: str, styles: dict[str, ParagraphStyl
     )
     return table
 
-
+## Identificar items de la tabla
 def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[float]) -> Table:
     data = [headers, *rows] if rows else [headers, ["-", "Sin ítems", "-", "-"][: len(headers)]]
     table = Table(data, colWidths=col_widths, repeatRows=1)
@@ -129,7 +134,7 @@ def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[flo
     table.setStyle(TableStyle(style_cmds))
     return table
 
-
+## Tabla de totales
 def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -165,7 +170,7 @@ def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
     )
     return table
 
-
+## pieza final de la tabla
 def _conditions_table(styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -180,7 +185,8 @@ def _conditions_table(styles: dict[str, ParagraphStyle]) -> Table:
         ],
         [
             Paragraph("<b>FORMA DE PAGO</b>", styles["small"]),
-            Paragraph("50% Con la orden de servicio<br/>50% Al término de instalación", styles["body"]),
+            Paragraph("50% Con la orden de servicio<br/>"
+                    "50% Al término de instalación", styles["body"]),
             Paragraph(
                 "BCP $ : 194-6917620-1-58<br/>"
                 "CCI $ : 002194 0069176201 5895<br/>"
@@ -225,6 +231,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     story.append(_client_table(data, styles))
     story.append(Spacer(1, 0.2 * cm))
 
+    ## Información de Equipos y Materiales
     story.append(
         _section_amount_row(
             "EQUIPOS Y MATERIALES",
@@ -233,6 +240,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
+    ####### EQUIPOS
     idx = 1
     equipo_rows: list[list[str]] = []
     for item in data.equipos:
@@ -247,6 +255,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
     story.append(Spacer(1, 0.12 * cm))
 
+    ####### MATERIALES
     material_rows: list[list[str]] = []
     for item in data.materiales:
         material_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad or ""])
@@ -264,6 +273,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
     story.append(Spacer(1, 0.2 * cm))
 
+    ## Información de pueta en marcha
     story.append(
         _section_amount_row(
             "PUESTA EN MARCHA",

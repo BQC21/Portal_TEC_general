@@ -99,10 +99,12 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
 
     story.append(Spacer(1, 1.5 * cm))
-    story.append(Paragraph("Atentamente,", styles["body"]))
+    story.append(Paragraph("Atentamente:", styles["body"]))
     story.append(Spacer(1, 2.0 * cm))
     story.append(Paragraph("______________________", signature))
     story.append(Paragraph("<b>Ing. Jorge Guerrero Tarazona</b>", signature))
     story.append(Paragraph("Gerente General", signature))
+    story.append(Spacer(1, 2.0 * cm))
+    ## Añadir link a tec-renovables (https://tec-renovables.pe/) 
 
     return story
