@@ -2,7 +2,7 @@
 
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { EditReportModalProps } from "@/lib/types/components/modals";
+import { EditReportModalProps } from "@/lib/types/components/General/modals";
 import { useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { createReportFormStateFromReport } from "@/lib/mapping/mapping_reports";

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { MassiveUploadIcon } from "@/features/view/components/Icons/MassiveUploadIcon";
 import { MassiveUploadModal } from "@/features/view/components/Modals/Equipos/MassiveUploadModal";
-import { Button2MassiveUploadProps } from "@/lib/types/components/buttons";
+import { Button2MassiveUploadProps } from "@/lib/types/components/General/buttons";
 
 export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUploadProps) {
 	const [open, setOpen] = useState(false);

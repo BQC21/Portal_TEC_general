@@ -10,7 +10,7 @@ import {
 } from "@/lib/utils/initialValues";
 import { useMemo, useState } from "react";
 import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
-import { AddEquipoModalProps } from "@/lib/types/components/modals";
+import { AddEquipoModalProps } from "@/lib/types/components/General/modals";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";

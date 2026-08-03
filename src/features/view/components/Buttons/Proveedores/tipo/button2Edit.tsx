@@ -1,6 +1,6 @@
 "use client";
 
-import { EditTypeModalProps } from "@/lib/types/components/buttons";
+import { EditTypeModalProps } from "@/lib/types/components/General/buttons";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { useState } from "react";
 import { EditIcon } from "../../../Icons/EditIcon";

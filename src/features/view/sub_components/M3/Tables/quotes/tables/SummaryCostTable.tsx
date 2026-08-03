@@ -1,4 +1,4 @@
-import { SummaryCostTable_props } from "@/lib/types/components/module_render";
+import { SummaryCostTable_props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function SummaryCostTable({

@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { DeleteMaterialModalProps } from "@/lib/types/components/modals";
+import { DeleteMaterialModalProps } from "@/lib/types/components/General/modals";
 
 export function DeleteMaterialModal({ material, onDeleteMaterial, onClose }: DeleteMaterialModalProps) {
 

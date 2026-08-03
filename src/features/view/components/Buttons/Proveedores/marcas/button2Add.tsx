@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
-import { Button2ModalPropsBrand } from "@/lib/types/components/buttons";
+import { Button2ModalPropsBrand } from "@/lib/types/components/General/buttons";
 import { BrandFormData } from "@/lib/types/supabase/brand.types";
 import AddBrandModal from "../../../Modals/Proveedores/marcas/AddBrandModal";
 

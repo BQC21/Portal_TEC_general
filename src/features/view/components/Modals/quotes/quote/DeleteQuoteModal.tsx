@@ -1,6 +1,6 @@
 "use client";
 
-import { DeleteQuoteModalProps } from "@/lib/types/components/modals";
+import { DeleteQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { formatCurrency } from "@/lib/utils/normalization";

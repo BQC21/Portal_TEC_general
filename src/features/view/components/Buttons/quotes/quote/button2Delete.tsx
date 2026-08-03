@@ -2,7 +2,7 @@
 
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { DeleteQuoteModalProps } from "@/lib/types/components/buttons";
+import { DeleteQuoteModalProps } from "@/lib/types/components/General/buttons";
 import { DeleteQuoteModal } from "../../../Modals/quotes/quote/DeleteQuoteModal";
 
 export function Button2Trash_quote({ quote, onDeleteQuote }: DeleteQuoteModalProps) {

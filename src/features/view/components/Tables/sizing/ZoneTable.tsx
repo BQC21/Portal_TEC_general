@@ -1,6 +1,6 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/zone/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/zone/button2trash";
-import { ZoneTableProps } from "@/lib/types/components/tables";
+import { ZoneTableProps } from "@/lib/types/components/General/tables";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 

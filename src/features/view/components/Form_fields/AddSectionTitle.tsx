@@ -1,4 +1,4 @@
-import { AddProductSectionTitleProps } from "@/lib/types/components/form_fields";
+import { AddProductSectionTitleProps } from "@/lib/types/components/General/form_fields";
 
 export function AddProductSectionTitle({ title }: AddProductSectionTitleProps) {
   return (

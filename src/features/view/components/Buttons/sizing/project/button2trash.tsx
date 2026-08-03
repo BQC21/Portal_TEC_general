@@ -3,7 +3,7 @@
 import { DeleteProjectModal } from "@/features/view/components/Modals/sizing/project/DeleteProjectModal";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
-import { DeleteProjectModalProps } from "@/lib/types/components/buttons";
+import { DeleteProjectModalProps } from "@/lib/types/components/General/buttons";
 
 export function Button2Trash({ project, project_equipos, project_materiales,
     onDeleteProject, onDeleteProjectEquipos, onDeleteProjectMateriales }: DeleteProjectModalProps) {

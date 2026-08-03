@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
-import { Button2ModalPropsReport } from "@/lib/types/components/buttons";
+import { Button2ModalPropsReport } from "@/lib/types/components/General/buttons";
 import AddReportModal from "../../../Modals/quotes/report/AddReportModal";
 
 export default function Button2Add_report({onAddReport, 

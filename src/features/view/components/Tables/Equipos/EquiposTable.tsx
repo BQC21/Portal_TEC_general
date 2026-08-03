@@ -3,7 +3,7 @@ import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
 import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
 import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
-import { EquiposTableProps } from "@/lib/types/components/tables";
+import { EquiposTableProps } from "@/lib/types/components/General/tables";
 
 export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (

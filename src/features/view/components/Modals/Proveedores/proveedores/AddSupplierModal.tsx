@@ -1,6 +1,6 @@
 "use client";
 
-import { AddSupplierModalProps } from "@/lib/types/components/modals";
+import { AddSupplierModalProps } from "@/lib/types/components/General/modals";
 import { INITIAL_SUPPLIER_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";

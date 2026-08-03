@@ -1,4 +1,4 @@
-import { MarcasTableProps } from "@/lib/types/components/tables";
+import { MarcasTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
 import Button2Edit_Brand from "../../Buttons/Proveedores/marcas/button2Edit";
 import { Button2Trash_Brand } from "../../Buttons/Proveedores/marcas/button2Delete";

@@ -1,6 +1,6 @@
 "use client";
 
-import { AddTypeModalProps } from "@/lib/types/components/modals";
+import { AddTypeModalProps } from "@/lib/types/components/General/modals";
 import { INITIAL_BRAND_FORM, INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";

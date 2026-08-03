@@ -1,6 +1,6 @@
 "use client";
 
-import { DeleteSupplierModalProps } from "@/lib/types/components/buttons";
+import { DeleteSupplierModalProps } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { TrashIcon } from "../../../Icons/TrashIcon";
 import { DeleteSupplierModal } from "../../../Modals/Proveedores/proveedores/DeleteSupplierModal";

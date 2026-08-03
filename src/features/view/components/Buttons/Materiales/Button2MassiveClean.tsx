@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { MassiveCleanIcon } from "@/features/view/components/Icons/MassiveCleanIcon";
 import { MassiveCleanModal } from "@/features/view/components/Modals/Materiales/MassiveCleanModal";
-import { Button2MassiveCleanProps } from "@/lib/types/components/buttons";
+import { Button2MassiveCleanProps } from "@/lib/types/components/General/buttons";
 
 export default function Button2MassiveClean({ currentCount, onSuccess }: Button2MassiveCleanProps) {
 	const [open, setOpen] = useState(false);

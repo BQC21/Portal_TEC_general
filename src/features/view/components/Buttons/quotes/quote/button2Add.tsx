@@ -1,6 +1,6 @@
 "use client";
 
-import { Button2ModalPropsQuote } from "@/lib/types/components/buttons";
+import { Button2ModalPropsQuote } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
 import AddQuoteModal from "../../../Modals/quotes/quote/AddQuoteModal";

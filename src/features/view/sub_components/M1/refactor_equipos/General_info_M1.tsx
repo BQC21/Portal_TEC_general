@@ -1,7 +1,7 @@
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { General_info_M1_props_EQ } from "@/lib/types/components/module_render";
+import { General_info_M1_props_EQ } from "@/lib/types/components/sub_components/module_render";
 import { shouldRenderBatteryProp, shouldRenderConnectionTypeAccesories, shouldRenderConnectionTypeBattery, shouldRenderConnectionTypeInversor, shouldRenderInversorProp, shouldRenderModuloProp } from "@/lib/utils/helpers/render/render_modals";
 import { CONNECTION_TYPE_OPTIONS } from "@/lib/utils/options";
 

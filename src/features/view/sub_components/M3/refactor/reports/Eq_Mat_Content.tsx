@@ -1,4 +1,4 @@
-import { Eq_Mat_Content_Props } from "@/lib/types/components/module_render";
+import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
 
 export function Eq_Mat_Content({
     title, precioFinal, Eq_Mt,

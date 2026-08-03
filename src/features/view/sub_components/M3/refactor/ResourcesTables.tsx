@@ -1,4 +1,4 @@
-import { ResourcesTablesProps } from "@/lib/types/components/module_render";
+import { ResourcesTablesProps } from "@/lib/types/components/sub_components/module_render";
 import { SummaryCostTable1 } from "../Tables/quotes/tables/SummaryCostTable1";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 import { EP_PriceTable } from "../Tables/quotes/subtables/Recursos/EP_PriceTable";

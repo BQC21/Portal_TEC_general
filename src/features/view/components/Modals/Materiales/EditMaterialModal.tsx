@@ -17,7 +17,7 @@ import {
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
-import { EditMaterialModalProps } from "@/lib/types/components/modals";
+import { EditMaterialModalProps } from "@/lib/types/components/General/modals";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import {
     getModalCascadeOptions,

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import AddZoneModal  from "@/features/view/components/Modals/sizing/zone/AddZoneModal";
 import type { ZoneFormData } from "@/lib/types/supabase/zone-types";
-import { Button2ModalPropsZone } from "@/lib/types/components/buttons";
+import { Button2ModalPropsZone } from "@/lib/types/components/General/buttons";
 
 export default function Button2Modal_zone({ onAddZone }: Button2ModalPropsZone) {
     const [open, setOpen] = useState(false);

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { EditReportModalProps } from "@/lib/types/components/buttons";
+import { EditReportModalProps } from "@/lib/types/components/General/buttons";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import EditReportModal from "../../../Modals/quotes/report/EditReportModal";
 

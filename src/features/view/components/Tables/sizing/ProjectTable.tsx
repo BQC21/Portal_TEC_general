@@ -6,7 +6,7 @@ import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
-import { ProjectTableProps } from "@/lib/types/components/tables";
+import { ProjectTableProps } from "@/lib/types/components/General/tables";
 
 export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
     onUpdateProject, onDeleteProject,

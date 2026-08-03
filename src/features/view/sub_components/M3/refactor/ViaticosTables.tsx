@@ -1,4 +1,4 @@
-import { ViaticosTablesProps } from "@/lib/types/components/module_render";
+import { ViaticosTablesProps } from "@/lib/types/components/sub_components/module_render";
 import { SummaryCostTable2 } from "../Tables/quotes/tables/SummaryCostTable2";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 import { Courier_PriceTable } from "../Tables/quotes/subtables/Viaticos/Courier_PriceTable";

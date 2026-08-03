@@ -5,7 +5,7 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
-import { EditSupplierModalProps } from "@/lib/types/components/modals";
+import { EditSupplierModalProps } from "@/lib/types/components/General/modals";
 import { createSupplierFormStateFromSupplier } from "@/lib/mapping/mapping_proveedores";
 
 export default function EditSupplierModal({ existingSupplier, onUpdateSupplier, onClose }: EditSupplierModalProps) {

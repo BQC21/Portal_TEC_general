@@ -2,7 +2,7 @@ import { AddProductDateField } from "@/features/view/components/Form_fields/AddD
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { Quote_selectedProps } from "@/lib/types/components/module_render";
+import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { formatDate_DMY } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export function ReportDataInput({

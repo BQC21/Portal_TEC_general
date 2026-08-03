@@ -1,15 +1,15 @@
-import { Brand } from "../supabase/brand.types";
-import { Equipos } from "../supabase/equipos-types";
-import { Materiales } from "../supabase/materiales-types";
-import { Product, SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
-import { Project } from "../supabase/project-types";
-import { Project_Equipos } from "../supabase/project_equipos_join";
-import { Project_Materiales } from "../supabase/project_materiales_join";
-import { Quote } from "../supabase/quote-types";
-import { Report } from "../supabase/report-types";
-import { Supplier } from "../supabase/supplier-types";
-import { Type } from "../supabase/type-types";
-import { Zone } from "../supabase/zone-types";
+import { Brand } from "../../supabase/brand.types";
+import { Equipos } from "../../supabase/equipos-types";
+import { Materiales } from "../../supabase/materiales-types";
+import { Product, SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
+import { Project } from "../../supabase/project-types";
+import { Project_Equipos } from "../../supabase/project_equipos_join";
+import { Project_Materiales } from "../../supabase/project_materiales_join";
+import { Quote } from "../../supabase/quote-types";
+import { Report } from "../../supabase/report-types";
+import { Supplier } from "../../supabase/supplier-types";
+import { Type } from "../../supabase/type-types";
+import { Zone } from "../../supabase/zone-types";
 
 // zonas
 export type ZoneTableProps = {

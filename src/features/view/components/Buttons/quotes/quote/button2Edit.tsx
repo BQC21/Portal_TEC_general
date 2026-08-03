@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
-import { EditQuoteModalProps } from "@/lib/types/components/buttons";
+import { EditQuoteModalProps } from "@/lib/types/components/General/buttons";
 import EditQuoteModal from "../../../Modals/quotes/quote/EditQuoteModal";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 

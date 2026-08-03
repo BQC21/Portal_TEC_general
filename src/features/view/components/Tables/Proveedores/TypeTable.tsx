@@ -1,4 +1,4 @@
-import { TiposTableProps } from "@/lib/types/components/tables";
+import { TiposTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
 import Button2Edit_Type from "../../Buttons/Proveedores/tipo/button2Edit";
 import { Button2Trash_Type } from "../../Buttons/Proveedores/tipo/button2Delete";

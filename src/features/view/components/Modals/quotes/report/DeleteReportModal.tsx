@@ -2,7 +2,7 @@
 
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
-import { DeleteReportModalProps } from "@/lib/types/components/modals";
+import { DeleteReportModalProps } from "@/lib/types/components/General/modals";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function DeleteReportModal({report, onDeleteReport, onClose}: DeleteReportModalProps){

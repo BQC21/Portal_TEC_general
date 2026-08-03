@@ -1,4 +1,4 @@
-import { QuoteReportTable_Props } from "@/lib/types/components/module_render";
+import { QuoteReportTable_Props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function QuoteReportTable({

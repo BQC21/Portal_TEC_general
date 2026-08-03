@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { AddEquipoModal } from "../../Modals/Equipos/AddEquipoModal";
-import { Button2ModalPropsEquipos } from "@/lib/types/components/buttons";
+import { Button2ModalPropsEquipos } from "@/lib/types/components/General/buttons";
 
 export default function Button2Modal({existingEquipos, onAddEquipos }: Button2ModalPropsEquipos) {
     const [open, setOpen] = useState(false);

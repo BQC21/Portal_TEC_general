@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
 import { createEquiposFormStateFromEquipos } from "@/lib/mapping/mapping_equipos";
-import { EditEquipoModalProps } from "@/lib/types/components/modals";
+import { EditEquipoModalProps } from "@/lib/types/components/General/modals";
 import {
     INITIAL_BRAND_FORM,
     INITIAL_SUPPLIER_FORM,

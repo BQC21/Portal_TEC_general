@@ -1,6 +1,6 @@
 import { SelectionRow } from "../../../components/Form_fields/AddSelectionRow";
 import { handlerSelector } from "../../../hooks/modals/Sizing/useHandlerSelector";
-import { Selectors_M2Props } from "@/lib/types/components/module_render";
+import { Selectors_M2Props } from "@/lib/types/components/sub_components/module_render";
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
     form, computedRequirements, equipos, materiales, selectedEquipmentByRow, selectedMaterialByRow, 

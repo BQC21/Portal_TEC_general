@@ -1,7 +1,7 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import { FilterKey } from "@/lib/utils/options";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
-import { EquiposFiltersProps } from "@/lib/types/components/filter_tables";
+import { EquiposFiltersProps } from "@/lib/types/components/Filter/filter_tables";
 
 const FILTERS = [
     {

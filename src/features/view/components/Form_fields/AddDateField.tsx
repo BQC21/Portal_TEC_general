@@ -1,4 +1,4 @@
-import { AddProductDateFieldProps } from "@/lib/types/components/form_fields";
+import { AddProductDateFieldProps } from "@/lib/types/components/General/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
 
 export function AddProductDateField({

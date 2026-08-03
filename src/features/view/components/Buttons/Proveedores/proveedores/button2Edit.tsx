@@ -1,6 +1,6 @@
 "use client";
 
-import { EditSupplierModalProps } from "@/lib/types/components/buttons";
+import { EditSupplierModalProps } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { EditIcon } from "../../../Icons/EditIcon";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";

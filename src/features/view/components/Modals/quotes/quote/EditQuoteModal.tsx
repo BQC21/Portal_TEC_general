@@ -1,6 +1,6 @@
 "use client"
 
-import { EditQuoteModalProps } from "@/lib/types/components/modals";
+import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
 import { useCallback, useEffect, useState } from "react";

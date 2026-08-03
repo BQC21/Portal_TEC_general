@@ -3,7 +3,7 @@ import { AddProductNumberField } from "../../../components/Form_fields/AddNumber
 import { SetStateAction } from "react";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { Tables_M2_props } from "@/lib/types/components/module_render";
+import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){

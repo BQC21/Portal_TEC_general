@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { AddMaterialModal } from "../../Modals/Materiales/AddMaterialModal";
-import { Button2ModalPropsMateriales } from "@/lib/types/components/buttons";
+import { Button2ModalPropsMateriales } from "@/lib/types/components/General/buttons";
 
 
 export default function Button2Modal({existingMateriales, onAddMateriales }: Button2ModalPropsMateriales) {

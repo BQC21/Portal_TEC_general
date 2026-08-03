@@ -12,7 +12,7 @@ import { AddProductTextField } from "@/features/view/components//Form_fields/Add
 
 import { INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
-import { AddZoneModalProps } from "@/lib/types/components/modals";
+import { AddZoneModalProps } from "@/lib/types/components/General/modals";
 
 export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) {
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);

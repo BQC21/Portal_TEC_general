@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TrashIcon } from "../../../Icons/TrashIcon";
-import { DeleteBrandModalProps } from "@/lib/types/components/buttons";
+import { DeleteBrandModalProps } from "@/lib/types/components/General/buttons";
 import { DeleteBrandModal } from "../../../Modals/Proveedores/marcas/DeleteBrandModal";
 
 export function Button2Trash_Brand({ brand, onDeleteBrand }: DeleteBrandModalProps) {

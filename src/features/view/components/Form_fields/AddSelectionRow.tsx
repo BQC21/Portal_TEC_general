@@ -1,4 +1,4 @@
-import { SelectionRowProps } from "@/lib/types/components/form_fields";
+import { SelectionRowProps } from "@/lib/types/components/General/form_fields";
 import { AddProductSelectField } from "./AddSelectField";
 
 const selectionRowStyles = "grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1.35fr)_auto] lg:items-end";

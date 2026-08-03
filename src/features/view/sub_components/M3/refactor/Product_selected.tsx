@@ -1,6 +1,6 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { Product_selectedProps } from "@/lib/types/components/module_render";
+import { Product_selectedProps } from "@/lib/types/components/sub_components/module_render";
 
 export function Product_selected({
     equiposDescriptions,

@@ -1,4 +1,4 @@
-import { AddProductSelectFieldProps, SelectOption } from "@/lib/types/components/form_fields";
+import { AddProductSelectFieldProps, SelectOption } from "@/lib/types/components/General/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
 
 function normalizeOptions(options: AddProductSelectFieldProps["options"]): SelectOption[] {

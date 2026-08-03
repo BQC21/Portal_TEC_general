@@ -1,4 +1,4 @@
-import { AddReadonlyFieldProps } from "@/lib/types/components/form_fields";
+import { AddReadonlyFieldProps } from "@/lib/types/components/General/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
 
 export function AddEquipoReadonlyField({ label, value, colorClass = "text-slate-700" }: AddReadonlyFieldProps) {

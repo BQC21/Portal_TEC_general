@@ -1,4 +1,4 @@
-import { SelectOption } from "@/lib/types/components/form_fields";
+import { SelectOption } from "@/lib/types/components/General/form_fields";
 
 export function formatProductOptionLabel(cod_producto: string, descripcion: string): string {
     return `(${cod_producto}) - ${descripcion}`;

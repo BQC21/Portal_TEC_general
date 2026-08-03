@@ -1,6 +1,6 @@
 "use client";
 
-import { EditBrandModalProps } from "@/lib/types/components/buttons";
+import { EditBrandModalProps } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { EditIcon } from "../../../Icons/EditIcon";
 import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";

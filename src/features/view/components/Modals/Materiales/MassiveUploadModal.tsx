@@ -17,7 +17,7 @@ import {
 import { toSafeNumber } from "@/lib/utils/normalization";
 
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
-import { MassiveUploadModalProps } from "@/lib/types/components/modals";
+import { MassiveUploadModalProps } from "@/lib/types/components/General/modals";
 
 type MaterialesMatchedSheet = {
 	sheetName: string;

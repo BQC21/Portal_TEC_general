@@ -2,7 +2,7 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
-import { Data_info_M1_props } from "@/lib/types/components/module_render";
+import { Data_info_M1_props } from "@/lib/types/components/sub_components/module_render";
 
 function matchesProductCategory(
     categoria: string | undefined,

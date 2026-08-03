@@ -3,7 +3,7 @@
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { useState } from "react";
 import { DeleteMaterialModal } from "../../Modals/Materiales/DeleteMaterialModal";
-import { DeleteMaterialModalProps } from "@/lib/types/components/buttons";
+import { DeleteMaterialModalProps } from "@/lib/types/components/General/buttons";
 
 export function Button2Trash({ material, onDeleteMaterial }: DeleteMaterialModalProps) {
     const [open, setOpen] = useState(false);

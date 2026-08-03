@@ -1,4 +1,4 @@
-import { AddProductFieldLabelProps } from "@/lib/types/components/form_fields";
+import { AddProductFieldLabelProps } from "@/lib/types/components/General/form_fields";
 
 export function AddProductFieldLabel({ label, required }: AddProductFieldLabelProps) {
   return (

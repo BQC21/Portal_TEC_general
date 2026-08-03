@@ -1,7 +1,7 @@
 "use client";
 
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
-import { DeleteReportModalProps } from "@/lib/types/components/buttons";
+import { DeleteReportModalProps } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { DeleteReportModal } from "../../../Modals/quotes/report/DeleteReportModal";
 

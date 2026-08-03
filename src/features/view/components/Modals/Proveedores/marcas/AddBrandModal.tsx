@@ -1,6 +1,6 @@
 "use client";
 
-import { AddBrandModalProps } from "@/lib/types/components/modals";
+import { AddBrandModalProps } from "@/lib/types/components/General/modals";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { INITIAL_BRAND_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
-import { EditBrandModalProps } from "@/lib/types/components/modals";
+import { EditBrandModalProps } from "@/lib/types/components/General/modals";
 import { createBrandFormStateFromBrand } from "@/lib/mapping/mapping_marcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 

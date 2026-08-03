@@ -1,4 +1,4 @@
-import { QuoteTableProps } from "@/lib/types/components/tables";
+import { QuoteTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_QUOTE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";

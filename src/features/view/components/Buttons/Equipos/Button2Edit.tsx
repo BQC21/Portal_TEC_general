@@ -3,7 +3,7 @@
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import { useState } from "react";
 import { EditEquipoModal } from "../../Modals/Equipos/EditEquipoModal";
-import { EditEquiposModalProps } from "@/lib/types/components/buttons";
+import { EditEquiposModalProps } from "@/lib/types/components/General/buttons";
 
 export function Button2Edit({ equipo, onUpdateEquipo }: EditEquiposModalProps) {
     const [open, setOpen] = useState(false);

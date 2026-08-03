@@ -21,7 +21,7 @@ import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
-import { AddMProjectodalProps } from "@/lib/types/components/modals";
+import { AddMProjectodalProps } from "@/lib/types/components/General/modals";
 import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
 import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
 import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";

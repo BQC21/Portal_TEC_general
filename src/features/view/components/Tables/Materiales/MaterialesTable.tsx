@@ -3,7 +3,7 @@ import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_i
 import { toSafeNumber } from "@/lib/utils/normalization";
 import { Button2Edit } from "../../Buttons/Materiales/Button2Edit";
 import { Button2Trash } from "../../Buttons/Materiales/Button2Trash";
-import { MaterialesTableProps } from "@/lib/types/components/tables";
+import { MaterialesTableProps } from "@/lib/types/components/General/tables";
 
 export function MaterialesTable({ materiales, totalMateriales, 
     onUpdateMateriales, onDeleteMateriales}: MaterialesTableProps) {

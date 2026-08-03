@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
-import { EditTypeModalProps } from "@/lib/types/components/modals";
+import { EditTypeModalProps } from "@/lib/types/components/General/modals";
 import { createTypeFormStateFromType } from "@/lib/mapping/mapping_type";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 

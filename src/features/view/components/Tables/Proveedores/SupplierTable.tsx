@@ -1,4 +1,4 @@
-import { ProveedoresTableProps } from "@/lib/types/components/tables";
+import { ProveedoresTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import Button2Edit_Supplier from "../../Buttons/Proveedores/proveedores/button2Edit";
 import { Button2Trash_Supplier } from "../../Buttons/Proveedores/proveedores/button2Delete";

@@ -1,6 +1,6 @@
 "use client";
 
-import { CollapsibleTableSectionProps } from "@/lib/types/components/Shell";
+import { CollapsibleTableSectionProps } from "@/lib/types/components/General/Shell";
 import { useState } from "react";
 
 export function CollapsibleTableSection({

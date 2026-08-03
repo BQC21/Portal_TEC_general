@@ -1,33 +1,33 @@
 import { SetStateAction } from "react";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "../supabase/product-types";
-import { computedRequirements } from "./Sizing/computes";
-import { ProjectFormState } from "../supabase/project-types";
-import { Equipos, EquiposFormState } from "../supabase/equipos-types";
-import { Materiales, MaterialesFormState } from "../supabase/materiales-types";
-import { Zone, ZoneFormState } from "../supabase/zone-types";
-import { QuoteFormState } from "../supabase/quote-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
+import { computedRequirements } from "../Sizing/computes";
+import { ProjectFormState } from "../../supabase/project-types";
+import { Equipos, EquiposFormState } from "../../supabase/equipos-types";
+import { Materiales, MaterialesFormState } from "../../supabase/materiales-types";
+import { Zone, ZoneFormState } from "../../supabase/zone-types";
+import { QuoteFormState } from "../../supabase/quote-types";
 import {
     ManualCosts,
     MontoItem,
     PersonalItem,
     QuantityPriceItem,
-} from "./Quotes/manual_resources";
+} from "../Quotes/manual_resources";
 import {
     grossMargin as GrossMarginCompute,
     precioFinal,
     recursos,
     viaticos,
-} from "./Quotes/finantial_computes";
-import { Project_Equipos } from "../supabase/project_equipos_join";
-import { Project_Materiales } from "../supabase/project_materiales_join";
+} from "../Quotes/finantial_computes";
+import { Project_Equipos } from "../../supabase/project_equipos_join";
+import { Project_Materiales } from "../../supabase/project_materiales_join";
 import {
     ManualCostArraySection,
     ManualCostMontoSection,
 } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
-import { ReportFormState } from "../supabase/report-types";
-import { Brand, BrandFormstate } from "../supabase/brand.types";
-import { Supplier, SupplierFormstate } from "../supabase/supplier-types";
-import { Type, TypeFormstate } from "../supabase/type-types";
+import { ReportFormState } from "../../supabase/report-types";
+import { Brand, BrandFormstate } from "../../supabase/brand.types";
+import { Supplier, SupplierFormstate } from "../../supabase/supplier-types";
+import { Type, TypeFormstate } from "../../supabase/type-types";
 
 // -----
 // M1

@@ -1,4 +1,4 @@
-import { MO_Content_Props } from "@/lib/types/components/module_render";
+import { MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
 
 export function MO_Content({
     title, precioFinal, MO

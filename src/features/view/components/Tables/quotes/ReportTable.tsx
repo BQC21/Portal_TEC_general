@@ -1,4 +1,4 @@
-import { ReportTableProps } from "@/lib/types/components/tables";
+import { ReportTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_REPORT } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";

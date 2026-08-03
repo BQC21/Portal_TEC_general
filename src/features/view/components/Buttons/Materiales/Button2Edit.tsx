@@ -3,7 +3,7 @@
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import { useState } from "react";
 import { EditMaterialModal } from "../../Modals/Materiales/EditMaterialModal";
-import { EditMaterialesModalProps } from "@/lib/types/components/buttons";
+import { EditMaterialesModalProps } from "@/lib/types/components/General/buttons";
 
 export function Button2Edit({ material, onUpdateMateriales }: EditMaterialesModalProps) {
     const [open, setOpen] = useState(false);

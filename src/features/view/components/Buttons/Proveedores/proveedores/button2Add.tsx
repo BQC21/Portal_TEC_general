@@ -1,6 +1,6 @@
 "use client";
 
-import { Button2ModalPropsSupplier } from "@/lib/types/components/buttons";
+import { Button2ModalPropsSupplier } from "@/lib/types/components/General/buttons";
 import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
 import { SupplierFormData } from "@/lib/types/supabase/supplier-types";

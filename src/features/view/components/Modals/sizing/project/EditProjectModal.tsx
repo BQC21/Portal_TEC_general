@@ -32,7 +32,7 @@ import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyFi
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
-import { EditProjectModalProps } from "@/lib/types/components/modals";
+import { EditProjectModalProps } from "@/lib/types/components/General/modals";
 import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
 import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
 import { useSelectionHandlers } from "@/features/view/hooks/modals/Sizing/useSelectionHandlers";

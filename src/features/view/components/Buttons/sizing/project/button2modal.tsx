@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import AddProjectModal from "@/features/view/components/Modals/sizing/project/AddProjectModal";
-import { Button2ModalPropsProject } from "@/lib/types/components/buttons";
+import { Button2ModalPropsProject } from "@/lib/types/components/General/buttons";
 
 export default function Button2Modal({ onAddProject }: Button2ModalPropsProject) {
     const [open, setOpen] = useState(false);

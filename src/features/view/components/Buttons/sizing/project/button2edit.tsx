@@ -4,7 +4,7 @@ import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import EditProjectModal from "@/features/view/components/Modals/sizing/project/EditProjectModal";
 import type { Project, ProjectFormData } from "@/lib/types/supabase/project-types";
-import { EditProjectModalProps } from "@/lib/types/components/buttons";
+import { EditProjectModalProps } from "@/lib/types/components/General/buttons";
 
 export default function Button2Edit({ project, project_equipos, project_materiales,
     onUpdateProject }: EditProjectModalProps) {

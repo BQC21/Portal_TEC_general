@@ -1,4 +1,4 @@
-import { Price_info_M1_props } from "@/lib/types/components/module_render";
+import { Price_info_M1_props } from "@/lib/types/components/sub_components/module_render";
 import { AddProductSectionTitle } from "../../components/Form_fields/AddSectionTitle";
 import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
 import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";

@@ -1,4 +1,4 @@
-import { AddProductTextFieldProps } from "@/lib/types/components/form_fields";
+import { AddProductTextFieldProps } from "@/lib/types/components/General/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
 
 export function AddProductTextAreaField({

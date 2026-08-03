@@ -10,7 +10,7 @@ import {
 import { useMemo, useState } from "react";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
-import { AddMaterialModalProps } from "@/lib/types/components/modals";
+import { AddMaterialModalProps } from "@/lib/types/components/General/modals";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";

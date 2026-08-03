@@ -17,7 +17,7 @@ import {
 
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { toSafeNumber } from "@/lib/utils/normalization";
-import { MassiveUploadModalProps } from "@/lib/types/components/modals";
+import { MassiveUploadModalProps } from "@/lib/types/components/General/modals";
 
 type EquipoMatchedSheet = {
 	sheetName: string;

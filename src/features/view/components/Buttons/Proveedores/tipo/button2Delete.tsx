@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TrashIcon } from "../../../Icons/TrashIcon";
-import { DeleteTypeModalProps } from "@/lib/types/components/buttons";
+import { DeleteTypeModalProps } from "@/lib/types/components/General/buttons";
 import { DeleteTypeModal } from "../../../Modals/Proveedores/tipo/DeleteTypeModal";
 
 export function Button2Trash_Type({ type, onDeleteType }: DeleteTypeModalProps) {
