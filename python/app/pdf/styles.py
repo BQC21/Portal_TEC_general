@@ -6,6 +6,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 def _styles() -> dict[str, ParagraphStyle]:
     base = getSampleStyleSheet()
     return {
+        ## titulo
         "title": ParagraphStyle(
             "TitleCot",
             parent=base["Heading1"],
@@ -14,6 +15,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=12,
             textColor=colors.HexColor("#0f172a"),
         ),
+        ## seccion
         "section": ParagraphStyle(
             "SectionCot",
             parent=base["Heading2"],
@@ -22,6 +24,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             spaceAfter=6,
             textColor=colors.HexColor("#0f172a"),
         ),
+        ## cuerpo izq.
         "body": ParagraphStyle(
             "BodyCot",
             parent=base["Normal"],
@@ -29,6 +32,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             leading=12,
             alignment=TA_LEFT,
         ),
+        ## texto pequeño (notas secundarias)
         "small": ParagraphStyle(
             "SmallCot",
             parent=base["Normal"],
@@ -36,6 +40,7 @@ def _styles() -> dict[str, ParagraphStyle]:
             leading=10,
             textColor=colors.HexColor("#334155"),
         ),
+        ## cuerpo der.
         "right": ParagraphStyle(
             "RightCot",
             parent=base["Normal"],
