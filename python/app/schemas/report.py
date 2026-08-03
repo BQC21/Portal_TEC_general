@@ -14,6 +14,8 @@ NumberLike = Union[str, int, float, None]
 
 
 class ProductInfo(BaseModel):
+    """Datos de catálogo embebidos en equipo/material."""
+
     model_config = ConfigDict(extra="ignore")
 
     cod_producto: Optional[str] = None
@@ -23,6 +25,8 @@ class ProductInfo(BaseModel):
 
 
 class EquipoItem(BaseModel):
+    """Ítem de equipo enviado desde el Form."""
+
     model_config = ConfigDict(extra="ignore")
 
     cantidad: NumberLike = None
@@ -30,6 +34,8 @@ class EquipoItem(BaseModel):
 
 
 class MaterialItem(BaseModel):
+    """Ítem de material enviado desde el Form."""
+
     model_config = ConfigDict(extra="ignore")
 
     cantidad: NumberLike = None
@@ -37,12 +43,16 @@ class MaterialItem(BaseModel):
 
 
 class ProyectoInfo(BaseModel):
+    """Proyecto embebido en la cotización."""
+
     model_config = ConfigDict(extra="ignore")
 
     nombre: Optional[str] = None
 
 
 class CotizacionInfo(BaseModel):
+    """Cotización seleccionada en el Form."""
+
     model_config = ConfigDict(extra="ignore")
 
     cod_cotizacion: Optional[str] = None
@@ -72,8 +82,11 @@ class ReportFormPayload(BaseModel):
 
 
 class PdfLineItem(BaseModel):
-    index: int
-    codigo: str = ""
+    """Fila lista para tablas del PDF."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    index: int = 0
     descripcion: str = ""
     unidad: str = ""
     cantidad: str = ""
@@ -81,6 +94,8 @@ class PdfLineItem(BaseModel):
 
 class ReportPdfData(BaseModel):
     """Modelo interno listo para dibujar el PDF."""
+
+    model_config = ConfigDict(extra="ignore")
 
     cliente: str = ""
     ruc_dni: str = ""
