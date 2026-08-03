@@ -22,7 +22,7 @@ def generate_report_pdf(data: ReportPdfData) -> tuple[bytes, str]:
         topMargin=1.5 * cm,
         bottomMargin=1.5 * cm,
         title=data.cod_cotizacion or "Cotización",
-        author="Portal TEC",
+        author="TEC",
     )
     doc.build(build_story(data))
     return buffer.getvalue(), data.filename
