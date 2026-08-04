@@ -2,39 +2,77 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import cm
-from reportlab.platypus import Paragraph, Spacer, Table, TableStyle
+from reportlab.platypus import Flowable, Image, Paragraph, Spacer, Table, TableStyle
 
 from app.schemas.report import ReportPdfData
 
-## formatear el valor del precio
+_ASSETS = Path(__file__).resolve().parents[3] / "assets" / "images"
+
+
+def _rl_image(name: str, width: float, height: float | None = None) -> Image | Spacer:
+    path = _ASSETS / name
+    if not path.exists():
+        return Spacer(width, height or 0.5 * cm)
+    if height is None:
+        return Image(str(path), width=width)
+    return Image(str(path), width=width, height=height)
+
+
+class _LeftMarginDetail(Flowable):
+    """Dibuja Detail_2 en el margen izquierdo sin consumir alto del flujo."""
+
+    def __init__(self, filename: str, width: float, height: float, x_offset: float = -0.35 * cm):
+        super().__init__()
+        self.path = str(_ASSETS / filename)
+        self.img_w = width
+        self.img_h = height
+        self.x_offset = x_offset
+        self.width = 0
+        self.height = 0
+
+    def draw(self) -> None:
+        if not Path(self.path).exists():
+            return
+        self.canv.drawImage(
+            self.path,
+            self.x_offset,
+            -self.img_h + 0.4 * cm,
+            width=self.img_w,
+            height=self.img_h,
+            mask="auto",
+            preserveAspectRatio=True,
+            anchor="c",
+        )
+
+
 def _money(value: float, symbol: str) -> str:
     return f"{symbol} {value:,.2f}"
 
-## encabezado 
+
 def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
-    ## Añadir imagen (logo de TEC)
-    rows: list[list[Paragraph]] = [
+    """Logo TEC + datos de empresa (referencia pág. 2)."""
+    logo = _rl_image("Tec_ES_logo.png", width=3.8 * cm)
+    info = [
         [
             Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
-            Paragraph("", styles["right"]),
-        ],
-        [
-            Paragraph("RUC: 20612681466", styles["small"]),
             Paragraph("Pág Web: www.tec-renovables.pe", styles["right"]),
         ],
         [
-            Paragraph("Calle Cnel Luis Arias Schreiber 135, Miraflores", styles["small"]),
+            Paragraph("RUC: 20612681466", styles["small"]),
             Paragraph("Tel: 944590566", styles["right"]),
         ],
+        [
+            Paragraph("Calle Cnel Luis Arias Schreiber 135, Miraflores", styles["small"]),
+            Paragraph("", styles["right"]),
+        ],
     ]
-    table = Table(
-        rows,
-        colWidths=[11 * cm, 7 * cm],
-    )
-    table.setStyle(
+    info_table = Table(info, colWidths=[8.2 * cm, 5.0 * cm])
+    info_table.setStyle(
         TableStyle(
             [
                 ("VALIGN", (0, 0), (-1, -1), "TOP"),
@@ -42,13 +80,26 @@ def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
                 ("RIGHTPADDING", (0, 0), (-1, -1), 0),
                 ("TOPPADDING", (0, 0), (-1, -1), 1),
                 ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
-                ("LINEBELOW", (0, -1), (-1, -1), 1, colors.HexColor("#0f172a")),
+            ]
+        )
+    )
+
+    table = Table([[logo, info_table]], colWidths=[4.6 * cm, 13.4 * cm])
+    table.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("LEFTPADDING", (0, 0), (-1, -1), 0),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 4),
+                ("TOPPADDING", (0, 0), (-1, -1), 0),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                ("LINEBELOW", (0, 0), (-1, -1), 1, colors.HexColor("#0f172a")),
             ]
         )
     )
     return table
 
-## Datos de cotización
+
 def _client_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -78,16 +129,16 @@ def _client_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
                 ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#cbd5e1")),
                 ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.HexColor("#e2e8f0")),
                 ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                ("LEFTPADDING", (0, 0), (-1, -1), 6),
-                ("RIGHTPADDING", (0, 0), (-1, -1), 6),
-                ("TOPPADDING", (0, 0), (-1, -1), 4),
-                ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
+                ("LEFTPADDING", (0, 0), (-1, -1), 5),
+                ("RIGHTPADDING", (0, 0), (-1, -1), 5),
+                ("TOPPADDING", (0, 0), (-1, -1), 2),
+                ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
             ]
         )
     )
     return table
 
-## Tablas de montos
+
 def _section_amount_row(title: str, amount: str, styles: dict[str, ParagraphStyle]) -> Table:
     compact_section = ParagraphStyle(
         "CompactSection",
@@ -112,7 +163,7 @@ def _section_amount_row(title: str, amount: str, styles: dict[str, ParagraphStyl
     )
     return table
 
-## Identificar items de la tabla
+
 def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[float]) -> Table:
     data = [headers, *rows] if rows else [headers, ["-", "Sin ítems", "-", "-"][: len(headers)]]
     table = Table(data, colWidths=col_widths, repeatRows=1)
@@ -120,13 +171,13 @@ def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[flo
         ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#64748b")),
         ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
         ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
-        ("FONTSIZE", (0, 0), (-1, -1), 7.5),
+        ("FONTSIZE", (0, 0), (-1, -1), 7),
         ("GRID", (0, 0), (-1, -1), 0.4, colors.HexColor("#cbd5e1")),
         ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-        ("LEFTPADDING", (0, 0), (-1, -1), 3),
-        ("RIGHTPADDING", (0, 0), (-1, -1), 3),
-        ("TOPPADDING", (0, 0), (-1, -1), 2),
-        ("BOTTOMPADDING", (0, 0), (-1, -1), 2),
+        ("LEFTPADDING", (0, 0), (-1, -1), 2),
+        ("RIGHTPADDING", (0, 0), (-1, -1), 2),
+        ("TOPPADDING", (0, 0), (-1, -1), 1),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 1),
     ]
     for i in range(1, len(data)):
         bg = colors.white if i % 2 else colors.HexColor("#f1f5f9")
@@ -134,7 +185,7 @@ def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[flo
     table.setStyle(TableStyle(style_cmds))
     return table
 
-## Tabla de totales
+
 def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -170,7 +221,7 @@ def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
     )
     return table
 
-## pieza final de la tabla
+
 def _conditions_table(styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
@@ -185,8 +236,10 @@ def _conditions_table(styles: dict[str, ParagraphStyle]) -> Table:
         ],
         [
             Paragraph("<b>FORMA DE PAGO</b>", styles["small"]),
-            Paragraph("50% Con la orden de servicio<br/>"
-                    "50% Al término de instalación", styles["body"]),
+            Paragraph(
+                "50% Con la orden de servicio<br/>50% Al término de instalación",
+                styles["body"],
+            ),
             Paragraph(
                 "BCP $ : 194-6917620-1-58<br/>"
                 "CCI $ : 002194 0069176201 5895<br/>"
@@ -217,21 +270,18 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     title = ParagraphStyle(
         "QuoteTitle",
         parent=styles["title"],
-        fontSize=13,
-        spaceBefore=2,
-        spaceAfter=4,
+        fontSize=12,
+        spaceBefore=0,
+        spaceAfter=2,
     )
     story: list = []
     story.append(_company_header(styles))
-    story.append(Spacer(1, 0.15 * cm))
+    story.append(Spacer(1, 0.08 * cm))
     story.append(Paragraph("COTIZACIÓN", title))
-    if data.cod_cotizacion:
-        story.append(Paragraph(f"Código: {data.cod_cotizacion}", styles["small"]))
-    story.append(Spacer(1, 0.15 * cm))
+    story.append(Spacer(1, 0.08 * cm))
     story.append(_client_table(data, styles))
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Spacer(1, 0.1 * cm))
 
-    ## Información de Equipos y Materiales
     story.append(
         _section_amount_row(
             "EQUIPOS Y MATERIALES",
@@ -240,7 +290,6 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    ####### EQUIPOS
     idx = 1
     equipo_rows: list[list[str]] = []
     for item in data.equipos:
@@ -253,14 +302,12 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             [1 * cm, 11 * cm, 3 * cm, 3 * cm],
         )
     )
-    story.append(Spacer(1, 0.12 * cm))
+    story.append(Spacer(1, 0.08 * cm))
 
-    ####### MATERIALES
     material_rows: list[list[str]] = []
     for item in data.materiales:
         material_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad or ""])
         idx += 1
-    # Si no hay materiales tipados, línea genérica como en la referencia
     if not material_rows:
         material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""])
         idx += 1
@@ -271,9 +318,8 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             [1 * cm, 11 * cm, 3 * cm, 3 * cm],
         )
     )
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Spacer(1, 0.1 * cm))
 
-    ## Información de pueta en marcha
     story.append(
         _section_amount_row(
             "PUESTA EN MARCHA",
@@ -289,9 +335,9 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             [1.5 * cm, 16.5 * cm],
         )
     )
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Spacer(1, 0.1 * cm))
     story.append(_totals_table(data, styles))
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Spacer(1, 0.1 * cm))
     story.append(_conditions_table(styles))
 
     return story
