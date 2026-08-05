@@ -14,6 +14,7 @@ import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/repo
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
+import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -145,6 +146,12 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                         >
                             Cancelar
                         </button>
+                        {/* Añadir botón para generar PDF*/}
+                        <Button2PDF
+                            form={form}
+                            equipos={projectEquipos}
+                            materiales={projectMateriales}
+                        />
                         <button
                             type="submit"
                             className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
