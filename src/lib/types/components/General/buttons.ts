@@ -6,7 +6,7 @@ import { Project, ProjectFormData } from "../../supabase/project-types";
 import { Project_Equipos } from "../../supabase/project_equipos_join";
 import { Project_Materiales } from "../../supabase/project_materiales_join";
 import { Quote, QuoteFormData } from "../../supabase/quote-types";
-import { Report, ReportFormData } from "../../supabase/report-types";
+import { Report, ReportFormData, ReportFormState } from "../../supabase/report-types";
 import { Supplier, SupplierFormData } from "../../supabase/supplier-types";
 import { Type, TypeFormData } from "../../supabase/type-types";
 import { Zone, ZoneFormData } from "../../supabase/zone-types";
@@ -188,4 +188,14 @@ export type Button2MassiveCleanProps = {
 
 export type Button2MassiveUploadProps = {
 	onSuccess?: () => void;
+};
+
+// ------------------
+// botones -- generar PDF
+// ------------------
+
+export type Button2PDFProps = {
+    form: ReportFormState;
+    equipos: Project_Equipos[];
+    materiales: Project_Materiales[];
 };
