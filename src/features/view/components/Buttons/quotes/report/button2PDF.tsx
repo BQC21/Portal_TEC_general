@@ -65,7 +65,7 @@ export default function Button2PDF({ form, equipos, materiales }: Button2PDFProp
                 type="button"
                 onClick={() => void handleGenerate()}
                 disabled={loading || !form.cotizacion_id}
-                className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50 disabled:opacity-50"
+                className="rounded-xl bg-red-500 text-white border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-red-300 disabled:opacity-50"
             >
                 {loading ? "Generando PDF..." : "Generar PDF"}
             </button>
