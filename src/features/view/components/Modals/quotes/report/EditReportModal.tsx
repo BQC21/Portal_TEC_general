@@ -94,8 +94,16 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                     <AddProductSelectField
                         label="Seleccionar Cotización"
                         required
-                        value={form_quotes.cod_cotizacion}
-                        options={["Seleccione cotización", ...quotes.map((quote) => quote.cod_cotizacion)]}
+                        value={form_quotes.cod_cotizacion
+                            ? `(${form_quotes.cod_cotizacion}) - ${form_quotes.proyecto_info?.nombre ?? ""}` : ""
+                        }
+                        options={[
+                            "Seleccione cotización",
+                            ...quotes.map(
+                                (quote) =>
+                                    `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
+                            ),
+                        ]}
                         onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
                     />
 

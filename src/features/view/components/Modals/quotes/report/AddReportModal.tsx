@@ -14,6 +14,7 @@ import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/repor
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
+import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -87,8 +88,16 @@ export default function AddReportModal({onAddReport, onClose,
                     <AddProductSelectField
                         label="Seleccionar Cotización"
                         required
-                        value={form_quotes.cod_cotizacion}
-                        options={["Seleccione cotización", ...quotes.map((quote) => quote.cod_cotizacion)]}
+                        value={form_quotes.cod_cotizacion
+                            ? `(${form_quotes.cod_cotizacion}) - ${form_quotes.proyecto_info?.nombre ?? ""}` : ""
+                        }
+                        options={[
+                            "Seleccione cotización",
+                            ...quotes.map(
+                                (quote) =>
+                                    `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
+                            ),
+                        ]}
                         onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
                     />
 
