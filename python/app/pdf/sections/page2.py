@@ -5,6 +5,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from reportlab.lib import colors
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import cm
 from reportlab.platypus import Flowable, Image, Paragraph, Spacer, Table, TableStyle
@@ -55,12 +56,23 @@ def _money(value: float, symbol: str) -> str:
 
 
 def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
+    link_style = ParagraphStyle(
+        "Page1Link",
+        fontName="Helvetica",
+        fontSize=9,
+        textColor=colors.HexColor("#0A2F6B"),
+        alignment=TA_RIGHT,
+    )
+
     """Logo TEC + datos de empresa (referencia pág. 2)."""
-    logo = _rl_image("Tec_ES_logo.png", width=3.8 * cm)
+    logo = _rl_image("Tec_ES_logo.png", width=4.2 * cm, height= 1.2 * cm)
     info = [
         [
             Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
-            Paragraph("Pág Web: www.tec-renovables.pe", styles["right"]),
+            Paragraph(
+                f'Pág web: <link href="https://tec-renovables.pe/"><font color="#0A2F6B"><u>www.tec-renovables.pe</u></font></link>',
+                link_style,
+            ),
         ],
         [
             Paragraph("RUC: 20612681466", styles["small"]),
@@ -276,7 +288,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
     story: list = []
     story.append(_company_header(styles))
-    story.append(Spacer(1, 0.08 * cm))
+    story.append(Spacer(1, 1.08 * cm))
     story.append(Paragraph("COTIZACIÓN", title))
     story.append(Spacer(1, 0.08 * cm))
     story.append(_client_table(data, styles))
@@ -302,20 +314,23 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             [1 * cm, 11 * cm, 3 * cm, 3 * cm],
         )
     )
-    story.append(Spacer(1, 0.08 * cm))
+    story.append(Spacer(1, 1 * cm))
 
     material_rows: list[list[str]] = []
-    for item in data.materiales:
-        material_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad or ""])
-        idx += 1
-    if not material_rows:
-        material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""])
-        idx += 1
+    # for item in data.materiales:
+    #     material_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad or ""])
+    #     idx += 1
+    # if not material_rows:
+    #     material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""])
+    #     idx += 1
+
+    ## NO COLOCAR TANTO DETALLE EN MATERIALES ELÉCTRICOS
+    material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""]); idx += 1
     story.append(
         _items_table(
-            ["#", "DESCRIPCIÓN - MATERIALES", "UNIDAD", "CANTIDAD"],
+            ["#", "DESCRIPCIÓN - MATERIALES", "UNIDAD"],
             material_rows,
-            [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+            [1 * cm, 11 * cm, 3 * cm],
         )
     )
     story.append(Spacer(1, 0.1 * cm))
