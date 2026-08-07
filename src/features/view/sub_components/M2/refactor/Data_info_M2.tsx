@@ -1,14 +1,11 @@
 "use client";
 
 import { useCallback } from "react";
-import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddEquipoReadonlyField } from "../../../components/Form_fields/AddEquipoReadOnlyField";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { AddProductRadioField } from "../../../components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
-import { computedRequirements } from "@/lib/types/components/Sizing/computes";
-import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
 import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 
@@ -48,7 +45,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             required
                                             value={monthlyValues[index]}
                                             onChange={(value) => updateMonth(index, value)}
-                                            step={1}
+                                            step={0.01}
                                             min={0}
                                         />
                                     ))}
@@ -126,19 +123,19 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                                     label="Energía requerida"    required
                                                     value={Number(form.energia_requerida) > 0 ? Number(Number(form.energia_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("energia_requerida", String(value))}
-                                                    step={1} min={0}
+                                                    step={0.01} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia DC requerida (KW)"    required
                                                     value={Number(form.potencia_dc_requerida) > 0 ? Number(Number(form.potencia_dc_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("potencia_dc_requerida", String(value))}
-                                                    step={1} min={0} 
+                                                    step={0.01} min={0} 
                                                 />
                                                 <AddProductNumberField
                                                     label="Potencia AC requerida (KW)"    required
                                                     value={Number(form.potencia_ac_requerida) > 0 ? Number(Number(form.potencia_ac_requerida).toFixed(2)) : ""}
                                                     onChange={(value) => updateField("potencia_ac_requerida", String(value))}
-                                                    step={1} min={0} 
+                                                    step={0.01} min={0} 
                                                 />
                                             </>                                            
                                         )
