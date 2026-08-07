@@ -79,9 +79,9 @@ def _globe_icon(size: float = 10) -> Drawing:
 
 def _brand_header() -> Table:
     """Logo + barras Detail_1, sangrados respecto al sidebar."""
-    logo = _rl_image("Tec_ES_logo.png", width=5.2 * cm)
-    detail = _rl_image("Detail_1_page1.png", width=1.9 * cm)
-    inner = Table([[logo, detail]], colWidths=[12.2 * cm, 4.65 * cm])
+    logo = _rl_image("Tec_ES_logo.png", width=5.2 * cm, height= 2.2 * cm)
+    detail = _rl_image("Detail_1_page1.png", width=1.2 * cm, height= 1.2 * cm)
+    inner = Table([[logo, detail]], colWidths=[10.2 * cm, 5.2 * cm])
     inner.setStyle(
         TableStyle(
             [
@@ -169,18 +169,18 @@ def build_page3(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
 
     story: list = []
+    story.append(_brand_header())
     story.append(
         _LeftMarginDetail("Detail_2_page2.png", width=_SIDEBAR_W, height=16.2 * cm)
     )
-    story.append(_brand_header())
-    story.append(Spacer(1, 0.35 * cm))
+    story.append(Spacer(1, 2.35 * cm))
     story.append(Paragraph("<b>Notas finales para suministro:</b>", section_style))
     story.append(Spacer(1, 0.2 * cm))
 
     for text in _NOTAS:
         story.append(Paragraph(f"•  {text}", note_style))
 
-    story.append(Spacer(1, 0.45 * cm))
+    story.append(Spacer(1, 1.45 * cm))
     story.append(Paragraph("<b>Vida útil del sistema:</b> 20 años.", footer_style))
     story.append(
         Paragraph(
@@ -189,7 +189,7 @@ def build_page3(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 1.2 * cm))
+    story.append(Spacer(1, 2.2 * cm))
     story.append(_website_right())
 
     _ = data
