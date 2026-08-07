@@ -194,7 +194,7 @@ export function Price_info_M1({
                 <div className="grid gap-5 md:grid-cols-2">
                     <AddProductNumberField
                         label="Precio ($)"
-                        min={0}
+                        min={0} step={0.01}
                         disabled={currency !== "USD"}
                         value={
                             currency === "USD"
@@ -209,7 +209,7 @@ export function Price_info_M1({
                     />
                     <AddProductNumberField
                         label="Precio (S/.)"
-                        min={0}
+                        min={0} step={0.01}
                         disabled={currency !== "PEN"}
                         value={
                             currency === "PEN"
