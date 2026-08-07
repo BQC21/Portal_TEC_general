@@ -59,14 +59,12 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[1]}
-                                required
                                 placeholder=" "
                                 value={form_zone.latitude}
                                 onChange={(value) => updateField("latitude", value)}
                             />                           
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[2]}
-                                required
                                 placeholder=" "
                                 value={form_zone.longitude}
                                 onChange={(value) => updateField("longitude", value)}
@@ -82,7 +80,6 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                             />
                                 <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[4]}
-                                required
                                 placeholder=" "
                                 value={form_zone.ghi_respaldo_diario}
                                 onChange={(value) => updateField("ghi_respaldo_diario", value)}
@@ -96,14 +93,12 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[6]}
-                                required
                                 placeholder=" "
                                 value={form_zone.gti_respaldo_diario}
                                 onChange={(value) => updateField("gti_respaldo_diario", value)}
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[7]}
-                                required
                                 placeholder=" "
                                 value={String(form_zone.hsp_peor_mes)}
                                 onChange={(value) => updateField("hsp_peor_mes", value)}
