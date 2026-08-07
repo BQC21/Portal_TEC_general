@@ -11,36 +11,25 @@ import type {
     ZoneFormState,
 } from "@/lib/types/supabase/zone-types"; // Tipados
 
-import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
-import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-
 import {
     INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
-import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, FillOptions, INSTALL_TYPE_OPTIONS, STATUS_PROJECT_OPTIONS } from "@/lib/utils/options"; // opciones
+import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, FillOptions } from "@/lib/utils/options"; // opciones
 
 // import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
-import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { createProjectFormStateFromProject } from "@/lib/mapping/project_mapping";
-import { AddProductUrlField } from "../../../Form_fields/AddUrlField";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { AddEquipoReadonlyField } from "../../../Form_fields/AddEquipoReadOnlyField";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
-import { AddProductRadioField } from "../../../Form_fields/AddRadioField";
 import { EditProjectModalProps } from "@/lib/types/components/General/modals";
 import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
 import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
 import { useSelectionHandlers } from "@/features/view/hooks/modals/Sizing/useSelectionHandlers";
-import { ZoneSelection } from "@/features/view/hooks/modals/Sizing/useZoneSelection";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
-import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";
-import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 import { General_info_M2 } from "@/features/view/sub_components/M2/refactor/General_info_M2";
 import { Tables_M2 } from "@/features/view/sub_components/M2/refactor/Tables_M2";
 import { Data_info_M2 } from "@/features/view/sub_components/M2/refactor/Data_info_M2";
