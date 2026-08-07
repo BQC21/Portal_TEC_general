@@ -99,9 +99,9 @@ def _fecha_carta(fecha: str) -> str:
 
 def _brand_header() -> Table:
     """Logo TEC (más grande) + barras Detail_1."""
-    logo = _rl_image("Tec_ES_logo.png", width=5.2 * cm)
-    detail = _rl_image("Detail_1_page1.png", width=1.9 * cm)
-    inner = Table([[logo, detail]], colWidths=[12.2 * cm, 4.65 * cm])
+    logo = _rl_image("Tec_ES_logo.png", width=5.2 * cm, height= 2.2 * cm)
+    detail = _rl_image("Detail_1_page1.png", width=1.2 * cm, height= 1.2 * cm)
+    inner = Table([[logo, detail]], colWidths=[10.2 * cm, 5.2 * cm])
     inner.setStyle(
         TableStyle(
             [
@@ -205,11 +205,11 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
 
     story: list = []
+    story.append(_brand_header())
     story.append(
         _LeftMarginDetail("Detail_2_page2.png", width=_SIDEBAR_W, height=16.2 * cm)
     )
-    story.append(_brand_header())
-    story.append(Spacer(1, 0.45 * cm))
+    story.append(Spacer(1, 2.55 * cm))
     story.append(Paragraph(_fecha_carta(data.fecha), date_style))
     story.append(Spacer(1, 0.55 * cm))
     story.append(Paragraph("Estimado", greeting))
@@ -243,11 +243,11 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.6 * cm))
+    story.append(Spacer(1, 2.6 * cm))
     story.append(Paragraph("Atentamente:", atentamente))
     story.append(Spacer(1, 0.2 * cm))
 
-    firm = _rl_image("Coco_Firm.png", width=5.0 * cm)
+    firm = _rl_image("Coco_Firm.png", width=6.0 * cm, height=3.0 * cm)
     firm_table = Table([[firm]], colWidths=[_CONTENT_W])
     firm_table.setStyle(
         TableStyle(
@@ -261,7 +261,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     story.append(firm_table)
     story.append(Paragraph("<b>Ing. Jorge Guerrero Tarazona</b>", signature))
     story.append(Paragraph("Gerente General", signature))
-    story.append(Spacer(1, 0.7 * cm))
+    story.append(Spacer(1, 2.7 * cm))
     story.append(_website_right())
 
     return story
