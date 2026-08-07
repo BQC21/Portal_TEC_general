@@ -25,7 +25,10 @@ export function QuoteSelection(
     }
 
     // búsqueda de la cotización seleccionada
-    const selected = quotes.find((quote) => quote.cod_cotizacion === value)
+    const selected = quotes.find(
+        (quote) =>
+            `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}` === value
+    );
 
     if (selected){
         setForm_quote({
