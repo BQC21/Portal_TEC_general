@@ -9,6 +9,7 @@ import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateria
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
+import { getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
 
 export type Consume_PriceTable_props = {
     selected_materiales: Project_Materiales[]
@@ -51,6 +52,17 @@ export function Consume_PriceTable({
         onAddMaterial(material)
         setMaterialToAdd("")
     }
+
+    // -----------------------------
+    // ORDENAMIENTO DE CONSUMIBLES
+    // -----------------------------
+    const sortedMateriales = useMemo(() => {
+        return [...selected_materiales].sort((a, b) => {
+            const orderA = getConsumibleGroup(a.material_info?.tipo_de_producto).order;
+            const orderB = getConsumibleGroup(b.material_info?.tipo_de_producto).order;
+            return orderA - orderB;
+        });
+    }, [selected_materiales]);
 
     return(
         <>
@@ -105,7 +117,8 @@ export function Consume_PriceTable({
                             <tbody>
                                     {selected_materiales.length > 0 ? (
                                         selected_materiales.map((item) => (
-                                            <tr key={`${item.id}`} className="bg-white">
+                                            <tr key={`${item.id}`} 
+                                                className={getConsumibleGroup(item.material_info?.tipo_de_producto).rowClass}>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.material_info?.cod_producto}
                                                 </td>
