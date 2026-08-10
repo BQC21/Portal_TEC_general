@@ -3,6 +3,7 @@ import { AddProductSectionTitle } from "@/features/view/components/Form_fields/A
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { Data_info_M1_props } from "@/lib/types/components/sub_components/module_render";
+import { Unidad } from "@/lib/utils/options";
 
 function matchesProductCategory(
     categoria: string | undefined,
@@ -105,10 +106,23 @@ export function Data_info_M1({
                                     />
                                     {selectedType && (
                                         <>
-                                            <AddProductReadonlyField
-                                                label="UNIDAD"
-                                                value={form.unidad}
-                                            />
+                                            {selectedType == "MÓDULO FV" && (
+                                                <AddProductSelectField
+                                                    label="UNIDAD"
+                                                    required
+                                                    options={Unidad}
+                                                    value={form.unidad}
+                                                    onChange={(value) =>
+                                                        updateField("unidad", value)
+                                                    }
+                                                />
+                                            )}
+                                                {selectedType != "MÓDULO FV" && (
+                                                    <AddProductReadonlyField
+                                                        label="UNIDAD"
+                                                        value={form.unidad}
+                                                    />
+                                            )}
                                             <div className="md:col-span-2">
                                                 <AddProductTextAreaField
                                                     label="Descripción"
