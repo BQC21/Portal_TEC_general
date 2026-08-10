@@ -7,7 +7,7 @@ import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 
 export function EPP_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: 
-    { items: QuantityPriceItem[], 
+    {   items: QuantityPriceItem[], 
         onUpdateItem: (
             index: number, 
             field: keyof QuantityPriceItem, 
