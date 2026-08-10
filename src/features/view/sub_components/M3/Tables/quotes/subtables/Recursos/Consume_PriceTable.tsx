@@ -115,10 +115,12 @@ export function Consume_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                    {selected_materiales.length > 0 ? (
-                                        selected_materiales.map((item) => (
-                                            <tr key={`${item.id}`} 
-                                                className={getConsumibleGroup(item.material_info?.tipo_de_producto).rowClass}>
+                                    {sortedMateriales.length > 0 ? (
+                                        sortedMateriales.map((item) => (
+                                            <tr
+                                                key={`${item.id}`}
+                                                className={getConsumibleGroup(item.material_info?.tipo_de_producto).rowClass}
+                                            >
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.material_info?.cod_producto}
                                                 </td>
