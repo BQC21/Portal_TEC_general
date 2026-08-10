@@ -40,6 +40,14 @@ import { QuoteFormState } from "../types/supabase/quote-types";
 import { ReportFormState } from "../types/supabase/report-types";
 import { ManualCosts } from "../types/components/Quotes/manual_resources";
 
+// Listas
+import { EPP_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { Tooling_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { Courier_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { SCTR_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { Personal_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+
+
 // ------ M!
 
 // valores iniciales para el estado de form de productos
@@ -240,10 +248,31 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
 
 export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 
     Recursos: {
-        epp: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
-        tooling: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
-        personal: [{ id: crypto.randomUUID(), nombre: "", puesto: "", dias: 0, precio_dia: 0 }],
-        sctr: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+        epp: EPP_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            descripcion: item.descripcion,
+            cantidad: item.cantidad,
+            precio_unitario: item.precio_unitario,
+        })),
+        tooling: Tooling_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            descripcion: item.descripcion,
+            cantidad: item.cantidad,
+            precio_unitario: item.precio_unitario,
+        })),
+        personal: Personal_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            nombre: item.nombre,
+            puesto: item.puesto,
+            dias: item.dias,
+            precio_dia: item.precio_dia,
+        })),
+        sctr: SCTR_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            descripcion: item.descripcion,
+            cantidad: item.cantidad,
+            precio_unitario: item.precio_unitario,
+        })),
         hotel: { monto: 0, personas: 0, dias: 0 },
     },
     
@@ -251,7 +280,12 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
         eating: { monto: 0, personas: 0, dias: 0 },
         traveling: { monto: 0, personas: 0, dias: 0 },
         mobility: { monto: 0, personas: 0, dias: 0 },
-        courier: [{ id: crypto.randomUUID(), descripcion: "", cantidad: 0, precio_unitario: 0 }],
+        courier: Courier_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            descripcion: item.descripcion,
+            cantidad: item.cantidad,
+            precio_unitario: item.precio_unitario,
+        })),
     }
 };
 
