@@ -52,15 +52,6 @@ export default function ReportTable({report, totalReport,
                                                 />
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>
-                                        <div className="flex items-center gap-4 text-slate-500">
-                                                <p>Botón para generar PDF</p>
-                                                {/* <Button2PDF
-                                                    report={report}
-                                                    onUpdateReport={onUpdateReport}
-                                                /> */}
-                                            </div>
-                                        </td>
                                     </tr>
                                     );
                                 })

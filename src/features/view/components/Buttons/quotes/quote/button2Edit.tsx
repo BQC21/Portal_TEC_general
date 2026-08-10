@@ -17,7 +17,7 @@ export default function Button2Edit_quote({ quote,
                 className="inline-flex items-center gap-2 rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
             >
                 <EditIcon />
-                <span>Actualizar Cotización</span> 
+                <span>Ver Cotización</span> 
             </button>
             
             {open && (

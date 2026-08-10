@@ -111,8 +111,7 @@ export const TABLE_HEADERS_QUOTE = [
     "Precio de venta ($)",
     "Creado",
     "Actualizado",
-    "Ver cotización",
-    "Remover cotización",
+    "Acciones",
 ]
 
 export const TABLE_HEADERS_REPORT = [
@@ -124,5 +123,4 @@ export const TABLE_HEADERS_REPORT = [
     "Creado",
     "Actualizado",
     "Acciones",
-    "Generar PDF"
 ]

@@ -44,10 +44,6 @@ export default function QuoteTable({quote, totalQuote,
                                                     project_equipos={projects_equipos}
                                                     project_materiales={projects_materiales}
                                                 />
-                                            </div>
-                                        </td>
-                                        <td className="border border-slate-200 px-4 py-5">
-                                            <div className="flex items-center gap-4">
                                                 <Button2Trash_quote
                                                     quote={quote}
                                                     onDeleteQuote={() => onDeleteQuote(quote.id)}
