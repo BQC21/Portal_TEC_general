@@ -124,3 +124,12 @@ export const TABLE_HEADERS_REPORT = [
     "Actualizado",
     "Acciones",
 ]
+
+export const TABLE_HEADERS_FINANTIAL = [
+    "Cotización asociada",
+    "Tiempo de recuperación",
+    "LCOE",
+    "Creado",
+    "Actualizado",
+    "Acciones",
+]

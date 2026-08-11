@@ -46,6 +46,7 @@ import { Tooling_template } from "@/features/view/sub_components/M3/Tables/quote
 import { Courier_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { SCTR_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { Personal_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { FinantialFormState } from "../types/supabase/finantial-types";
 
 
 // ------ M!
@@ -304,4 +305,20 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
     gm: "",
     costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
     depre_tool: "",
+}
+
+export const INITIAL_FINANTIAL_FORM: FinantialFormState = {
+    created_at: new Date(),
+    updated_at: new Date(),
+    cotizacion_id: "",
+    cotizacion_info: undefined,
+    planta: "",
+    generacion: "",
+    tarifa_red: "",
+    degra_1er: "",
+    degra_2do: "",
+    tasa_crecimiento: "",
+    tasa_descuento: "",
+    lcoe: "",
+    tiempo_retorno: "",
 }

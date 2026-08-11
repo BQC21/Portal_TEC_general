@@ -12,6 +12,7 @@ export const BRAND_TABLE = "marcas";
 export const TYPE_TABLE = "tipo";
 export const QUOTE_TABLE = "cotizacion";
 export const REPORT_TABLE = "reporte";
+export const FINANTIAL_TABLE = "finanzas";
 
 // --------------------------
 // ---- Tolerancias de nomenclatura para el atributo de fuente de divisas
