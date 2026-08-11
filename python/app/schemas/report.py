@@ -5,7 +5,7 @@ No lee DB: todo llega en el body del POST.
 
 from __future__ import annotations
 
-from typing import Optional, Union
+from typing import Literal, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -64,7 +64,7 @@ class CotizacionInfo(BaseModel):
 
 class ReportFormPayload(BaseModel):
     """Espejo de ReportFormState + listas del Form."""
-
+    tipo: Literal["report"] = "report"
     model_config = ConfigDict(extra="ignore")
 
     cliente: Optional[str] = None
