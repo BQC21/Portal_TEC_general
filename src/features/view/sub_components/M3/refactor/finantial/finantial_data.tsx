@@ -18,7 +18,7 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
         <div className="grid gap-2">
             <h2 className="mt-2 mb-1 text-xl font-bold text-red-900">Ingrese datos</h2>
             <AddProductNumberField
-                label="Energía generada por la planta"
+                label="Energía generada por la planta (KWp)"
                 required
                 value={Number(form.planta) > 0 ? Number(form.planta) : ""}
                 onChange={(value) => updateField("planta", String(value))}
@@ -26,7 +26,7 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
                 min={0}
             />
             <AddProductNumberField
-                label="Generación en el primer año (MWh)"
+                label="Generación en el primer año (MWh/primer año)"
                 required
                 value={Number(form.generacion) > 0 ? Number(form.generacion) : ""}
                 onChange={(value) => updateField("generacion", String(value))}
@@ -34,7 +34,7 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
                 min={0}
             />
             <AddProductNumberField
-                label="Tarifa de la red"
+                label="Tarifa de la red ($)"
                 required
                 value={Number(form.tarifa_red) > 0 ? Number(form.tarifa_red) : ""}
                 onChange={(value) => updateField("tarifa_red", String(value))}
