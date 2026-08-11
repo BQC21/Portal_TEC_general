@@ -1,5 +1,6 @@
 "use client";
 
+import { FinantialPdfPayload } from "@/lib/types/components/Python_components/FinantialPdfPayload";
 import { ReportPdfPayload } from "@/lib/types/components/Python_components/ReportPdfPayload";
 import { useCallback, useState } from "react";
 
@@ -8,7 +9,7 @@ export function useGenerateReportPdf() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const generate = useCallback(async (payload: ReportPdfPayload) => {
+    const generate = useCallback(async (payload: ReportPdfPayload | FinantialPdfPayload) => {
         try {
             setLoading(true);
             setError(null);
@@ -32,7 +33,10 @@ export function useGenerateReportPdf() {
             // descarga automática
             const disposition = res.headers.get("Content-Disposition");
             const match = disposition?.match(/filename="?([^"]+)"?/);
-            const filename = match?.[1] ?? "cotizacion.pdf";
+            const filename = match?.[1] ?? 
+                (payload.tipo === "finantial" 
+                    ? "analisis_financiero.pdf"
+                    : "cotizacion.pdf");
 
             // crear enlace
             const url = URL.createObjectURL(blob);
