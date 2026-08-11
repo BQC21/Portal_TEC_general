@@ -130,7 +130,7 @@ export function General_info_M1_EQ({
                             label="Potencia máxima del panel (kw)"
                             value={Number(form.potencia_maxima)}
                             onChange={(value) => updateField("potencia_maxima", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
