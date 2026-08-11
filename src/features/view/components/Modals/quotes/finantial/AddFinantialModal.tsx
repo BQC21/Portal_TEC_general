@@ -27,17 +27,20 @@ export default function AddFinantialModal({
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
 
+    // útil para el inversor seleccionado
     const projectEquipos = hasSelectedQuote
         ? existing_project_equipos.filter(
             (item) => item.proyecto_id === form.cotizacion_info?.proyecto_id
         )
         : [];
 
+    // enganchar los cálculos financieros
     const { analysis, maxYear, addYear, removeYear } = useFinantialComputes(
         form,
         projectEquipos
     );
 
+    // sincornizar los cálculos de LCOE y tiempo de retorno
     useEffect(() => {
         setForm((current) => ({
             ...current,
@@ -59,6 +62,7 @@ export default function AddFinantialModal({
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        // Considerar también LCOE y tiempo de retorno
         await onAddFinantial({
             ...form,
             lcoe: analysis.lcoe === null ? "" : String(analysis.lcoe.toFixed(4)),
