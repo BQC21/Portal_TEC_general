@@ -1,6 +1,7 @@
 import { Brand, BrandFormData } from "../../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../../supabase/equipos-types";
 import { Finantial, FinantialFormData, FinantialFormState } from "../../supabase/finantial-types";
+import { FinantialAnalysis } from "../Quotes/finantial_analysis";
 import { Materiales, MaterialesFormData } from "../../supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
 import { Project, ProjectFormData } from "../../supabase/project-types";
@@ -219,4 +220,5 @@ export type Button2PDFProps = {
 
 export type Button2PDFProps_FINANTIAL = {
     form: FinantialFormState;
+    analysis: FinantialAnalysis;
 };
