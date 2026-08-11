@@ -73,12 +73,12 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
                 step={0.01}
                 min={0}
             />
-
             <AddProductReadonlyField
                 label="CAPEX"
-                value={formatCurrency(analysis.capex, "USD")}
+                value={formatCurrency(Number(form.cotizacion_info?.precio_dolares), "USD")}
                 colorClass={computedFieldClass}
             />
+
             <AddProductReadonlyField
                 label="OPEX"
                 value={formatCurrency(analysis.opex, "USD")}
