@@ -17,7 +17,7 @@ export type SupabaseFinantialRow = {
     tarifa_red?: number;
     degra_1er?: number;
     degra_2do?: number;
-    tasa_crecimiento?: number;
+    tarifa_crecimiento?: number;
     tasa_descuento?: number;
     lcoe?: number;
     tiempo_retorno?: number;
@@ -37,7 +37,7 @@ export type Finantial = {
     tarifa_red?: string;
     degra_1er?: string;
     degra_2do?: string;
-    tasa_crecimiento?: string;
+    tarifa_crecimiento?: string;
     tasa_descuento?: string;
     lcoe?: string;
     tiempo_retorno?: string;

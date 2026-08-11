@@ -34,7 +34,7 @@ export type FinantialComputeInput = {
     tarifa_red: number;
     degra_1er: number;
     degra_2do: number;
-    tasa_crecimiento: number;
+    tarifa_crecimiento: number;
     tasa_descuento: number;
     maxYear: number;
     inverterReplacementCost: number;

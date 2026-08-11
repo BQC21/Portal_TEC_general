@@ -34,7 +34,7 @@ export function useFinantialComputes(
                 tarifa_red: Number(form.tarifa_red) || 0,
                 degra_1er: Number(form.degra_1er) || 0,
                 degra_2do: Number(form.degra_2do) || 0,
-                tasa_crecimiento: Number(form.tasa_crecimiento) || 0,
+                tarifa_crecimiento: Number(form.tarifa_crecimiento) || 0,
                 tasa_descuento: Number(form.tasa_descuento) || 0,
                 maxYear,
                 inverterReplacementCost,

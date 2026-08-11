@@ -47,7 +47,7 @@ export function buildFlowRows(input: {
     capex: number;
     opex: number;
     tarifa_red: number;
-    tasa_crecimiento: number;
+    tarifa_crecimiento: number;
     energyRows: EnergyRow[];
     inverterReplacementCost: number;
 }): FlowRow[] {
@@ -55,12 +55,12 @@ export function buildFlowRows(input: {
         capex,
         opex,
         tarifa_red,
-        tasa_crecimiento,
+        tarifa_crecimiento,
         energyRows,
         inverterReplacementCost,
     } = input;
 
-    const growth = tasa_crecimiento / 100;
+    const growth = tarifa_crecimiento / 100;
     const rows: FlowRow[] = [];
     let previousCum = 0;
 
@@ -178,7 +178,7 @@ export function computeFinantialAnalysis(
         capex,
         opex,
         tarifa_red: input.tarifa_red,
-        tasa_crecimiento: input.tasa_crecimiento,
+        tarifa_crecimiento: input.tarifa_crecimiento,
         energyRows,
         inverterReplacementCost: input.inverterReplacementCost,
     });

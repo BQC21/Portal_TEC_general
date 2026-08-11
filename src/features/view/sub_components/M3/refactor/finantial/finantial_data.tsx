@@ -60,8 +60,8 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
             <AddProductNumberField
                 label="(%) incremento de la tarifa"
                 required
-                value={Number(form.tasa_crecimiento) > 0 ? Number(form.tasa_crecimiento) : ""}
-                onChange={(value) => updateField("tasa_crecimiento", String(value))}
+                value={Number(form.tarifa_crecimiento) > 0 ? Number(form.tarifa_crecimiento) : ""}
+                onChange={(value) => updateField("tarifa_crecimiento", String(value))}
                 step={0.01}
                 min={0}
             />
