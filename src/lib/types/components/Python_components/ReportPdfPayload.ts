@@ -1,6 +1,8 @@
 /** Payload alineado a python/app/schemas/report.py → ReportFormPayload */
 export type ReportPdfPayload = {
 
+    tipo: "report";
+
     // reporte
     cliente?: string;
     ruc_dni?: string;
