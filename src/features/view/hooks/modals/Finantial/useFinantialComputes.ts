@@ -8,6 +8,7 @@ import {
     getInverterReplacementCost,
 } from "@/lib/utils/helpers/computes/finantial_computes";
 
+// Rango de años para las gráficas
 const DEFAULT_MAX_YEAR = 30;
 const MIN_MAX_YEAR = 20;
 
@@ -15,13 +16,16 @@ export function useFinantialComputes(
     form: FinantialFormState,
     projectEquipos: Project_Equipos[]
 ) {
+    // establecer año máximo
     const [maxYear, setMaxYear] = useState(DEFAULT_MAX_YEAR);
 
+    // valor para inversor
     const inverterReplacementCost = useMemo(
         () => getInverterReplacementCost(projectEquipos),
         [projectEquipos]
     );
 
+    // Almacenar valores relacionado al análisis financiero
     const analysis = useMemo(
         () =>
             computeFinantialAnalysis({
@@ -38,10 +42,12 @@ export function useFinantialComputes(
         [form, maxYear, inverterReplacementCost]
     );
 
+    // añadir año
     function addYear() {
         setMaxYear((current) => current + 1);
     }
 
+    // remover año
     function removeYear() {
         setMaxYear((current) => Math.max(MIN_MAX_YEAR, current - 1));
     }
