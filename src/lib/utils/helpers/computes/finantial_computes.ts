@@ -5,10 +5,11 @@ import {
     FlowRow,
 } from "@/lib/types/components/Quotes/finantial_analysis";
 
-const VAN_HORIZON = 20;
-const INVERTER_REPLACEMENT_YEAR = 10;
-const OPEX_RATE = 0.015;
+const VAN_HORIZON = 20; // años futuros a considerar para el cálculo del VAN
+const INVERTER_REPLACEMENT_YEAR = 10; // alis dibde se carga el costo de reposición de inversores
+const OPEX_RATE = 0.015; // Porcentaje del CAPEX para calcular el OPEX
 
+// Construcción de la energía
 export function buildEnergyRows(input: {
     generacion: number;
     degra_1er: number;
@@ -41,6 +42,7 @@ export function buildEnergyRows(input: {
     return rows;
 }
 
+// Arma la tabla para el flujo de caja
 export function buildFlowRows(input: {
     capex: number;
     opex: number;
@@ -114,6 +116,7 @@ export function buildFlowRows(input: {
     return rows;
 }
 
+// Cálculo del tiempo de recuperación
 export function computePaybackYears(flowRows: FlowRow[]): number | null {
     const firstPositive = flowRows.find(
         (row) => row.year > 0 && row.flujo_acumulado >= 0
@@ -128,6 +131,7 @@ export function computePaybackYears(flowRows: FlowRow[]): number | null {
     return t + Math.abs(rowT.flujo_acumulado) / rowT1.flujo_total;
 }
 
+// Cálculo del LCOE
 export function computeLcoe(
     capexTotal: number,
     omTotal: number,
@@ -137,7 +141,7 @@ export function computeLcoe(
     return (capexTotal + omTotal) / energiaTotal;
 }
 
-/** Excel-like NPV for periods 1..n, then add CF0 (year 0 flow, typically -CAPEX). */
+// Cálculo del VAN
 export function computeVan(
     tasaDescuentoPct: number,
     flowRows: FlowRow[]
@@ -156,6 +160,7 @@ export function computeVan(
     return npvFuture + flow0;
 }
 
+// Orquestación de todo el análisis
 export function computeFinantialAnalysis(
     input: FinantialComputeInput
 ): FinantialAnalysis {
@@ -199,6 +204,7 @@ export function computeFinantialAnalysis(
     };
 }
 
+// Cálculo del reemplazo para el año 10
 export function getInverterReplacementCost(
     projectEquipos: Array<{
         equipo_info?: {
