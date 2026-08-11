@@ -24,9 +24,13 @@ export async function POST(req: NextRequest) {
         }
 
         const pdfBuffer = await response.arrayBuffer();
+        const defaultFilename = 
+            body?.tipo === "finantial" 
+                ? "analisis_financiero.pdf" 
+                : "cotizacion.pdf";
         const contentDisposition =
             response.headers.get("Content-Disposition") ??
-            'attachment; filename="cotizacion.pdf"';
+            `attachment; filename="${defaultFilename}"`;
 
         return new NextResponse(pdfBuffer, {
             status: 200,
