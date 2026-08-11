@@ -1,5 +1,6 @@
 import { Brand } from "../../supabase/brand.types";
 import { Equipos } from "../../supabase/equipos-types";
+import { Finantial } from "../../supabase/finantial-types";
 import { Materiales } from "../../supabase/materiales-types";
 import { Product, SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
 import { Project } from "../../supabase/project-types";
@@ -93,4 +94,13 @@ export type ReportTableProps = {
     onDeleteReport: (reportId: string) => void;
     projects_equipos: Project_Equipos[];
     projects_materiales: Project_Materiales[];
+}
+
+// reportes
+export type FinantialTableProps = {
+    finantial: Finantial[];
+    totalFinantial: number;
+    onUpdateFinantial: (finantial: Finantial) => void;
+    onDeleteFinantial: (finantialId: string) => void;
+    projects_equipos: Project_Equipos[];
 }

@@ -1,5 +1,6 @@
 import { Brand, BrandFormData } from "../../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../../supabase/equipos-types";
+import { Finantial, FinantialFormData } from "../../supabase/finantial-types";
 import { Materiales, MaterialesFormData } from "../../supabase/materiales-types";
 import { Product, ProductFormData, SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
 import { Project, ProjectFormData } from "../../supabase/project-types";
@@ -72,6 +73,12 @@ export type AddReportModalProps = {
     existing_project_materiales: Project_Materiales[];
 }
 
+export type AddFinantialModalProps = {
+    onAddFinantial: (finantial: FinantialFormData) => void;
+    onClose: () => void;
+    existing_project_equipos: Project_Equipos[];
+}
+
 // ------------------
 // modals -- editar
 // ------------------
@@ -139,6 +146,13 @@ export type EditReportModalProps = {
     existing_project_materiales: Project_Materiales[];
 }
 
+export type EditFinantialModalProps = {
+    existingFinantial: Finantial;
+    onUpdateFinantial: (finantial: FinantialFormData) => void;
+    onClose: () => void;
+    existing_project_equipos: Project_Equipos[];
+}
+
 // ------------------
 // modals -- borrar
 // ------------------
@@ -197,6 +211,12 @@ export type DeleteQuoteModalProps = {
 export type DeleteReportModalProps = {
     report: Report;
     onDeleteReport: (reportId: string) => void;
+    onClose: () => void;
+}
+
+export type DeleteFinantialModalProps = {
+    finantial: Finantial;
+    onDeleteFinantial: (finantialId: string) => void;
     onClose: () => void;
 }
 

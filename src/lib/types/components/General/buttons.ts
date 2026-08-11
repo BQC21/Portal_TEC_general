@@ -1,5 +1,6 @@
 import { Brand, BrandFormData } from "../../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../../supabase/equipos-types";
+import { Finantial, FinantialFormData, FinantialFormState } from "../../supabase/finantial-types";
 import { Materiales, MaterialesFormData } from "../../supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
 import { Project, ProjectFormData } from "../../supabase/project-types";
@@ -61,6 +62,11 @@ export type Button2ModalPropsReport = {
     project_materiales: Project_Materiales[];
 }
 
+export type Button2ModalPropsReport_FINANTIAL = {
+    onAddFinantial: (Finantial: FinantialFormData) => void;
+    project_equipos: Project_Equipos[];
+}
+
 // ------------------
 // botones -- editar
 // ------------------
@@ -120,6 +126,12 @@ export type EditReportModalProps = {
     project_materiales: Project_Materiales[];
 }
 
+export type EditFinantialModalProps = {
+    finantial: Finantial;
+    onUpdateFinantial: (finantial: Finantial) => void;
+    project_equipos: Project_Equipos[];
+}
+
 // ------------------
 // botones -- borrar
 // ------------------
@@ -173,6 +185,11 @@ export type DeleteReportModalProps = {
     onDeleteReport: (reportId: string) => void;
 }
 
+export type DeleteFinantialModalProps = {
+    finantial: Finantial;
+    onDeleteFinantial: (finantialId: string) => void;
+}
+
 // ------------------
 // botones -- borrado masivo
 // ------------------
@@ -198,4 +215,8 @@ export type Button2PDFProps = {
     form: ReportFormState;
     equipos: Project_Equipos[];
     materiales: Project_Materiales[];
+};
+
+export type Button2PDFProps_FINANTIAL = {
+    form: FinantialFormState;
 };

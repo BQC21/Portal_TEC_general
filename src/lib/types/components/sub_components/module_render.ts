@@ -28,6 +28,12 @@ import { ReportFormState } from "../../supabase/report-types";
 import { Brand, BrandFormstate } from "../../supabase/brand.types";
 import { Supplier, SupplierFormstate } from "../../supabase/supplier-types";
 import { Type, TypeFormstate } from "../../supabase/type-types";
+import { FinantialFormState } from "../../supabase/finantial-types";
+import {
+    EnergyRow,
+    FinantialAnalysis,
+    FlowRow,
+} from "../Quotes/finantial_analysis";
 
 // -----
 // M1
@@ -209,6 +215,28 @@ export type Quote_selectedProps = {
     form: ReportFormState;
     updateField: <K extends keyof ReportFormState>
                 (field: K, value: ReportFormState[K]) => void;
+}
+
+export type Finantial_selectedProps = {
+    form: FinantialFormState;
+    updateField: <K extends keyof FinantialFormState>
+                (field: K, value: FinantialFormState[K]) => void;
+    analysis: FinantialAnalysis;
+}
+
+export type FinantialDetailsProps = {
+    analysis: FinantialAnalysis;
+}
+
+export type EnergyTableProps = {
+    energyRows: EnergyRow[];
+    maxYear: number;
+    onAddYear: () => void;
+    onRemoveYear: () => void;
+}
+
+export type FlowTableProps = {
+    flowRows: FlowRow[];
 }
 
 type ManualCostHandlers = {
