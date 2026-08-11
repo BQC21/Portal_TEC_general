@@ -30,8 +30,8 @@ export default function FinantialTable({finantial, totalFinantial,
                                     return (
                                     <tr key={finantial.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.cod_cotizacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.tiempo_retorno}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.lcoe}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.tiempo_retorno} años</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.lcoe} USD/MWh</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
