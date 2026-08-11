@@ -10,6 +10,8 @@ export default function Button2PDF({ form, equipos, materiales }: Button2PDFProp
     async function handleGenerate() {
             setRequested(true);
             await generate({
+                
+                tipo: "report",
 
                 // reporte
                 cliente: form.cliente,
