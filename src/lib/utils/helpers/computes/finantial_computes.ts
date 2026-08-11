@@ -64,9 +64,11 @@ export function buildFlowRows(input: {
     const rows: FlowRow[] = [];
     let previousCum = 0;
 
+    // Construcción de cada fila
     for (const energyRow of energyRows) {
         const { year, energy_mwh } = energyRow;
 
+        // año cero
         if (year === 0) {
             const equipamiento = capex;
             const flujo_total = -(equipamiento);
@@ -85,6 +87,7 @@ export function buildFlowRows(input: {
             continue;
         }
 
+        // asignación (desde año 1)
         const equipamiento =
             year === INVERTER_REPLACEMENT_YEAR ? inverterReplacementCost : 0;
         const tarifa_cliente =
@@ -128,7 +131,7 @@ export function computePaybackYears(flowRows: FlowRow[]): number | null {
     const rowT1 = flowRows.find((row) => row.year === t + 1);
     if (!rowT || !rowT1 || rowT1.flujo_total === 0) return null;
 
-    return t + Math.abs(rowT.flujo_acumulado) / rowT1.flujo_total;
+    return t + Math.abs(rowT.flujo_acumulado / rowT1.flujo_total);
 }
 
 // Cálculo del LCOE
@@ -179,16 +182,14 @@ export function computeFinantialAnalysis(
         opex,
         tarifa_red: input.tarifa_red,
         tarifa_crecimiento: input.tarifa_crecimiento,
-        energyRows,
+        energyRows: energyRows.slice(0,21),
         inverterReplacementCost: input.inverterReplacementCost,
     });
 
+    // Para el cálculo del LCOE
     const capex_total = flowRows.reduce((sum, row) => sum + row.equipamiento, 0);
     const om_total = flowRows.reduce((sum, row) => sum + (row.om ?? 0), 0);
-    const energia_total = flowRows.reduce(
-        (sum, row) => sum + (row.energy_mwh ?? 0),
-        0
-    );
+    const energia_total = flowRows.reduce((sum, row) => sum + (row.energy_mwh ?? 0), 0);
 
     return {
         capex,
