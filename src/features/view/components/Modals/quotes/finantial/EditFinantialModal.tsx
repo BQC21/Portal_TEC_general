@@ -142,7 +142,7 @@ export default function EditFinantialModal({
                         >
                             Cancelar
                         </button>
-                        <Button2PDF_FINANTIAL form={form} />
+                        <Button2PDF_FINANTIAL form={form} analysis={analysis} />
                         <button
                             type="submit"
                             className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
