@@ -1,13 +1,16 @@
-"""Ensambla el story del PDF a partir de las 3 secciones (páginas)."""
+"""Ensambla el story del PDF a partir de las secciones (páginas)."""
 
 from __future__ import annotations
 
 from reportlab.platypus import PageBreak
 
-from app.pdf.sections.page1 import build_page1
-from app.pdf.sections.page2 import build_page2
-from app.pdf.sections.page3 import build_page3
+from app.pdf.finantial.page1 import build_page1 as build_finantial_page1
+from app.pdf.finantial.page2 import build_page2 as build_finantial_page2
+from app.pdf.sections.page1 import build_page1 as build_report_page1
+from app.pdf.sections.page2 import build_page2 as build_report_page2
+from app.pdf.sections.page3 import build_page3 as build_report_page3
 from app.pdf.styles import _styles
+from app.schemas.finantial import FinantialPdfData
 from app.schemas.report import ReportPdfData
 
 
@@ -21,10 +24,26 @@ def build_story(data: ReportPdfData) -> list:
     styles = _styles()
     story: list = []
 
-    story.extend(build_page1(data, styles))
+    story.extend(build_report_page1(data, styles))
     story.append(PageBreak())
-    story.extend(build_page2(data, styles))
+    story.extend(build_report_page2(data, styles))
     story.append(PageBreak())
-    story.extend(build_page3(data, styles))
+    story.extend(build_report_page3(data, styles))
+
+    return story
+
+
+def build_finantial(data: FinantialPdfData) -> list:
+    """
+    Estructura alineada al PDF de referencia financiero (2 páginas):
+        1) Resumen + Parámetros + Flujo de caja
+        2) Gráficas + Conclusiones + Firma
+    """
+    styles = _styles()
+    story: list = []
+
+    story.extend(build_finantial_page1(data, styles))
+    story.append(PageBreak())
+    story.extend(build_finantial_page2(data, styles))
 
     return story
