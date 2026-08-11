@@ -1,14 +1,18 @@
 "use client";
 
+import Button2Add_finantial from "@/features/view/components/Buttons/quotes/finantial/button2Add";
 import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add";
 import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
+import FinantialTable from "@/features/view/components/Tables/quotes/FinantialTable";
 import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";
 import ReportTable from "@/features/view/components/Tables/quotes/ReportTable";
 import { useProjectEquipos } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 import { useQuoteMutations, useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { useReportMutations, useReports } from "@/features/view/hooks/services/useRealtimeReports";
+import { useFinantialMutations, useFinantials } from "@/features/view/hooks/services/useRealtimeFinantial";
+import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-types";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 
@@ -36,6 +40,13 @@ export default function QuotesPage(){
         remove: remove_report,
     } = useReportMutations();
 
+    // FINANZAS
+    const { finantials, refetch: refetch_finantial } = useFinantials();
+    const { create: create_finantials,
+        update: update_finantials,
+        remove: remove_finantials,
+    } = useFinantialMutations();
+
     // ---------------------------------
     // ---- Lista de eventos ----
     // ---------------------------------
@@ -56,6 +67,14 @@ export default function QuotesPage(){
         await refetch_report();
     }
 
+    // FINANZAS
+    async function handleAddFinantial(
+        report: FinantialFormData,
+    ) {
+        await create_finantials(report);
+        await refetch_finantial();
+    }
+
     //------ Actualizar
     async function handleEditQuote(
         updatedQuote: Quote,
@@ -74,6 +93,15 @@ export default function QuotesPage(){
         await refetch_report();
     }
 
+    // FINANZAS
+    async function handleEditFinantial(
+        updatedFinantial: Finantial,
+    ) {
+        const { id, ...finantialData } = updatedFinantial;
+        await update_finantials(id, finantialData);
+        await refetch_finantial();
+    }
+
     //------ Remover
     async function handleDeleteQuote(quoteId: string){
         await remove_quote(quoteId);
@@ -84,6 +112,12 @@ export default function QuotesPage(){
     async function handleDeleteReport(reportId: string){
         await remove_report(reportId);
         await refetch_report();
+    }
+
+    // FINANZAS
+    async function handleDeleteFinantial(finantialId: string) {
+        await remove_finantials(finantialId);
+        await refetch_finantial();
     }
 
     return (
@@ -130,6 +164,24 @@ export default function QuotesPage(){
                         onDeleteReport={handleDeleteReport}
                         projects_equipos={project_equipos}
                         projects_materiales={project_materiales}
+                    />
+                </div>
+
+                <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
+                            <Button2Add_finantial
+                                onAddFinantial={handleAddFinantial}
+                                project_equipos={project_equipos}
+                            />
+                        </div>
+                    </section>
+                    <FinantialTable
+                        finantial={finantials}
+                        totalFinantial={finantials.length}
+                        onUpdateFinantial={handleEditFinantial}
+                        onDeleteFinantial={handleDeleteFinantial}
+                        projects_equipos={project_equipos}
                     />
                 </div>
             </main>
