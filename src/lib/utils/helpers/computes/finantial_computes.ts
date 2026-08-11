@@ -19,13 +19,17 @@ export function buildEnergyRows(input: {
     const { generacion, degra_1er, degra_2do, maxYear } = input;
     if (generacion <= 0 || maxYear < 0) return [];
 
+    // DEGRADACIÓN AÑO 1
     const pctYear1 = 100 - degra_1er;
     if (pctYear1 <= 0) return [];
 
+    // ENERGÍA AÑO 0
     const energyYear0 = generacion * (100 / pctYear1);
     const rows: EnergyRow[] = [];
 
+    // Construcción de cada fila  
     for (let year = 0; year <= maxYear; year++) {
+        // DEGRADACIÓN
         let degradation_pct: number;
         if (year === 0) {
             degradation_pct = 100;
@@ -35,7 +39,9 @@ export function buildEnergyRows(input: {
             degradation_pct = pctYear1 - degra_2do * (year - 1);
         }
 
+        // ENERGÍA
         const energy_mwh = energyYear0 * (degradation_pct / 100);
+        
         rows.push({ year, energy_mwh, degradation_pct });
     }
 
@@ -219,12 +225,12 @@ export function getInverterReplacementCost(
         .filter(
             (item) =>
                 item.equipo_info?.tipo_de_producto?.toUpperCase() === "INVERSOR"
-        )
+        ) // solo se escoge un proyecto por inversor
         .reduce(
             (sum, item) =>
                 sum +
                 Number(item.equipo_info?.precio_dolares ?? 0) *
                     Number(item.cantidad ?? 0),
             0
-        );
+        ); // multiplica por la cantidad de inversores seleccionados
 }
