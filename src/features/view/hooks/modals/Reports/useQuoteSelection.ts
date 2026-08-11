@@ -1,16 +1,20 @@
 import { Quote, QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { SetStateAction } from "react";
 
-export function QuoteSelection(
-    value: string, 
-    quotes: Quote[], 
-    setForm_quote: (value: SetStateAction<QuoteFormState>) => void, 
-    setForm: (value: SetStateAction<ReportFormState>) => void
+type FormWithQuoteSelection = {
+    cotizacion_id?: string;
+    cotizacion_info?: Quote | undefined;
+};
+
+export function QuoteSelection<T extends FormWithQuoteSelection>(
+    value: string,
+    quotes: Quote[],
+    setForm_quote: (value: SetStateAction<QuoteFormState>) => void,
+    setForm: (value: SetStateAction<T>) => void
 ){
     // actualizador
-    function updateField<K extends keyof ReportFormState>(field: K, value: ReportFormState[K]){
+    function updateField<K extends keyof FormWithQuoteSelection>(field: K, value: FormWithQuoteSelection[K]){
         setForm((current) => {
             const update = {... current, [field]: value};
             return update;
@@ -18,10 +22,11 @@ export function QuoteSelection(
     }
 
     // condiciones nulas
-    if (value === "Selecciona cotización") {
+    if (value === "Seleccione cotización") {
         setForm_quote(INITIAL_QUOTE_FORM);
         updateField("cotizacion_id", "");
         updateField("cotizacion_info", undefined);
+        return;
     }
 
     // búsqueda de la cotización seleccionada
