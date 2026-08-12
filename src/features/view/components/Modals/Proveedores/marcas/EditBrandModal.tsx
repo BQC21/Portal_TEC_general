@@ -54,7 +54,7 @@ export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }
                                 onChange={(value) => updateField("nombre", value)}
                             />
                             <AddProductSelectField
-                                label={TABLE_HEADERS_BRAND[5]}
+                                label={TABLE_HEADERS_BRAND[1]}
                                 required
                                 options={Category}
                                 value={form_brand.categoria || ""}

@@ -54,7 +54,7 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
                                 onChange={(value) => updateField("nombre", value)}
                             />
                             <AddProductSelectField
-                                label={TABLE_HEADERS_TYPE[5]}
+                                label={TABLE_HEADERS_TYPE[1]}
                                 required
                                 options={Category}
                                 value={form_type.categoria || ""}
