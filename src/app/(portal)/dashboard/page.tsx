@@ -75,7 +75,7 @@ export default function DashboardPage() {
         },
         {
             title: "Finanzas enlistadas",
-            value: reports.length,
+            value: finantials.length,
             accent: "bg-red-50 text-red-700",
             icon: "▣",
         },
