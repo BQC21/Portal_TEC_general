@@ -7,6 +7,8 @@ import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
 import { EditTypeModalProps } from "@/lib/types/components/General/modals";
 import { createTypeFormStateFromType } from "@/lib/mapping/mapping_type";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { Category } from "@/lib/utils/options";
 
 export default function EditTypeModal({ existingType, onUpdateType, onClose }: EditTypeModalProps) {
     const [form_type, setForm_type] = useState<TypeFormstate>(createTypeFormStateFromType(existingType));
@@ -51,13 +53,13 @@ export default function EditTypeModal({ existingType, onUpdateType, onClose }: E
                                 value={form_type.nombre || ""}
                                 onChange={(value) => updateField("nombre", value)}
                             />
-                            <AddProductTextField
-                                label={TABLE_HEADERS_TYPE[1]}
+                            <AddProductSelectField
+                                label={TABLE_HEADERS_TYPE[5]}
                                 required
-                                placeholder=" "
+                                options={Category}
                                 value={form_type.categoria || ""}
                                 onChange={(value) => updateField("categoria", value)}
-                            />                                               
+                            />                                                
                         </section>
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
