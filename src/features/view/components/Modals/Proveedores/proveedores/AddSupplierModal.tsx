@@ -7,6 +7,8 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { Category } from "@/lib/utils/options";
 
 export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplierModalProps) {
     const [form_supplier, setForm_supplier] = useState<SupplierFormstate>(INITIAL_SUPPLIER_FORM);
@@ -83,10 +85,10 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
                                 value={form_supplier.telefono || ""}
                                 onChange={(value) => updateField("telefono", value)}
                             />
-                            <AddProductTextField
+                            <AddProductSelectField
                                 label={TABLE_HEADERS_SUPPLIER[5]}
                                 required
-                                placeholder=" "
+                                options={Category}
                                 value={form_supplier.categoria || ""}
                                 onChange={(value) => updateField("categoria", value)}
                             />                                               

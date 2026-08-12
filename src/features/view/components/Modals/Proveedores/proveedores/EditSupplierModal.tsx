@@ -7,6 +7,8 @@ import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { EditSupplierModalProps } from "@/lib/types/components/General/modals";
 import { createSupplierFormStateFromSupplier } from "@/lib/mapping/mapping_proveedores";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { Category } from "@/lib/utils/options";
 
 export default function EditSupplierModal({ existingSupplier, onUpdateSupplier, onClose }: EditSupplierModalProps) {
     const [form_supplier, setForm_supplier] = useState<SupplierFormstate>(createSupplierFormStateFromSupplier(existingSupplier));
@@ -83,13 +85,13 @@ export default function EditSupplierModal({ existingSupplier, onUpdateSupplier, 
                                 value={form_supplier.telefono || ""}
                                 onChange={(value) => updateField("telefono", value)}
                             />
-                            <AddProductTextField
+                            <AddProductSelectField
                                 label={TABLE_HEADERS_SUPPLIER[5]}
                                 required
-                                placeholder=" "
+                                options={Category}
                                 value={form_supplier.categoria || ""}
                                 onChange={(value) => updateField("categoria", value)}
-                            />                                               
+                            />                                             
                         </section>
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
