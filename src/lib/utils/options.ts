@@ -10,6 +10,7 @@ export type FillOptions = "AUTOMÁTICO" | "MANUAL"; // tipo de llenado
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de ordenamiento
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
 export const Unidad = ["Unidad", "Palet"]; // Unidad del equipo o material
+export const Category = ["Equipos", "Materiales", "Ambas"];
 
 // ------------------
 // ------------------
