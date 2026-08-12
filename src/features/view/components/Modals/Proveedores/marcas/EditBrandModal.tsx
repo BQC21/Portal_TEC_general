@@ -7,6 +7,8 @@ import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
 import { EditBrandModalProps } from "@/lib/types/components/General/modals";
 import { createBrandFormStateFromBrand } from "@/lib/mapping/mapping_marcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { Category } from "@/lib/utils/options";
 
 export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }: EditBrandModalProps) {
     const [form_brand, setForm_brand] = useState<BrandFormstate>(createBrandFormStateFromBrand(existingBrand));
@@ -51,13 +53,13 @@ export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }
                                 value={form_brand.nombre || ""}
                                 onChange={(value) => updateField("nombre", value)}
                             />
-                            <AddProductTextField
-                                label={TABLE_HEADERS_BRAND[1]}
+                            <AddProductSelectField
+                                label={TABLE_HEADERS_BRAND[5]}
                                 required
-                                placeholder=" "
+                                options={Category}
                                 value={form_brand.categoria || ""}
                                 onChange={(value) => updateField("categoria", value)}
-                            />                                               
+                            />                                                        
                         </section>
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
