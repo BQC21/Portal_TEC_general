@@ -74,7 +74,7 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
                         type="submit"
                         className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                         >
-                            Añadir Marca
+                            Añadir Tipo de producto
                         </button>
                     </div>
                 </form>
