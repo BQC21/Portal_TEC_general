@@ -38,21 +38,21 @@ export function General_info_M1_EQ({
                             label="DoD (%) degradación"
                             value={Number(form.dod)}
                             onChange={(value) => updateField("dod", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Amperaje de la batería (Ah)"
                             value={Number(form.impp_i_in)}
                             onChange={(value) => updateField("impp_i_in", String(value))}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Voltaje de la batería (V)"
                             value={Number(form.vmpp_vmin)}
                             onChange={(value) => updateField("vmpp_vmin", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                     </>
@@ -75,49 +75,49 @@ export function General_info_M1_EQ({
                             label="Potencia máxima(kw)"
                             value={Number(form.potencia_maxima)}
                             onChange={(value) => updateField("potencia_maxima", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Número de MPPT"
                             value={Number(form.mppt)}
                             onChange={(value) => updateField("mppt", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Potencia AC del inversor (kw)"
                             value={Number(form.potencia_ac)}
                             onChange={(value) => updateField("potencia_ac", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Voltaje mínimo del inversor"
                             value={Number(form.vmpp_vmin)}
                             onChange={(value) => updateField("vmpp_vmin", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Voltaje máximo del inversor"
                             value={Number(form.voc_vmax)}
                             onChange={(value) => updateField("voc_vmax", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Corriente de entrada"
                             value={Number(form.impp_i_in)}
                             onChange={(value) => updateField("impp_i_in", String(value))}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="Corriente de salida"
                             value={Number(form.isc_i_out)}
                             onChange={(value) => updateField("isc_i_out", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                     </>
@@ -137,28 +137,28 @@ export function General_info_M1_EQ({
                             label="VOC (Voltaje a circuito abierto) [V]"
                             value={Number(form.voc_vmax)}
                             onChange={(value) => updateField("voc_vmax", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="ISC (Corriente a corto circuito) [A]"
                             value={Number(form.isc_i_out)}
                             onChange={(value) => updateField("isc_i_out", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="VMPP (Voltaje punto de máxima potencia) [V]"
                             value={Number(form.vmpp_vmin)}
                             onChange={(value) => updateField("vmpp_vmin", value)}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                         <AddProductNumberField
                             label="IMPP (Corriente punto de máxima potencia) [A]"
                             value={Number(form.impp_i_in)}
                             onChange={(value) => updateField("impp_i_in", String(value))}
-                            step={0.01}
+                            step={0.001}
                             min={0}
                         />
                     </>
