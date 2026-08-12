@@ -73,9 +73,9 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                         required
                                         value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
                                         onChange={(value) => updateField("cobertura_porcentaje", String(value))}
-                                        step={5}
-                                        min={30}
-                                        max={40}
+                                        step={1}
+                                        min={0}
+                                        max={100}
                                     />
                                     <AddProductReadonlyField
                                         label="Porcentaje de rendimiento del módulo (%)"
@@ -156,27 +156,27 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                         />
                                         <AddEquipoReadonlyField
                                             label="VMPP del módulo seleccionado"
-                                            value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(2))}
+                                            value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.vmpp_vmin))}
                                         />
                                         <AddEquipoReadonlyField
                                             label="IMPP del módulo seleccionado"
-                                            value={String(Number(computedRequirements.selectedEquipment?.impp_i_in).toFixed(2))}
+                                            value={String(Number(computedRequirements.selectedEquipment?.impp_i_in).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(computedRequirements.selectedEquipment?.impp_i_in)}
                                         />
                                         <AddEquipoReadonlyField
                                             label="VOC del módulo seleccionado"
-                                            value={String(Number(computedRequirements.selectedEquipment?.voc_vmax).toFixed(2))}
+                                            value={String(Number(computedRequirements.selectedEquipment?.voc_vmax).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.voc_vmax))}
                                         />
                                         <AddEquipoReadonlyField
                                             label="ISC del módulo seleccionado"
-                                            value={String(Number(computedRequirements.selectedEquipment?.isc_i_out).toFixed(2))}
+                                            value={String(Number(computedRequirements.selectedEquipment?.isc_i_out).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.isc_i_out))}
                                         />  
                                         <AddEquipoReadonlyField
                                             label="Potencia del módulo seleccionado"
-                                            value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(2))}
+                                            value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.potencia_maxima))}
                                         />
                                         <AddEquipoReadonlyField
@@ -313,7 +313,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                                     />
                                                     <AddEquipoReadonlyField
                                                         label="Voltaje de la batería seleccionada"
-                                                        value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(1))}
+                                                        value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(3))}
                                                         colorClass={getFieldValueDarkClass(String(computedRequirements.selectedBattery?.vmpp_vmin))}
                                                     />
                                                     <AddEquipoReadonlyField
@@ -336,7 +336,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                                     />
                                                     <AddProductReadonlyField
                                                         label="Capacidad (Ah) del sistema"
-                                                        value={String(Number(computedRequirements.ah_sistema).toFixed(2))}
+                                                        value={String(Number(computedRequirements.ah_sistema).toFixed(3))}
                                                         colorClass={getFieldValueLightClass(computedRequirements.ah_sistema)}
                                                     />
                                                     <AddProductReadonlyField

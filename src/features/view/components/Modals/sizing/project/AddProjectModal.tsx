@@ -24,11 +24,9 @@ import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } fro
 import { AddMProjectodalProps } from "@/lib/types/components/General/modals";
 import { useComputedRequirements } from "@/features/view/hooks/modals/Sizing/useComputedRequirements";
 import { useSyncQuantities } from "@/features/view/hooks/modals/Sizing/useSyncQuantities";
-import { handlerSelector } from "@/features/view/hooks/modals/Sizing/useHandlerSelector";
 import { useSelectionHandlers } from "@/features/view/hooks/modals/Sizing/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
-import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
 import { General_info_M2 } from "@/features/view/sub_components/M2/refactor/General_info_M2";
 import { Data_info_M2 } from "@/features/view/sub_components/M2/refactor/Data_info_M2";
 import { Selectors_M2 } from "@/features/view/sub_components/M2/refactor/Selectors_M2";
