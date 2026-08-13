@@ -141,13 +141,12 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                         value="80"
                                     />
                                 </div>
-
-
-                                
+                                    
                                 <div>
                                     {computedRequirements.selectedEquipment && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>
+                                        
                                         <AddEquipoReadonlyField
                                             label="Código del módulo seleccionado"
                                             value={computedRequirements.selectedEquipment?.codigo ?? ""}
@@ -209,15 +208,16 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                     </>
                                     )}
                                 </div>
-
-
-
-
-
+                                    
                                 <div>
                                     {computedRequirements.selectedInverter && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Inversor seleccionado</h2>
+                                        {((Number(computedRequirements.selectedEquipment?.potencia_maxima) * Number(form.strings)) > 
+                                            computedRequirements.selectedInverter?.potencia_maxima) && (
+                                            <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Inversor no recomendado por cuestiones de sobredimensionamiento ⚠️</h2>
+                                        )}
+
                                         <AddEquipoReadonlyField
                                             label="Código del inversor seleccionado"
                                             value={computedRequirements.selectedInverter?.codigo ?? ""}
@@ -267,7 +267,15 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
                                                     Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
                                         />
-
+                                        <AddProductNumberField
+                                            label="Número de Cadenas a usarse"
+                                            required
+                                            value={Number(form.cadena_number) > 0 ? Number(form.cadena_number) : ""}
+                                            onChange={(value) => updateField("cadena_number", String(value))}
+                                            min={0}  step={1}
+                                            max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
+                                                    Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
+                                        />
 
 
 
@@ -290,10 +298,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                     </>
                                     )}
                                 </div>
-
-
-
-
+                                    
                                 <div>
                                     {shouldRender_M2_battery_properties(form.tipo_instalacion) && (
                                         <>

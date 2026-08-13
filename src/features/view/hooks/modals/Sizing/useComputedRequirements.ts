@@ -34,7 +34,7 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
         // calcular protecciones
         const itm_ac_min = String(ITM_AC_MIN(Number(selectedInverter?.isc_i_out ?? 0)));
         const itm_dc_min = String(ITM_DC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)));
-        const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.mppt_number)));
+        const spd_min = String(SPD_MIN(Number(form.strings), Number(selectedEquipment?.voc_vmax ?? 0), Number(form.cadena_number)));
         // calcular propiedades de la batería
         const ah_sistema = String(AH_sistema(Number(form.demanda_electrica), Number(form.autonomia), 
                         Number(selectedBattery?.dod), Number(selectedBattery?.vmpp_vmin)));
