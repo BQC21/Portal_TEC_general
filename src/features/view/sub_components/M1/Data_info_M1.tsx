@@ -35,6 +35,10 @@ export function Data_info_M1({
     useTypeSelection,
     updateField,
 }: Data_info_M1_props) {
+    // --------------------
+    // FILTRADOS EN CASCADA
+    // --------------------
+    
     const filteredSuppliers = supplier.filter((item) =>
         matchesProductCategory(item.categoria, productCategory),
     );

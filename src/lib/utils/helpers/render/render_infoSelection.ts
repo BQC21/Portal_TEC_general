@@ -24,6 +24,8 @@ export function shouldRender_ProductInfoSelection(productType: string) {
     return productMap[productType] || { brand_options: [], unit: "" };
 }
 
+// MARCA <-----> TIPO
+
 // filtrado de equipos
 export function shouldRender_EquipoInfoSelection(equipoType: string) {
     const equipoMap: { [key: string]: { brand_options: string[]; unit: string } } = {
