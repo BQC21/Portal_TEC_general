@@ -29,18 +29,21 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                 if (isTypeAlreadySelected) {
                     filteredOptions = [defaultSelectOption(label)];
                 } else {
-                    const requiredPowerAC = form.opcion_llenado == "AUTOMÁTICO"
-                                            ? parseFloat(computedRequirements.potenciaAC):
-                                            form.potencia_ac_requerida;
+                    // const requiredPowerAC = form.opcion_llenado == "AUTOMÁTICO"
+                    //                         ? parseFloat(computedRequirements.potenciaAC):
+                    //                         form.potencia_ac_requerida;
+                    const requiredPowerDC = form.opcion_llenado == "AUTOMÁTICO"
+                                            ? parseFloat(computedRequirements.potenciaDC):
+                                            form.potencia_dc_requerida;
                     filteredOptions = [
                         defaultSelectOption(label),
                         ...equipos
                             .filter((equipo) => {
                                 if (equipo.tipo_de_producto !== label) return false;
                                 
-                                // según valor de potencia AC requerida
+                                // según valor de potencia DC requerida
                                 const inverterPowerAC = parseFloat(equipo.potencia_ac?.toString() || "0");
-                                if (inverterPowerAC < Number(requiredPowerAC)) return false;
+                                if (inverterPowerAC < Number(requiredPowerDC)) return false;
                                 // según configuración de fase
                                 if (form.tipo_instalacion !== "conexión OFF-GRID" && 
                                     equipo.tipo_conexion !== form.configuracion) return false;
