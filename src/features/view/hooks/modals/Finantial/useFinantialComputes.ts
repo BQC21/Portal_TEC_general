@@ -5,6 +5,7 @@ import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import {
     computeFinantialAnalysis,
+    getBatteryReplacementCost,
     getInverterReplacementCost,
 } from "@/lib/utils/helpers/computes/finantial_computes";
 
@@ -24,6 +25,11 @@ export function useFinantialComputes(
         () => getInverterReplacementCost(projectEquipos),
         [projectEquipos]
     );
+    // valor para batería
+    const batteryReplacementCost = useMemo(
+        () => getBatteryReplacementCost(projectEquipos),
+        [projectEquipos]
+    );
 
     // Almacenar valores relacionado al análisis financiero
     const analysis = useMemo(
@@ -38,8 +44,17 @@ export function useFinantialComputes(
                 tasa_descuento: Number(form.tasa_descuento) || 0,
                 maxYear,
                 inverterReplacementCost,
+                batteryReplacementCost,
+                inverterReplacementYears: (form.cambios_equipo ?? [])
+                    .filter((cambio) => cambio.tipo === "INVERSOR")
+                    .map((cambio) => Number(cambio.anio))
+                    .filter((year) => year > 0),
+                batteryReplacementYears: (form.cambios_equipo ?? [])
+                    .filter((cambio) => cambio.tipo === "BATERÍA")
+                    .map((cambio) => Number(cambio.anio))
+                    .filter((year) => year > 0),
             }),
-        [form, maxYear, inverterReplacementCost]
+        [form, maxYear, inverterReplacementCost, batteryReplacementCost]
     );
 
     // añadir año
