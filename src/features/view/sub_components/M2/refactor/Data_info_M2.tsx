@@ -8,6 +8,7 @@ import { AddProductReadonlyField } from "../../../components/Form_fields/AddRead
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
 import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
+import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
 
 export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
@@ -34,7 +35,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
         <>
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,2.7fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-[minmax(0,3.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)_minmax(0,2.5fr)]">
                                 <div>
                                     <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
                                     <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Demanda eléctrica mensual</h2>
@@ -58,36 +59,8 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             : ""}
                                         colorClass={getFieldValueLightClass(displayedAnnualDemand)}
                                     />
-
-                                    {shouldRender_M2_configuration(form.tipo_instalacion) && (
-                                        <AddProductSelectField
-                                            label="Configuración"
-                                            required
-                                            value={form.configuracion}
-                                            options={CONNECTION_TYPE_OPTIONS}
-                                            onChange={(value) => updateField("configuracion", value)}
-                                        />
-                                    )}
-                                    <AddProductNumberField
-                                        label="Porcentaje de cobertura (%)"
-                                        required
-                                        value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
-                                        onChange={(value) => updateField("cobertura_porcentaje", String(value))}
-                                        step={1}
-                                        min={0}
-                                        max={100}
-                                    />
-                                    <AddProductReadonlyField
-                                        label="Porcentaje de rendimiento del módulo (%)"
-                                        value="80"
-                                    />
                                 </div>
-
-
-
-
-
-                                
+                                    
                                 <div>
                                     <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Requerimientos energéticos</h2>
                                     {/* Handlers */}
@@ -116,6 +89,15 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                                 value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.potenciaAC)}
                                             />
+                                            <AddProductNumberField
+                                                label="Porcentaje de cobertura (%)"
+                                                required
+                                                value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
+                                                onChange={(value) => updateField("cobertura_porcentaje", String(value))}
+                                                step={1}
+                                                min={0}
+                                                max={100}
+                                            />
                                         </>
                                         ) : (
                                             <>
@@ -137,10 +119,32 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                                     onChange={(value) => updateField("potencia_ac_requerida", String(value))}
                                                     step={0.01} min={0} 
                                                 />
+                                                <AddEquipoReadonlyField
+                                                    label="Porcentaje de cobertura (%)"
+                                                    value={String(compute_cobertura(Number(displayedAnnualDemand), Number(form.energia_requerida)))}
+                                                    colorClass={getFieldValueLightClass(computedRequirements.potenciaAC)}
+                                                />
                                             </>                                            
                                         )
                                     }
+                                    {shouldRender_M2_configuration(form.tipo_instalacion) && (
+                                        <AddProductSelectField
+                                            label="Configuración"
+                                            required
+                                            value={form.configuracion}
+                                            options={CONNECTION_TYPE_OPTIONS}
+                                            onChange={(value) => updateField("configuracion", value)}
+                                        />
+                                    )}
+                                    <AddProductReadonlyField
+                                        label="Porcentaje de rendimiento del módulo (%)"
+                                        value="80"
+                                    />
+                                </div>
 
+
+                                
+                                <div>
                                     {computedRequirements.selectedEquipment && (
                                         <>
                                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Módulo seleccionado</h2>

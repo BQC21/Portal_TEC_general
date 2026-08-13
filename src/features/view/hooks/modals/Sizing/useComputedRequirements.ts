@@ -16,11 +16,12 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
         // a emplearse en los modales de dimensionamiento 
         const ghi = formZone.ghi_respaldo ? Number(formZone.ghi_respaldo) : null;
         const gti = formZone.gti_respaldo ? Number(formZone.gti_respaldo) : null;
-                
+        
         const selectedEquipment = selectedEquipmentTable.find((item) => item.row === "MÓDULO FV");
         const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
         const selectedBattery = selectedEquipmentTable.findLast((item) => item.row === "BATERÍA");
 
+        // calcular energías y potencias requeridas
         const energia = String(computeEnergy(Number(form.demanda_electrica), Number(form.cobertura_porcentaje)));
         const potenciaDC = angle === "Coplanar" ? String(compute_DC_Power(Number(energia), Number(ghi), 80)) : 
                             String(compute_DC_Power(Number(energia), Number(gti), 80))
