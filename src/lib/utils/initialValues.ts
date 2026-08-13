@@ -246,6 +246,10 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     porcentaje_eqmt: "",
     porcentaje_inst: "",
     precio_cotizacion: "",
+    validez_oferta: "",
+    plazo_entrega: "",
+    tasa_dscto: "",
+    opción_dscto: "",
 }
 
 export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 

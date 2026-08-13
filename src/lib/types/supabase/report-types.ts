@@ -21,6 +21,11 @@ export type SupabaseReportRow = {
     porcentaje_eqmt?: number;
     porcentaje_inst?: number;
     precio_cotizacion?: number;
+    // adicionales
+    validez_oferta?: string;
+    plazo_entrega?: string;
+    tasa_dscto?: number;
+    opción_dscto?: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -41,6 +46,11 @@ export type Report = {
     porcentaje_eqmt?: string;
     porcentaje_inst?: string;
     precio_cotizacion?: string;
+    // adicionales
+    validez_oferta: string;
+    plazo_entrega: string;
+    tasa_dscto: string;
+    opción_dscto: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;

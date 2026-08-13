@@ -19,6 +19,11 @@ export function createReportFormStateFromReport(report: Report): ReportFormState
         porcentaje_eqmt: report.porcentaje_eqmt,
         porcentaje_inst: report.porcentaje_inst,
         precio_cotizacion: report.precio_cotizacion,
+        // adicionales
+        validez_oferta: report.validez_oferta,
+        plazo_entrega: report.plazo_entrega,
+        tasa_dscto: report.tasa_dscto,
+        opción_dscto: report.opción_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
@@ -47,6 +52,11 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         porcentaje_eqmt: row.porcentaje_eqmt?.toString() || "",
         porcentaje_inst: row.porcentaje_inst?.toString() || "",
         precio_cotizacion: row.precio_cotizacion?.toString() || "",
+        // adicionales
+        validez_oferta: row.validez_oferta?.toString() || "",
+        plazo_entrega: row.plazo_entrega?.toString() || "",
+        tasa_dscto: row.tasa_dscto?.toString() || "",
+        opción_dscto: row.opción_dscto?.toString() || "",
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -67,6 +77,11 @@ export function mapReportToSupabaseRow(report: ReportFormData): SupabaseReportRo
         porcentaje_eqmt: parseNumber(report.porcentaje_eqmt),
         porcentaje_inst: parseNumber(report.porcentaje_inst),
         precio_cotizacion: parseNumber(report.precio_cotizacion),
+        // adicionales
+        validez_oferta: report.validez_oferta,
+        plazo_entrega: report.plazo_entrega,
+        tasa_dscto: parseNumber(report.tasa_dscto),
+        opción_dscto: report.opción_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
