@@ -94,7 +94,7 @@ def map_finantial_form(payload: FinantialFormPayload) -> FinantialPdfData:
         tasa_descuento=_to_float(payload.tasa_descuento),
         capex=_to_float(payload.capex),
         opex=_to_float(payload.opex),
-        tiempo_retorno=_to_float(payload.tiempo_retorno),
+        tiempo_retorno=_to_str(payload.tiempo_retorno),
         lcoe=_to_float(payload.lcoe),
         van=_to_float(payload.van),
         capex_total=_to_float(payload.capex_total),

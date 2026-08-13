@@ -139,7 +139,7 @@ class FinantialPdfData(BaseModel):
     # Métricas
     capex: float = 0.0
     opex: float = 0.0
-    tiempo_retorno: float = 0.0
+    tiempo_retorno: str = ""
     lcoe: float = 0.0
     van: float = 0.0
     capex_total: float = 0.0
