@@ -35,6 +35,7 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         itm_dc_min: project.itm_dc_min,
         spd_voltage: project.spd_voltage,
         mppt_number: project.mppt_number,
+        cadena_number: project.cadena_number,
         // almacenamiento energético
         autonomia: project.autonomia,
         ah_sistema: project.ah_sistema,
@@ -92,6 +93,7 @@ export function mapSupabaseRowToProject(
         itm_dc_min: row.itm_dc_min?.toString() || "",
         spd_voltage: row.spd_voltage?.toString() || "",
         mppt_number: row.mppt_number?.toString() || "",
+        cadena_number: row.cadena_number?.toString() || "",
         // almacenamiento energético
         autonomia: row.autonomia?.toString() || "",
         ah_sistema: row.ah_sistema?.toString() || "",
@@ -147,6 +149,7 @@ export function mapProjectToSupabaseRow(
         itm_dc_min: parseNumber(project.itm_dc_min),
         spd_voltage: parseNumber(project.spd_voltage),
         mppt_number: parseNumber(project.mppt_number),
+        cadena_number: parseNumber(project.cadena_number),
         // almacenamiento energético
         autonomia: parseNumber(project.autonomia),
         ah_sistema: parseNumber(project.ah_sistema),

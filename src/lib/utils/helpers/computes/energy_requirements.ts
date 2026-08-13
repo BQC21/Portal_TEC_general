@@ -45,8 +45,9 @@ export function ITM_AC_MIN(iout_inv: number){
 }
 
 export function SPD_MIN(string_number: number, voc_mod: number, 
-	mppt_number: number){
-	return Math.ceil(string_number * voc_mod/mppt_number)
+	cadena_number: number){
+	// return Math.ceil(string_number * voc_mod/mppt_number)
+	return Math.ceil(string_number * voc_mod/cadena_number)
 }
 
 // -------------------------

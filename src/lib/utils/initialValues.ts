@@ -178,6 +178,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     itm_dc_min:  "",
     spd_voltage:  "",
     mppt_number: "",
+    cadena_number: "",
     // almacenamiento energético
     autonomia: "",
     ah_sistema: "",

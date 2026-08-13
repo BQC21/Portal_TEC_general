@@ -44,6 +44,7 @@ export type SupabaseProjectRow = {
     itm_ac_min?: number;
     spd_voltage?: number;
     mppt_number?: number;
+    cadena_number?: number;
     // almacenamiento energético
     autonomia?: number;
     ah_sistema?: number;
@@ -92,6 +93,7 @@ export type Project = {
     itm_ac_min: string;
     spd_voltage: string;
     mppt_number: string;
+    cadena_number: string;
     // almacenamiento energético
     autonomia: string;
     ah_sistema: string;
