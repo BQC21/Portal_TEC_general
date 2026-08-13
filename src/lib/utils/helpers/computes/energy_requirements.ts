@@ -14,6 +14,10 @@ export function compute_AC_Power(potenciaDC: number) {
 	return potenciaDC / 1.2;
 }
 
+export function compute_cobertura(demanda: number, energia: number) {
+	return (energia/demanda)*100;
+}
+
 // -------------------------
 // Campo fotovoltaico
 // -------------------------
