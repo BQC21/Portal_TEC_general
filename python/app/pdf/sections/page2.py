@@ -23,7 +23,6 @@ def _rl_image(name: str, width: float, height: float | None = None) -> Image | S
         return Image(str(path), width=width)
     return Image(str(path), width=width, height=height)
 
-
 class _LeftMarginDetail(Flowable):
     """Dibuja Detail_2 en el margen izquierdo sin consumir alto del flujo."""
 
@@ -199,24 +198,39 @@ def _items_table(headers: list[str], rows: list[list[str]], col_widths: list[flo
 
 
 def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
-    rows = [
+    symbol = data.currency_symbol
+    rows: list = []
+
+    if data.tasa_dscto > 0:
+        rows.extend(
+            [
+                [
+                    Paragraph("<b>SUBTOTAL SIN DESCUENTO</b>", styles["body"]),
+                    Paragraph(f"<b>{_money(data.subtotal_sin_dscto, symbol)}</b>", styles["right"]),
+                ],
+                [
+                    Paragraph(f"DESCUENTO ({data.tasa_dscto:.0f}%)", styles["body"]),
+                    Paragraph(_money(data.precio_dscto, symbol), styles["right"]),
+                ],
+            ]
+        )
+
+    rows.extend(
         [
-            Paragraph("<b>SUBTOTAL</b>", styles["body"]),
-            Paragraph(f"<b>{_money(data.subtotal, data.currency_symbol)}</b>", styles["right"]),
-        ],
-        [
-            Paragraph("IGV DE PUESTA EN MARCHA", styles["body"]),
-            Paragraph(_money(data.igv_inst, data.currency_symbol), styles["right"]),
-        ],
-        [
-            Paragraph("IGV DE EQUIPOS Y MATERIALES", styles["body"]),
-            Paragraph(_money(data.igv_eqmt, data.currency_symbol), styles["right"]),
-        ],
-        [
-            Paragraph("<b>TOTAL</b>", styles["body"]),
-            Paragraph(f"<b>{_money(data.total, data.currency_symbol)}</b>", styles["right"]),
-        ],
-    ]
+            [
+                Paragraph("<b>SUBTOTAL</b>", styles["body"]),
+                Paragraph(f"<b>{_money(data.subtotal, symbol)}</b>", styles["right"]),
+            ],
+            [
+                Paragraph("IGV", styles["body"]),
+                Paragraph(_money(data.igv, symbol), styles["right"]),
+            ],
+            [
+                Paragraph("<b>TOTAL</b>", styles["body"]),
+                Paragraph(f"<b>{_money(data.total, symbol)}</b>", styles["right"]),
+            ],
+        ]
+    )
     table = Table(rows, colWidths=[13 * cm, 5 * cm])
     table.setStyle(
         TableStyle(
@@ -234,16 +248,16 @@ def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
     return table
 
 
-def _conditions_table(styles: dict[str, ParagraphStyle]) -> Table:
+def _conditions_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Table:
     rows = [
         [
             Paragraph("<b>VALIDEZ DE LA OFERTA</b>", styles["small"]),
-            Paragraph("15 Días", styles["body"]),
+            Paragraph(data.validez_oferta or "-", styles["body"]),
             Paragraph("BCP S/: 194-4373203-0-66", styles["small"]),
         ],
         [
             Paragraph("<b>PLAZO DE ENTREGA</b>", styles["small"]),
-            Paragraph("3 Semanas Recepcionada la Orden de Servicio", styles["body"]),
+            Paragraph(data.plazo_entrega or "-", styles["body"]),
             Paragraph("CCI S/: 002194 0043732030 6693", styles["small"]),
         ],
         [
@@ -353,6 +367,6 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     story.append(Spacer(1, 0.1 * cm))
     story.append(_totals_table(data, styles))
     story.append(Spacer(1, 0.1 * cm))
-    story.append(_conditions_table(styles))
+    story.append(_conditions_table(data, styles))
 
     return story

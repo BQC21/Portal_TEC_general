@@ -75,6 +75,9 @@ class ReportFormPayload(BaseModel):
     porcentaje_eqmt: NumberLike = None
     porcentaje_inst: NumberLike = None
     precio_cotizacion: NumberLike = None
+    validez_oferta: Optional[str] = None
+    plazo_entrega: Optional[str] = None
+    tasa_dscto: NumberLike = None
     cotizacion_id: Optional[str] = None
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
@@ -107,15 +110,19 @@ class ReportPdfData(BaseModel):
 
     porcentaje_eqmt: float = 0.0
     porcentaje_inst: float = 0.0
+    validez_oferta: str = ""
+    plazo_entrega: str = ""
+    tasa_dscto: float = 0.0
     precio_usd: float = 0.0
     tasa_cambio: float = 1.0
     igv_rate: float = 0.0
 
+    subtotal_sin_dscto: float = 0.0
+    precio_dscto: float = 0.0
     subtotal: float = 0.0
     monto_eqmt: float = 0.0
     monto_inst: float = 0.0
-    igv_eqmt: float = 0.0
-    igv_inst: float = 0.0
+    igv: float = 0.0
     total: float = 0.0
     currency_symbol: str = "S/"
 

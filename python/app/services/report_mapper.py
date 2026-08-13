@@ -131,16 +131,15 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
     precio_usd = _to_float(payload.precio_cotizacion)
     igv_rate = 0.0
     tasa_cambio = 0.0
+    tasa_dscto = _to_float(payload.tasa_dscto)
 
     if cotizacion:
         cod_cotizacion = _to_str(cotizacion.cod_cotizacion)
         if cotizacion.proyecto_info:
             proyecto_nombre = _to_str(cotizacion.proyecto_info.nombre)
-
         precio_from_quote = _to_float(cotizacion.precio_dolares)
         if precio_from_quote > 0:
             precio_usd = precio_from_quote
-
         igv_rate = _to_float(cotizacion.igv)
         tasa_cambio = _to_float(cotizacion.tasa_cambio)
 
@@ -158,13 +157,24 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
 
     ## --------
     ## Calculos
-    ## -------- 
-    subtotal = precio_usd * tasa_cambio if use_soles else precio_usd
-    monto_eqmt = subtotal * (pct_eqmt / 100.0)
-    monto_inst = subtotal * (pct_inst / 100.0)
-    igv_eqmt = monto_eqmt * igv_rate
-    igv_inst = 0.0  # alineado al PDF de referencia
-    total = subtotal + igv_eqmt + igv_inst
+    ## --------
+    # Precio base (sin IGV) en la moneda del PDF. Siempre definido,
+    # con o sin descuento, para que EQUIPOS + PUESTA EN MARCHA = este monto.
+    subtotal_sin_dscto = round(precio_usd * tasa_cambio if use_soles else precio_usd, 2)
+    monto_eqmt = round(subtotal_sin_dscto * (pct_eqmt / 100.0), 2)
+    if abs((pct_eqmt + pct_inst) - 100.0) < 1e-9:
+        monto_inst = round(subtotal_sin_dscto - monto_eqmt, 2)
+    else:
+        monto_inst = round(subtotal_sin_dscto * (pct_inst / 100.0), 2)
+
+    # Tasa de descuento del form es % (0-100). IGV de cotización es factor (0.18) o % (18).
+    dscto_factor = tasa_dscto / 100.0 if tasa_dscto > 0 else 0.0
+    igv_factor = igv_rate / 100.0 if igv_rate > 1 else igv_rate
+
+    precio_dscto = round(subtotal_sin_dscto * dscto_factor, 2) if dscto_factor > 0 else 0.0
+    subtotal = round(subtotal_sin_dscto - precio_dscto, 2)
+    igv = round(subtotal * igv_factor, 2)
+    total = round(subtotal + igv, 2)
 
     ## Nombre del cliente
     cliente = _to_str(payload.cliente)
@@ -186,14 +196,18 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         cod_cotizacion=cod_cotizacion,
         porcentaje_eqmt=pct_eqmt,
         porcentaje_inst=pct_inst,
+        validez_oferta=_to_str(payload.validez_oferta),
+        plazo_entrega=_to_str(payload.plazo_entrega),
         precio_usd=precio_usd,
         tasa_cambio=tasa_cambio,
+        tasa_dscto=tasa_dscto,
         igv_rate=igv_rate,
         subtotal=subtotal,
+        precio_dscto=precio_dscto,
+        subtotal_sin_dscto=subtotal_sin_dscto,
         monto_eqmt=monto_eqmt,
         monto_inst=monto_inst,
-        igv_eqmt=igv_eqmt,
-        igv_inst=igv_inst,
+        igv=igv,
         total=total,
         currency_symbol=currency_symbol,
         equipos=_map_equipos(payload.equipos),
