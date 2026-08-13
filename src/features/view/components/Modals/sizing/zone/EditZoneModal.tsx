@@ -70,27 +70,27 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                                 label={TABLE_HEADERS_ZONE[3]}
                                 required
                                 placeholder=" "
-                                value={form_zone.ghi_respaldo}
-                                onChange={(value) => updateField("ghi_respaldo", value)}
+                                value={form_zone.gti_respaldo}
+                                onChange={(value) => updateField("gti_respaldo", value)}
                             />
                                 <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[4]}
                                 placeholder=" "
-                                value={form_zone.ghi_respaldo_diario}
-                                onChange={(value) => updateField("ghi_respaldo_diario", value)}
+                                value={form_zone.gti_respaldo_diario}
+                                onChange={(value) => updateField("gti_respaldo_diario", value)}
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[5]}
                                 required
                                 placeholder=" "
-                                value={form_zone.gti_respaldo}
-                                onChange={(value) => updateField("gti_respaldo", value)}
+                                value={form_zone.ghi_respaldo}
+                                onChange={(value) => updateField("ghi_respaldo", value)}
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[6]}
                                 placeholder=" "
-                                value={form_zone.gti_respaldo_diario}
-                                onChange={(value) => updateField("gti_respaldo_diario", value)}
+                                value={form_zone.ghi_respaldo_diario}
+                                onChange={(value) => updateField("ghi_respaldo_diario", value)}
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[7]}
