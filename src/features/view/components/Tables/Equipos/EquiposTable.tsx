@@ -31,7 +31,7 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.marca)}`}>{displayCellValue(equipo.marca)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.descripcion)}`}>{displayCellValue(equipo.descripcion)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.tipo_conexion)}`}>{displayCellValue(equipo.tipo_conexion)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_maxima)}`}>{displayCellValue(equipo.potencia_maxima)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_maxima)}`}>{displayCellValue(equipo.potencia_maxima.toFixed(3))}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.mppt)}`}>{displayCellValue(equipo.mppt)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_ac)}`}>{displayCellValue(equipo.potencia_ac)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.dod)}`}>{displayCellValue(equipo.dod.toFixed(0))}</td>
