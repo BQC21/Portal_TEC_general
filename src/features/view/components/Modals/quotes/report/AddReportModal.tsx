@@ -110,12 +110,6 @@ export default function AddReportModal({onAddReport, onClose,
                                         form={form}
                                         updateField={updatedField}
                                     />
-
-                                    {/* Quote Report Table */}
-                                    <QuoteReportTable
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
-                                        igv={Number(form.cotizacion_info?.igv)}
-                                    />
                                 </div>
                                 <div className="grid gap-6">
                                     {/* Contenido de Equipos y Materiales */}
@@ -133,6 +127,11 @@ export default function AddReportModal({onAddReport, onClose,
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={Number(form.cotizacion_info?.precio_dolares)}
                                         MO={Number(form.porcentaje_inst)}
+                                    />
+                                    {/* Quote Report Table */}
+                                    <QuoteReportTable
+                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        igv={Number(form.cotizacion_info?.igv)}
                                     />
                                 </div>
                             </div>
