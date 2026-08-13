@@ -326,4 +326,6 @@ export const INITIAL_FINANTIAL_FORM: FinantialFormState = {
     tasa_descuento: "",
     lcoe: "",
     tiempo_retorno: "",
+    cantidad_cambios: "0",
+    cambios_equipo: [],
 }
