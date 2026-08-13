@@ -1,5 +1,12 @@
 import { Quote, SupabaseQuoteRow } from "./quote-types";
 
+export type FinantialCambioEquipo = "INVERSOR" | "BATERÍA" | "";
+
+export type FinantialCambioItem = {
+    anio: string;
+    tipo: FinantialCambioEquipo;
+};
+
 // estado del formulario
 export type FinantialFormState = Omit<Finantial, "id">;
 export type FinantialFormData = Omit<Finantial, "id">
@@ -20,7 +27,9 @@ export type SupabaseFinantialRow = {
     tarifa_crecimiento?: number;
     tasa_descuento?: number;
     lcoe?: number;
-    tiempo_retorno?: number;
+    tiempo_retorno?: string | number;
+    cantidad_cambios?: number;
+    cambios_equipo?: FinantialCambioItem[];
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -41,6 +50,8 @@ export type Finantial = {
     tasa_descuento?: string;
     lcoe?: string;
     tiempo_retorno?: string;
+    cantidad_cambios?: string;
+    cambios_equipo?: FinantialCambioItem[];
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;

@@ -1,6 +1,5 @@
 import { Finantial, FinantialFormData, FinantialFormState, SupabaseFinantialRow } from "../types/supabase/finantial-types"
 import { SupabaseQuoteRow } from "../types/supabase/quote-types"
-import { Report, ReportFormData, ReportFormState, SupabaseReportRow } from "../types/supabase/report-types"
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage"
 import { parseNumber } from "../utils/normalization"
 import { mapSupabaseRowtoQuote } from "./mapping_quotes"
@@ -20,6 +19,8 @@ export function createFinantialFormStateFromFinantial(finantial: Finantial): Fin
         tasa_descuento: finantial.tasa_descuento,
         lcoe: finantial.lcoe,
         tiempo_retorno: finantial.tiempo_retorno,
+        cantidad_cambios: finantial.cantidad_cambios ?? "0",
+        cambios_equipo: finantial.cambios_equipo ?? [],
         // fechas
         created_at:finantial.created_at,
         updated_at: finantial.updated_at
@@ -48,6 +49,8 @@ export function mapSupabaseRowtoFinantial(row: SupabaseFinantialRow): Finantial{
         tasa_descuento: row.tasa_descuento?.toString() || "",
         lcoe: row.lcoe?.toString() || "",
         tiempo_retorno: row.tiempo_retorno?.toString() || "",
+        cantidad_cambios: row.cantidad_cambios?.toString() || "0",
+        cambios_equipo: Array.isArray(row.cambios_equipo) ? row.cambios_equipo : [],
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -67,7 +70,7 @@ export function mapFinantialToSupabaseRow(finantial: FinantialFormData): Supabas
         tarifa_crecimiento: parseNumber(finantial.tarifa_crecimiento),
         tasa_descuento: parseNumber(finantial.tasa_descuento),
         lcoe: parseNumber(finantial.lcoe),
-        tiempo_retorno: parseNumber(finantial.tiempo_retorno),
+        tiempo_retorno: finantial.tiempo_retorno,
         // fechas
         created_at:finantial.created_at,
         updated_at: finantial.updated_at
