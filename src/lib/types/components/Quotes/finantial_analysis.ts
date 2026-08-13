@@ -18,7 +18,7 @@ export type FlowRow = {
 export type FinantialAnalysis = {
     capex: number;
     opex: number;
-    tiempo_retorno: number | null;
+    tiempo_retorno: string | null;
     energyRows: EnergyRow[];
     flowRows: FlowRow[];
     capex_total: number;
@@ -26,6 +26,8 @@ export type FinantialAnalysis = {
     energia_total: number;
     lcoe: number | null;
     van: number | null;
+    inverterReplacementCost: number;
+    batteryReplacementCost: number;
 };
 
 export type FinantialComputeInput = {
@@ -38,4 +40,7 @@ export type FinantialComputeInput = {
     tasa_descuento: number;
     maxYear: number;
     inverterReplacementCost: number;
+    batteryReplacementCost: number;
+    inverterReplacementYears: number[];
+    batteryReplacementYears: number[];
 };

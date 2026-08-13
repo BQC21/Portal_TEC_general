@@ -12,6 +12,9 @@ export type ReportPdfPayload = {
     porcentaje_eqmt?: string | number;
     porcentaje_inst?: string | number;
     precio_cotizacion?: string | number;
+    validez_oferta?: string;
+    plazo_entrega?: string;
+    tasa_dscto?: string | number;
     
     // cotizacion
     cotizacion_id?: string;
