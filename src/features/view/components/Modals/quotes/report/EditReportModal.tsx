@@ -109,7 +109,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
                     {hasSelectedQuote && (
                         <>
-                            <div className="mt-6 grid gap-6 grid-cols-[1fr_1fr_1fr]">
+                            <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr_1fr]">
                                 <div className="grid gap-6">
                                     {/* Inputación de datos */}
                                     <ReportDataInput
