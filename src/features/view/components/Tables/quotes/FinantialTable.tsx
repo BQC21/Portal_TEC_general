@@ -3,7 +3,7 @@ import { TABLE_HEADERS_FINANTIAL } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_finantial from "../../Buttons/quotes/finantial/button2Edit";
 import { Button2Trash_finantial } from "../../Buttons/quotes/finantial/button2Delete";
-
+import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
 
 export default function FinantialTable({finantial, totalFinantial, 
     onUpdateFinantial, onDeleteFinantial, projects_equipos}: FinantialTableProps){
@@ -30,7 +30,7 @@ export default function FinantialTable({finantial, totalFinantial,
                                     return (
                                     <tr key={finantial.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.cod_cotizacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.tiempo_retorno} años</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{displayPayback(finantial.tiempo_retorno)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.lcoe} USD/MWh</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.updated_at)}</td>
