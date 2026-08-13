@@ -19,6 +19,9 @@ function formatOptionalNumber(value: number | null): string {
 
 export function FlowTable({ flowRows }: FlowTableProps) {
     const years = flowRows.map((row) => row.year);
+    const firstPositiveYear = flowRows.find(
+        (row) => row.year > 0 && row.flujo_acumulado >= 0
+    )?.year; // extracción del 1er año positivo
 
     return (
         <section className="space-y-4">
@@ -40,8 +43,21 @@ export function FlowTable({ flowRows }: FlowTableProps) {
                     </thead>
                     <tbody>
                         {flowRows.length > 0 ? (
-                            flowRows.map((row) => (
-                                <tr key={row.year} className="bg-white">
+                            flowRows.map((row) => {
+                                // condiciones
+                                const isNegative = row.flujo_acumulado < 0;
+                                const isFirstPositive = row.year === firstPositiveYear;
+                                // coloreo según el efecto del flujo acumulado
+                                const rowClass = isNegative ? "bg-red-50" : "bg-white";
+                                // color de texto en la columna de flujo acumulado
+                                const accumulatedClass = isFirstPositive
+                                    ? "border-b border-slate-200 px-3 py-2.5 font-semibold bg-orange-400 text-white"
+                                    : isNegative
+                                        ? "border-b border-slate-200 px-3 py-2.5 font-medium text-red-700"
+                                        : "border-b border-slate-200 px-3 py-2.5 font-medium";
+
+                                return (
+                                <tr key={row.year} className={rowClass}>
                                     <td className="border-b border-slate-200 px-3 py-2.5 font-medium">
                                         {row.year}
                                     </td>
@@ -65,11 +81,12 @@ export function FlowTable({ flowRows }: FlowTableProps) {
                                     <td className="border-b border-slate-200 px-3 py-2.5 font-medium">
                                         {formatCurrency(row.flujo_total, "USD")}
                                     </td>
-                                    <td className="border-b border-slate-200 px-3 py-2.5 font-medium">
+                                    <td className={accumulatedClass}>
                                         {formatCurrency(row.flujo_acumulado, "USD")}
                                     </td>
                                 </tr>
-                            ))
+                                );
+                            })
                         ) : (
                             <tr>
                                 <td
