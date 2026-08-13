@@ -6,7 +6,6 @@ import {
 } from "@/lib/types/components/Quotes/finantial_analysis";
 
 const VAN_HORIZON = 20; // años futuros a considerar para el cálculo del VAN
-const INVERTER_REPLACEMENT_YEAR = 10; // alis dibde se carga el costo de reposición de inversores
 const OPEX_RATE = 0.015; // Porcentaje del CAPEX para calcular el OPEX
 
 // Construcción de la energía
@@ -56,6 +55,9 @@ export function buildFlowRows(input: {
     tarifa_crecimiento: number;
     energyRows: EnergyRow[];
     inverterReplacementCost: number;
+    batteryReplacementCost: number;
+    inverterReplacementYears: number[];
+    batteryReplacementYears: number[];
 }): FlowRow[] {
     const {
         capex,
@@ -64,7 +66,13 @@ export function buildFlowRows(input: {
         tarifa_crecimiento,
         energyRows,
         inverterReplacementCost,
+        batteryReplacementCost,
+        inverterReplacementYears,
+        batteryReplacementYears,
     } = input;
+
+    const inverterYears = new Set(inverterReplacementYears.filter((year) => year > 0));
+    const batteryYears = new Set(batteryReplacementYears.filter((year) => year > 0));
 
     const growth = tarifa_crecimiento / 100;
     const rows: FlowRow[] = [];
@@ -94,8 +102,13 @@ export function buildFlowRows(input: {
         }
 
         // asignación (desde año 1)
-        const equipamiento =
-            year === INVERTER_REPLACEMENT_YEAR ? inverterReplacementCost : 0;
+        let equipamiento = 0;
+        if (inverterYears.has(year) && inverterReplacementCost > 0) {
+            equipamiento += inverterReplacementCost;
+        }
+        if (batteryYears.has(year) && batteryReplacementCost > 0) {
+            equipamiento += batteryReplacementCost;
+        }
         const tarifa_cliente =
             year === 1
                 ? tarifa_red
@@ -136,8 +149,26 @@ export function computePaybackYears(flowRows: FlowRow[]): number | null {
     const rowT = flowRows.find((row) => row.year === t);
     const rowT1 = flowRows.find((row) => row.year === t + 1);
     if (!rowT || !rowT1 || rowT1.flujo_total === 0) return null;
+    const time_payback = t + Math.abs(rowT.flujo_acumulado / rowT1.flujo_total);
+    return time_payback;
+}
 
-    return t + Math.abs(rowT.flujo_acumulado / rowT1.flujo_total);
+// Labelización del tiempo de retorno (x años y meses)
+export function formatPaybackLabel(timePayback: number): string {
+    if (!Number.isFinite(timePayback) || timePayback < 0) return "—";
+
+    let years = Math.trunc(timePayback);
+    let months = Math.round((timePayback - years) * 12);
+    if (months === 12) {
+        years += 1;
+        months = 0;
+    }
+
+    const yearsLabel = years === 1 ? "1 año" : `${years} años`;
+    const monthsLabel = months === 1 ? "1 mes" : `${months} meses`;
+    if (years === 0) return monthsLabel;
+    if (months === 0) return yearsLabel;
+    return `${yearsLabel} y ${monthsLabel}`;
 }
 
 // Cálculo del LCOE
@@ -188,19 +219,23 @@ export function computeFinantialAnalysis(
         opex,
         tarifa_red: input.tarifa_red,
         tarifa_crecimiento: input.tarifa_crecimiento,
-        energyRows: energyRows.slice(0,21),
+        energyRows,
         inverterReplacementCost: input.inverterReplacementCost,
+        batteryReplacementCost: input.batteryReplacementCost,
+        inverterReplacementYears: input.inverterReplacementYears,
+        batteryReplacementYears: input.batteryReplacementYears,
     });
 
     // Para el cálculo del LCOE
     const capex_total = flowRows.reduce((sum, row) => sum + row.equipamiento, 0);
     const om_total = flowRows.reduce((sum, row) => sum + (row.om ?? 0), 0);
     const energia_total = flowRows.reduce((sum, row) => sum + (row.energy_mwh ?? 0), 0);
+    const paybackYears = computePaybackYears(flowRows);
 
     return {
         capex,
         opex,
-        tiempo_retorno: computePaybackYears(flowRows),
+        tiempo_retorno: paybackYears === null ? null : formatPaybackLabel(paybackYears),
         energyRows,
         flowRows,
         capex_total,
@@ -208,10 +243,36 @@ export function computeFinantialAnalysis(
         energia_total,
         lcoe: computeLcoe(capex_total, om_total, energia_total),
         van: computeVan(input.tasa_descuento, flowRows),
+        inverterReplacementCost: input.inverterReplacementCost,
+        batteryReplacementCost: input.batteryReplacementCost,
     };
 }
 
-// Cálculo del reemplazo para el año 10
+export function getReplacementCostByType(
+    projectEquipos: Array<{
+        equipo_info?: {
+            tipo_de_producto?: string;
+            precio_dolares?: string | number;
+        };
+        cantidad?: string | number;
+    }>,
+    tipo: string
+): number {
+    const needle = tipo.toUpperCase();
+    return projectEquipos
+        .filter(
+            (item) =>
+                item.equipo_info?.tipo_de_producto?.toUpperCase() === needle
+        )
+        .reduce(
+            (sum, item) =>
+                sum +
+                Number(item.equipo_info?.precio_dolares ?? 0) *
+                    Number(item.cantidad ?? 0),
+            0
+        );
+}
+
 export function getInverterReplacementCost(
     projectEquipos: Array<{
         equipo_info?: {
@@ -221,16 +282,17 @@ export function getInverterReplacementCost(
         cantidad?: string | number;
     }>
 ): number {
-    return projectEquipos
-        .filter(
-            (item) =>
-                item.equipo_info?.tipo_de_producto?.toUpperCase() === "INVERSOR"
-        ) // solo se escoge un proyecto por inversor
-        .reduce(
-            (sum, item) =>
-                sum +
-                Number(item.equipo_info?.precio_dolares ?? 0) *
-                    Number(item.cantidad ?? 0),
-            0
-        ); // multiplica por la cantidad de inversores seleccionados
+    return getReplacementCostByType(projectEquipos, "INVERSOR");
+}
+
+export function getBatteryReplacementCost(
+    projectEquipos: Array<{
+        equipo_info?: {
+            tipo_de_producto?: string;
+            precio_dolares?: string | number;
+        };
+        cantidad?: string | number;
+    }>
+): number {
+    return getReplacementCostByType(projectEquipos, "BATERÍA");
 }
