@@ -45,10 +45,7 @@ export default function AddFinantialModal({
         setForm((current) => ({
             ...current,
             lcoe: analysis.lcoe === null ? "" : String(analysis.lcoe.toFixed(4)),
-            tiempo_retorno:
-                analysis.tiempo_retorno === null
-                    ? ""
-                    : String(analysis.tiempo_retorno.toFixed(2)),
+            tiempo_retorno: analysis.tiempo_retorno ?? "",
         }));
     }, [analysis.lcoe, analysis.tiempo_retorno]);
 
@@ -66,10 +63,7 @@ export default function AddFinantialModal({
         await onAddFinantial({
             ...form,
             lcoe: analysis.lcoe === null ? "" : String(analysis.lcoe.toFixed(4)),
-            tiempo_retorno:
-                analysis.tiempo_retorno === null
-                    ? ""
-                    : String(analysis.tiempo_retorno.toFixed(2)),
+            tiempo_retorno: analysis.tiempo_retorno ?? "",
         });
     }
 
