@@ -27,10 +27,7 @@ export default function Button2PDF_FINANTIAL({
             // ---- Métricas calculadas ----
             capex: analysis.capex,
             opex: analysis.opex,
-            tiempo_retorno:
-                analysis.tiempo_retorno === null
-                    ? form.tiempo_retorno
-                    : analysis.tiempo_retorno,
+            tiempo_retorno: analysis.tiempo_retorno ?? form.tiempo_retorno,
             lcoe: analysis.lcoe === null ? form.lcoe : analysis.lcoe,
             van: analysis.van ?? undefined,
             capex_total: analysis.capex_total,
