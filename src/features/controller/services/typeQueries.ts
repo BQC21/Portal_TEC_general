@@ -10,7 +10,7 @@ export async function createType(type: TypeFormData): Promise<Type> {
 	const { data, error } = await supabase
 		.from(TYPE_TABLE)
 		.insert(supabaseRow)
-		.select()
+		.select("*,marcas(*)")
 		.single();
 
 	if (error) {
@@ -25,7 +25,7 @@ export async function getTypes(): Promise<Type[]> {
 
 	const { data, error } = await supabase
 		.from(TYPE_TABLE)
-		.select("*");
+		.select("*,marcas(*)");
     
         if (error) {
             throw new Error(`Error al obtener los tipos: ${error.message}`);
@@ -39,7 +39,7 @@ export async function getTypeById(id: string): Promise<Type> {
 
 	const { data, error } = await supabase
 		.from(TYPE_TABLE)
-        .select("*")
+        .select("*,marcas(*)")
         .eq("id", id)
         .single();
 
@@ -58,7 +58,7 @@ export async function updateType(id: string, type: TypeFormData): Promise<Type> 
 		.from(TYPE_TABLE)
 		.update(supabaseRow)
 		.eq("id", id)
-		.select()
+		.select("*,marcas(*)")
 		.single();
 
 	if (error) {

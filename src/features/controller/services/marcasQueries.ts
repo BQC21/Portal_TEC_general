@@ -10,7 +10,7 @@ export async function createMarca(marca: BrandFormData): Promise<Brand> {
 	const { data, error } = await supabase
 		.from(BRAND_TABLE)
 		.insert(supabaseRow)
-		.select()
+		.select("*,proveedores(*)")
 		.single();
 
 	if (error) {
@@ -25,7 +25,7 @@ export async function getMarcas(): Promise<Brand[]> {
 
 	const { data, error } = await supabase
 		.from(BRAND_TABLE)
-		.select("*");
+		.select("*,proveedores(*)");
 
 	if (error) {
 		throw new Error(`Error al obtener las marcas: ${error.message}`);
@@ -39,7 +39,7 @@ export async function getMarcasbyId(id: string): Promise<Brand> {
 
 	const { data, error } = await supabase
 		.from(BRAND_TABLE)
-		.select("*")
+		.select("*,proveedores(*)")
 		.eq("id", id)
 		.single();
 
@@ -58,7 +58,7 @@ export async function updateMarca(id: string, marca: BrandFormData): Promise<Bra
 		.from(BRAND_TABLE)
 		.update(supabaseRow)
 		.eq("id", id)
-		.select()
+		.select("*,proveedores(*)")
 		.single();
 
 	if (error) {
