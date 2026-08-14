@@ -1,32 +1,39 @@
 "use client";
 
 import { AddTypeModalProps } from "@/lib/types/components/General/modals";
-import { INITIAL_BRAND_FORM, INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
+import { INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { TABLE_HEADERS_BRAND, TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { Category } from "@/lib/utils/options";
+import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
+import { useBrandSelectionHandlers } from "@/features/view/hooks/modals/proveedores/useBrandSelectionHandlers";
+import { applySelectedBrandsToType } from "@/lib/utils/helpers/modals/brandOptions";
+import { General_info_Type } from "@/features/view/sub_components/Proveedores/refactor/General_info_Type";
+import { Selectors_Type } from "@/features/view/sub_components/Proveedores/refactor/Selectors_Type";
+import { Tables_Type } from "@/features/view/sub_components/Proveedores/refactor/Tables_Type";
 
 export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) {
+    const { brand } = useBrands();
     const [form_type, setForm_type] = useState<TypeFormstate>(INITIAL_TYPE_FORM);
+    const {
+        selectedBrandByRow,
+        selectedBrandTable,
+        setSelectedBrandTable,
+        brandOptions,
+        handleBrandChange,
+        handleAddBrand,
+    } = useBrandSelectionHandlers({
+        brand,
+        typeCategoria: form_type.categoria,
+    });
 
     function updateField<K extends keyof TypeFormstate>(field: K, value: TypeFormstate[K]) {
-        setForm_type((current) => {
-            const updated = { ...current, [field]: value };
-            return updated;
-        });
+        setForm_type((current) => ({ ...current, [field]: value }));
     }
 
-    // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
-        onAddType({
-            ...form_type,
-        });
+        onAddType(applySelectedBrandsToType(form_type, selectedBrandTable));
     }
 
     return (
@@ -44,35 +51,28 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <AddProductTextField
-                                label={TABLE_HEADERS_TYPE[0]}
-                                required
-                                placeholder=" "
-                                value={form_type.nombre || ""}
-                                onChange={(value) => updateField("nombre", value)}
-                            />
-                            <AddProductSelectField
-                                label={TABLE_HEADERS_TYPE[1]}
-                                required
-                                options={Category}
-                                value={form_type.categoria || ""}
-                                onChange={(value) => updateField("categoria", value)}
-                            />                                                          
-                        </section>
-                    </div>
+                    <General_info_Type form={form_type} updateField={updateField} />
+                    <Selectors_Type
+                        selectedBrandByRow={selectedBrandByRow}
+                        brandOptions={brandOptions}
+                        handleBrandChange={handleBrandChange}
+                        handleAddBrand={handleAddBrand}
+                    />
+                    <Tables_Type
+                        selectedBrandTable={selectedBrandTable}
+                        setSelectedBrandTable={setSelectedBrandTable}
+                    />
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            type="button"
+                            onClick={onClose}
+                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
                         >
                             Cancelar
                         </button>
                         <button
-                        type="submit"
-                        className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
+                            type="submit"
+                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                         >
                             Añadir Tipo de producto
                         </button>
@@ -80,5 +80,5 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
                 </form>
             </div>
         </div>
-    )
+    );
 }

@@ -2,31 +2,42 @@
 
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
 import { EditBrandModalProps } from "@/lib/types/components/General/modals";
 import { createBrandFormStateFromBrand } from "@/lib/mapping/mapping_marcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { Category } from "@/lib/utils/options";
+import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
+import { useSupplierSelectionHandlers } from "@/features/view/hooks/modals/proveedores/useSupplierSelectionHandlers";
+import {
+    applySelectedSuppliersToBrand,
+    selectedSuppliersFromBrand,
+} from "@/lib/utils/helpers/modals/supplierOptions";
+import { General_info_Brand } from "@/features/view/sub_components/Proveedores/refactor/General_info_Brand";
+import { Selectors_Brand } from "@/features/view/sub_components/Proveedores/refactor/Selectors_Brand";
+import { Tables_Brand } from "@/features/view/sub_components/Proveedores/refactor/Tables_Brand";
 
 export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }: EditBrandModalProps) {
+    const { supplier } = useProveedores();
     const [form_brand, setForm_brand] = useState<BrandFormstate>(createBrandFormStateFromBrand(existingBrand));
+    const {
+        selectedSupplierByRow,
+        selectedSupplierTable,
+        setSelectedSupplierTable,
+        supplierOptions,
+        handleSupplierChange,
+        handleAddSupplier,
+    } = useSupplierSelectionHandlers({
+        supplier,
+        brandCategoria: form_brand.categoria,
+        initialSelected: selectedSuppliersFromBrand(existingBrand, supplier),
+    });
 
     function updateField<K extends keyof BrandFormstate>(field: K, value: BrandFormstate[K]) {
-        setForm_brand((current) => {
-            const updated = { ...current, [field]: value };
-            return updated;
-        });
+        setForm_brand((current) => ({ ...current, [field]: value }));
     }
 
-    // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-
-        onUpdateBrand({
-            ...form_brand,
-        });
+        onUpdateBrand(applySelectedSuppliersToBrand(form_brand, selectedSupplierTable));
     }
 
     return (
@@ -44,35 +55,28 @@ export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }
                     </button>
                 </div>
                 <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                    <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                        <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                            <AddProductTextField
-                                label={TABLE_HEADERS_BRAND[0]}
-                                required
-                                placeholder=" "
-                                value={form_brand.nombre || ""}
-                                onChange={(value) => updateField("nombre", value)}
-                            />
-                            <AddProductSelectField
-                                label={TABLE_HEADERS_BRAND[1]}
-                                required
-                                options={Category}
-                                value={form_brand.categoria || ""}
-                                onChange={(value) => updateField("categoria", value)}
-                            />                                                        
-                        </section>
-                    </div>
+                    <General_info_Brand form={form_brand} updateField={updateField} />
+                    <Selectors_Brand
+                        selectedSupplierByRow={selectedSupplierByRow}
+                        supplierOptions={supplierOptions}
+                        handleSupplierChange={handleSupplierChange}
+                        handleAddSupplier={handleAddSupplier}
+                    />
+                    <Tables_Brand
+                        selectedSupplierTable={selectedSupplierTable}
+                        setSelectedSupplierTable={setSelectedSupplierTable}
+                    />
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button
-                        type="button"
-                        onClick={onClose}
-                        className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            type="button"
+                            onClick={onClose}
+                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
                         >
                             Cancelar
                         </button>
                         <button
-                        type="submit"
-                        className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
+                            type="submit"
+                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
                         >
                             Actualizar marca
                         </button>
@@ -80,5 +84,5 @@ export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }
                 </form>
             </div>
         </div>
-    )
+    );
 }
