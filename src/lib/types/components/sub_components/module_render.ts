@@ -11,6 +11,7 @@ import {
     MontoItem,
     PersonalItem,
     QuantityPriceItem,
+    ConsumeItem,
 } from "../Quotes/manual_resources";
 import {
     grossMargin as GrossMarginCompute,
@@ -248,8 +249,11 @@ type ManualCostHandlers = {
     updateManualCostItem: (
         section: ManualCostArraySection,
         index: number,
-        field: keyof QuantityPriceItem | keyof PersonalItem,
-        value: QuantityPriceItem[keyof QuantityPriceItem] | PersonalItem[keyof PersonalItem],
+        field: keyof QuantityPriceItem | keyof PersonalItem | keyof ConsumeItem,
+        value:
+            | QuantityPriceItem[keyof QuantityPriceItem]
+            | PersonalItem[keyof PersonalItem]
+            | ConsumeItem[keyof ConsumeItem],
     ) => void;
     addManualCostItem: (section: ManualCostArraySection) => void;
     removeManualCostItem: (section: ManualCostArraySection, index: number) => void;
