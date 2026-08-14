@@ -1,3 +1,4 @@
+import { Brand, SupabaseBrandRow } from "./brand.types";
 
 // Estado del formulario 
 export type TypeFormstate = Omit<Type, "id">; 
@@ -12,6 +13,10 @@ export type SupabaseTypeRow = {
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
+    // marca asociada
+    marca_id?: number | string;          
+    marca_info?: SupabaseBrandRow;         
+    marcas?: SupabaseBrandRow;               
 };
 
 // Campos para la base de datos
@@ -23,6 +28,9 @@ export type Type = {
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
+    // marca asociada
+    marca_id: string; 
+    marca_info?: Brand;  
 };
 
 // Estado de la visualización
