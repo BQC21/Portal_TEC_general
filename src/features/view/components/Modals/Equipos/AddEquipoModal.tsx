@@ -23,7 +23,7 @@ import { useSuplierSelection } from "@/features/view/hooks/modals/equipos/useSup
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
-import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
 
 export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEquipoModalProps) {
     // ----------------------------
@@ -55,10 +55,18 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
         setForm((current) => ({ ...current, [field]: value }));
     }
 
-    // Opciones en cascada
     const cascadeOptions = useMemo(
-        () => getModalCascadeOptions(existingEquipos, form.proveedor, form.marca),
-        [existingEquipos, form.proveedor, form.marca],
+        () => getCatalogCascadeOptions(
+            brand,
+            type,
+            existingEquipos,
+            form.proveedor,
+            form.proveedor_id,
+            form.marca,
+            form.marca_id,
+        ),
+        [brand, type, existingEquipos, form.proveedor, 
+        form.proveedor_id, form.marca, form.marca_id],
     );
 
     // Generación automático para el código del producto
@@ -76,15 +84,6 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
             cod_producto: generatedCode || form.cod_producto,
         });
     }
-
-    // // ----------------------------
-    // // ------- Logs ---------------
-    // // ----------------------------
-    // console.log({
-    //     formProveedor: form.proveedor,
-    //     cascadeBrands: cascadeOptions.brands,
-    //     proveedoresEnEquipos: [...new Set(existingEquipos.map(e => e.proveedor))],
-    // });
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-4">
