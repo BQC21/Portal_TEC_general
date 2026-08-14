@@ -43,6 +43,26 @@ export type SelectedMaterialItem = {
     precio_dolares_igv: number;
 };
 
+// Proveedor seleccionado
+export type SelectedSupplierlItem = {
+    row: string;
+    id: string;
+    nombre: string;
+    ruc: string;
+    contacto: string;
+    telefono: string;
+    categoria: string;
+    codigo: string;
+};
+
+// Marca seleccionada
+export type SelectedBrandItem = {
+    row: string;
+    id: string;
+    nombre: string;
+    categoria: string;
+};
+
 // Filas correspondientes a la tabla de productos de Supabase
 export type SupabaseProductRow = {
     // propiedades generales
