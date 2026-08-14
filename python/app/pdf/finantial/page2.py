@@ -94,10 +94,9 @@ def build_page2(data: FinantialPdfData, styles: dict[str, ParagraphStyle]) -> li
     )
 
     beneficio = _money(data.beneficio_acumulado)
-    payback = f"{data.tiempo_retorno:,.2f}"
+    payback = data.tiempo_retorno or "—"
 
     story: list = []
-    story.append(_LeftMarginDetail("Detail_2_page2.png", width=_SIDEBAR_W, height=24 * cm))
 
     story.append(build_components_chart(data))
     story.append(
@@ -127,7 +126,7 @@ def build_page2(data: FinantialPdfData, styles: dict[str, ParagraphStyle]) -> li
     story.append(
         Paragraph(
             f"<b>2. Recuperación de la inversión:</b> la inversión inicial se recupera en "
-            f"aproximadamente <b>{payback} años</b>, según el cruce del flujo acumulado "
+            f"aproximadamente <b>{payback}</b>, según el cruce del flujo acumulado "
             f"mostrado en la Figura 2.",
             body,
         )

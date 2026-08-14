@@ -99,7 +99,7 @@ def _params_table(data: FinantialPdfData, styles: dict[str, ParagraphStyle]) -> 
         ["CAPEX", _money(data.capex), "USD"],
         ["OPEX", _money(data.opex), "USD/año"],
         ["Tarifa de Red", _money(data.tarifa_red), "USD/MWh"],
-        ["Tiempo de recuperación", _num(data.tiempo_retorno), "años"],
+        ["Inc. tarifa", _num(data.tarifa_crecimiento), "%"],
     ]
     table_data = [header] + [
         [
@@ -225,7 +225,6 @@ def build_page1(data: FinantialPdfData, styles: dict[str, ParagraphStyle]) -> li
 
     story: list = []
     story.append(_brand_header())
-    story.append(_LeftMarginDetail("Detail_2_page2.png", width=_SIDEBAR_W, height=24 * cm))
     story.append(Spacer(1, 0.35 * cm))
     story.append(Paragraph("Análisis Financiero del Proyecto Fotovoltaico", title_style))
     story.append(Paragraph(f"<b>{proyecto}</b>", project_style))
