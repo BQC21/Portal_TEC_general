@@ -79,11 +79,13 @@ export function ReportDataInput({
             {/* Adicionales */}
             <AddProductTextField
                 label = "Validez de oferta"
+                required
                 value = {form.validez_oferta || ""}
                 onChange = {(value) => updateField("validez_oferta", String(value))}
             />
             <AddProductTextField
                 label = "Plazo de entrega"
+                required
                 value = {form.plazo_entrega || ""}
                 onChange = {(value) => updateField("plazo_entrega", String(value))}
             />
