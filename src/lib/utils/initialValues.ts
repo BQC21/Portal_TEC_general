@@ -41,7 +41,7 @@ import { ReportFormState } from "../types/supabase/report-types";
 import { ManualCosts } from "../types/components/Quotes/manual_resources";
 
 // Listas
-import { EPP_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { consumible_template, EPP_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { Tooling_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { Courier_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { SCTR_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
@@ -254,6 +254,13 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
 
 export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 
     Recursos: {
+        consumible: consumible_template.map((item) => ({
+            id: crypto.randomUUID(),
+            cod_producto: item.cod_producto,
+            descripcion: item.descripcion,
+            tipo_de_producto: item.tipo_de_producto,
+            cantidad: item.cantidad,
+        })),
         epp: EPP_template.map((item) => ({
             id: crypto.randomUUID(), // o String(item.id)
             descripcion: item.descripcion,
