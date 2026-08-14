@@ -5,6 +5,8 @@ import { computeGrossMargin, computeMargenRiesgoRecursos, computeMargenRiesgoVia
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
+import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { buildSortedConsumibles } from "@/lib/utils/helpers/sorting/consumiblesSort";
 import { useMemo } from "react";
 
 export function useCostComputes(
@@ -16,6 +18,7 @@ export function useCostComputes(
     gm_viaticos: number,
     tasa_cambio: number,
 ) {
+    const { materiales } = useMateriales();
 
     // -----------------
     // ALMACENAR CÁLCULOS EN LAS TABLAS SECUNDARIAS
@@ -66,23 +69,23 @@ export function useCostComputes(
     );
 
     // CONSUMIBLES
+    const consumibleRows = useMemo(
+        () => buildSortedConsumibles(projectMateriales, manualCosts.Recursos.consumible, materiales),
+        [projectMateriales, manualCosts.Recursos.consumible, materiales],
+    );
     const consumiblesTotal = useMemo(() =>
-        projectMateriales
-            .reduce(
-            (sum, item) =>
-                sum + Number(item.material_info?.precio_soles) * Number(item.cantidad),
+        consumibleRows.reduce(
+            (sum, item) => sum + Number(item.precio_soles) * Number(item.cantidad),
             0,
-            ),
-        [projectMateriales],
+        ),
+        [consumibleRows],
     );
     const consumiblesTotalIgv = useMemo(() =>
-        projectMateriales
-            .reduce(
-            (sum, item) =>
-                sum + Number(item.material_info?.precio_soles_igv) * Number(item.cantidad),
+        consumibleRows.reduce(
+            (sum, item) => sum + Number(item.precio_soles_igv) * Number(item.cantidad),
             0,
-            ),
-        [projectMateriales],
+        ),
+        [consumibleRows],
     );
     
     // EPPs

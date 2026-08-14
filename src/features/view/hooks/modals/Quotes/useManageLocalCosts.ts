@@ -1,4 +1,6 @@
 import {
+    ConsumeItem,
+    EMPTY_CONSUME_ITEM,
     EMPTY_MONTO_ITEM,
     EMPTY_PERSONAL_ITEM,
     EMPTY_QUANTITY_PRICE_ITEM,
@@ -10,11 +12,18 @@ import {
 import { SetStateAction } from "react";
 
 type ManualCostArraySection =
+    | "Recursos.consumible"
     | "Recursos.epp"
     | "Recursos.tooling"
     | "Recursos.sctr"
     | "Recursos.personal"
     | "Viaticos.courier";
+
+type ManualCostItemField = keyof QuantityPriceItem | keyof PersonalItem | keyof ConsumeItem;
+type ManualCostItemValue =
+    | QuantityPriceItem[keyof QuantityPriceItem]
+    | PersonalItem[keyof PersonalItem]
+    | ConsumeItem[keyof ConsumeItem];
 
 type ManualCostMontoSection =
     | "Recursos.hotel"
@@ -31,10 +40,22 @@ export function ManageLocalCosts(
     function updateManualCostItem(
         section: ManualCostArraySection,
         index: number,
-        field: keyof QuantityPriceItem | keyof PersonalItem,
-        value: QuantityPriceItem[keyof QuantityPriceItem] | PersonalItem[keyof PersonalItem],
+        field: ManualCostItemField,
+        value: ManualCostItemValue,
     ) {
         setManualResourceCosts((current) => {
+            if (section === "Recursos.consumible") {
+                return {
+                    ...current,
+                    Recursos: {
+                        ...current.Recursos,
+                        consumible: current.Recursos.consumible.map((item, i) =>
+                            i === index ? { ...item, [field]: value } : item,
+                        ),
+                    },
+                };
+            }
+
             if (section === "Recursos.personal") {
                 return {
                     ...current,
@@ -123,6 +144,19 @@ export function ManageLocalCosts(
     // Agregar fila vacía (solo secciones con arrays)
     function addManualCostItem(section: ManualCostArraySection) {
         setManualResourceCosts((current) => {
+            if (section === "Recursos.consumible") {
+                return {
+                    ...current,
+                    Recursos: {
+                        ...current.Recursos,
+                        consumible: [
+                            ...current.Recursos.consumible,
+                            { id: crypto.randomUUID(), ...EMPTY_CONSUME_ITEM },
+                        ],
+                    },
+                };
+            }
+
             if (section === "Recursos.personal") {
                 return {
                     ...current,
@@ -167,6 +201,18 @@ export function ManageLocalCosts(
     // Eliminar fila por índice (mantiene al menos una fila)
     function removeManualCostItem(section: ManualCostArraySection, index: number) {
         setManualResourceCosts((current) => {
+            if (section === "Recursos.consumible") {
+                if (current.Recursos.consumible.length <= 1) return current;
+
+                return {
+                    ...current,
+                    Recursos: {
+                        ...current.Recursos,
+                        consumible: current.Recursos.consumible.filter((_, i) => i !== index),
+                    },
+                };
+            }
+
             if (section === "Recursos.personal") {
                 if (current.Recursos.personal.length <= 1) return current;
 
