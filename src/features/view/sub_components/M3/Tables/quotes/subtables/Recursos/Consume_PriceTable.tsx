@@ -2,14 +2,16 @@
 
 import { useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
-import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
-import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
+import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow"
+import { ConsumeSelector } from "@/features/view/hooks/modals/Quotes/useConsumeSelector"
+import { materialRows } from "@/lib/utils/helpers/project_modals/rows"
+
 
 export type Consume_PriceTable_props = {
     selected_materiales: Project_Materiales[]
@@ -25,32 +27,39 @@ export function Consume_PriceTable({
         onRemoveMaterial,
     }: Consume_PriceTable_props){
     const { materiales } = useMateriales()
-    const [materialToAdd, setMaterialToAdd] = useState("")
+    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<
+        Record<string, { materialId: string }>
+    >({})
 
-    const availableMaterialOptions = useMemo(() => {
-        const selectedIds = new Set(
-            selected_materiales.map((item) => String(item.material_id)),
-        )
+    function handleMaterialChange(value: string, label: string, index: number) {
+        const key = `${label}-${index}`
+        if (!value) {
+            setSelectedMaterialByRow((prev) => {
+                const next = { ...prev }
+                delete next[key]
+                return next
+            })
+            return
+        }
+        setSelectedMaterialByRow((prev) => ({
+            ...prev,
+            [key]: { materialId: value },
+        }))
+    }
 
-        return [
-            { value: "", label: "Seleccione un material" },
-            ...materiales
-                .filter((material) => !selectedIds.has(String(material.id)))
-                .map((material) => ({
-                    value: String(material.id),
-                    label: `${material.cod_producto} — ${material.descripcion}`,
-                })),
-        ]
-    }, [materiales, selected_materiales])
+    function handleMaterialAdd(label: string, index: number) {
+        const selectedId = selectedMaterialByRow[`${label}-${index}`]?.materialId
+        if (!selectedId) return
 
-    function handleAddMaterial() {
-        if (!materialToAdd) return
-
-        const material = materiales.find((item) => String(item.id) === materialToAdd)
+        const material = materiales.find((item) => String(item.id) === selectedId)
         if (!material) return
 
         onAddMaterial(material)
-        setMaterialToAdd("")
+        setSelectedMaterialByRow((prev) => {
+            const next = { ...prev }
+            delete next[`${label}-${index}`]
+            return next
+        })
     }
 
     // -----------------------------
@@ -70,6 +79,30 @@ export function Consume_PriceTable({
                 <section className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
                     <p className="text-2xl font-bold text-slate-900">¡No olvidar el cable a tierra! ⚠️ </p>
+                    <div>
+                        <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
+                        <div className="flex flex-col gap-4">
+                            {materialRows.map((label, index) => {
+                                const material_filteredOptions = ConsumeSelector(
+                                    label,
+                                    selected_materiales,
+                                    materiales,
+                                );
+
+                                return (
+                                    <SelectionRow
+                                        key={`material-row-${label}-${index}`}
+                                        label={label}
+                                        buttonLabel="Agregar"
+                                        value={selectedMaterialByRow[`${label}-${index}`]?.materialId || ""}
+                                        options={material_filteredOptions}
+                                        onChange={(value) => handleMaterialChange(value, label, index)}
+                                        onClick={() => handleMaterialAdd(label, index)}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </div>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
@@ -187,25 +220,6 @@ export function Consume_PriceTable({
 
                             </tbody>
                         </table>
-                        <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-end">
-                            <div className="min-w-0 flex-1">
-                                <AddProductSelectField
-                                    label="Agregar material"
-                                    value={materialToAdd}
-                                    options={availableMaterialOptions}
-                                    onChange={setMaterialToAdd}
-                                />
-                            </div>
-                            <button
-                                type="button"
-                                onClick={handleAddMaterial}
-                                disabled={!materialToAdd}
-                                className="table-icon-button"
-                                aria-label="Agregar ítem"
-                            >
-                                <PlusIcon />
-                            </button>
-                        </div>
                     </div>
                 </section>
             </div>
