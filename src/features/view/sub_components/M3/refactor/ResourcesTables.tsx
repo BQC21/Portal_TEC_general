@@ -54,10 +54,15 @@ export function ResourcesTables({
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Consumibles">
                     <Consume_PriceTable
+                        items={manualResourceCosts.Recursos.consumible}
                         selected_materiales={projectMateriales}
                         onUpdateCantidad={onUpdateMaterialCantidad}
                         onAddMaterial={onAddMaterial}
                         onRemoveMaterial={onRemoveMaterial}
+                        onUpdateItem={(index, field, value) =>
+                            updateManualCostItem("Recursos.consumible", index, field, value)
+                        }
+                        onRemoveItem={(index) => removeManualCostItem("Recursos.consumible", index)}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="EPPs">
