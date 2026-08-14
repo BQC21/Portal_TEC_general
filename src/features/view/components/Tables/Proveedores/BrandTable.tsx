@@ -31,6 +31,7 @@ export default function BrandTable({ brand,
                                     <tr key={brand.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{brand.nombre}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{brand.categoria}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{brand.proveedor_info?.nombre}</td>
             
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
