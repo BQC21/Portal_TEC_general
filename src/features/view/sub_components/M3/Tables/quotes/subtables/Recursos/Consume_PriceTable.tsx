@@ -7,24 +7,31 @@ import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateria
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
-import { getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
+import { buildSortedConsumibles, getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
 import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow"
 import { ConsumeSelector } from "@/features/view/hooks/modals/Quotes/useConsumeSelector"
 import { materialRows } from "@/lib/utils/helpers/project_modals/rows"
+import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 
 
 export type Consume_PriceTable_props = {
+    items: ConsumeItem[]
     selected_materiales: Project_Materiales[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
     onAddMaterial: (material: Materiales) => void
     onRemoveMaterial: (id: string | number) => void
+    onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
+    onRemoveItem: (index: number) => void
 }
 
 export function Consume_PriceTable({
+        items,
         selected_materiales,
         onUpdateCantidad,
         onAddMaterial,
         onRemoveMaterial,
+        onUpdateItem,
+        onRemoveItem,
     }: Consume_PriceTable_props){
     const { materiales } = useMateriales()
     const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<
@@ -65,13 +72,10 @@ export function Consume_PriceTable({
     // -----------------------------
     // ORDENAMIENTO DE CONSUMIBLES
     // -----------------------------
-    const sortedMateriales = useMemo(() => {
-        return [...selected_materiales].sort((a, b) => {
-            const orderA = getConsumibleGroup(a.material_info?.tipo_de_producto).order;
-            const orderB = getConsumibleGroup(b.material_info?.tipo_de_producto).order;
-            return orderA - orderB;
-        });
-    }, [selected_materiales]);
+    const sortedMateriales = useMemo(
+        () => buildSortedConsumibles(selected_materiales, items, materiales),
+        [selected_materiales, items, materiales],
+    );
 
     return(
         <>
@@ -152,17 +156,17 @@ export function Consume_PriceTable({
                                     {sortedMateriales.length > 0 ? (
                                         sortedMateriales.map((item) => (
                                             <tr
-                                                key={`${item.id}`}
-                                                className={getConsumibleGroup(item.material_info?.tipo_de_producto).rowClass}
+                                                key={item.key}
+                                                className={getConsumibleGroup(item.tipo_de_producto).rowClass}
                                             >
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.cod_producto}
+                                                    {item.cod_producto}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.descripcion}
+                                                    {item.descripcion}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.unidad}
+                                                    {item.unidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <AddProductNumberField
@@ -170,38 +174,54 @@ export function Consume_PriceTable({
                                                         value={Number(item.cantidad)}
                                                         min={0}
                                                         step={0.01}
-                                                        onChange={(value) => onUpdateCantidad(item.id, value)}
+                                                        onChange={(value) => {
+                                                            if (item.source === "catalog" && item.catalogId != null) {
+                                                                onUpdateCantidad(item.catalogId, value)
+                                                                return
+                                                            }
+                                                            if (item.templateIndex != null) {
+                                                                onUpdateItem(item.templateIndex, "cantidad", value)
+                                                            }
+                                                        }}
                                                     />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_soles), "PEN")}
+                                                    {formatCurrency(Number(item.precio_soles), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_soles_igv), "PEN")}
+                                                    {formatCurrency(Number(item.precio_soles_igv), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_dolares), "USD")}
+                                                    {formatCurrency(Number(item.precio_dolares), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_dolares_igv), "USD")}
+                                                    {formatCurrency(Number(item.precio_dolares_igv), "USD")}
                                                 </td>
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_soles)*Number(item.cantidad), "PEN")}
+                                                    {formatCurrency(Number(item.precio_soles)*Number(item.cantidad), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_soles_igv)*Number(item.cantidad), "PEN")}
+                                                    {formatCurrency(Number(item.precio_soles_igv)*Number(item.cantidad), "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_dolares)*Number(item.cantidad), "USD")}
+                                                    {formatCurrency(Number(item.precio_dolares)*Number(item.cantidad), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.material_info?.precio_dolares_igv)*Number(item.cantidad), "USD")}
+                                                    {formatCurrency(Number(item.precio_dolares_igv)*Number(item.cantidad), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <button
                                                         type="button"
-                                                        onClick={() => onRemoveMaterial(item.id)}
+                                                        onClick={() => {
+                                                            if (item.source === "catalog" && item.catalogId != null) {
+                                                                onRemoveMaterial(item.catalogId)
+                                                                return
+                                                            }
+                                                            if (item.templateIndex != null) {
+                                                                onRemoveItem(item.templateIndex)
+                                                            }
+                                                        }}
                                                         className="table-icon-button"
                                                         aria-label="Eliminar ítem"
                                                     >
