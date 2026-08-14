@@ -93,6 +93,7 @@ export const TABLE_HEADERS_SUPPLIER = [
 export const TABLE_HEADERS_BRAND = [
     "Nombre de la marca",
     "Categoría",
+    "Proveedores asociados",
     "Acciones",
 ]
 
@@ -100,6 +101,7 @@ export const TABLE_HEADERS_BRAND = [
 export const TABLE_HEADERS_TYPE = [
     "Nombre del tipo de producto",
     "Categoría",
+    "Marcas asociadas",
     "Acciones",
 ]
 

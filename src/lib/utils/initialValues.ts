@@ -135,6 +135,9 @@ export const INITIAL_BRAND_FORM: BrandFormstate = {
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
+    // proveedores
+    proveedor_id: "",     
+    proveedor_info: undefined, 
 }
 
 export const INITIAL_TYPE_FORM: TypeFormstate = {
@@ -144,6 +147,9 @@ export const INITIAL_TYPE_FORM: TypeFormstate = {
     // fechas
     created_at: new Date(),
     updated_at: new Date(),
+    // marcas
+    marca_id: "",     
+    marca_info: undefined,  
 }
 
 // ------ M2
