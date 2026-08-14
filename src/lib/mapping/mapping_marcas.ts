@@ -1,5 +1,7 @@
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage"
 import { Brand, BrandFormData, BrandFormstate, SupabaseBrandRow } from "../types/supabase/brand.types"
+import { mapSupabaseRowToSupplier } from "./mapping_proveedores"
+import { SupabaseSupplierRow } from "../types/supabase/supplier-types"
 
 // Actualización del formulario
 export function createBrandFormStateFromBrand(brand: Brand): BrandFormstate {
@@ -9,6 +11,9 @@ export function createBrandFormStateFromBrand(brand: Brand): BrandFormstate {
         // fechas
         created_at: brand.created_at,
         updated_at: brand.updated_at,
+        // proveedores
+        proveedor_id: brand.proveedor_id,
+        proveedor_info: brand.proveedor_info,
     }
 }
 
@@ -25,6 +30,13 @@ export function mapSupabaseRowToBrand(
         categoria: row.categoria?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
+        // proveeedor
+        proveedor_id: row.proveedor_id?.toString() || "",
+        proveedor_info: row.proveedor_info
+            ? mapSupabaseRowToSupplier(row.proveedor_info as SupabaseSupplierRow)
+            : row.proveedores
+                ? mapSupabaseRowToSupplier(row.proveedores as SupabaseSupplierRow)
+                : undefined,
 	}
 }
 
@@ -37,6 +49,8 @@ export function mapBrandToSupabaseRow(
     return {
         nombre: brand.nombre,
         categoria: brand.categoria,
+        // marcas
+        proveedor_id: brand.proveedor_id,
         // fechas
         created_at: brand.created_at,
         updated_at: brand.updated_at,
