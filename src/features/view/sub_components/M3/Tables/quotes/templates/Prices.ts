@@ -1,3 +1,46 @@
+// --- CONSUMIBLE
+export const consumible_template = [
+    // PROTECCIÓN (amarillo)
+    { id: 1, cod_producto: "MPESO00007", descripcion: "Fusible 15 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    { id: 2, cod_producto: "MPESO00008", descripcion: "Fusible 20 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    { id: 3, cod_producto: "MPESO00009", descripcion: "Fusible 32 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    // CANALIZACIÓN (azul)
+    { id: 4, cod_producto: "MCAVA00003", descripcion: "Conduit Flexible 2\"", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 5, cod_producto: "MCAVA00006", descripcion: "Abrazadera 2\"", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 6, cod_producto: "MCAVA00009", descripcion: "Prensaestopa 2\"", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 7, cod_producto: "MCAVA00012", descripcion: "Conduit 2\" x 3 m", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 8, cod_producto: "MCAVA00015", descripcion: "Curva 2\"", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 9, cod_producto: "MCAVA00018", descripcion: "Unión 2\"", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 10, cod_producto: "MPROJ00006", descripcion: "Canaleta 40 x 25 x 2 m", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    // CONSUMIBLE (verde)
+    { id: 11, cod_producto: "MPROJ00010", descripcion: "Riel DIN", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 12, cod_producto: "MTECS00006", descripcion: "Bornera 4 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 13, cod_producto: "MTECS00007", descripcion: "Bornera 10 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 14, cod_producto: "MTECS00008", descripcion: "Bornera 16 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 15, cod_producto: "MCOIN00003", descripcion: "Tablero 600x400x250 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 16, cod_producto: "MCAVA00023", descripcion: "Terminal Tipo Pin 4 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 17, cod_producto: "MCAVA00024", descripcion: "Terminal Tipo Pin 6 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 18, cod_producto: "MCAVA00025", descripcion: "Terminal Tipo Pin 10 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 19, cod_producto: "MCAVA00026", descripcion: "Terminal Tipo Pin 16 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 20, cod_producto: "MCAVA00027", descripcion: "Terminal Tipo Ojal 4 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 21, cod_producto: "MCAVA00028", descripcion: "Terminal Tipo Ojal 6 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 22, cod_producto: "MCAVA00029", descripcion: "Terminal Tipo Ojal 10 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 23, cod_producto: "MCAVA00030", descripcion: "Terminal Tipo Ojal 16 mm2", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 24, cod_producto: "MPROJ00008", descripcion: "Cable UTP Cat 6", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 25, cod_producto: "MPROJ00009", descripcion: "Puerto RJ45", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 26, cod_producto: "MCHOQ00004", descripcion: "Tarugo 3/8\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 27, cod_producto: "MCHOQ00009", descripcion: "Tirafon 3/8\" x2\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 28, cod_producto: "MCHOQ00013", descripcion: "100 und Precintos 200 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 29, cod_producto: "MCHOQ00014", descripcion: "100 und Precintos 250 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 30, cod_producto: "MCHOQ00015", descripcion: "100 und Precintos 300 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 31, cod_producto: "MCHOQ00016", descripcion: "100 und Precintos 400 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 32, cod_producto: "MCAVA00031", descripcion: "Sujeta Precintos", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 33, cod_producto: "MCAVA00032", descripcion: "Cinta doble contacto", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 34, cod_producto: "MCAVA00033", descripcion: "Tornillos 3/4\" x 8", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 35, cod_producto: "MCAVA00034", descripcion: "Silicona Sicaflex", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+];
+
+
 // --- EPP
 
 export const EPP_template = [
