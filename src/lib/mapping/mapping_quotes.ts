@@ -14,6 +14,9 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
         Recursos: {
             ...defaults.Recursos,
             ...saved.Recursos,
+            consumible: saved.Recursos?.consumible?.length
+                ? saved.Recursos.consumible
+                : defaults.Recursos.consumible,
             epp: saved.Recursos?.epp?.length ? saved.Recursos.epp : defaults.Recursos.epp,
             tooling: saved.Recursos?.tooling?.length ? saved.Recursos.tooling : defaults.Recursos.tooling,
             personal: saved.Recursos?.personal?.length ? saved.Recursos.personal : defaults.Recursos.personal,
