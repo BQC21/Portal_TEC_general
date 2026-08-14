@@ -3,14 +3,12 @@ import { AddProductSectionTitle } from "@/features/view/components/Form_fields/A
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { Data_info_M1_props } from "@/lib/types/components/sub_components/module_render";
+import {
+    filterBrandsForSupplier,
+    filterTypesForBrand,
+    matchesProductCategory,
+} from "@/lib/utils/helpers/modals/catalogCascade";
 import { Unidad } from "@/lib/utils/options";
-
-function matchesProductCategory(
-    categoria: string | undefined,
-    productCategory: Data_info_M1_props["productCategory"],
-) {
-    return categoria === productCategory || categoria === "Ambas";
-}
 
 export function Data_info_M1({
     form,
@@ -35,23 +33,25 @@ export function Data_info_M1({
     useTypeSelection,
     updateField,
 }: Data_info_M1_props) {
-    // --------------------
-    // FILTRADOS EN CASCADA
-    // --------------------
-    
     const filteredSuppliers = supplier.filter((item) =>
         matchesProductCategory(item.categoria, productCategory),
     );
-    const filteredBrands = brand.filter((item) => {
-        const matchesCategory = matchesProductCategory(item.categoria, productCategory);
-        if (!cascadeOptions) return matchesCategory;
-        return matchesCategory && cascadeOptions.brands.includes(item.nombre ?? "");
-    });
-    const filteredTypes = type.filter((item) => {
-        const matchesCategory = matchesProductCategory(item.categoria, productCategory);
-        if (!cascadeOptions) return matchesCategory;
-        return matchesCategory && cascadeOptions.types.includes(item.nombre ?? "");
-    });
+    const filteredBrands = filterBrandsForSupplier(
+        brand,
+        productCategory,
+        form.proveedor_id,
+        form.proveedor || form_proveedor.nombre,
+        cascadeOptions?.brands,
+        form_marca.nombre,
+    );
+    const filteredTypes = filterTypesForBrand(
+        type,
+        productCategory,
+        form.marca_id,
+        form.marca || form_marca.nombre,
+        cascadeOptions?.types,
+        form_tipo.nombre,
+    );
 
     return (
         <>
@@ -67,7 +67,7 @@ export function Data_info_M1({
                             ...filteredSuppliers.map((item) => item.nombre ?? ""),
                         ]}
                         onChange={(value) =>
-                            useSuplierSelection(value, supplier, setForm_proveedor, setForm)
+                            useSuplierSelection(value, filteredSuppliers, setForm_proveedor, setForm)
                         }
                     />
                     {selectedSupplier && (
@@ -91,7 +91,7 @@ export function Data_info_M1({
                                     ...filteredBrands.map((item) => item.nombre ?? ""),
                                 ]}
                                 onChange={(value) =>
-                                    useBrandSelection(value, brand, setForm_marca, setForm)
+                                    useBrandSelection(value, filteredBrands, setForm_marca, setForm)
                                 }
                             />
                             {selectedBrand && (
@@ -105,7 +105,7 @@ export function Data_info_M1({
                                             ...filteredTypes.map((item) => item.nombre ?? ""),
                                         ]}
                                         onChange={(value) =>
-                                            useTypeSelection(value, type, setForm_tipo, setForm)
+                                            useTypeSelection(value, filteredTypes, setForm_tipo, setForm)
                                         }
                                     />
                                     {selectedType && (
