@@ -23,8 +23,7 @@ import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTyp
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
-import { getModalCascadeOptions } from "@/lib/utils/helpers/filters/cascadeFilterOptions";
-import { getMaterialSupplierCascade } from "@/lib/utils/helpers/filters/supplierCascadeMap";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
 
 export function AddMaterialModal({
     existingMateriales,
@@ -60,25 +59,19 @@ export function AddMaterialModal({
         setForm((current) => ({ ...current, [field]: value }));
     }
 
-    // Cascada por datos + override estático (FerroVoz, Ferretería Choque, Project & Quality)
-    const cascadeOptions = useMemo(() => {
-        const fromData = getModalCascadeOptions(
+    const cascadeOptions = useMemo(
+        () => getCatalogCascadeOptions(
+            brand,
+            type,
             existingMateriales,
             form.proveedor,
+            form.proveedor_id,
             form.marca,
-        );
-        const staticCascade = getMaterialSupplierCascade(form.proveedor);
-
-        if (!staticCascade) return fromData;
-
-        return {
-            ...fromData,
-            brands:
-                fromData.brands.length > 0 ? fromData.brands : staticCascade.brands,
-            // Tipos condicionados por mapa estático al elegir estos proveedores
-            types: form.marca ? staticCascade.types : [],
-        };
-    }, [existingMateriales, form.proveedor, form.marca]);
+            form.marca_id,
+        ),
+        [brand, type, existingMateriales, form.proveedor,
+        form.proveedor_id, form.marca, form.marca_id],
+    );
 
     // Generación automático para el código del producto
     const generatedCode = buildNextProductCode(

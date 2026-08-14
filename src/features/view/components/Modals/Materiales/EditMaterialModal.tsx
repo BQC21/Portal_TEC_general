@@ -19,11 +19,7 @@ import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_m
 import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditMaterialModalProps } from "@/lib/types/components/General/modals";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import {
-    getModalCascadeOptions,
-    resolveFormCascadeFilters,
-    withCascadePlaceholder,
-} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
@@ -39,7 +35,6 @@ import { INITIAL_BRAND_FORM, INITIAL_TYPE_FORM } from "@/lib/utils/initialValues
 import { useSuplierSelection } from "@/features/view/hooks/modals/materiales/useSupplierSelection";
 import { useBrandSelection } from "@/features/view/hooks/modals/materiales/useBrandSelection";
 import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTypeSelection";
-import { getMaterialSupplierCascade } from "@/lib/utils/helpers/filters/supplierCascadeMap";
 
 export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditMaterialModalProps) {
     // ----------------------------
@@ -88,24 +83,19 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
         setForm((current) => ({ ...current, [field]: value }));
     }
 
-    // Cascada por datos + override estático (mismo criterio que AddMaterialModal)
-    const cascadeOptions = useMemo(() => {
-        const fromData = getModalCascadeOptions(
+    const cascadeOptions = useMemo(
+        () => getCatalogCascadeOptions(
+            brand,
+            type,
             existingMateriales,
             form.proveedor,
+            form.proveedor_id,
             form.marca,
-        );
-        const staticCascade = getMaterialSupplierCascade(form.proveedor);
-
-        if (!staticCascade) return fromData;
-
-        return {
-            ...fromData,
-            brands:
-                fromData.brands.length > 0 ? fromData.brands : staticCascade.brands,
-            types: form.marca ? staticCascade.types : [],
-        };
-    }, [existingMateriales, form.proveedor, form.marca]);
+            form.marca_id,
+        ),
+        [brand, type, existingMateriales, form.proveedor,
+        form.proveedor_id, form.marca, form.marca_id],
+    );
 
     // Código de producto dinámico al cambiar proveedor / tipo
     const generatedCode = useMemo(() => {
