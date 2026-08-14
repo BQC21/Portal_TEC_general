@@ -31,6 +31,8 @@ export function useBrandSelection(
         categoria: selected.categoria,
         created_at: selected.created_at,
         updated_at: selected.updated_at,
+        proveedor_id: selected.proveedor_id,
+        proveedor_info: selected.proveedor_info,
     });
 
     setForm((current) => ({
