@@ -1,5 +1,6 @@
 import { SetStateAction } from "react";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "../../supabase/product-types";
+import { SelectOption } from "../General/form_fields";
+import { SelectedBrandItem, SelectedEquipmentItem, SelectedMaterialItem, SelectedSupplierlItem } from "../../supabase/product-types";
 import { computedRequirements } from "../Sizing/computes";
 import { ProjectFormState } from "../../supabase/project-types";
 import { Equipos, EquiposFormState } from "../../supabase/equipos-types";
@@ -300,3 +301,49 @@ export type MO_Content_Props = {
     precioFinal: number;
     MO: number;
 }
+
+// -----
+// Proveedores / Marcas
+// -----
+
+export type SelectedSupplierByRow = Record<string, { supplierId: string; description: string }>;
+
+export type General_info_BrandProps = {
+    form: BrandFormstate;
+    updateField: <K extends keyof BrandFormstate>(field: K, value: BrandFormstate[K]) => void;
+};
+
+export type Selectors_BrandProps = {
+    selectedSupplierByRow: SelectedSupplierByRow;
+    supplierOptions: SelectOption[];
+    handleSupplierChange: (value: string) => void;
+    handleAddSupplier: () => void;
+};
+
+export type Tables_BrandProps = {
+    selectedSupplierTable: SelectedSupplierlItem[];
+    setSelectedSupplierTable: (
+        value: SetStateAction<SelectedSupplierlItem[]>,
+    ) => void;
+};
+
+export type SelectedBrandByRow = Record<string, { brandId: string; description: string }>;
+
+export type General_info_TypeProps = {
+    form: TypeFormstate;
+    updateField: <K extends keyof TypeFormstate>(field: K, value: TypeFormstate[K]) => void;
+};
+
+export type Selectors_TypeProps = {
+    selectedBrandByRow: SelectedBrandByRow;
+    brandOptions: SelectOption[];
+    handleBrandChange: (value: string) => void;
+    handleAddBrand: () => void;
+};
+
+export type Tables_TypeProps = {
+    selectedBrandTable: SelectedBrandItem[];
+    setSelectedBrandTable: (
+        value: SetStateAction<SelectedBrandItem[]>,
+    ) => void;
+};
