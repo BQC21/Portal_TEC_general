@@ -34,6 +34,7 @@ import { General_info_M2 } from "@/features/view/sub_components/M2/refactor/Gene
 import { Tables_M2 } from "@/features/view/sub_components/M2/refactor/Tables_M2";
 import { Data_info_M2 } from "@/features/view/sub_components/M2/refactor/Data_info_M2";
 import { Selectors_M2 } from "@/features/view/sub_components/M2/refactor/Selectors_M2";
+import { Formulas_M2 } from "@/features/view/sub_components/M2/refactor/formulas_M2";
 
 export default function EditProjectModal({
     existingProject,
@@ -281,6 +282,8 @@ export default function EditProjectModal({
                         ANGLE_OPTIONS={ANGLE_OPTIONS} 
                         selectedZone={selectedZone} 
                         selectedAngle={String(selectedAngle)} />
+
+                    <Formulas_M2 />
 
                     <Data_info_M2 
                         form={form} 
