@@ -63,11 +63,15 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                 if (form.tipo_instalacion === "conexión ON-GRID" || isTypeAlreadySelected) {
                     filteredOptions = [defaultSelectOption(label)];
                 } else {
+                        const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
                         filteredOptions = [
                             defaultSelectOption(label),
                             ...equipos
                                 .filter((equipo) => {
-                                    return equipo.tipo_de_producto === label;
+                                    if (equipo.tipo_de_producto !== label) return false;
+                                    // según marca del inversor seleccionado
+                                    if (!selectedInverter || equipo.marca !== selectedInverter.marca) return false;
+                                    return true;
                                 })
                                 .map(toProductSelectOption)
                         ];
