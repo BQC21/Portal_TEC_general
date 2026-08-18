@@ -27,7 +27,7 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
                             String(compute_DC_Power(Number(energia), Number(gti), 80))
         const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
         // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
-        const strings_minimos = String(min_strings(Number(potenciaDC), 
+        const strings_minimos = String(min_strings(Number(form.potencia_dc_requerida), 
                                     Number(selectedEquipment?.potencia_maxima ?? 0)));
         const strings_maximos = String(max_strings(Number(selectedInverter?.potencia_maxima ?? 0), 
                                     Number(selectedEquipment?.potencia_maxima ?? 0)));
