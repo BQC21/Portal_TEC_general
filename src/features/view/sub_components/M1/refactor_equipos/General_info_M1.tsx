@@ -82,7 +82,14 @@ export function General_info_M1_EQ({
                             label="Número de MPPT"
                             value={Number(form.mppt)}
                             onChange={(value) => updateField("mppt", value)}
-                            step={0.001}
+                            step={1}
+                            min={0}
+                        />
+                        <AddProductNumberField
+                            label="Número de cadenas"
+                            value={Number(form.cadenas)}
+                            onChange={(value) => updateField("cadenas", value)}
+                            step={1}
                             min={0}
                         />
                         <AddProductNumberField
