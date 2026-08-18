@@ -1,4 +1,4 @@
-import { SelectionRow } from "../../../components/Form_fields/AddSelectionRow";
+import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow";
 import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
 import { Selectors_BrandProps } from "@/lib/types/components/sub_components/module_render";
 import { SUPPLIER_ROW_KEY } from "@/lib/utils/helpers/modals/supplierOptions";

@@ -1,5 +1,5 @@
-import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
-import { AddProductTextField } from "../../../components/Form_fields/AddTextField";
+import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
+import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
 import { Category } from "@/lib/utils/options";
 import { General_info_TypeProps } from "@/lib/types/components/sub_components/module_render";

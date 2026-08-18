@@ -8,9 +8,9 @@ import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useBrandSelectionHandlers } from "@/features/view/hooks/modals/proveedores/useBrandSelectionHandlers";
 import { applySelectedBrandsToType } from "@/lib/utils/helpers/modals/brandOptions";
-import { General_info_Type } from "@/features/view/sub_components/Proveedores/refactor/General_info_Type";
-import { Selectors_Type } from "@/features/view/sub_components/Proveedores/refactor/Selectors_Type";
-import { Tables_Type } from "@/features/view/sub_components/Proveedores/refactor/Tables_Type";
+import { General_info_Type } from "@/features/view/sub_components/M1/refactor_proveedores/General_info_Type";
+import { Selectors_Type } from "@/features/view/sub_components/M1/refactor_proveedores/Selectors_Type";
+import { Tables_Type } from "@/features/view/sub_components/M1/refactor_proveedores/Tables_Type";
 
 export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) {
     const { brand } = useBrands();

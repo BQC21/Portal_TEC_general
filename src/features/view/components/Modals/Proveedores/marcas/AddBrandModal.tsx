@@ -8,9 +8,9 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
 import { useSupplierSelectionHandlers } from "@/features/view/hooks/modals/proveedores/useSupplierSelectionHandlers";
 import { applySelectedSuppliersToBrand } from "@/lib/utils/helpers/modals/supplierOptions";
-import { General_info_Brand } from "@/features/view/sub_components/Proveedores/refactor/General_info_Brand";
-import { Selectors_Brand } from "@/features/view/sub_components/Proveedores/refactor/Selectors_Brand";
-import { Tables_Brand } from "@/features/view/sub_components/Proveedores/refactor/Tables_Brand";
+import { General_info_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/General_info_Brand";
+import { Selectors_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Selectors_Brand";
+import { Tables_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Tables_Brand";
 
 export default function AddBrandModal({ onAddBrand, onClose }: AddBrandModalProps) {
     const { supplier } = useProveedores();
