@@ -10,6 +10,7 @@ export const EQUIPOS_HEADERS = [
     "TIPO DE CONEXIÓN",
     "POTENCIA MÁXIMA",
     "# DE MPPT",
+    "# DE CADENAS",
     "POTENCIA AC",
     "DoD",
     "VMPP/VMIN",
