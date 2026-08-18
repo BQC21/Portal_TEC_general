@@ -64,6 +64,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     tipo_conexion: CONNECTION_TYPE_OPTIONS[0],
     potencia_maxima: 0,
     mppt: 0,
+    cadenas: 0,
     potencia_ac: 0,
     dod: 0,
     vmpp_vmin: 0,

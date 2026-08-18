@@ -23,6 +23,7 @@ export type SupabaseEquiposRow = {
     tipo_conexion?: string;
     potencia_maxima?: number;
     mppt?: number;
+    cadenas?: number;
     potencia_ac?: number;
     dod?: number;
     vmpp_vmin?: number;
@@ -66,6 +67,7 @@ export type Equipos = {
     tipo_conexion: string;
     potencia_maxima: number;
     mppt: number;
+    cadenas: number;
     potencia_ac: number;
     dod: number;
     vmpp_vmin: number;
