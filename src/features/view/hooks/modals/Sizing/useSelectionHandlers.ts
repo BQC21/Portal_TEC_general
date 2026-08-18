@@ -204,7 +204,7 @@ export function useSelectionHandlers({
 
                 if (!isAlreadyAdded) {
                     // Determinar cantidad inicial según reglas por tipo de material
-                    const cantidadInit = label === "MC4" ? 6 * Number(form.mppt_number) || 0 : 1;
+                    const cantidadInit = label === "MC4" ? 6 * Number(form.cadena_number) || 0 : 1;
 
                 setSelectedMaterialTable((prev: SelectedMaterialItem[]) => [
                     ...prev,

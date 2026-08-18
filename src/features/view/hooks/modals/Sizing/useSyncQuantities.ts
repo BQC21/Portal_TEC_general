@@ -22,9 +22,9 @@ export function useSyncQuantities(form: ProjectFormState, computedRequirements: 
 
     // número de MC4
     useEffect(() => {
-        const MC4_val = 6 * Number(form.mppt_number) || 0;
+        const MC4_val = 6 * Number(form.cadena_number) || 0;
         setSelectedMaterialTable((curr) => curr.map((r) => (r.row === "MC4" 
             && r.description.includes("MC4") ? 
             { ...r, cantidad: Number(MC4_val.toFixed(0))} : r)))
-    }, [form.mppt_number, setSelectedMaterialTable])
+    }, [form.cadena_number, setSelectedMaterialTable])
 }
