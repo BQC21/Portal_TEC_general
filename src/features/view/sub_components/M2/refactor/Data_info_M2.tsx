@@ -259,6 +259,11 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             value={String(Number(computedRequirements.selectedInverter?.mppt).toFixed(0))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedInverter?.mppt ?? 0))}
                                         />
+                                        <AddEquipoReadonlyField
+                                            label="Número máximo de cadenas a usarse"
+                                            value={String(Number(computedRequirements.selectedInverter?.cadenas).toFixed(0))}
+                                            colorClass={getFieldValueDarkClass(String(computedRequirements.selectedInverter?.cadenas ?? 0))}
+                                        />
                                         <AddProductNumberField
                                             label="Número de MPPTs a usarse"
                                             required

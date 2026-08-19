@@ -160,6 +160,7 @@ export function useSelectionHandlers({
                         codigo: equipoDetails.cod_producto,
                         potencia_maxima: equipoDetails.potencia_maxima,
                         mppt: equipoDetails.mppt,
+                        cadenas: equipoDetails.cadenas,
                         dod: equipoDetails.dod,
                         potencia_ac: equipoDetails.potencia_ac,
                         voc_vmax: equipoDetails.voc_vmax,

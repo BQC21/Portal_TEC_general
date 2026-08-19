@@ -14,6 +14,7 @@ export type SelectedEquipmentItem = {
     codigo: string;
     potencia_maxima: number;
     mppt: number;
+    cadenas: number;
     dod: number;
     potencia_ac: number;
     voc_vmax: number;
