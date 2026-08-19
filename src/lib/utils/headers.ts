@@ -6,6 +6,7 @@ export const EQUIPOS_HEADERS = [
     "TIPO DE PRODUCTO",
     "MARCA",
     "DESCRIPCIÓN",
+    "UNIDAD",
     // propieades eléctricas
     "TIPO DE CONEXIÓN",
     "POTENCIA MÁXIMA",
@@ -18,7 +19,7 @@ export const EQUIPOS_HEADERS = [
     "IMPP/I IN",
     "ISC/I OUT",
     // precios
-    "UNIDAD",
+    // "UNIDAD",
     "PRECIO S/",
     "PRECIO $",
     "IGV",

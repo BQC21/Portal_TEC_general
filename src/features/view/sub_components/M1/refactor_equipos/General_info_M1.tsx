@@ -18,6 +18,7 @@ export function General_info_M1_EQ({
     form,
     updateField,
     cadenasEditable = false,
+    unidad,
 }: General_info_M1_props_EQ){
     return(
         <>
@@ -144,41 +145,65 @@ export function General_info_M1_EQ({
                     {/* Módulo */}
                     {shouldRenderModuloProp(form.tipo_de_producto) && (
                     <>
-                        <AddProductNumberField
-                            label="Potencia máxima del panel (kw)"
-                            value={Number(form.potencia_maxima)}
-                            onChange={(value) => updateField("potencia_maxima", value)}
-                            step={0.001}
-                            min={0}
-                        />
-                        <AddProductNumberField
-                            label="VOC (Voltaje a circuito abierto) [V]"
-                            value={Number(form.voc_vmax)}
-                            onChange={(value) => updateField("voc_vmax", value)}
-                            step={0.001}
-                            min={0}
-                        />
-                        <AddProductNumberField
-                            label="ISC (Corriente a corto circuito) [A]"
-                            value={Number(form.isc_i_out)}
-                            onChange={(value) => updateField("isc_i_out", value)}
-                            step={0.001}
-                            min={0}
-                        />
-                        <AddProductNumberField
-                            label="VMPP (Voltaje punto de máxima potencia) [V]"
-                            value={Number(form.vmpp_vmin)}
-                            onChange={(value) => updateField("vmpp_vmin", value)}
-                            step={0.001}
-                            min={0}
-                        />
-                        <AddProductNumberField
-                            label="IMPP (Corriente punto de máxima potencia) [A]"
-                            value={Number(form.impp_i_in)}
-                            onChange={(value) => updateField("impp_i_in", String(value))}
-                            step={0.001}
-                            min={0}
-                        />
+                        {shouldRenderModuloProp(form.tipo_de_producto) && (
+                                <AddProductSelectField
+                                    label="Tipo de Conexión"
+                                    value={form.tipo_conexion || CONNECTION_TYPE_OPTIONS[0]}
+                                    options={["---", "MOD"]}
+                                    onChange={(value) =>
+                                    updateField("tipo_conexion", value === CONNECTION_TYPE_OPTIONS[0] ? "" : value)
+                                    }
+                                />
+                        )}
+                        {unidad === "Unidad" ? (
+                            <>
+                                <AddProductNumberField
+                                    label="Potencia máxima del panel (kw)"
+                                    value={Number(form.potencia_maxima)}
+                                    onChange={(value) => updateField("potencia_maxima", value)}
+                                    step={0.001}
+                                    min={0}
+                                />
+                            </>
+                        ) : (
+                            <>
+                                <AddProductNumberField
+                                    label="Potencia máxima del conjunto de paneles (kw)"
+                                    value={Number(form.potencia_maxima)}
+                                    onChange={(value) => updateField("potencia_maxima", value)}
+                                    step={0.001}
+                                    min={0}
+                                />
+                            </>
+                        )}
+                            <AddProductNumberField
+                                label="VOC (Voltaje a circuito abierto) [V]"
+                                value={Number(form.voc_vmax)}
+                                onChange={(value) => updateField("voc_vmax", value)}
+                                step={0.001}
+                                min={0}
+                            />
+                            <AddProductNumberField
+                                label="ISC (Corriente a corto circuito) [A]"
+                                value={Number(form.isc_i_out)}
+                                onChange={(value) => updateField("isc_i_out", value)}
+                                step={0.001}
+                                min={0}
+                            />
+                            <AddProductNumberField
+                                label="VMPP (Voltaje punto de máxima potencia) [V]"
+                                value={Number(form.vmpp_vmin)}
+                                onChange={(value) => updateField("vmpp_vmin", value)}
+                                step={0.001}
+                                min={0}
+                            />
+                            <AddProductNumberField
+                                label="IMPP (Corriente punto de máxima potencia) [A]"
+                                value={Number(form.impp_i_in)}
+                                onChange={(value) => updateField("impp_i_in", String(value))}
+                                step={0.001}
+                                min={0}
+                            />
                     </>
                     )}
 

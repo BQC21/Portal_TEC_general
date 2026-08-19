@@ -211,6 +211,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                                     form={form}
                                     updateField={updateField}
                                     cadenasEditable
+                                    unidad={form.unidad}
                                 />
                                 <Price_info_M1
                                     form={form}

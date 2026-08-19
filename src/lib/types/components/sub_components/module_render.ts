@@ -98,6 +98,7 @@ export type General_info_M1_props_EQ = {
         value: EquiposFormState[K],
     ) => void;
     cadenasEditable?: boolean;
+    unidad: string;
 };
 
 export type General_info_M1_props_MAT = {
