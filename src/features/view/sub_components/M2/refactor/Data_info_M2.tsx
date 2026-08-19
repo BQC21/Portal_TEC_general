@@ -203,6 +203,21 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                                 value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.strings_maximos)}
                                             />
+
+                                            {/* Considerar si se trata de paneles o  conjuntos*/}
+                                            <AddProductNumberField
+                                                label="Número exacto de Paneles"
+                                                required
+                                                value={Number(form.strings) > 0 ? Number(form.strings) : ""}
+                                                onChange={(value) => updateField("strings", String(value))}
+                                                min={Math.ceil(Number(computedRequirements.strings_minimos)) > 0 ?
+                                                        Math.ceil(Number(computedRequirements.strings_minimos)) : 0
+                                                }
+                                                step={1}
+                                                max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
+                                                        Math.floor(Number(computedRequirements.strings_maximos)) : 0
+                                                }
+                                            />
                                         </>
                                         ) : (
                                             <>
@@ -218,23 +233,23 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                                     onChange={(value) => updateField("strings_max", String(value))}
                                                     step={1} min={0}
                                                 />
+                                                {/* Considerar si se trata de paneles o  conjuntos*/}
+                                                <AddProductNumberField
+                                                    label="Número exacto de Paneles"
+                                                    required
+                                                    value={Number(form.strings) > 0 ? Number(form.strings) : ""}
+                                                    onChange={(value) => updateField("strings", String(value))}
+                                                    min={Math.ceil(Number(form.strings_min)) > 0 ?
+                                                            Math.ceil(Number(form.strings_min)) : 0
+                                                    }
+                                                    step={1}
+                                                    max={Math.floor(Number(form.strings_max)) > 0 ?
+                                                            Math.floor(Number(form.strings_max)) : 0
+                                                    }
+                                                />
                                             </>                                            
                                         )
                                     }
-                                        {/* Considerar si se trata de paneles o  conjuntos*/}
-                                        <AddProductNumberField
-                                            label="Número exacto de Paneles"
-                                            required
-                                            value={Number(form.strings) > 0 ? Number(form.strings) : ""}
-                                            onChange={(value) => updateField("strings", String(value))}
-                                            min={Math.ceil(Number(computedRequirements.strings_minimos)) > 0 ?
-                                                    Math.ceil(Number(computedRequirements.strings_minimos)) : 0
-                                            }
-                                            step={1}
-                                            max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
-                                                    Math.floor(Number(computedRequirements.strings_maximos)) : 0
-                                            }
-                                        />
                                     </>
                                     )}
                                 </div>
