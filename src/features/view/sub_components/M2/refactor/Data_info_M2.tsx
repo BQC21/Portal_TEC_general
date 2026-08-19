@@ -279,8 +279,8 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             value={Number(form.cadena_number) > 0 ? Number(form.cadena_number) : ""}
                                             onChange={(value) => updateField("cadena_number", String(value))}
                                             min={0}  step={1}
-                                            max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
-                                                    Math.floor(Number(computedRequirements.selectedInverter?.mppt * 2)) : 0}
+                                            max={Math.floor(Number(computedRequirements.selectedInverter?.cadenas)) > 0 ? 
+                                                    Math.floor(Number(computedRequirements.selectedInverter?.cadenas)) : 0}
                                         />
 
 
