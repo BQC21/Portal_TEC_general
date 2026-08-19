@@ -6,6 +6,7 @@ import { mapSupabaseRowToBrand } from "./mapping_marcas";
 import { SupabaseBrandRow } from "../types/supabase/brand.types";
 import { mapSupabaseRowToSupplier } from "./mapping_proveedores";
 import { SupabaseSupplierRow } from "../types/supabase/supplier-types";
+import { emptyToNull, toNullableInteger } from "../utils/normalization";
 
 // enlace con los atributos de Supabase
 export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormState {
@@ -132,7 +133,7 @@ export function mapEquiposToSupabaseRow(
         vmpp_vmin: equipo.vmpp_vmin,
         voc_vmax: equipo.voc_vmax,
         isc_i_out: equipo.isc_i_out,
-        impp_i_in: equipo.impp_i_in,
+        impp_i_in: emptyToNull(equipo.impp_i_in) ?? undefined,
         // Precios
         unidad: equipo.unidad,
         precio_soles: equipo.precio_soles,
@@ -143,8 +144,8 @@ export function mapEquiposToSupabaseRow(
         created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
         updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
         // conexión con otras tablas
-        tipo_id: equipo.tipo_id,
-        marca_id: equipo.marca_id,
-        proveedor_id: equipo.proveedor_id,
+        tipo_id: toNullableInteger(equipo.tipo_id) ?? undefined,
+        marca_id: toNullableInteger(equipo.marca_id) ?? undefined,
+        proveedor_id: toNullableInteger(equipo.proveedor_id) ?? undefined,
     };
 }

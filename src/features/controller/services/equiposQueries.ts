@@ -2,14 +2,10 @@ import { createClient } from "@/lib/supabase/client";
 import { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 import { mapSupabaseRowToEquipos } from "../../../lib/mapping/mapping_equipos";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
+import { emptyToNull, toNullableInteger } from "@/lib/utils/normalization";
 
-// --------------------------
-// ---- Operaciones CRUD ----
-// --------------------------
-
-export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
-	const supabase = await createClient();
-	const supabaseRow = {
+function toEquiposSupabaseRow(equipo: EquiposFormData) {
+	return {
 		cod_prov: equipo.cod_prov,
 		proveedor: equipo.proveedor,
 		cod_producto: equipo.cod_producto,
@@ -19,11 +15,12 @@ export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
 		tipo_de_conexion: equipo.tipo_conexion,
 		potencia_maxima: equipo.potencia_maxima,
 		mppt: equipo.mppt,
+		cadenas: equipo.cadenas,
 		potencia_ac: equipo.potencia_ac,
 		dod: equipo.dod,
 		voc_vmax: equipo.voc_vmax,
 		vmpp_vmin: equipo.vmpp_vmin,
-		impp_i_in: equipo.impp_i_in,
+		impp_i_in: emptyToNull(equipo.impp_i_in),
 		isc_i_out: equipo.isc_i_out,
 		unidad: equipo.unidad,
 		precio_soles: equipo.precio_soles,
@@ -33,12 +30,19 @@ export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
 		precio_dolares_igv: equipo.precio_dolares_igv,
 		created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
 		updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
-		// conexión con otras tablas
-        tipo_id: equipo.tipo_id,
-        marca_id: equipo.marca_id,
-        proveedor_id: equipo.proveedor_id,
-
+		tipo_id: toNullableInteger(equipo.tipo_id),
+		marca_id: toNullableInteger(equipo.marca_id),
+		proveedor_id: toNullableInteger(equipo.proveedor_id),
 	};
+}
+
+// --------------------------
+// ---- Operaciones CRUD ----
+// --------------------------
+
+export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
+	const supabase = await createClient();
+	const supabaseRow = toEquiposSupabaseRow(equipo);
 
 	const { data, error } = await supabase
 		.from(EQUIPOS_TABLE)
@@ -85,35 +89,7 @@ export async function getEquipoById(id: string): Promise<Equipos> {
 
 export async function updateEquipo(id: string, equipo: EquiposFormData): Promise<Equipos> {
 	const supabase = await createClient();
-	const supabaseRow = {
-		cod_prov: equipo.cod_prov,
-		proveedor: equipo.proveedor,
-		cod_producto: equipo.cod_producto,
-		tipo_de_producto: equipo.tipo_de_producto,
-		marca: equipo.marca,
-		descripcion: equipo.descripcion,
-		tipo_de_conexion: equipo.tipo_conexion,
-		potencia_maxima: equipo.potencia_maxima,
-		mppt: equipo.mppt,
-		potencia_ac: equipo.potencia_ac,
-		dod: equipo.dod,
-		voc_vmax: equipo.voc_vmax,
-		vmpp_vmin: equipo.vmpp_vmin,
-		impp_i_in: equipo.impp_i_in,
-		isc_i_out: equipo.isc_i_out,
-		unidad: equipo.unidad,
-		precio_soles: equipo.precio_soles,
-		precio_dolares: equipo.precio_dolares,
-		igv: equipo.igv / 100,
-		precio_soles_igv: equipo.precio_soles_igv,
-		precio_dolares_igv: equipo.precio_dolares_igv,
-		created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
-		updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
-		// conexión con otras tablas
-        tipo_id: equipo.tipo_id,
-        marca_id: equipo.marca_id,
-        proveedor_id: equipo.proveedor_id,
-	};
+	const supabaseRow = toEquiposSupabaseRow(equipo);
 
 	const { data, error } = await supabase
 		.from(EQUIPOS_TABLE)

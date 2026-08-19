@@ -67,6 +67,17 @@ export const parseNumber = (v: unknown): number | undefined => {
     return Number.isFinite(n) ? n : undefined;
 };
 
+export function toNullableInteger(value: unknown): number | null {
+    const parsed = parseNumber(value);
+    return parsed === undefined ? null : parsed;
+}
+
+export function emptyToNull(value: unknown): string | null {
+    if (value === null || value === undefined) return null;
+    const s = String(value);
+    return s.trim() === "" ? null : s;
+}
+
 // Conversión de número a formato de moneda
 export const formatCurrency = (value: number, currency: "PEN" | "USD"): string => {
     return new Intl.NumberFormat("es-PE", {
