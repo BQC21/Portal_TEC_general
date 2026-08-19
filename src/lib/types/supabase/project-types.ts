@@ -58,6 +58,7 @@ export type SupabaseProjectRow = {
     enlace?: string;
     // llenado
     opcion_llenado?: string;
+    opcion_llenado_paneles?: string;
     // demandas mensuales
     demanda_mensual?: number[];
 };
@@ -107,6 +108,7 @@ export type Project = {
     enlace: string;
     // llenado
     opcion_llenado: string;
+    opcion_llenado_paneles: string;
     // demandas mensuales
     demanda_mensual: number[];
 };

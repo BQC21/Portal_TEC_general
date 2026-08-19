@@ -186,6 +186,7 @@ export type Data_info_M2Props = {
     ) => void;
     // handler
     handleOpcionLlenadoChange: (value: string) => void;
+    handleOpcionLlenadoChangePANELES: (value: string) => void;
     // calculos
     computedRequirements: computedRequirements;
     // coloreado

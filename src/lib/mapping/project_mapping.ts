@@ -49,6 +49,7 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         enlace: project.enlace,
         // llenado
         opcion_llenado: project.opcion_llenado,
+        opcion_llenado_paneles: project.opcion_llenado_paneles,
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
     }
@@ -110,6 +111,7 @@ export function mapSupabaseRowToProject(
         enlace: row.enlace?.toString() || "",
         // llenado
         opcion_llenado: row.opcion_llenado?.toString() || "",
+        opcion_llenado_paneles: row.opcion_llenado_paneles?.toString() || "",
         // demanda mensual
         demanda_mensual: row.demanda_mensual as number[] || [],
     }
@@ -163,6 +165,7 @@ export function mapProjectToSupabaseRow(
         enlace: project.enlace,
         // llenado
         opcion_llenado: project.opcion_llenado,
+        opcion_llenado_paneles: project.opcion_llenado_paneles,
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
     };
