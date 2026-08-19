@@ -210,6 +210,7 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
                                 <General_info_M1_EQ
                                     form={form}
                                     updateField={updateField}
+                                    cadenasEditable
                                 />
                                 <Price_info_M1
                                     form={form}

@@ -1,7 +1,9 @@
+import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { General_info_M1_props_EQ } from "@/lib/types/components/sub_components/module_render";
+import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import {
     shouldRenderBatteryProp,
     shouldRenderConnectionTypeAccesories,
@@ -15,6 +17,7 @@ import { CONNECTION_TYPE_OPTIONS } from "@/lib/utils/options";
 export function General_info_M1_EQ({
     form,
     updateField,
+    cadenasEditable = false,
 }: General_info_M1_props_EQ){
     return(
         <>
@@ -85,13 +88,21 @@ export function General_info_M1_EQ({
                             step={1}
                             min={0}
                         />
-                        <AddProductNumberField
-                            label="Número de cadenas"
-                            value={Number(form.cadenas)}
-                            onChange={(value) => updateField("cadenas", value)}
-                            step={1}
-                            min={0}
-                        />
+                        {cadenasEditable ? (
+                            <AddProductNumberField
+                                label="Número de cadenas"
+                                value={Number(form.cadenas)}
+                                onChange={(value) => updateField("cadenas", value)}
+                                step={1}
+                                min={0}
+                            />
+                        ) : (
+                            <AddEquipoReadonlyField
+                                label="Número de cadenas"
+                                value={String(Number(form.mppt * 2))}
+                                colorClass={getFieldValueLightClass(form.mppt)}
+                            />
+                        )}
                         <AddProductNumberField
                             label="Potencia AC del inversor (kw)"
                             value={Number(form.potencia_ac)}
