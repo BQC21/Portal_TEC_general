@@ -159,6 +159,11 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
         updateField("opcion_llenado", value);
     }
 
+    // Handler para cambiar la opción de llenado para la cantidad de paneles (AUTOMÁTICO | MANUAL)
+    function handleOpcionLlenadoChangePANELES(value: FillOptions) {
+        updateField("opcion_llenado_paneles", value);
+    }
+
     // Condicionar el estado de la visualización del selector de EQUIPOS
     const isEquipmentTypeSelected = (type: string) => {
         return selectedEquipmentTable.some(item => item.row === type);
@@ -196,7 +201,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                     <Data_info_M2 
                         form={form} 
                         updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 
-                        handleOpcionLlenadoChange={(value) => handleOpcionLlenadoChange(value as FillOptions)} 
+                        handleOpcionLlenadoChange={(value) => handleOpcionLlenadoChange(value as FillOptions)}
+                        handleOpcionLlenadoChangePANELES={(value) => handleOpcionLlenadoChangePANELES(value as FillOptions)} 
                         computedRequirements={computedRequirements.computedRequirements} 
                         getFieldValueLightClass={getFieldValueLightClass} 
                         getFieldValueDarkClass={getFieldValueDarkClass} 

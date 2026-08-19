@@ -10,7 +10,7 @@ import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/use
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
 
-export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, computedRequirements, getFieldValueLightClass, 
+export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, handleOpcionLlenadoChangePANELES, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
     CONNECTION_TYPE_OPTIONS }: Data_info_M2Props) {
 
@@ -182,16 +182,45 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, com
                                             value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.potencia_maxima))}
                                         />
-                                        <AddEquipoReadonlyField
-                                            label="Mínimo de Paneles"
-                                            value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.strings_minimos)}
+                                        {/* Handlers */}
+                                        <AddProductRadioField
+                                            label="Llenado automático"  checked={form.opcion_llenado_paneles == "AUTOMÁTICO"}
+                                            onChange={() => handleOpcionLlenadoChangePANELES("AUTOMÁTICO")}
                                         />
-                                        <AddEquipoReadonlyField
-                                            label="Máximo de Paneles"
-                                            value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
-                                            colorClass={getFieldValueLightClass(computedRequirements.strings_maximos)}
+                                        <AddProductRadioField
+                                            label="Llenado manual"  checked={form.opcion_llenado_paneles == "MANUAL"}
+                                            onChange={() => handleOpcionLlenadoChangePANELES("MANUAL")}
                                         />
+                                        {form.opcion_llenado_paneles == "AUTOMÁTICO" ? (
+                                        <>
+                                            <AddEquipoReadonlyField
+                                                label="Mínimo de Paneles"
+                                                value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
+                                                colorClass={getFieldValueLightClass(computedRequirements.strings_minimos)}
+                                            />
+                                            <AddEquipoReadonlyField
+                                                label="Máximo de Paneles"
+                                                value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
+                                                colorClass={getFieldValueLightClass(computedRequirements.strings_maximos)}
+                                            />
+                                        </>
+                                        ) : (
+                                            <>
+                                                <AddProductNumberField
+                                                    label="Mínimo de Paneles"    required
+                                                    value={Number(form.strings_min) > 0 ? Number(Number(form.strings_min).toFixed(2)) : ""}
+                                                    onChange={(value) => updateField("strings_min", String(value))}
+                                                    step={1} min={0}
+                                                />
+                                                <AddProductNumberField
+                                                    label="Máximo de Paneles"    required
+                                                    value={Number(form.strings_max) > 0 ? Number(Number(form.strings_max).toFixed(2)) : ""}
+                                                    onChange={(value) => updateField("strings_max", String(value))}
+                                                    step={1} min={0}
+                                                />
+                                            </>                                            
+                                        )
+                                    }
                                         {/* Considerar si se trata de paneles o  conjuntos*/}
                                         <AddProductNumberField
                                             label="Número exacto de Paneles"
