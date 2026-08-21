@@ -78,7 +78,7 @@ function FormulaGroup({ title, items }: { title: string; items: FormulaItem[] })
                         key={item.id}
                         className="rounded-2xl border border-slate-200 bg-slate-50 p-4"
                     >
-                        <p className="text-sm font-semibold text-slate-500">{item.id}</p>
+                        {/* <p className="text-sm font-semibold text-slate-500">{item.id}</p> */}
                         <h4 className="mt-1 text-lg font-bold text-slate-900">{item.name}</h4>
                         <p className="mt-3 rounded-xl bg-white px-3 py-2 font-mono text-sm text-slate-800">
                             {item.formula}
