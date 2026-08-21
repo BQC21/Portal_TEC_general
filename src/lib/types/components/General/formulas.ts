@@ -1,4 +1,4 @@
-type FormulaItem = {
+export type FormulaItem = {
     id: string;
     name: string;
     formula: string;
