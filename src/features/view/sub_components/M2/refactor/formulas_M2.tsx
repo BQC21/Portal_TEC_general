@@ -8,6 +8,7 @@ import {
     ENERGY_FORMULAS,
     PROTECTION_FORMULAS,
 } from "@/lib/utils/helpers/formulas/formulaContent";
+import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 
 function renderLatex(tex: string, displayMode: boolean) {
     return katex.renderToString(tex, {
@@ -65,9 +66,9 @@ function FormulaGroup({
 }) {
     return (
         <section className="space-y-6">
-            <h3 className="border-b border-slate-300 pb-2 text-center text-xl font-semibold tracking-tight text-slate-900">
+            {/* <h3 className="border-b border-slate-300 pb-2 text-center text-xl font-semibold tracking-tight text-slate-900">
                 {title}
-            </h3>
+            </h3> */}
             <div className="space-y-7">
                 {items.map((item, index) => (
                     <article key={item.id} className="px-1">
@@ -91,21 +92,27 @@ export function Formulas_M2() {
                     Fórmulas de cálculo
                 </h2>
                 <div className="mx-auto flex max-w-3xl flex-col gap-10 font-serif">
-                    <FormulaGroup
-                        title="Requerimientos energéticos"
-                        items={ENERGY_FORMULAS}
-                        startNumber={1}
-                    />
-                    <FormulaGroup
-                        title="Campo fotovoltaico"
-                        items={ARRAY_FORMULAS}
-                        startNumber={ENERGY_FORMULAS.length + 1}
-                    />
-                    <FormulaGroup
-                        title="Protecciones eléctricas"
-                        items={PROTECTION_FORMULAS}
-                        startNumber={ENERGY_FORMULAS.length + ARRAY_FORMULAS.length + 1}
-                    />
+                    <CollapsibleTableSection title="Requerimientos energéticos">
+                        <FormulaGroup
+                            title="Requerimientos energéticos"
+                            items={ENERGY_FORMULAS}
+                            startNumber={1}
+                        />
+                    </CollapsibleTableSection>
+                    <CollapsibleTableSection title="Campo fotovoltaico">
+                        <FormulaGroup
+                            title="Campo fotovoltaico"
+                            items={ARRAY_FORMULAS}
+                            startNumber={ENERGY_FORMULAS.length + 1}
+                        />
+                    </CollapsibleTableSection>
+                    <CollapsibleTableSection title="Protecciones eléctricas">
+                        <FormulaGroup
+                            title="Protecciones eléctricas"
+                            items={PROTECTION_FORMULAS}
+                            startNumber={ENERGY_FORMULAS.length + ARRAY_FORMULAS.length + 1}
+                        />
+                    </CollapsibleTableSection>
                 </div>
             </div>
         </div>
