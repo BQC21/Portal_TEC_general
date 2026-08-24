@@ -8,7 +8,7 @@ import {
     filterTypesForBrand,
     matchesProductCategory,
 } from "@/lib/utils/helpers/modals/catalogCascade";
-import { Unidad } from "@/lib/utils/options";
+import { Unidad_ModFV } from "@/lib/utils/options";
 
 export function Data_info_M1({
     form,
@@ -114,7 +114,7 @@ export function Data_info_M1({
                                                 <AddProductSelectField
                                                     label="UNIDAD"
                                                     required
-                                                    options={Unidad}
+                                                    options={Unidad_ModFV}
                                                     value={form.unidad}
                                                     onChange={(value) =>
                                                         updateField("unidad", value)

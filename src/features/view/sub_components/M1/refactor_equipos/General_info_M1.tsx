@@ -155,7 +155,7 @@ export function General_info_M1_EQ({
                                     }
                                 />
                         )}
-                        {unidad === "Unidad" ? (
+                        {unidad === "Unidad" || "UNI" ? (
                             <>
                                 <AddProductNumberField
                                     label="Potencia máxima del panel (kw)"
