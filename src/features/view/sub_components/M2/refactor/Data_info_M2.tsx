@@ -31,6 +31,9 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
         ? String(annualTotal)
         : form.demanda_electrica;
 
+    const esPalet = computedRequirements.selectedEquipment?.unidad === "Palet";
+    const labelCantidad = esPalet ? "conjuntos" : "Paneles";
+
     return (
         <>
                     <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
@@ -158,6 +161,12 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             colorClass={"field-equipment-code"}
                                         />
                                         <AddEquipoReadonlyField
+                                            label={labelCantidad}
+                                            value={computedRequirements.selectedEquipment?.unidad ?? ""}
+                                            colorClass={"field-equipment-code"}
+                                        />
+                                        
+                                        <AddEquipoReadonlyField
                                             label="VMPP del módulo seleccionado"
                                             value={String(Number(computedRequirements.selectedEquipment?.vmpp_vmin).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.vmpp_vmin))}
@@ -182,6 +191,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             value={String(Number(computedRequirements.selectedEquipment?.potencia_maxima).toFixed(3))}
                                             colorClass={getFieldValueDarkClass(String(computedRequirements.selectedEquipment?.potencia_maxima))}
                                         />
+
                                         {/* Handlers */}
                                         <AddProductRadioField
                                             label="Llenado automático"  checked={form.opcion_llenado_paneles == "AUTOMÁTICO"}
