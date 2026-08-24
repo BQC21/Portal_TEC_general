@@ -1,6 +1,7 @@
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { cantidadModuloFVTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 import { SetStateAction, useEffect } from "react";
 
 export function useSyncQuantities(form: ProjectFormState, computedRequirements: computedRequirements,
@@ -9,9 +10,13 @@ export function useSyncQuantities(form: ProjectFormState, computedRequirements: 
    // número de strings (módulos FV)
     useEffect(() => {
         const stringsVal = Number(form.strings) || 0;
+        const cantidadModulo = cantidadModuloFVTabla(
+            stringsVal,
+            computedRequirements.selectedEquipment?.unidad,
+        );
         setSelectedEquipmentTable((curr) => curr.map((r) => (r.row === "MÓDULO FV" ? 
-            { ...r, cantidad: Number(stringsVal.toFixed(0)) } : r)));
-    }, [form.strings, setSelectedEquipmentTable]);
+            { ...r, cantidad: cantidadModulo } : r)));
+    }, [form.strings, computedRequirements.selectedEquipment?.unidad, setSelectedEquipmentTable]);
     
     // número de baterías
     useEffect(() => {
