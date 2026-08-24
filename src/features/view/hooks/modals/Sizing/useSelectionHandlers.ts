@@ -6,6 +6,7 @@ import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { cantidadModuloFVTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 
 // INPUTS
 interface UseSelectionHandlersParams {
@@ -135,7 +136,7 @@ export function useSelectionHandlers({
                     label === "INVERSOR"
                         ? 1
                         : label === "MÓDULO FV"
-                        ? Number(form.strings) || 0
+                        ? cantidadModuloFVTabla(Number(form.strings) || 0, equipoDetails.unidad)
                         : label === "BATERÍA"
                         ? Number(computedRequirements.num_baterias) || 0
                         : label === "ESTRUCTURA" && equipoDetails.descripcion?.includes("baterías")
