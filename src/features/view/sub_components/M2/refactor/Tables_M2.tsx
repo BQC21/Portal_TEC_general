@@ -1,9 +1,6 @@
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
-import { SetStateAction } from "react";
-import { computedRequirements } from "@/lib/types/components/Sizing/computes";
-import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
+import { cantidadModuloFVTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){
@@ -38,7 +35,13 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                 <AddProductNumberField
                                                     label="ingrese cantidad"
                                                     required
-                                                    value={Number(item.cantidad ?? 0)}
+                                                    value={item.row === "MÓDULO FV"
+                                                        ? cantidadModuloFVTabla(
+                                                            Number(form.strings) || Number(item.cantidad ?? 0),
+                                                            computedRequirements.selectedEquipment?.unidad
+                                                                ?? item.unidad,
+                                                        )
+                                                        : Number(item.cantidad ?? 0)}
                                                     onChange={(value) =>
                                                         setSelectedEquipmentTable((curr) =>
                                                             curr.map((r) =>
@@ -51,10 +54,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                         Math.floor(Number(computedRequirements.num_baterias)/
                                                             parseInt(item.description.match(/\d+/)?.[0] || "0" || ""))  :
                                                         item.row === "ESTRUCTURA" && item.description.includes("módulos") ? 
-                                                        Math.floor(Number((form.strings))/parseInt(item.description.match(/\d+/)?.[0] || "0" || "")) :
-                                                        100000}
-                                                    disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" ||
-                                                        item.row === "BATERÍA"}
+                                                        Math.floor(Number((form.strings))/parseInt(item.description.match(/\d+/)?.[0] || "0" || "")) : 100000}
+                                                    disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
                                                 />
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5">
