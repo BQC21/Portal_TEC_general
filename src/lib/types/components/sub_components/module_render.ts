@@ -132,6 +132,8 @@ export type Tables_M2_props = {
     computedRequirements: computedRequirements,
     // form del proyecto
     form: ProjectFormState
+    // catálogo para autoinsertar accesorios Solis
+    equipos: Equipos[];
 }
 
 export type Selectors_M2Props = {

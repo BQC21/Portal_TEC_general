@@ -318,6 +318,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                         setSelectedMaterialTable={setSelectedMaterialTable}
                         computedRequirements={computedRequirements.computedRequirements}
                         form={form}
+                        equipos={equipos}
                     />
                     <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
                         <button

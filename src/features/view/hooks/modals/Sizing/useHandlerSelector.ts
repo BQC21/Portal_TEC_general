@@ -12,6 +12,7 @@ import {
 } from "@/lib/utils/helpers/project_modals/protectionSelector";
 import { canAddModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { defaultSelectOption, toModuloFVSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
+import { isSolisBrand, shouldOfferSolisAccessory } from "@/lib/utils/helpers/project_modals/solisAccessories";
 
 export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL",
     selectedEquipmentTable: SelectedEquipmentItem[], selectedMaterialTable: SelectedMaterialItem[], 
@@ -122,11 +123,18 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                         .map(toProductSelectOption)
                 ];
             } else if (label === "ACCESORIO") {
+                const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
+                const isSolisInverter = isSolisBrand(selectedInverter?.marca);
                 filteredOptions = [
                     defaultSelectOption(label),
                     ...equipos
                         .filter((equipo) => {
                             if (equipo.tipo_de_producto !== label) return false;
+                            if (!shouldOfferSolisAccessory(
+                                equipo.descripcion,
+                                isSolisInverter,
+                                form.tipo_instalacion,
+                            )) return false;
                             const isAlreadySelected = selectedEquipmentTable.some(
                                 (item) => item.id === String(equipo.id)
                             );

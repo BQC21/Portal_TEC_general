@@ -1,9 +1,13 @@
+"use client";
+
+import { useEffect } from "react";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
 import { cantidadModuloFVEnTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
 
 function structureQuantityMax(
     item: SelectedEquipmentItem,
@@ -24,8 +28,17 @@ function structureQuantityMax(
 }
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
-    selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){
+    selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form, equipos}: Tables_M2_props){
     const selectedModules = selectedEquipmentTable.filter((row) => row.row === "MÓDULO FV");
+    const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
+    const inverterKey = `${selectedInverter?.id ?? ""}:${selectedInverter?.marca ?? ""}`;
+
+    useEffect(() => {
+        setSelectedEquipmentTable((curr) =>
+            syncSolisAutoAccessories(curr, equipos, form.tipo_instalacion),
+        );
+    }, [inverterKey, form.tipo_instalacion, equipos, setSelectedEquipmentTable]);
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
