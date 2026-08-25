@@ -1,7 +1,7 @@
-import type { 
-	// Product,
-	ProductFormState,
-} from "@/lib/types/supabase/product-types";
+// import type { 
+// 	// Product,
+// 	ProductFormState,
+// } from "@/lib/types/supabase/product-types";
 
 import type {
     // Equipos,
@@ -138,8 +138,10 @@ export const INITIAL_BRAND_FORM: BrandFormstate = {
     created_at: new Date(),
     updated_at: new Date(),
     // proveedores
-    proveedor_id: "",     
-    proveedor_info: undefined, 
+    proveedor_id: "",
+    proveedor_ids: [],
+    proveedor_info: undefined,
+    proveedores_info: [], 
 }
 
 export const INITIAL_TYPE_FORM: TypeFormstate = {
@@ -150,8 +152,10 @@ export const INITIAL_TYPE_FORM: TypeFormstate = {
     created_at: new Date(),
     updated_at: new Date(),
     // marcas
-    marca_id: "",     
-    marca_info: undefined,  
+    marca_id: "",
+    marca_ids: [],
+    marca_info: undefined,
+    marcas_info: [],  
 }
 
 // ------ M2
