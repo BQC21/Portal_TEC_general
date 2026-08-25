@@ -2,14 +2,10 @@ import { createClient } from "@/lib/supabase/client";
 import { Materiales, MaterialesFormData } from "@/lib/types/supabase/materiales-types";
 import { mapSupabaseRowToMateriales } from "../../../lib/mapping/mapping_materiales";
 import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
+import { toNullableInteger } from "@/lib/utils/normalization";
 
-// --------------------------
-// ---- Operaciones CRUD ----
-// --------------------------
-
-export async function createMaterial(material: MaterialesFormData): Promise<Materiales> {
-	const supabase = await createClient();
-	const supabaseRow = {
+function toMaterialesSupabaseRow(material: MaterialesFormData) {
+	return {
 		cod_prov: material.cod_prov,
 		proveedor: material.proveedor,
 		cod_producto: material.cod_producto,
@@ -25,11 +21,19 @@ export async function createMaterial(material: MaterialesFormData): Promise<Mate
 		precio_dolares_igv: material.precio_dolares_igv,
 		created_at: material.created_at ? new Date(material.created_at) : new Date(),
 		updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
-		// conexión con otras tablas
-        tipo_id: material.tipo_id,
-        marca_id: material.marca_id,
-        proveedor_id: material.proveedor_id,
+		tipo_id: toNullableInteger(material.tipo_id),
+		marca_id: toNullableInteger(material.marca_id),
+		proveedor_id: toNullableInteger(material.proveedor_id),
 	};
+}
+
+// --------------------------
+// ---- Operaciones CRUD ----
+// --------------------------
+
+export async function createMaterial(material: MaterialesFormData): Promise<Materiales> {
+	const supabase = await createClient();
+	const supabaseRow = toMaterialesSupabaseRow(material);
 
 	const { data, error } = await supabase
 		.from(MATERIALES_TABLE)
@@ -76,27 +80,7 @@ export async function getMaterialById(id: string): Promise<Materiales> {
 
 export async function updateMaterial(id: string, material: MaterialesFormData): Promise<Materiales> {
 	const supabase = await createClient();
-	const supabaseRow = {
-		cod_prov: material.cod_prov,
-		proveedor: material.proveedor,
-		cod_producto: material.cod_producto,
-		tipo_de_producto: material.tipo_de_producto,
-		marca: material.marca,
-		descripcion: material.descripcion,
-		parte_electrica: material.parte_electrica,
-		unidad: material.unidad,
-		precio_soles: material.precio_soles,
-		precio_dolares: material.precio_dolares,
-		igv: material.igv / 100,
-		precio_soles_igv: material.precio_soles_igv,
-		precio_dolares_igv: material.precio_dolares_igv,
-		created_at: material.created_at ? new Date(material.created_at) : new Date(),
-		updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
-		// conexión con otras tablas
-        tipo_id: material.tipo_id,
-        marca_id: material.marca_id,
-        proveedor_id: material.proveedor_id,
-	};
+	const supabaseRow = toMaterialesSupabaseRow(material);
 
 	const { data, error } = await supabase
 		.from(MATERIALES_TABLE)

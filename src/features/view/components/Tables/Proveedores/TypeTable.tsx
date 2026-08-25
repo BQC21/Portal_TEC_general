@@ -31,7 +31,12 @@ export default function TypeTable({ type,
                                     <tr key={type.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{type.nombre}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{type.categoria}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{type.marca_info?.nombre}</td>
+                                        <td className="border border-slate-200 px-2 py-5 font-medium max-w-[180px] truncate whitespace-nowrap">
+                                            {(type.marcas_info ?? [])
+                                                .map((item) => item.nombre)
+                                                .filter(Boolean)
+                                                .join(", ")}
+                                        </td>
             
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">

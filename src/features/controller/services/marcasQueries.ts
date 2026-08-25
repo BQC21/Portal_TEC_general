@@ -1,7 +1,17 @@
-import { mapBrandToSupabaseRow, mapSupabaseRowToBrand } from "@/lib/mapping/mapping_marcas";
+import { hydrateBrandSuppliers, mapBrandToSupabaseRow, mapSupabaseRowToBrand } from "@/lib/mapping/mapping_marcas";
+import { mapSupabaseRowToSupplier } from "@/lib/mapping/mapping_proveedores";
 import { createClient } from "@/lib/supabase/client";
 import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";
-import { BRAND_TABLE } from "@/lib/utils/namingTolerance";
+import { BRAND_TABLE, SUPPLIER_TABLE } from "@/lib/utils/namingTolerance";
+
+async function hydrateBrands(supabase: Awaited<ReturnType<typeof createClient>>, brands: Brand[]): Promise<Brand[]> {
+	const { data, error } = await supabase.from(SUPPLIER_TABLE).select("*");
+	if (error) {
+		throw new Error(`Error al obtener los proveedores: ${error.message}`);
+	}
+	const suppliers = (data ?? []).map(mapSupabaseRowToSupplier);
+	return brands.map((brand) => hydrateBrandSuppliers(brand, suppliers));
+}
 
 export async function createMarca(marca: BrandFormData): Promise<Brand> {
 	const supabase = await createClient();
@@ -17,7 +27,8 @@ export async function createMarca(marca: BrandFormData): Promise<Brand> {
 		throw new Error(`Error al crear la marca: ${error.message}`);
 	}
 
-	return mapSupabaseRowToBrand(data);
+	const [brand] = await hydrateBrands(supabase, [mapSupabaseRowToBrand(data)]);
+	return brand;
 }
 
 export async function getMarcas(): Promise<Brand[]> {
@@ -31,7 +42,7 @@ export async function getMarcas(): Promise<Brand[]> {
 		throw new Error(`Error al obtener las marcas: ${error.message}`);
 	}
 
-	return data.map(mapSupabaseRowToBrand);
+	return hydrateBrands(supabase, data.map(mapSupabaseRowToBrand));
 }
 
 export async function getMarcasbyId(id: string): Promise<Brand> {
@@ -47,7 +58,8 @@ export async function getMarcasbyId(id: string): Promise<Brand> {
 		throw new Error(`Error al obtener la marca: ${error.message}`);
 	}
 
-    return mapSupabaseRowToBrand(data);
+    const [brand] = await hydrateBrands(supabase, [mapSupabaseRowToBrand(data)]);
+    return brand;
 }
 
 export async function updateMarca(id: string, marca: BrandFormData): Promise<Brand> {
@@ -65,7 +77,8 @@ export async function updateMarca(id: string, marca: BrandFormData): Promise<Bra
 		throw new Error(`Error al actualizar la marca: ${error.message}`);
 	}
 
-	return mapSupabaseRowToBrand(data);
+	const [brand] = await hydrateBrands(supabase, [mapSupabaseRowToBrand(data)]);
+	return brand;
 }
 
 export async function deleteMarca(id: string): Promise<void> {

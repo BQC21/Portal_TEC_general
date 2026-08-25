@@ -1,7 +1,17 @@
-import { mapSupabaseRowToType, mapTypeToSupabaseRow } from "@/lib/mapping/mapping_type";
+import { mapSupabaseRowToBrand } from "@/lib/mapping/mapping_marcas";
+import { hydrateTypeBrands, mapSupabaseRowToType, mapTypeToSupabaseRow } from "@/lib/mapping/mapping_type";
 import { createClient } from "@/lib/supabase/client";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
-import { TYPE_TABLE } from "@/lib/utils/namingTolerance";
+import { BRAND_TABLE, TYPE_TABLE } from "@/lib/utils/namingTolerance";
+
+async function hydrateTypes(supabase: Awaited<ReturnType<typeof createClient>>, types: Type[]): Promise<Type[]> {
+	const { data, error } = await supabase.from(BRAND_TABLE).select("*");
+	if (error) {
+		throw new Error(`Error al obtener las marcas: ${error.message}`);
+	}
+	const brands = (data ?? []).map(mapSupabaseRowToBrand);
+	return types.map((type) => hydrateTypeBrands(type, brands));
+}
 
 export async function createType(type: TypeFormData): Promise<Type> {
 	const supabase = await createClient();
@@ -17,7 +27,8 @@ export async function createType(type: TypeFormData): Promise<Type> {
 		throw new Error(`Error al crear el tipo: ${error.message}`);
 	}
 
-	return mapSupabaseRowToType(data);
+	const [mappedType] = await hydrateTypes(supabase, [mapSupabaseRowToType(data)]);
+	return mappedType;
 }
 
 export async function getTypes(): Promise<Type[]> {
@@ -31,7 +42,7 @@ export async function getTypes(): Promise<Type[]> {
             throw new Error(`Error al obtener los tipos: ${error.message}`);
         }
 
-        return data.map(mapSupabaseRowToType);
+        return hydrateTypes(supabase, data.map(mapSupabaseRowToType));
 }
 
 export async function getTypeById(id: string): Promise<Type> {
@@ -47,7 +58,8 @@ export async function getTypeById(id: string): Promise<Type> {
         throw new Error(`Error al obtener el tipo: ${error.message}`);
     }
 
-    return mapSupabaseRowToType(data);
+    const [mappedType] = await hydrateTypes(supabase, [mapSupabaseRowToType(data)]);
+    return mappedType;
 }
 
 export async function updateType(id: string, type: TypeFormData): Promise<Type> {
@@ -65,7 +77,8 @@ export async function updateType(id: string, type: TypeFormData): Promise<Type> 
 		throw new Error(`Error al actualizar el tipo: ${error.message}`);
     }
 
-    return mapSupabaseRowToType(data);
+    const [mappedType] = await hydrateTypes(supabase, [mapSupabaseRowToType(data)]);
+    return mappedType;
 }
 
 export async function deleteType(id: string): Promise<void> {
