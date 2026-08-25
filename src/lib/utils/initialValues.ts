@@ -69,6 +69,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     dod: 0,
     vmpp_vmin: 0,
     voc_vmax: 0,
+    voltaje_nominal_inversor: 0,
     impp_i_in: "0",
     isc_i_out: 0,
     // precios

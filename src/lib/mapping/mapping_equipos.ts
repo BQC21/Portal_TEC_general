@@ -27,6 +27,7 @@ export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormS
         potencia_ac: equipo.potencia_ac,
         vmpp_vmin: equipo.vmpp_vmin,
         voc_vmax: equipo.voc_vmax,
+        voltaje_nominal_inversor: equipo.voltaje_nominal_inversor,
         isc_i_out: equipo.isc_i_out,
         impp_i_in: equipo.impp_i_in,
         // precios
@@ -74,6 +75,7 @@ export function mapSupabaseRowToEquipos(
         potencia_ac: toDecimalNumber(row.potencia_ac),
         vmpp_vmin: toDecimalNumber(row.vmpp_vmin),
         voc_vmax: toDecimalNumber(row.voc_vmax),
+        voltaje_nominal_inversor: toDecimalNumber(row.voltaje_nominal_inversor),
         isc_i_out: toDecimalNumber(row.isc_i_out),
         impp_i_in: row.impp_i_in || "",
         // Precios
@@ -132,6 +134,7 @@ export function mapEquiposToSupabaseRow(
         potencia_ac: equipo.potencia_ac,
         vmpp_vmin: equipo.vmpp_vmin,
         voc_vmax: equipo.voc_vmax,
+        voltaje_nominal_inversor: equipo.voltaje_nominal_inversor,
         isc_i_out: equipo.isc_i_out,
         impp_i_in: emptyToNull(equipo.impp_i_in) ?? undefined,
         // Precios

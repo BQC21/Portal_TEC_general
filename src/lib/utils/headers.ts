@@ -16,6 +16,7 @@ export const EQUIPOS_HEADERS = [
     "DoD",
     "VMPP/VMIN",
     "VOC/VMAX",
+    "V NOMINAL INVERSOR",
     "IMPP/I IN",
     "ISC/I OUT",
     // precios

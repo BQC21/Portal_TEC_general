@@ -20,6 +20,7 @@ function toEquiposSupabaseRow(equipo: EquiposFormData) {
 		dod: equipo.dod,
 		voc_vmax: equipo.voc_vmax,
 		vmpp_vmin: equipo.vmpp_vmin,
+		voltaje_nominal_inversor: equipo.voltaje_nominal_inversor,
 		impp_i_in: emptyToNull(equipo.impp_i_in),
 		isc_i_out: equipo.isc_i_out,
 		unidad: equipo.unidad,

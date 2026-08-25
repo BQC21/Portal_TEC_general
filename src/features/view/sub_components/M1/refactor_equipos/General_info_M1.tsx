@@ -126,6 +126,13 @@ export function General_info_M1_EQ({
                             min={0}
                         />
                         <AddProductNumberField
+                            label="Voltaje nominal (CC) de entrada del inversor"
+                            value={Number(form.voltaje_nominal_inversor)}
+                            onChange={(value) => updateField("voltaje_nominal_inversor", value)}
+                            step={0.001}
+                            min={0}
+                        />
+                        <AddProductNumberField
                             label="Corriente de entrada"
                             value={Number(form.impp_i_in)}
                             onChange={(value) => updateField("impp_i_in", String(value))}
