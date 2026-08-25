@@ -8,7 +8,7 @@ import {
     filterTypesForBrand,
     matchesProductCategory,
 } from "@/lib/utils/helpers/modals/catalogCascade";
-import { Unidad_ModFV } from "@/lib/utils/options";
+import { Unidad_Consumible, Unidad_ModFV } from "@/lib/utils/options";
 
 export function Data_info_M1({
     form,
@@ -121,11 +121,27 @@ export function Data_info_M1({
                                                     }
                                                 />
                                             )}
-                                                {selectedType != "MÓDULO FV" && (
-                                                    <AddProductReadonlyField
-                                                        label="UNIDAD"
-                                                        value={form.unidad}
-                                                    />
+                                            {selectedType == "CABLE" || 
+                                            selectedType == "CANALIZACIÓN" ||
+                                            selectedType == "CONSUMIBLE"  && (
+                                                <AddProductSelectField
+                                                label="UNIDAD"
+                                                required
+                                                options={Unidad_Consumible}
+                                                value={form.unidad}
+                                                onChange={(value) =>
+                                                    updateField("unidad", value)
+                                                }
+                                            />
+                                            )}
+                                            {selectedType != "MÓDULO FV" && 
+                                            selectedType != "CABLE" &&
+                                            selectedType != "CANALIZACIÓN" &&
+                                            selectedType != "CONSUMIBLE"&& (
+                                                <AddProductReadonlyField
+                                                    label="UNIDAD"
+                                                    value={form.unidad}
+                                                />
                                             )}
                                             <div className="md:col-span-2">
                                                 <AddProductTextAreaField
