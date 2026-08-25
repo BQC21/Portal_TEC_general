@@ -69,7 +69,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                     <AddEquipoReadonlyField
                                         label="Demanda eléctrica total por año (kWh)"
                                         value={Number(displayedAnnualDemand) > 0
-                                            ? String(Number(displayedAnnualDemand).toFixed(2))
+                                            ? String(Number(displayedAnnualDemand).toFixed(0))
                                             : ""}
                                         colorClass={getFieldValueLightClass(displayedAnnualDemand)}
                                     />
@@ -89,18 +89,18 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                     {form.opcion_llenado == "AUTOMÁTICO" ? (
                                         <>
                                             <AddEquipoReadonlyField
-                                                label="Energía requerida"
+                                                label="Energía requerida (kWh)"
                                                 value={computedRequirements.energia}
                                                 colorClass={getFieldValueLightClass(computedRequirements.energia)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Potencia DC requerida (KW)"
-                                                value={String(Number(computedRequirements.potenciaDC).toFixed(2))}
+                                                value={String(Math.ceil(Number(computedRequirements.potenciaDC)))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.potenciaDC)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Potencia AC requerida (KW)"
-                                                value={String(Number(computedRequirements.potenciaAC).toFixed(2))}
+                                                value={String(Math.ceil(Number(computedRequirements.potenciaAC)))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.potenciaAC)}
                                             />
                                             <AddProductNumberField

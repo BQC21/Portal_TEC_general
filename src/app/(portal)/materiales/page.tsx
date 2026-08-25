@@ -9,21 +9,17 @@ import { MaterialesTable } from "@/features/view/components/Tables/Materiales/Ma
 
 import { useMateriales, useMaterialMutations } from "@/features/view/hooks/services/useRealtimeMateriales";
 
-import type { Materiales, MaterialesFilterValues, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
+import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
-import type { ProductSortingOrder, FilterKey } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
-import {
-	getBrandOptions,
-	getSupplierOptions,
-	getTypeOptions,
-	resolveCascadeFilters,
-} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
+import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
+import Button2MassiveDownload from "@/features/view/components/Buttons/Materiales/Button2MassiveDownload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
 import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
@@ -37,24 +33,10 @@ export default function MaterialesPage() {
     // ---------------------------------
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
-	const [filters, setFilters] = useState<MaterialesFilterValues>({
-		type: "",
-		brand: "",
-		supplier: "",
-	});
-
-	const filterOptions = useMemo(
-		() => ({
-			suppliers: getSupplierOptions(materiales),
-			brands: getBrandOptions(materiales, filters.supplier),
-			types: getTypeOptions(materiales, filters.supplier, filters.brand),
-		}),
-		[materiales, filters.supplier, filters.brand],
+	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
+		materiales,
+		"Materiales",
 	);
-
-	const handleFilterChange = (key: FilterKey, value: string) => {
-		setFilters((current) => resolveCascadeFilters(materiales, current, key, value));
-	};
 
 	const filteredMateriales = materiales.filter((material) => {
 		const matchesType = !filters.type || material.tipo_de_producto === filters.type;
@@ -110,8 +92,8 @@ export default function MaterialesPage() {
 			<main className="min-h-screen bg-background text-foreground">
 				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)] xl:items-end">
-                        <div className="w-full">
+                    <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+                        <div className="min-w-0 flex-1">
                             <SearchBar
                                 value={searchDescription}
                                 onChange={setSearchDescription}
@@ -119,24 +101,16 @@ export default function MaterialesPage() {
                             />
                         </div>
 
-                        <div className="flex w-full xl:justify-end">
+                        <div className="flex flex-wrap items-center gap-3">
                             <Sorting_IGV_USD
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-                        </div>
-
-                        <div className="flex w-full xl:justify-end">
 							<Button2MassiveUpload onSuccess={refetch} />
-                        </div>
-
-                        <div className="flex w-full xl:justify-end">
+							<Button2MassiveDownload materiales={materiales} />
 							<Button2MassiveClean currentCount={materiales.length} onSuccess={refetch} />
-                        </div>
-
-						<div className="flex w-full xl:justify-end">
 							<Button2Modal existingMateriales={materiales} onAddMateriales={handleAddMateriales} />
-						</div>
+                        </div>
                     </div>
                 </section>
 

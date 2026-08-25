@@ -209,6 +209,18 @@ export type Button2MassiveUploadProps = {
 };
 
 // ------------------
+// botones -- descarga masiva
+// ------------------
+
+export type Button2MassiveDownloadEquiposProps = {
+	equipos: Equipos[];
+};
+
+export type Button2MassiveDownloadMaterialesProps = {
+	materiales: Materiales[];
+};
+
+// ------------------
 // botones -- generar PDF
 // ------------------
 

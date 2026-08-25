@@ -3,6 +3,7 @@
 import { AddBrandModalProps } from "@/lib/types/components/General/modals";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { INITIAL_BRAND_FORM } from "@/lib/utils/initialValues";
+import { Category } from "@/lib/utils/options";
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
@@ -14,7 +15,10 @@ import { Tables_Brand } from "@/features/view/sub_components/M1/refactor_proveed
 
 export default function AddBrandModal({ onAddBrand, onClose }: AddBrandModalProps) {
     const { supplier } = useProveedores();
-    const [form_brand, setForm_brand] = useState<BrandFormstate>(INITIAL_BRAND_FORM);
+    const [form_brand, setForm_brand] = useState<BrandFormstate>({
+        ...INITIAL_BRAND_FORM,
+        categoria: Category[0],
+    });
     const {
         selectedSupplierByRow,
         selectedSupplierTable,

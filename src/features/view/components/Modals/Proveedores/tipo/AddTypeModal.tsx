@@ -2,6 +2,7 @@
 
 import { AddTypeModalProps } from "@/lib/types/components/General/modals";
 import { INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
+import { Category } from "@/lib/utils/options";
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
@@ -14,7 +15,10 @@ import { Tables_Type } from "@/features/view/sub_components/M1/refactor_proveedo
 
 export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) {
     const { brand } = useBrands();
-    const [form_type, setForm_type] = useState<TypeFormstate>(INITIAL_TYPE_FORM);
+    const [form_type, setForm_type] = useState<TypeFormstate>({
+        ...INITIAL_TYPE_FORM,
+        categoria: Category[0],
+    });
     const {
         selectedBrandByRow,
         selectedBrandTable,

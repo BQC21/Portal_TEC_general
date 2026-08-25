@@ -9,21 +9,17 @@ import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposT
 
 import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
 
-import type { Equipos, EquiposFilterValues, EquiposFormData } from "@/lib/types/supabase/equipos-types";
+import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
-import type { ProductSortingOrder, FilterKey } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
 import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
-import {
-	getBrandOptions,
-	getSupplierOptions,
-	getTypeOptions,
-	resolveCascadeFilters,
-} from "@/lib/utils/helpers/filters/cascadeFilterOptions";
+import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
 
 import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/Button2MassiveUpload";
+import Button2MassiveDownload from "@/features/view/components/Buttons/Equipos/Button2MassiveDownload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Equipos/Button2Add";
 import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
@@ -36,24 +32,10 @@ export default function EquiposPage() {
     // ---- Filtrado -------------------
     // ---------------------------------
 	const [searchDescription, setSearchDescription] = useState<string>("");
-	const [filters, setFilters] = useState<EquiposFilterValues>({
-		type: "",
-		brand: "",
-		supplier: "",
-	});
-
-	const filterOptions = useMemo(
-		() => ({
-			suppliers: getSupplierOptions(equipos),
-			brands: getBrandOptions(equipos, filters.supplier),
-			types: getTypeOptions(equipos, filters.supplier, filters.brand),
-		}),
-		[equipos, filters.supplier, filters.brand],
+	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
+		equipos,
+		"Equipos",
 	);
-
-	const handleFilterChange = (key: FilterKey, value: string) => {
-		setFilters((current) => resolveCascadeFilters(equipos, current, key, value));
-	};
 
 	const filteredEquipos = equipos.filter((equipo) => {
 		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type; // según tipo
@@ -108,8 +90,8 @@ export default function EquiposPage() {
 			<main className="min-h-screen bg-background text-foreground">
 				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-                    <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)_minmax(180px,1fr)] xl:items-end">
-                        <div className="flex w-full xl:justify-end">
+                    <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
+                        <div className="min-w-0 flex-1">
                             <SearchBar
                                 value={searchDescription}
                                 onChange={setSearchDescription}
@@ -117,22 +99,14 @@ export default function EquiposPage() {
                             />
                         </div>
 
-                        <div className="flex w-full xl:justify-end">
+                        <div className="flex flex-wrap items-center gap-3">
                             <Sorting_IGV_USD
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-                        </div>
-
-                        <div className="flex w-full xl:justify-end">
 							<Button2MassiveUpload onSuccess={refetch} />
-                        </div>
-
-                        <div className="flex w-full xl:justify-end">
+							<Button2MassiveDownload equipos={equipos} />
 							<Button2MassiveClean currentCount={equipos.length} onSuccess={refetch} />
-                        </div>
-
-						<div className="flex w-full xl:justify-end">
 							<Button2Modal existingEquipos={equipos} onAddEquipos={handleAddEquipos} />
                         </div>
                     </div>

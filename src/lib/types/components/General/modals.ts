@@ -236,3 +236,15 @@ export type MassiveCleanModalProps = {
 	onClose: () => void;
 	onSuccess?: () => void;
 };
+
+// ------------------
+// modals -- descarga masiva
+// ------------------
+export type MassiveDownloadModalProps<T> = {
+	title: string;
+	description: string;
+	items: T[];
+	columns: Array<{ key: keyof T; label: string }>;
+	defaultFileName: string;
+	onClose: () => void;
+};
