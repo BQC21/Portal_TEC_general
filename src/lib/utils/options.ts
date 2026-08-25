@@ -1,3 +1,10 @@
+// ------------------
+// ------------------
+// GENERAL
+// ------------------
+// ------------------
+
+
 // Opciones para el sorting
 export const SORTING_OPTIONS = {
     asc: "Ascendente",
@@ -9,7 +16,7 @@ export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
 export type FillOptions = "AUTOMÁTICO" | "MANUAL"; // tipo de llenado
 export type DSCTOOptions = "CON DSCTO" | "SIN DSCTO"; // tipo de llenado
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de ordenamiento
-export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado
+export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado en EQUIPOS / MATERIALES
 export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material
 export const Category = ["Equipos", "Materiales", "Ambas"];
 
