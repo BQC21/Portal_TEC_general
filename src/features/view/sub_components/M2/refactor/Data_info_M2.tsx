@@ -171,11 +171,11 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             value={computedRequirements.selectedEquipment?.marca ?? ""}
                                             colorClass={"field-equipment-code"}
                                         />
-                                        <AddEquipoReadonlyField
+                                        {/* <AddEquipoReadonlyField
                                             label="Unidad"
                                             value={computedRequirements.selectedEquipment?.unidad ?? ""}
                                             colorClass={"field-equipment-code"}
-                                        />
+                                        /> */}
                                         
                                         <AddEquipoReadonlyField
                                             label="VMPP del módulo seleccionado"
