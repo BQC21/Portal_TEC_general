@@ -37,6 +37,7 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        if (!form_type.nombre?.trim() || !form_type.categoria?.trim()) return;
         onAddType(applySelectedBrandsToType(form_type, selectedBrandTable));
     }
 

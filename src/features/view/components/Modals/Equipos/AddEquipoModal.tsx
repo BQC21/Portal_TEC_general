@@ -8,7 +8,7 @@ import {
     INITIAL_SUPPLIER_FORM,
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddEquipoModalProps } from "@/lib/types/components/General/modals";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
@@ -69,12 +69,20 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
         form.proveedor_id, form.marca, form.marca_id],
     );
 
-    // Generación automático para el código del producto
     const generatedCode = buildNextProductCode(
         existingEquipos,
-        form.tipo_de_producto,
-        form.proveedor,
+        form_tipo,
+        form_proveedor,
+        "Equipos",
     );
+
+    useEffect(() => {
+        setForm((current) =>
+            current.cod_producto === generatedCode
+                ? current
+                : { ...current, cod_producto: generatedCode },
+        );
+    }, [generatedCode]);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -120,6 +128,7 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
                             brand={brand}
                             type={type}
                             productCategory="Equipos"
+                            showProductCode
                             useSuplierSelection={(value, supplierList, setProveedor, setProductForm) => {
                                 useSuplierSelection(
                                     value,

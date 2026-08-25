@@ -94,13 +94,16 @@ export function EditEquipoModal({ equipo, onUpdateEquipo, onClose }: EditEquipoM
 
         return buildNextProductCode(
             existingEquipos.filter((item) => item.id !== equipo.id),
-            form.tipo_de_producto,
-            form.proveedor,
+            form_tipo,
+            form_proveedor,
+            "Equipos",
         );
     }, [
         existingEquipos,
         form.proveedor,
         form.tipo_de_producto,
+        form_tipo,
+        form_proveedor,
         equipo.id,
         equipo.proveedor,
         equipo.tipo_de_producto,

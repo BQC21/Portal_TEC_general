@@ -9,23 +9,45 @@ import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { Category } from "@/lib/utils/options";
+import { isValidSupplierCode, normalizeSupplierCode, suggestSupplierCode } from "@/lib/utils/helpers/manage_info/getInfo";
 
 export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplierModalProps) {
-    const [form_supplier, setForm_supplier] = useState<SupplierFormstate>(INITIAL_SUPPLIER_FORM);
+    const [form_supplier, setForm_supplier] = useState<SupplierFormstate>({
+        ...INITIAL_SUPPLIER_FORM,
+        categoria: Category[0],
+    });
 
     function updateField<K extends keyof SupplierFormstate>(field: K, value: SupplierFormstate[K]) {
         setForm_supplier((current) => {
             const updated = { ...current, [field]: value };
+
+            if (field === "nombre") {
+                const suggested = suggestSupplierCode(String(value ?? ""));
+                const previousSuggested = suggestSupplierCode(current.nombre ?? "");
+                if (!current.codigo || current.codigo === previousSuggested) {
+                    updated.codigo = suggested;
+                }
+            }
+
+            if (field === "codigo") {
+                updated.codigo = normalizeSupplierCode(String(value ?? ""));
+            }
+
             return updated;
         });
     }
 
-    // Aceptar insercion
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        const codigo = normalizeSupplierCode(form_supplier.codigo ?? "");
+        if (!form_supplier.nombre?.trim() || !isValidSupplierCode(codigo) || !form_supplier.categoria?.trim()) {
+            return;
+        }
+
         onAddSupplier({
             ...form_supplier,
+            codigo,
         });
     }
 
@@ -56,7 +78,11 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
                             <AddProductTextField
                                 label={TABLE_HEADERS_SUPPLIER[1]}
                                 required
-                                placeholder=" "
+                                placeholder="ANDE"
+                                minLength={4}
+                                maxLength={4}
+                                pattern="[A-Z0-9]{4}"
+                                title="Usa 4 letras o números, p. ej. ANDE"
                                 value={form_supplier.codigo || ""}
                                 onChange={(value) => updateField("codigo", value)}
                             />                                               

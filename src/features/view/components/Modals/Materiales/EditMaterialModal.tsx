@@ -2,21 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
-import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
-import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
-import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
-import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
-
-import { POWER_SOURCE_OPTIONS, SUPPLIER_CODE_OPTIONS_MATERIALES } from "@/lib/utils/options";
-
-import { 
-    shouldRender_SupplyInfoSelection,
-} from "@/lib/utils/helpers/render/render_modals";
 
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
-import { shouldRender_MaterialInfoSelection } from "@/lib/utils/helpers/render/render_infoSelection";
 import { EditMaterialModalProps } from "@/lib/types/components/General/modals";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
@@ -109,13 +97,16 @@ export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditM
 
         return buildNextProductCode(
             existingMateriales.filter((item) => item.id !== material.id),
-            form.tipo_de_producto,
-            form.proveedor,
+            form_tipo,
+            form_proveedor,
+            "Materiales",
         );
     }, [
         existingMateriales,
         form.proveedor,
         form.tipo_de_producto,
+        form_tipo,
+        form_proveedor,
         material.id,
         material.proveedor,
         material.tipo_de_producto,

@@ -7,7 +7,7 @@ import {
     INITIAL_SUPPLIER_FORM,
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { AddMaterialModalProps } from "@/lib/types/components/General/modals";
@@ -73,12 +73,20 @@ export function AddMaterialModal({
         form.proveedor_id, form.marca, form.marca_id],
     );
 
-    // Generación automático para el código del producto
     const generatedCode = buildNextProductCode(
         existingMateriales,
-        form.tipo_de_producto,
-        form.proveedor,
+        form_tipo,
+        form_proveedor,
+        "Materiales",
     );
+
+    useEffect(() => {
+        setForm((current) =>
+            current.cod_producto === generatedCode
+                ? current
+                : { ...current, cod_producto: generatedCode },
+        );
+    }, [generatedCode]);
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
@@ -123,6 +131,7 @@ export function AddMaterialModal({
                             brand={brand}
                             type={type}
                             productCategory="Materiales"
+                            showProductCode
                             useSuplierSelection={(value, supplierList, setProveedor, setProductForm) => {
                                 useSuplierSelection(
                                     value,

@@ -1,53 +1,23 @@
-// --- Funciones auxiliares para mostrar primer digito de la codificación según tipo de producto ---
-export function getProductTypeCode(productType: string) {
-    // Equipos eléctricos
+import type { ProductCategoryFilter } from "@/lib/types/components/sub_components/module_render";
+import { TypeFormstate } from "@/lib/types/supabase/type-types";
 
-    // const equipmentTypes = new Set([
-    //     "Accesorio",
-    //     "Batería",
-    //     "Controlador",
-    //     "Convertidor",
-    //     "Datalogger",
-    //     "Estructura",
-    //     "Inversor",
-    //     "Módulo",
-    //     "Monitor",
-    //     "Rack",
-    //     "Smart Meter",
-    // ]);
-    const EquiposTypes = new Set([
-        "ACCESORIO",
-        "BATERÍA",
-        "ESTRUCTURA",
-        "INVERSOR",
-        "MÓDULO FV",
-    ]);
+function normalizeTypeCategory(categoria?: string) {
+    return (categoria ?? "").trim().toLowerCase();
+}
 
-    // Materiales eléctricos
+// --- Primer dígito del código según categoría del tipo de producto ---
+export function getProductTypeCode(
+    tipo: TypeFormstate,
+    productCategory?: ProductCategoryFilter,
+) {
+    const categoria = normalizeTypeCategory(tipo.categoria);
 
-    // const materialTypes = new Set([
-    //     "Cable",
-    //     "Protección",
-    //     "MC4",
-    //     "Tablero",
-    //     "CT",
-    //     "Fusible",
-    //     "Portafusible",
-    // ]);
-    const MaterialesTypes = new Set([
-        "CABLE",
-        "CANALIZACIÓN",
-        "CONSUMIBLE",
-        "MC4",
-        "PROTECCIÓN",
-    ]);
+    if (categoria === "equipos" || categoria === "equipo") return "E";
+    if (categoria === "materiales" || categoria === "material") return "M";
+    if (categoria === "ambas") {
+        if (productCategory === "Equipos") return "E";
+        if (productCategory === "Materiales") return "M";
+    }
 
-    // 1er dígito del código
-    if (
-        // equipmentTypes.has(productType) ||
-        EquiposTypes.has(productType)) return "E";
-    if (
-        // materialTypes.has(productType) ||
-        MaterialesTypes.has(productType)) return "M";
     return "";
 }

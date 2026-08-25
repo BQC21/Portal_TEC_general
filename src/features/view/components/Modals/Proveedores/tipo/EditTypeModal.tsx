@@ -37,6 +37,7 @@ export default function EditTypeModal({ existingType, onUpdateType, onClose }: E
 
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        if (!form_type.nombre?.trim() || !form_type.categoria?.trim()) return;
         onUpdateType(applySelectedBrandsToType(form_type, selectedBrandTable));
     }
 

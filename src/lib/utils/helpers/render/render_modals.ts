@@ -1,3 +1,4 @@
+import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { getSupplierInfo } from "../manage_info/getInfo";
 
 // MODULO 1
@@ -61,8 +62,8 @@ export function shouldRenderImportDate(productStatus: string): boolean {
 // --- Automatizar el llenado de información de proveedor (RUC, codigo del proveedor) ---
 // -----------------------------
 
-export function shouldRender_SupplyInfoSelection(supplier: string) {
-    return getSupplierInfo(supplier);
+export function shouldRender_SupplyInfoSelection(proveedor: SupplierFormstate) {
+    return Boolean(getSupplierInfo(proveedor).supplierCode);
 }
 
 // MODULO 2

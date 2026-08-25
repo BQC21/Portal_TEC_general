@@ -6,6 +6,10 @@ type AddProductTextFieldProps = {
   placeholder?: string;
   value: string;
   onChange: (value: string) => void;
+  minLength?: number;
+  maxLength?: number;
+  pattern?: string;
+  title?: string;
 };
 
 export function AddProductTextField({
@@ -14,6 +18,10 @@ export function AddProductTextField({
   placeholder,
   value,
   onChange,
+  minLength,
+  maxLength,
+  pattern,
+  title,
 }: AddProductTextFieldProps) {
   return (
     <div>
@@ -23,6 +31,10 @@ export function AddProductTextField({
         required={required}
         placeholder={placeholder}
         value={value ?? ""}
+        minLength={minLength}
+        maxLength={maxLength}
+        pattern={pattern}
+        title={title}
         onChange={(event) => onChange(event.target.value)}
         className="input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 transition placeholder:text-slate-400"
       />
