@@ -19,7 +19,7 @@ export function AddProductNumberField({
             required={required}
             value={value === "" ? "" : Number.isFinite(value) ? value : ""}
             onChange={(event) => onChange(Number(event.target.value))}
-            step={step}
+            step={step === "" || step === undefined ? undefined : String(step)}
             min={typeof min === "number" && Number.isFinite(min) ? min : undefined}
             max={
                 typeof max === "number" &&

@@ -6,7 +6,7 @@ import { mapSupabaseRowToBrand } from "./mapping_marcas";
 import { SupabaseBrandRow } from "../types/supabase/brand.types";
 import { mapSupabaseRowToSupplier } from "./mapping_proveedores";
 import { SupabaseSupplierRow } from "../types/supabase/supplier-types";
-import { emptyToNull, toNullableInteger } from "../utils/normalization";
+import { emptyToNull, toDecimalNumber, toNullableInteger } from "../utils/normalization";
 
 // enlace con los atributos de Supabase
 export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormState {
@@ -67,14 +67,14 @@ export function mapSupabaseRowToEquipos(
         descripcion: row.descripcion || "",
         // propiedades eléctricas
         tipo_conexion: row.tipo_de_conexion || row.tipo_conexion || "",
-        potencia_maxima: row.potencia_maxima || 0,
-        mppt: row.mppt || 0,
-        cadenas: row.cadenas || 0,
-        dod: row.dod || 0,
-        potencia_ac: row.potencia_ac || 0,
-        vmpp_vmin: row.vmpp_vmin || 0,
-        voc_vmax: row.voc_vmax || 0,
-        isc_i_out: row.isc_i_out || 0,
+        potencia_maxima: toDecimalNumber(row.potencia_maxima),
+        mppt: toDecimalNumber(row.mppt),
+        cadenas: toDecimalNumber(row.cadenas),
+        dod: toDecimalNumber(row.dod),
+        potencia_ac: toDecimalNumber(row.potencia_ac),
+        vmpp_vmin: toDecimalNumber(row.vmpp_vmin),
+        voc_vmax: toDecimalNumber(row.voc_vmax),
+        isc_i_out: toDecimalNumber(row.isc_i_out),
         impp_i_in: row.impp_i_in || "",
         // Precios
         unidad: row.unidad || "",

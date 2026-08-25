@@ -72,6 +72,13 @@ export function toNullableInteger(value: unknown): number | null {
     return parsed === undefined ? null : parsed;
 }
 
+/** Convierte un valor numérico (number o string de PostgREST) sin redondear a 2 decimales. */
+export function toDecimalNumber(value: unknown): number {
+    if (value === null || value === undefined || value === "") return 0;
+    const n = typeof value === "number" ? value : Number(String(value).trim());
+    return Number.isFinite(n) ? n : 0;
+}
+
 export function emptyToNull(value: unknown): string | null {
     if (value === null || value === undefined) return null;
     const s = String(value);
