@@ -88,7 +88,9 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                         )
                                                     }
                                                     step={1} min={0} max={structureQuantityMax(item, form, computedRequirements)}
-                                                    disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
+                                                    disabled={
+                                                        // item.row === "INVERSOR" || 
+                                                        item.row === "MÓDULO FV" || item.row === "BATERÍA"}
                                                 />
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5">
