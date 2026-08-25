@@ -6,6 +6,7 @@ import { SupabaseBrandRow } from "../types/supabase/brand.types";
 import { mapSupabaseRowToBrand } from "./mapping_marcas";
 import { mapSupabaseRowToSupplier } from "./mapping_proveedores";
 import { SupabaseSupplierRow } from "../types/supabase/supplier-types";
+import { toNullableInteger } from "../utils/normalization";
 
 // enlace con los atributos de Supabase
 export function createMaterialesFormStateFromMateriales(material: Materiales): MaterialesFormState {
@@ -116,8 +117,8 @@ export function mapMaterialesToSupabaseRow(
         created_at: material.created_at ? new Date(material.created_at) : new Date(),
         updated_at: material.updated_at ? new Date(material.updated_at) : new Date(),
         // conexión con otras tablas
-        tipo_id: material.tipo_id,
-        marca_id: material.marca_id,
-        proveedor_id: material.proveedor_id,
+        tipo_id: toNullableInteger(material.tipo_id) ?? undefined,
+        marca_id: toNullableInteger(material.marca_id) ?? undefined,
+        proveedor_id: toNullableInteger(material.proveedor_id) ?? undefined,
     };
 }

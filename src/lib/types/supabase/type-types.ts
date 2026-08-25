@@ -14,9 +14,11 @@ export type SupabaseTypeRow = {
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
     // marca asociada
-    marca_id?: number | string;          
-    marca_info?: SupabaseBrandRow;         
-    marcas?: SupabaseBrandRow;               
+    marca_id?: number | string | null;
+    marca_ids?: Array<number | string> | null;
+    marca_info?: SupabaseBrandRow;
+    marcas?: SupabaseBrandRow;
+    marcas_info?: SupabaseBrandRow[];               
 };
 
 // Campos para la base de datos
@@ -29,8 +31,10 @@ export type Type = {
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
     // marca asociada
-    marca_id: string; 
-    marca_info?: Brand;  
+    marca_id: string;
+    marca_ids: string[];
+    marca_info?: Brand;
+    marcas_info?: Brand[];  
 };
 
 // Estado de la visualización

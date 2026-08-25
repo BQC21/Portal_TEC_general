@@ -14,9 +14,11 @@ export type SupabaseBrandRow = {
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
     // proveedor asociada
-    proveedor_id?: number | string;          
-    proveedor_info?: SupabaseSupplierRow;         
-    proveedores?: SupabaseSupplierRow;              
+    proveedor_id?: number | string | null;
+    proveedor_ids?: Array<number | string> | null;
+    proveedor_info?: SupabaseSupplierRow;
+    proveedores?: SupabaseSupplierRow;
+    proveedores_info?: SupabaseSupplierRow[];              
 };
 
 // Campos para la base de datos
@@ -29,8 +31,10 @@ export type Brand = {
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
     // proveedor asociada
-    proveedor_id: string;          
-    proveedor_info?: Supplier;  
+    proveedor_id: string;
+    proveedor_ids: string[];
+    proveedor_info?: Supplier;
+    proveedores_info?: Supplier[];  
 };
 
 // Estado de la visualización
