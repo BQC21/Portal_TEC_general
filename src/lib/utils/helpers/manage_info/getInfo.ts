@@ -1,4 +1,6 @@
 // --- Funciones auxiliares para mostrar campos según proveedor ---
+// ES EL COMODÍN EN CASO (MEJOR USAR LAS ASOCIACIONES DE PROVEEDORES)
+
 export function getSupplierInfo(productSupplier: string) {
     const supplierMap: { [key: string]: { RUC: string; supplierCode: string } } = {
         "Andet S.A.C.": { RUC: "20601248647", supplierCode: "ANDE" },
@@ -20,6 +22,7 @@ export function getSupplierInfo(productSupplier: string) {
         "Inversionas Cavasa S.A.C.": {RUC: "", supplierCode: "CAVA"},
         "Perú Solar": {RUC: "", supplierCode: "PESO"},
         "Stof Grimme E.I.R.L.":{RUC: "", supplierCode: "STOF"},
+        "Electronic Siblings":{RUC: "", supplierCode: "ELSI"},
 
         // backup en caso de que el nombre del proveedor no coincida exactamente, se puede buscar por RUC
         "20601248647": { RUC: "20601248647", supplierCode: "ANDE" },
