@@ -1,6 +1,6 @@
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
-import { cantidadModuloFVTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
+import { cantidadModuloFVEnTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
@@ -25,6 +25,7 @@ function structureQuantityMax(
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){
+    const selectedModules = selectedEquipmentTable.filter((row) => row.row === "MÓDULO FV");
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -50,17 +51,19 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                     selectedEquipmentTable.map((item) => (
                                         <tr key={`${item.row}-${item.id}`} className="bg-white">
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                {item.description}
+                                                {item.row === "MÓDULO FV" && item.unidad
+                                                    ? `${item.description} (${item.unidad})`
+                                                    : item.description}
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 <AddProductNumberField
                                                     label="ingrese cantidad"
                                                     required
                                                     value={item.row === "MÓDULO FV"
-                                                        ? cantidadModuloFVTabla(
+                                                        ? cantidadModuloFVEnTabla(
                                                             Number(form.strings) || Number(item.cantidad ?? 0),
-                                                            computedRequirements.selectedEquipment?.unidad
-                                                                ?? item.unidad,
+                                                            item.unidad,
+                                                            selectedModules,
                                                         )
                                                         : Number(item.cantidad ?? 0)}
                                                     onChange={(value) =>

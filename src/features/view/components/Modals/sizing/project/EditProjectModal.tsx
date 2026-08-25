@@ -191,7 +191,7 @@ export default function EditProjectModal({
     // ------------------------------------------------
 
     useSyncQuantities(form, computedRequirements.computedRequirements, 
-            setSelectedEquipmentTable, setSelectedMaterialTable)
+            selectedEquipmentTable, setSelectedEquipmentTable, setSelectedMaterialTable)
     
 
     // ----------------------------------------
@@ -288,6 +288,9 @@ export default function EditProjectModal({
     }
 
     const isEquipmentTypeSelected = (type: string) => {
+        if (type === "MÓDULO FV") {
+            return selectedEquipmentTable.filter((item) => item.row === type).length >= 2;
+        }
         return selectedEquipmentTable.some(item => item.row === type);
     };
 

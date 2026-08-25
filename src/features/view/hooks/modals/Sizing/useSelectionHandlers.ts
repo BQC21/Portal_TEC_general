@@ -6,7 +6,7 @@ import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { cantidadModuloFVTabla } from "@/lib/utils/helpers/computes/PanelNumber";
+import { canAddModuloFV, cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 
 // INPUTS
 interface UseSelectionHandlersParams {
@@ -119,24 +119,38 @@ export function useSelectionHandlers({
                     return;
                 }
 
-                // Revisar si el tipo de equipo ya existe (excepto para ACCESORIO y ESTRUCTURA)
-                let isAlreadyAdded = false;
-                if (label !== "ACCESORIO" && label !== "ESTRUCTURA") {
-                    isAlreadyAdded = selectedEquipmentTable.some((item) => item.row === label);
-                }
-
                 // Buscar los detalles del equipo
                 const equipoDetails = equipos.find(
                     (equipo) => String(equipo.id) === selectedEquipo.equipoId
                 );
 
-                if (!isAlreadyAdded && equipoDetails) {
+                if (!equipoDetails) {
+                    return;
+                }
+
+                const selectedModules = selectedEquipmentTable.filter((item) => item.row === "MÓDULO FV");
+                let canAdd = true;
+                if (label === "MÓDULO FV") {
+                    canAdd = canAddModuloFV(selectedModules, {
+                        id: String(equipoDetails.id),
+                        marca: equipoDetails.marca,
+                        unidad: equipoDetails.unidad,
+                    });
+                } else if (label !== "ACCESORIO" && label !== "ESTRUCTURA") {
+                    canAdd = !selectedEquipmentTable.some((item) => item.row === label);
+                }
+
+                if (canAdd) {
                     // Determinar cantidad inicial según reglas por tipo de equipo
                     const cantidadInit =
                     label === "INVERSOR"
                         ? 1
                         : label === "MÓDULO FV"
-                        ? cantidadModuloFVTabla(Number(form.strings) || 0, equipoDetails.unidad)
+                        ? cantidadModuloFVEnTabla(
+                            Number(form.strings) || 0,
+                            equipoDetails.unidad,
+                            selectedModules,
+                        )
                         : label === "BATERÍA"
                         ? Number(computedRequirements.num_baterias) || 0
                         : label === "ESTRUCTURA" && equipoDetails.descripcion?.includes("baterías")
@@ -151,31 +165,44 @@ export function useSelectionHandlers({
                         )
                         : 1;
 
-                setSelectedEquipmentTable((prev: SelectedEquipmentItem[]) => [
-                    ...prev,
-                    {
-                        row: label,
-                        id: selectedEquipo.equipoId,
-                        description: selectedEquipo.description,
-                        marca: equipoDetails.marca,
-                        codigo: equipoDetails.cod_producto,
-                        potencia_maxima: equipoDetails.potencia_maxima,
-                        mppt: equipoDetails.mppt,
-                        cadenas: equipoDetails.cadenas,
-                        dod: equipoDetails.dod,
-                        potencia_ac: equipoDetails.potencia_ac,
-                        voc_vmax: equipoDetails.voc_vmax,
-                        vmpp_vmin: equipoDetails.vmpp_vmin,
-                        isc_i_out: equipoDetails.isc_i_out,
-                        impp_i_in: equipoDetails.impp_i_in,
-                        cantidad: cantidadInit,
-                        unidad: equipoDetails.unidad,
-                        precio_soles: equipoDetails.precio_soles,
-                        precio_dolares: equipoDetails.precio_dolares,
-                        precio_soles_igv: equipoDetails.precio_soles_igv,
-                        precio_dolares_igv: equipoDetails.precio_dolares_igv,
-                    },
-                    ]);
+                setSelectedEquipmentTable((prev: SelectedEquipmentItem[]) => {
+                    const next = [
+                        ...prev,
+                        {
+                            row: label,
+                            id: selectedEquipo.equipoId,
+                            description: selectedEquipo.description,
+                            marca: equipoDetails.marca,
+                            codigo: equipoDetails.cod_producto,
+                            potencia_maxima: equipoDetails.potencia_maxima,
+                            mppt: equipoDetails.mppt,
+                            cadenas: equipoDetails.cadenas,
+                            dod: equipoDetails.dod,
+                            potencia_ac: equipoDetails.potencia_ac,
+                            voc_vmax: equipoDetails.voc_vmax,
+                            vmpp_vmin: equipoDetails.vmpp_vmin,
+                            isc_i_out: equipoDetails.isc_i_out,
+                            impp_i_in: equipoDetails.impp_i_in,
+                            cantidad: cantidadInit,
+                            unidad: equipoDetails.unidad,
+                            precio_soles: equipoDetails.precio_soles,
+                            precio_dolares: equipoDetails.precio_dolares,
+                            precio_soles_igv: equipoDetails.precio_soles_igv,
+                            precio_dolares_igv: equipoDetails.precio_dolares_igv,
+                        },
+                    ];
+                    if (label !== "MÓDULO FV") return next;
+                    const modules = next.filter((item) => item.row === "MÓDULO FV");
+                    const paneles = Number(form.strings) || 0;
+                    return next.map((item) =>
+                        item.row === "MÓDULO FV"
+                            ? {
+                                ...item,
+                                cantidad: cantidadModuloFVEnTabla(paneles, item.unidad, modules),
+                            }
+                            : item,
+                    );
+                });
                 }
 
                 // Limpiar el selector temporal

@@ -15,6 +15,20 @@ export function toProductSelectOption(item: {
     };
 }
 
+export function toModuloFVSelectOption(item: {
+    id: number | string;
+    cod_producto: string;
+    descripcion: string;
+    unidad?: string | null;
+}): SelectOption {
+    const baseLabel = formatProductOptionLabel(item.cod_producto, item.descripcion);
+    const unidad = (item.unidad ?? "").trim();
+    return {
+        value: String(item.id),
+        label: unidad ? `${baseLabel} — ${unidad}` : baseLabel,
+    };
+}
+
 export function defaultSelectOption(label: string): SelectOption {
     return {
         value: "",

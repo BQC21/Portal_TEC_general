@@ -10,6 +10,7 @@ import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/use
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
 import {
+    cantidadesPaletYUnidad,
     optionalInputMax,
     optionalInputMin,
     toPanelInteger,
@@ -37,13 +38,12 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
         ? String(annualTotal)
         : form.demanda_electrica;
 
-    const esPalet = computedRequirements.selectedEquipment?.unidad === "Palet";
-    const labelCantidad = esPalet ? "conjuntos" : "Paneles";
     const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
     const minPanelesAuto = toPanelInteger(computedRequirements.strings_minimos, "ceil");
     const maxPanelesAuto = toPanelInteger(computedRequirements.strings_maximos, "floor");
     const minPanelesManual = toPanelInteger(form.strings_min, "ceil");
     const maxPanelesManual = toPanelInteger(form.strings_max, "floor");
+    const { palets, unidades } = cantidadesPaletYUnidad(toPanelInteger(form.strings));
 
     return (
         <>
@@ -172,7 +172,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             colorClass={"field-equipment-code"}
                                         />
                                         <AddEquipoReadonlyField
-                                            label={labelCantidad}
+                                            label="Unidad"
                                             value={computedRequirements.selectedEquipment?.unidad ?? ""}
                                             colorClass={"field-equipment-code"}
                                         />
@@ -263,6 +263,16 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             </>                                            
                                         )
                                     }
+                                            <AddEquipoReadonlyField
+                                                label="Número de palets"
+                                                value={String(palets)}
+                                                colorClass={getFieldValueLightClass(String(palets))}
+                                            />
+                                            <AddEquipoReadonlyField
+                                                label="Unidades individuales"
+                                                value={String(unidades)}
+                                                colorClass={getFieldValueLightClass(String(unidades))}
+                                            />
                                     </>
                                     )}
                                 </div>

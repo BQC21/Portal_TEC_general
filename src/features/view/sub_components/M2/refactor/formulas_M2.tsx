@@ -91,7 +91,7 @@ export function Formulas_M2() {
                 <h2 className="mb-8 text-center text-2xl font-semibold tracking-tight text-slate-900">
                     Fórmulas de cálculo
                 </h2>
-                <div className="mx-auto flex max-w-3xl flex-col gap-10 font-serif">
+                <div className="mx-auto flex max-w-5xl flex-row gap-10 font-serif">
                     <CollapsibleTableSection title="Requerimientos energéticos">
                         <FormulaGroup
                             title="Requerimientos energéticos"

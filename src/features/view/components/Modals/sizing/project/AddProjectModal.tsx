@@ -93,7 +93,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
     // ------------------------------------------------
 
     useSyncQuantities(form, computedRequirements.computedRequirements, 
-        setSelectedEquipmentTable, setSelectedMaterialTable)
+        selectedEquipmentTable, setSelectedEquipmentTable, setSelectedMaterialTable)
 
     // ----------------------------------------
     // ------- Condicionar renderizado de selectores ------------------------
@@ -180,6 +180,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
 
     // Condicionar el estado de la visualización del selector de EQUIPOS
     const isEquipmentTypeSelected = (type: string) => {
+        if (type === "MÓDULO FV") {
+            return selectedEquipmentTable.filter((item) => item.row === type).length >= 2;
+        }
         return selectedEquipmentTable.some(item => item.row === type);
     };
 

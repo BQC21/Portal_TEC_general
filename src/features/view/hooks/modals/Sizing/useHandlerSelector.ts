@@ -10,7 +10,8 @@ import {
     extractSpdRating,
     getNearestHigherItmAcRating,
 } from "@/lib/utils/helpers/project_modals/protectionSelector";
-import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
+import { canAddModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
+import { defaultSelectOption, toModuloFVSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
 
 export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL",
     selectedEquipmentTable: SelectedEquipmentItem[], selectedMaterialTable: SelectedMaterialItem[], 
@@ -76,20 +77,21 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                                 .map(toProductSelectOption)
                         ];
                 }
-            } else if (label === "MÓDULO FV") {                                        
-                if (isTypeAlreadySelected) {
-                    filteredOptions = [defaultSelectOption(label)];
-                } else {
-                    filteredOptions = [
-                        defaultSelectOption(label),
-                        ...equipos
-                            .filter((equipo) => {
-                                if (equipo.tipo_de_producto !== label) return false;
-                                return true;
-                            })
-                            .map(toProductSelectOption)
-                    ];
-                }
+            } else if (label === "MÓDULO FV") {
+                const selectedModules = selectedEquipmentTable.filter((item) => item.row === "MÓDULO FV");
+                filteredOptions = [
+                    defaultSelectOption(label),
+                    ...equipos
+                        .filter((equipo) => {
+                            if (equipo.tipo_de_producto !== label) return false;
+                            return canAddModuloFV(selectedModules, {
+                                id: String(equipo.id),
+                                marca: equipo.marca,
+                                unidad: equipo.unidad,
+                            });
+                        })
+                        .map(toModuloFVSelectOption),
+                ];
             } else if (label === "ESTRUCTURA") {                                        
                 filteredOptions = [
                     defaultSelectOption(label),
