@@ -46,41 +46,58 @@ export function getBrandSelectOptions(
 }
 
 export function selectedBrandsFromType(
-    type: Pick<Type, "marca_id" | "marca_info">,
+    type: Pick<Type, "marca_id" | "marca_ids" | "marca_info" | "marcas_info">,
     brands: Brand[] = [],
 ): SelectedBrandItem[] {
-    const info = type.marca_info;
-    const id = info?.id != null ? String(info.id) : type.marca_id;
+    const ids = Array.from(new Set([
+        ...(type.marca_ids ?? []),
+        type.marca_id,
+        type.marca_info?.id != null ? String(type.marca_info.id) : "",
+        ...(type.marcas_info ?? []).map((item) => String(item.id ?? "")),
+    ].map((id) => String(id ?? "").trim()).filter(Boolean)));
 
-    if (!id) return [];
+    return ids.map((id) => {
+        const found = brands.find((item) => String(item.id) === id);
+        if (found) return toSelectedBrandItem(found);
 
-    const found = brands.find((item) => String(item.id) === String(id));
-    if (found) return [toSelectedBrandItem(found)];
+        const info = (type.marcas_info ?? []).find((item) => String(item.id) === id) ?? (
+            String(type.marca_info?.id) === id ? type.marca_info : undefined
+        );
 
-    return [{
-        row: BRAND_ROW_LABEL,
-        id: String(id),
-        nombre: info?.nombre ?? "",
-        categoria: info?.categoria ?? "",
-    }];
+        return {
+            row: BRAND_ROW_LABEL,
+            id,
+            nombre: info?.nombre ?? "",
+            categoria: info?.categoria ?? "",
+        };
+    });
 }
 
 export function applySelectedBrandsToType(
     form: TypeFormstate,
     selectedBrandTable: SelectedBrandItem[],
 ): TypeFormstate {
-    const firstBrand = selectedBrandTable[0];
+    const marca_ids = selectedBrandTable.map((item) => item.id).filter(Boolean);
 
     return {
         ...form,
-        marca_id: firstBrand?.id ?? form.marca_id,
-        marca_info: firstBrand
+        marca_id: marca_ids[0] ?? "",
+        marca_ids,
+        marca_info: selectedBrandTable[0]
             ? {
-                id: firstBrand.id,
-                nombre: firstBrand.nombre,
-                categoria: firstBrand.categoria,
+                id: selectedBrandTable[0].id,
+                nombre: selectedBrandTable[0].nombre,
+                categoria: selectedBrandTable[0].categoria,
                 proveedor_id: form.marca_info?.proveedor_id ?? "",
+                proveedor_ids: form.marca_info?.proveedor_ids ?? [],
             }
-            : form.marca_info,
+            : undefined,
+        marcas_info: selectedBrandTable.map((item) => ({
+            id: item.id,
+            nombre: item.nombre,
+            categoria: item.categoria,
+            proveedor_id: "",
+            proveedor_ids: [],
+        })),
     };
 }

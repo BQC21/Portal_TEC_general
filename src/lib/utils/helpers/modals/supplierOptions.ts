@@ -51,48 +51,66 @@ export function getSupplierSelectOptions(
 }
 
 export function selectedSuppliersFromBrand(
-    brand: Pick<Brand, "proveedor_id" | "proveedor_info">,
+    brand: Pick<Brand, "proveedor_id" | "proveedor_ids" | "proveedor_info" | "proveedores_info">,
     suppliers: Supplier[] = [],
 ): SelectedSupplierlItem[] {
-    const info = brand.proveedor_info;
-    const id = info?.id != null ? String(info.id) : brand.proveedor_id;
+    const ids = Array.from(new Set([
+        ...(brand.proveedor_ids ?? []),
+        brand.proveedor_id,
+        brand.proveedor_info?.id != null ? String(brand.proveedor_info.id) : "",
+        ...(brand.proveedores_info ?? []).map((item) => String(item.id ?? "")),
+    ].map((id) => String(id ?? "").trim()).filter(Boolean)));
 
-    if (!id) return [];
+    return ids.map((id) => {
+        const found = suppliers.find((item) => String(item.id) === id);
+        if (found) return toSelectedSupplierItem(found);
 
-    const found = suppliers.find((item) => String(item.id) === String(id));
-    if (found) return [toSelectedSupplierItem(found)];
+        const info = (brand.proveedores_info ?? []).find((item) => String(item.id) === id) ?? (
+            String(brand.proveedor_info?.id) === id ? brand.proveedor_info : undefined
+        );
 
-    return [{
-        row: SUPPLIER_ROW_LABEL,
-        id: String(id),
-        nombre: info?.nombre ?? "",
-        ruc: info?.ruc ?? "",
-        contacto: info?.contacto ?? "",
-        telefono: info?.telefono ?? "",
-        categoria: info?.categoria ?? "",
-        codigo: info?.codigo ?? "",
-    }];
+        return {
+            row: SUPPLIER_ROW_LABEL,
+            id,
+            nombre: info?.nombre ?? "",
+            ruc: info?.ruc ?? "",
+            contacto: info?.contacto ?? "",
+            telefono: info?.telefono ?? "",
+            categoria: info?.categoria ?? "",
+            codigo: info?.codigo ?? "",
+        };
+    });
 }
 
 export function applySelectedSuppliersToBrand(
     form: BrandFormstate,
     selectedSupplierTable: SelectedSupplierlItem[],
 ): BrandFormstate {
-    const firstSupplier = selectedSupplierTable[0];
+    const proveedor_ids = selectedSupplierTable.map((item) => item.id).filter(Boolean);
 
     return {
         ...form,
-        proveedor_id: firstSupplier?.id ?? form.proveedor_id,
-        proveedor_info: firstSupplier
+        proveedor_id: proveedor_ids[0] ?? "",
+        proveedor_ids,
+        proveedor_info: selectedSupplierTable[0]
             ? {
-                id: firstSupplier.id,
-                nombre: firstSupplier.nombre,
-                ruc: firstSupplier.ruc,
-                contacto: firstSupplier.contacto,
-                telefono: firstSupplier.telefono,
-                categoria: firstSupplier.categoria,
-                codigo: firstSupplier.codigo,
+                id: selectedSupplierTable[0].id,
+                nombre: selectedSupplierTable[0].nombre,
+                ruc: selectedSupplierTable[0].ruc,
+                contacto: selectedSupplierTable[0].contacto,
+                telefono: selectedSupplierTable[0].telefono,
+                categoria: selectedSupplierTable[0].categoria,
+                codigo: selectedSupplierTable[0].codigo,
             }
-            : form.proveedor_info,
+            : undefined,
+        proveedores_info: selectedSupplierTable.map((item) => ({
+            id: item.id,
+            nombre: item.nombre,
+            ruc: item.ruc,
+            contacto: item.contacto,
+            telefono: item.telefono,
+            categoria: item.categoria,
+            codigo: item.codigo,
+        })),
     };
 }

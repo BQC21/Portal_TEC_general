@@ -19,15 +19,23 @@ function brandBelongsToSupplier(
 	supplierName: string,
 	suppliers: Supplier[],
 ): boolean {
+	if ((brand.proveedores_info ?? []).some((item) => item.nombre === supplierName)) return true;
 	if (brand.proveedor_info?.nombre === supplierName) return true;
-	const linked = suppliers.find((item) => String(item.id) === String(brand.proveedor_id));
-	return linked?.nombre === supplierName;
+	const linkedIds = new Set([
+		...(brand.proveedor_ids ?? []),
+		brand.proveedor_id,
+	].map((id) => String(id ?? "").trim()).filter(Boolean));
+	return suppliers.some((item) => linkedIds.has(String(item.id)) && item.nombre === supplierName);
 }
 
 function typeBelongsToBrand(type: Type, brandName: string, brands: Brand[]): boolean {
+	if ((type.marcas_info ?? []).some((item) => item.nombre === brandName)) return true;
 	if (type.marca_info?.nombre === brandName) return true;
-	const linked = brands.find((item) => String(item.id) === String(type.marca_id));
-	return linked?.nombre === brandName;
+	const linkedIds = new Set([
+		...(type.marca_ids ?? []),
+		type.marca_id,
+	].map((id) => String(id ?? "").trim()).filter(Boolean));
+	return brands.some((item) => linkedIds.has(String(item.id)) && item.nombre === brandName);
 }
 
 export function getCatalogFilterOptions<T extends FilterableItem>(

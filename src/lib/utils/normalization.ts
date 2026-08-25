@@ -72,6 +72,27 @@ export function toNullableInteger(value: unknown): number | null {
     return parsed === undefined ? null : parsed;
 }
 
+// ---------
+// ARREGLOS
+// ---------
+
+export function normalizeAssociationIds(ids: unknown, fallbackId?: unknown): string[] {
+    const fromArray = Array.isArray(ids)
+        ? ids.map((id) => String(id ?? "").trim()).filter(Boolean)
+        : [];
+    if (fromArray.length > 0) {
+        return Array.from(new Set(fromArray));
+    }
+    const fallback = String(fallbackId ?? "").trim();
+    return fallback ? [fallback] : [];
+}
+
+export function toIntegerIdArray(ids: string[]): number[] {
+    return ids
+        .map((id) => toNullableInteger(id))
+        .filter((id): id is number => id != null);
+}
+
 /** Convierte un valor numérico (number o string de PostgREST) sin redondear a 2 decimales. */
 export function toDecimalNumber(value: unknown): number {
     if (value === null || value === undefined || value === "") return 0;
