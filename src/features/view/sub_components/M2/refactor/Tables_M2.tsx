@@ -1,6 +1,27 @@
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
-import { cantidadModuloFVTabla } from "@/lib/utils/helpers/computes/PanelNumber";
+import { cantidadModuloFVTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
+import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
+import { computedRequirements } from "@/lib/types/components/Sizing/computes";
+import { ProjectFormState } from "@/lib/types/supabase/project-types";
+
+function structureQuantityMax(
+    item: SelectedEquipmentItem,
+    form: ProjectFormState,
+    requirements: computedRequirements,
+): number | undefined {
+    if (item.row !== "ESTRUCTURA") return undefined;
+    const packSize = parseInt(item.description.match(/\d+/)?.[0] ?? "", 10);
+    if (!Number.isFinite(packSize) || packSize <= 0) return undefined;
+
+    if (item.description.includes("baterías")) {
+        return optionalInputMax(Math.floor(Number(requirements.num_baterias) / packSize));
+    }
+    if (item.description.includes("módulos")) {
+        return optionalInputMax(Math.floor(Number(form.strings) / packSize));
+    }
+    return undefined;
+}
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form}: Tables_M2_props){
@@ -50,11 +71,7 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                             ),
                                                         )
                                                     }
-                                                    step={1} min={0} max={item.row === "ESTRUCTURA" && item.description.includes("baterías") ?
-                                                        Math.floor(Number(computedRequirements.num_baterias)/
-                                                            parseInt(item.description.match(/\d+/)?.[0] || "0" || ""))  :
-                                                        item.row === "ESTRUCTURA" && item.description.includes("módulos") ? 
-                                                        Math.floor(Number((form.strings))/parseInt(item.description.match(/\d+/)?.[0] || "0" || "")) : 100000}
+                                                    step={1} min={0} max={structureQuantityMax(item, form, computedRequirements)}
                                                     disabled={item.row === "INVERSOR" || item.row === "MÓDULO FV" || item.row === "BATERÍA"}
                                                 />
                                             </td>

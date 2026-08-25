@@ -9,6 +9,12 @@ import { AddProductSelectField } from "../../../components/Form_fields/AddSelect
 import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
+import {
+    optionalInputMax,
+    optionalInputMin,
+    toPanelInteger,
+    toPanelIntegerLabel,
+} from "@/lib/utils/helpers/computes/PanelNumber";
 
 export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, handleOpcionLlenadoChangePANELES, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
@@ -33,6 +39,11 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
 
     const esPalet = computedRequirements.selectedEquipment?.unidad === "Palet";
     const labelCantidad = esPalet ? "conjuntos" : "Paneles";
+    const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
+    const minPanelesAuto = toPanelInteger(computedRequirements.strings_minimos, "ceil");
+    const maxPanelesAuto = toPanelInteger(computedRequirements.strings_maximos, "floor");
+    const minPanelesManual = toPanelInteger(form.strings_min, "ceil");
+    const maxPanelesManual = toPanelInteger(form.strings_max, "floor");
 
     return (
         <>
@@ -194,23 +205,23 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
 
                                         {/* Handlers */}
                                         <AddProductRadioField
-                                            label="Llenado automático"  checked={form.opcion_llenado_paneles == "AUTOMÁTICO"}
+                                            label="Llenado automático"  checked={isAutoPanels}
                                             onChange={() => handleOpcionLlenadoChangePANELES("AUTOMÁTICO")}
                                         />
                                         <AddProductRadioField
                                             label="Llenado manual"  checked={form.opcion_llenado_paneles == "MANUAL"}
                                             onChange={() => handleOpcionLlenadoChangePANELES("MANUAL")}
                                         />
-                                        {form.opcion_llenado_paneles == "AUTOMÁTICO" ? (
+                                        {isAutoPanels ? (
                                         <>
                                             <AddEquipoReadonlyField
                                                 label="Mínimo de Paneles"
-                                                value={String(Number(computedRequirements.strings_minimos).toFixed(0))}
+                                                value={toPanelIntegerLabel(computedRequirements.strings_minimos, "ceil")}
                                                 colorClass={getFieldValueLightClass(computedRequirements.strings_minimos)}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Máximo de Paneles"
-                                                value={String(Number(computedRequirements.strings_maximos).toFixed(0))}
+                                                value={toPanelIntegerLabel(computedRequirements.strings_maximos, "floor")}
                                                 colorClass={getFieldValueLightClass(computedRequirements.strings_maximos)}
                                             />
 
@@ -218,44 +229,36 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             <AddProductNumberField
                                                 label="Número exacto de Paneles"
                                                 required
-                                                value={Number(form.strings) > 0 ? Number(form.strings) : ""}
-                                                onChange={(value) => updateField("strings", String(value))}
-                                                min={Math.ceil(Number(computedRequirements.strings_minimos)) > 0 ?
-                                                        Math.ceil(Number(computedRequirements.strings_minimos)) : 0
-                                                }
+                                                value={Number(form.strings) > 0 ? toPanelInteger(form.strings) : ""}
+                                                onChange={(value) => updateField("strings", String(toPanelInteger(value)))}
+                                                min={optionalInputMin(minPanelesAuto)}
                                                 step={1}
-                                                max={Math.floor(Number(computedRequirements.strings_maximos)) > 0 ?
-                                                        Math.floor(Number(computedRequirements.strings_maximos)) : 0
-                                                }
+                                                max={optionalInputMax(maxPanelesAuto, minPanelesAuto)}
                                             />
                                         </>
                                         ) : (
                                             <>
                                                 <AddProductNumberField
                                                     label="Mínimo de Paneles"    required
-                                                    value={Number(form.strings_min) > 0 ? Number(Number(form.strings_min).toFixed(2)) : ""}
-                                                    onChange={(value) => updateField("strings_min", String(value))}
+                                                    value={minPanelesManual > 0 ? minPanelesManual : ""}
+                                                    onChange={(value) => updateField("strings_min", String(toPanelInteger(value, "ceil")))}
                                                     step={1} min={0}
                                                 />
                                                 <AddProductNumberField
                                                     label="Máximo de Paneles"    required
-                                                    value={Number(form.strings_max) > 0 ? Number(Number(form.strings_max).toFixed(2)) : ""}
-                                                    onChange={(value) => updateField("strings_max", String(value))}
+                                                    value={maxPanelesManual > 0 ? maxPanelesManual : ""}
+                                                    onChange={(value) => updateField("strings_max", String(toPanelInteger(value, "floor")))}
                                                     step={1} min={0}
                                                 />
                                                 {/* Considerar si se trata de paneles o  conjuntos*/}
                                                 <AddProductNumberField
                                                     label="Número exacto de Paneles"
                                                     required
-                                                    value={Number(form.strings) > 0 ? Number(form.strings) : ""}
-                                                    onChange={(value) => updateField("strings", String(value))}
-                                                    min={Math.ceil(Number(form.strings_min)) > 0 ?
-                                                            Math.ceil(Number(form.strings_min)) : 0
-                                                    }
+                                                    value={Number(form.strings) > 0 ? toPanelInteger(form.strings) : ""}
+                                                    onChange={(value) => updateField("strings", String(toPanelInteger(value)))}
+                                                    min={optionalInputMin(minPanelesManual)}
                                                     step={1}
-                                                    max={Math.floor(Number(form.strings_max)) > 0 ?
-                                                            Math.floor(Number(form.strings_max)) : 0
-                                                    }
+                                                    max={optionalInputMax(maxPanelesManual, minPanelesManual)}
                                                 />
                                             </>                                            
                                         )
@@ -324,8 +327,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             value={Number(form.mppt_number) > 0 ? Number(form.mppt_number) : ""}
                                             onChange={(value) => updateField("mppt_number", String(value))}
                                             min={0}  step={1}
-                                            max={Math.floor(Number(computedRequirements.selectedInverter?.mppt)) > 0 ? 
-                                                    Math.floor(Number(computedRequirements.selectedInverter?.mppt)) : 0}
+                                            max={optionalInputMax(Math.floor(Number(computedRequirements.selectedInverter?.mppt)))}
                                         />
                                         <AddProductNumberField
                                             label="Número de Cadenas a usarse"
@@ -333,8 +335,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             value={Number(form.cadena_number) > 0 ? Number(form.cadena_number) : ""}
                                             onChange={(value) => updateField("cadena_number", String(value))}
                                             min={0}  step={1}
-                                            max={Math.floor(Number(computedRequirements.selectedInverter?.cadenas)) > 0 ? 
-                                                    Math.floor(Number(computedRequirements.selectedInverter?.cadenas)) : 0}
+                                            max={optionalInputMax(Math.floor(Number(computedRequirements.selectedInverter?.cadenas)))}
                                         />
 
 

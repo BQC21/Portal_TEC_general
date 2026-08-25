@@ -26,11 +26,23 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
         const potenciaDC = angle === "Coplanar" ? String(compute_DC_Power(Number(energia), Number(ghi), 80)) : 
                             String(compute_DC_Power(Number(energia), Number(gti), 80))
         const potenciaAC = String(compute_AC_Power(Number(potenciaDC)));
-        // calcular strings mínimo a partir de potencia DC requerida y potencia de módulo seleccionado 
-        const strings_minimos = String(min_strings(Number(form.potencia_dc_requerida), 
-                                    Number(selectedEquipment?.potencia_maxima ?? 0)));
-        const strings_maximos = String(max_strings(Number(selectedInverter?.potencia_maxima ?? 0), 
-                                    Number(selectedEquipment?.potencia_maxima ?? 0)));
+        const potenciaDCRequerida = form.opcion_llenado === "AUTOMÁTICO"
+            ? Number(potenciaDC)
+            : Number(form.potencia_dc_requerida);
+        const rawStringsMin = min_strings(
+            potenciaDCRequerida,
+            Number(selectedEquipment?.potencia_maxima ?? 0),
+        );
+        const rawStringsMax = max_strings(
+            Number(selectedInverter?.potencia_maxima ?? 0),
+            Number(selectedEquipment?.potencia_maxima ?? 0),
+        );
+        const strings_minimos = String(
+            Number.isFinite(rawStringsMin) && rawStringsMin > 0 ? Math.ceil(rawStringsMin) : 0,
+        );
+        const strings_maximos = String(
+            Number.isFinite(rawStringsMax) && rawStringsMax > 0 ? Math.floor(rawStringsMax) : 0,
+        );
         // calcular protecciones
         const itm_ac_min = String(ITM_AC_MIN(Number(selectedInverter?.isc_i_out ?? 0)));
         const itm_dc_min = String(ITM_DC_MIN(Number(selectedEquipment?.isc_i_out ?? 0)));
@@ -56,9 +68,12 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
                 selectedBattery
         };
     }, [form.demanda_electrica, 
-        form.cobertura_porcentaje, 
+        form.cobertura_porcentaje,
+        form.opcion_llenado,
+        form.potencia_dc_requerida,
         form.mppt_number,
         form.strings,
+        form.cadena_number,
         formZone.ghi_respaldo,
         formZone.gti_respaldo,
         angle,

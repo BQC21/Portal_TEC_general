@@ -12,7 +12,7 @@ export function AddProductUrlField({
         <div>
             <AddProductFieldLabel label={label} required={required} />
             <input
-                type="url"
+                type="text"
                 required={required}
                 placeholder={placeholder}
                 value={value ?? ""}

@@ -53,7 +53,12 @@ export default function EditProjectModal({
     const { materiales } = useMateriales();
 
     // valores iniciales
-    const [form, setForm] = useState<ProjectFormState>(() => createProjectFormStateFromProject(existingProject));
+    const [form, setForm] = useState<ProjectFormState>(() => ({
+        ...createProjectFormStateFromProject(existingProject),
+        opcion_llenado_paneles: "AUTOMÁTICO",
+    }));
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const [form_zone, setForm_zone] = useState<ZoneFormState>(() =>
         existingProject.zona_info
             ? {
@@ -213,22 +218,46 @@ export default function EditProjectModal({
     // Aceptar actualización
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+        setSubmitError(null);
+        setIsSubmitting(true);
 
-        await onUpdateProject({
-            ...form,
-            updated_at: new Date(),
-            rendimiento_modulo_porcentaje: String(80),
-            energia_requerida: computedRequirements.computedRequirements.energia ?? form.opcion_llenado == "AUTOMÁTICO",
-            potencia_ac_requerida: computedRequirements.computedRequirements.potenciaAC ?? form.opcion_llenado == "AUTOMÁTICO",
-            potencia_dc_requerida: computedRequirements.computedRequirements.potenciaDC ?? form.opcion_llenado == "AUTOMÁTICO",
-            strings_min: computedRequirements.computedRequirements.strings_minimos,
-            strings_max: computedRequirements.computedRequirements.strings_maximos,
-            itm_ac_min: computedRequirements.computedRequirements.itm_ac_min,
-            itm_dc_min: computedRequirements.computedRequirements.itm_dc_min,
-            spd_voltage: computedRequirements.computedRequirements.spd_min,
-            ah_sistema: computedRequirements.computedRequirements.ah_sistema,
-            num_baterias: computedRequirements.computedRequirements.num_baterias,
-        }, selectedEquipmentTable, selectedMaterialTable);
+        const isAutoEnergy = form.opcion_llenado === "AUTOMÁTICO";
+        const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
+
+        try {
+            await onUpdateProject({
+                ...form,
+                updated_at: new Date(),
+                rendimiento_modulo_porcentaje: String(80),
+                opcion_llenado_paneles: isAutoPanels ? "AUTOMÁTICO" : "MANUAL",
+                energia_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.energia
+                    : form.energia_requerida,
+                potencia_ac_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.potenciaAC
+                    : form.potencia_ac_requerida,
+                potencia_dc_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.potenciaDC
+                    : form.potencia_dc_requerida,
+                strings_min: isAutoPanels
+                    ? computedRequirements.computedRequirements.strings_minimos
+                    : form.strings_min,
+                strings_max: isAutoPanels
+                    ? computedRequirements.computedRequirements.strings_maximos
+                    : form.strings_max,
+                itm_ac_min: computedRequirements.computedRequirements.itm_ac_min,
+                itm_dc_min: computedRequirements.computedRequirements.itm_dc_min,
+                spd_voltage: computedRequirements.computedRequirements.spd_min,
+                ah_sistema: computedRequirements.computedRequirements.ah_sistema,
+                num_baterias: computedRequirements.computedRequirements.num_baterias,
+            }, selectedEquipmentTable, selectedMaterialTable);
+        } catch (error) {
+            setSubmitError(
+                error instanceof Error ? error.message : "Error al actualizar el proyecto",
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     // Dentro del componente, después de los otros hooks, agrega:
@@ -277,7 +306,7 @@ export default function EditProjectModal({
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                <form noValidate onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                     <General_info_M2 
                         form={form} 
                         updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 
@@ -406,11 +435,15 @@ export default function EditProjectModal({
                         </button>
                         <button
                             type="submit"
-                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
+                            disabled={isSubmitting}
+                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
                         >
-                            Actualizar Proyecto
+                            {isSubmitting ? "Actualizando..." : "Actualizar Proyecto"}
                         </button>
                     </div>
+                    {submitError ? (
+                        <p className="px-6 pb-5 text-sm font-medium text-red-600">{submitError}</p>
+                    ) : null}
                 </form>
             </div>
         </div>

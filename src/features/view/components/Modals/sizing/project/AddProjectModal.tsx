@@ -121,14 +121,28 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        const isAutoEnergy = form.opcion_llenado === "AUTOMÁTICO";
+        const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
+
         await onAddProject({
             ...form,
             rendimiento_modulo_porcentaje: String(80),
-            energia_requerida: computedRequirements.computedRequirements.energia ?? form.opcion_llenado == "AUTOMÁTICO",
-            potencia_ac_requerida: computedRequirements.computedRequirements.potenciaAC ?? form.opcion_llenado == "AUTOMÁTICO",
-            potencia_dc_requerida: computedRequirements.computedRequirements.potenciaDC ?? form.opcion_llenado == "AUTOMÁTICO",
-            strings_min: computedRequirements.computedRequirements.strings_minimos,
-            strings_max: computedRequirements.computedRequirements.strings_maximos,
+            opcion_llenado_paneles: isAutoPanels ? "AUTOMÁTICO" : "MANUAL",
+            energia_requerida: isAutoEnergy
+                ? computedRequirements.computedRequirements.energia
+                : form.energia_requerida,
+            potencia_ac_requerida: isAutoEnergy
+                ? computedRequirements.computedRequirements.potenciaAC
+                : form.potencia_ac_requerida,
+            potencia_dc_requerida: isAutoEnergy
+                ? computedRequirements.computedRequirements.potenciaDC
+                : form.potencia_dc_requerida,
+            strings_min: isAutoPanels
+                ? computedRequirements.computedRequirements.strings_minimos
+                : form.strings_min,
+            strings_max: isAutoPanels
+                ? computedRequirements.computedRequirements.strings_maximos
+                : form.strings_max,
             itm_ac_min: computedRequirements.computedRequirements.itm_ac_min,
             itm_dc_min: computedRequirements.computedRequirements.itm_dc_min,
             spd_voltage: computedRequirements.computedRequirements.spd_min,
@@ -184,7 +198,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                     </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
+                <form noValidate onSubmit={handleSubmit} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
                     <General_info_M2 
                         form={form} 
                         updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 

@@ -17,13 +17,15 @@ export const MONTH_LABELS = [
 
 type MonthlyValue = number | "";
 
+function toMonthlyNumber(value: unknown): MonthlyValue {
+    const n = typeof value === "number" ? value : Number(value);
+    return Number.isFinite(n) && n > 0 ? n : "";
+}
+
 function toMonthlyValues(initial?: number[]): MonthlyValue[] {
     const base = new Array<MonthlyValue>(12).fill("");
     if (!initial?.length) return base;
-    return base.map((_, i) => {
-        const v = initial[i];
-        return typeof v === "number" && v > 0 ? v : "";
-    });
+    return base.map((_, i) => toMonthlyNumber(initial[i]));
 }
 
 export function useMonthlyDemand(
