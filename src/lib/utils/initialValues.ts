@@ -321,15 +321,15 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
     proyecto_id: "",
     proyecto_info: undefined,
     cod_cotizacion: "",
-    igv: "",
-    tasa_cambio: "",
+    igv: "0.18",
+    tasa_cambio: "3.44",
     precio_dolares: "",
-    markup: "",
-    gm_general: "",
-    gm_viaticos: "",
+    markup: "30",
+    gm_general: "5",
+    gm_viaticos: "10",
     gm: "",
     costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
-    depre_tool: "",
+    depre_tool: "12",
 }
 
 export const INITIAL_FINANTIAL_FORM: FinantialFormState = {
