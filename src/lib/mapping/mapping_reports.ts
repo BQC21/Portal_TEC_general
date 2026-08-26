@@ -23,7 +23,7 @@ export function createReportFormStateFromReport(report: Report): ReportFormState
         validez_oferta: report.validez_oferta,
         plazo_entrega: report.plazo_entrega,
         tasa_dscto: report.tasa_dscto,
-        opción_dscto: report.opción_dscto,
+        opcion_dscto: report.opcion_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
@@ -56,7 +56,7 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         validez_oferta: row.validez_oferta?.toString() || "",
         plazo_entrega: row.plazo_entrega?.toString() || "",
         tasa_dscto: row.tasa_dscto?.toString() || "",
-        opción_dscto: row.opción_dscto?.toString() || "",
+        opcion_dscto: row.opcion_dscto?.toString() || "",
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -81,7 +81,7 @@ export function mapReportToSupabaseRow(report: ReportFormData): SupabaseReportRo
         validez_oferta: report.validez_oferta,
         plazo_entrega: report.plazo_entrega,
         tasa_dscto: parseNumber(report.tasa_dscto),
-        opción_dscto: report.opción_dscto,
+        opcion_dscto: report.opcion_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at

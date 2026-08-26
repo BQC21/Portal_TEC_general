@@ -262,7 +262,7 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     validez_oferta: "",
     plazo_entrega: "",
     tasa_dscto: "",
-    opción_dscto: "",
+    opcion_dscto: "",
 }
 
 export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 

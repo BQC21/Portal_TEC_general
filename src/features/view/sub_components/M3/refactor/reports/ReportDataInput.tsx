@@ -13,7 +13,7 @@ export function ReportDataInput({
 
     // Handler para cambiar la opción de llenado (AUTOMÁTICO | MANUAL)
     function handleOpcionDSCTOChange(value: DSCTOOptions) {
-        updateField("opción_dscto", value);
+        updateField("opcion_dscto", value);
     }
 
     return(
@@ -71,11 +71,6 @@ export function ReportDataInput({
                 onChange={(value) => updateField("porcentaje_inst", String(value))}
                 step={1} min={1} max={100}
             />
-            <AddProductTextField
-                label = "Encargado de atención"
-                value = {form.atencion || ""}
-                onChange = {(value) => updateField("atencion", String(value))}
-            />
             {/* Adicionales */}
             <AddProductTextField
                 label = "Validez de oferta"
@@ -91,15 +86,15 @@ export function ReportDataInput({
             />
             {/* Handlers */}
             <AddProductRadioField
-                label="Incluir tasa de descuento"  checked={form.opción_dscto == "CON DSCTO"}
+                label="Incluir tasa de descuento"  checked={form.opcion_dscto == "CON DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("CON DSCTO")}
             />
             <AddProductRadioField
-                label="No considerar tasa de descuento"  checked={form.opción_dscto == "SIN DSCTO"}
+                label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
             />
 
-            {form.opción_dscto == "CON DSCTO" && (
+            {form.opcion_dscto == "CON DSCTO" && (
                 <AddProductNumberField
                     label="Tasa de descuento (%)"
                     value={Number(form.tasa_dscto) > 0 ? Number(form.tasa_dscto) : ""}
