@@ -300,6 +300,7 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
             precio_unitario: item.precio_unitario,
         })),
         hotel: { monto: 0, personas: 0, dias: 0 },
+        considerar_epp_reutilizable: true,
     },
     
     Viaticos: {

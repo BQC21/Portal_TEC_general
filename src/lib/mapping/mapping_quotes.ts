@@ -25,6 +25,9 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
                 ...defaults.Recursos.hotel,
                 ...saved.Recursos?.hotel,
             },
+            considerar_epp_reutilizable:
+                saved.Recursos?.considerar_epp_reutilizable ??
+                defaults.Recursos.considerar_epp_reutilizable,
         },
         Viaticos: {
             ...defaults.Viaticos,

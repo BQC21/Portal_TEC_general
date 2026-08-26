@@ -250,11 +250,22 @@ export function ManageLocalCosts(
         });
     }
 
+    function updateConsiderarEppReutilizable(value: boolean) {
+        setManualResourceCosts((current) => ({
+            ...current,
+            Recursos: {
+                ...current.Recursos,
+                considerar_epp_reutilizable: value,
+            },
+        }));
+    }
+
     return {
         updateManualCostItem,
         updateManualCostMonto,
         addManualCostItem,
         removeManualCostItem,
+        updateConsiderarEppReutilizable,
     };
 }
 

@@ -7,6 +7,7 @@ import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
 import { buildSortedConsumibles } from "@/lib/utils/helpers/sorting/consumiblesSort";
+import { isReusableEpp } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { useMemo } from "react";
 
 export function useCostComputes(
@@ -88,9 +89,20 @@ export function useCostComputes(
         [consumibleRows],
     );
     
-    // EPPs
+    // EPPs (los reutilizables no entran a este costo; se deprecian con herramientas)
+    const considerarEppReutilizable = manualCosts.Recursos.considerar_epp_reutilizable !== false;
+    const eppReusableTotal = useMemo(() =>
+        considerarEppReutilizable
+            ? manualCosts.Recursos.epp
+                .filter((item) => isReusableEpp(item.descripcion))
+                .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0)
+            : 0,
+        [manualCosts, considerarEppReutilizable],
+    );
     const eppTotal = useMemo(() =>
-        manualCosts.Recursos.epp.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        manualCosts.Recursos.epp
+            .filter((item) => !isReusableEpp(item.descripcion))
+            .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
         [manualCosts],
     );
     const eppTotalIgv = useMemo(() =>
@@ -100,8 +112,11 @@ export function useCostComputes(
 
     // HERRAMIENTAS
     const toolingTotal = useMemo(() =>
-        manualCosts.Recursos.tooling.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
-        [manualCosts],
+        manualCosts.Recursos.tooling.reduce(
+            (sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario),
+            eppReusableTotal,
+        ),
+        [manualCosts, eppReusableTotal],
     );
     const toolingTotalIgv = useMemo(() =>
         Number(toolingTotal) * Number(1.18),

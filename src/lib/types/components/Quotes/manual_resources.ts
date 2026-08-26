@@ -62,6 +62,7 @@ export type ManualCosts = {
         personal: PersonalItem[];
         sctr: QuantityPriceItem[];
         hotel: MontoItem;
+        considerar_epp_reutilizable: boolean;
     };
     Viaticos: {
         eating: MontoItem;

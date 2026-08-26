@@ -5,9 +5,11 @@ import { QuantityPriceItem } from "@/lib/types/components/Quotes/manual_resource
 import { formatCurrency } from "@/lib/utils/normalization";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
+import { isReusableEpp } from "../../templates/Prices";
 
-export function EPP_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: 
-    {   items: QuantityPriceItem[], 
+export function EPP_PriceTable({ items, considerarEppReutilizable, onUpdateItem, onAddItem, onRemoveItem }: 
+    {   items: QuantityPriceItem[],
+        considerarEppReutilizable: boolean,
         onUpdateItem: (
             index: number, 
             field: keyof QuantityPriceItem, 
@@ -16,6 +18,9 @@ export function EPP_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }:
         onAddItem: () => void,
         onRemoveItem: (index: number) => void,
     }){
+    const visibleItems = items
+        .map((item, index) => ({ item, index }))
+        .filter(({ item }) => considerarEppReutilizable || !isReusableEpp(item.descripcion));
 
     return(
         <>
@@ -44,15 +49,23 @@ export function EPP_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }:
                                 </tr>
                             </thead>
                             <tbody>
-                                {items.length > 0 ? (
-                                    items.map((item, index) => (
-                                    <tr key={item.id} className="bg-slate-100 text-left">
+                                {visibleItems.length > 0 ? (
+                                    visibleItems.map(({ item, index }) => (
+                                    <tr
+                                        key={item.id}
+                                        className={`${isReusableEpp(item.descripcion) ? "bg-amber-50" : "bg-slate-100"} text-left`}
+                                    >
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
                                             label="Descripción"
                                             value={item.descripcion}
                                             onChange={(value) => onUpdateItem(index, "descripcion", value)}
                                         />
+                                        {isReusableEpp(item.descripcion) ? (
+                                            <span className="mt-2 block text-xs font-semibold text-amber-700">
+                                                Reutilizable · se deprecia con herramientas
+                                            </span>
+                                        ) : null}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField

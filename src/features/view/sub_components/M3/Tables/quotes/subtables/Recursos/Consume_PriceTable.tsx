@@ -82,7 +82,7 @@ export function Consume_PriceTable({
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
-                    <p className="text-2xl font-bold text-slate-900">¡No olvidar el cable a tierra! ⚠️ </p>
+                    {/* <p className="text-2xl font-bold text-slate-900">¡No olvidar el cable a tierra! ⚠️ </p> */}
                     <div>
                         <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
                         <div className="flex flex-col gap-4">

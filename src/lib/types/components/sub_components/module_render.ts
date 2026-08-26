@@ -271,6 +271,7 @@ export type ResourcesTablesProps = {
     projectMateriales: Project_Materiales[];
     form: QuoteFormState;
     manualResourceCosts: ManualCosts;
+    updateConsiderarEppReutilizable: (value: boolean) => void;
     onUpdateEquipoCantidad: (id: string | number, cantidad: number) => void;
     onUpdateMaterialCantidad: (id: string | number, cantidad: number) => void;
     onAddEquipo: (equipo: Equipos) => void;

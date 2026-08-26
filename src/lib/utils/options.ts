@@ -155,3 +155,8 @@ export const FILL_OPTIONS = [
 // MÓDULO 3
 // ------------------
 // ------------------
+
+export const EPP_REUSABLE_OPTIONS = [
+    { value: "CONSIDERAR", label: "Considerar EPPs reutilizables" },
+    { value: "NO CONSIDERAR", label: "No considerar EPPs reutilizables" },
+];

@@ -178,7 +178,8 @@ export default function EditQuoteModal({
     const { updateManualCostItem, 
         updateManualCostMonto,
         addManualCostItem, 
-        removeManualCostItem 
+        removeManualCostItem,
+        updateConsiderarEppReutilizable,
     } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
@@ -269,6 +270,7 @@ export default function EditQuoteModal({
                             updateManualCostItem={updateManualCostItem}
                             addManualCostItem={addManualCostItem}
                             removeManualCostItem={removeManualCostItem}
+                            updateConsiderarEppReutilizable={updateConsiderarEppReutilizable}
                             onUpdateEquipoCantidad={onUpdateEquipoCantidad}
                             onUpdateMaterialCantidad={onUpdateMaterialCantidad}
                             onAddEquipo={onAddEquipo}

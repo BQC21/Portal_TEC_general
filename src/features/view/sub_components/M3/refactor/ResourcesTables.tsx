@@ -9,6 +9,8 @@ import { Tooling_PriceTable } from "../Tables/quotes/subtables/Recursos/Tooling_
 import { Hotel_PriceTable } from "../Tables/quotes/subtables/Recursos/Hotel_PriceTable";
 import { Personal_PriceTable } from "../Tables/quotes/subtables/Recursos/Personal_PriceTable";
 import { SCTR_PriceTable } from "../Tables/quotes/subtables/Recursos/SCTR_PriceTable";
+import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
+import { EPP_REUSABLE_OPTIONS } from "@/lib/utils/options";
 
 export function ResourcesTables({
     recursos,
@@ -20,6 +22,7 @@ export function ResourcesTables({
     updateManualCostItem,
     addManualCostItem,
     removeManualCostItem,
+    updateConsiderarEppReutilizable,
     onUpdateEquipoCantidad,
     onUpdateMaterialCantidad,
     onAddEquipo,
@@ -66,8 +69,28 @@ export function ResourcesTables({
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="EPPs">
+                    <div className="space-y-2 border-b border-slate-200 px-6 pt-4">
+                        <AddProductSelectField
+                            label="EPPs reutilizables (careta antiarco, botas dieléctricas y botas antiarco)"
+                            value={
+                                manualResourceCosts.Recursos.considerar_epp_reutilizable !== false
+                                    ? "CONSIDERAR"
+                                    : "NO CONSIDERAR"
+                            }
+                            options={EPP_REUSABLE_OPTIONS}
+                            onChange={(value) =>
+                                updateConsiderarEppReutilizable(value === "CONSIDERAR")
+                            }
+                        />
+                        <p className="pb-3 text-sm text-slate-500">
+                            Si se consideran, se deprecian con las herramientas y no entran al costo de EPPs.
+                        </p>
+                    </div>
                     <EPP_PriceTable
                         items={manualResourceCosts.Recursos.epp}
+                        considerarEppReutilizable={
+                            manualResourceCosts.Recursos.considerar_epp_reutilizable !== false
+                        }
                         onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.epp", index, field, value)}
                         onAddItem={() => addManualCostItem("Recursos.epp")}
                         onRemoveItem={(index) => removeManualCostItem("Recursos.epp", index)}

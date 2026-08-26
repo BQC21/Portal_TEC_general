@@ -58,10 +58,21 @@ export const EPP_template = [
     {id: 12, descripcion: "Arnés con línea de vida", cantidad: 1, precio_unitario: 250.00},
     {id: 13, descripcion: "Línea de vida anclaje", cantidad: 1, precio_unitario: 80.00},
     {id: 14, descripcion: "Puntos de anclaje fijos", cantidad: 1, precio_unitario: 30.00},
+    /** EPP reutilizable: no entra al costo de EPPs; se deprecia con herramientas. */
     {id: 15, descripcion: "Careta Antiarco", cantidad: 0.5, precio_unitario: 600.00},
     {id: 16, descripcion: "Botas Dieléctricas", cantidad: 1, precio_unitario: 200.00},
     {id: 17, descripcion: "Botas Antiarco", cantidad: 0.2, precio_unitario: 1000.00},
 ];
+
+export const EPP_REUSABLE_DESCRIPTIONS = new Set([
+    "Careta Antiarco",
+    "Botas Dieléctricas",
+    "Botas Antiarco",
+]);
+
+export function isReusableEpp(descripcion: string) {
+    return EPP_REUSABLE_DESCRIPTIONS.has(descripcion);
+}
 
 // --- Tooling
 export const Tooling_template = [
