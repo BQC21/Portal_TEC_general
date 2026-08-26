@@ -17,8 +17,17 @@ const MANAGED_SOLIS_ACCESSORIES = [
 // -------- Condiciones ---------------
 // ------------------------------------
 
+function normalizeForMatch(value: string): string {
+    return value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
 function matchesDescription(description: string, target: string): boolean {
-    return description.toLowerCase().includes(target.toLowerCase());
+    return normalizeForMatch(description).includes(normalizeForMatch(target));
 } 
 
 export function isSolisBrand(marca?: string): boolean {
@@ -111,6 +120,7 @@ export function syncSolisAutoAccessories(
             const equipo = equipos.find(
                 (item) =>
                     item.tipo_de_producto === "ACCESORIO" &&
+                    isSolisBrand(item.marca) &&
                     matchesDescription(item.descripcion, desc),
             );
             if (!equipo) continue;
