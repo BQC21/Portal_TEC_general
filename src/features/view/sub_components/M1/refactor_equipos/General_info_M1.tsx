@@ -215,7 +215,7 @@ export function General_info_M1_EQ({
                     )}
 
                     {/* Accesorio */}
-                    {shouldRenderConnectionTypeAccesories(form.tipo_conexion) && (
+                    {shouldRenderConnectionTypeAccesories(form.tipo_de_producto) && (
                     <AddProductSelectField
                         label="Tipo de Conexión"
                         value={form.tipo_conexion || CONNECTION_TYPE_OPTIONS[0]}
