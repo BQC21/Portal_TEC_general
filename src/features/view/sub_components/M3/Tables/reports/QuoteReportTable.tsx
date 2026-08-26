@@ -4,6 +4,8 @@ import { formatCurrency } from "@/lib/utils/normalization";
 export function QuoteReportTable({
     precioFinal, igv
 }: QuoteReportTable_Props){
+    const igvFactor = igv > 1 ? igv / 100 : igv;
+
     return(
         <>
             <section className="space-y-4">
@@ -34,7 +36,7 @@ export function QuoteReportTable({
                                     IGV ($)
                                 </td>
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                    {formatCurrency(precioFinal * igv , "USD")}
+                                    {formatCurrency(precioFinal * igvFactor, "USD")}
                                 </td>
                             </tr>
                             <tr className="bg-slate-200 text-left">
@@ -42,7 +44,7 @@ export function QuoteReportTable({
                                     Total ($)
                                 </td>
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                    {formatCurrency(precioFinal * (1 + igv), "USD")}
+                                    {formatCurrency(precioFinal * (1 + igvFactor), "USD")}
                                 </td>
                             </tr>
                         </tbody>

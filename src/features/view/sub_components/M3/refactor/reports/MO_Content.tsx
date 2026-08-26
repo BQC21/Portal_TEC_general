@@ -1,4 +1,5 @@
 import { MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 export function MO_Content({
     title, precioFinal, MO
@@ -12,11 +13,7 @@ export function MO_Content({
                     </h2>
 
                     <div className="flex items-center gap-24 text-2xl font-bold">
-                        <span>$</span>
-                        <span>{(precioFinal * MO/100).toLocaleString("en-US", {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        })}</span>
+                        <span>{formatCurrency(precioFinal * MO / 100, "USD")}</span>
                     </div>
                 </div>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">

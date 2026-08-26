@@ -36,7 +36,7 @@ export default function ReportTable({report, totalReport,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cliente}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.porcentaje_eqmt}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.porcentaje_inst}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(report.precio_cotizacion), "USD")}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(report.cotizacion_info?.precio_dolares), "USD")}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">

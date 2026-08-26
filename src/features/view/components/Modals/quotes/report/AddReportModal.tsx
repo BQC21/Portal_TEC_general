@@ -3,7 +3,7 @@
 import { AddReportModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
@@ -13,8 +13,7 @@ import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/repo
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
-import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
-import { SelectionRow } from "../../../Form_fields/AddSelectionRow";
+import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -35,6 +34,9 @@ export default function AddReportModal({onAddReport, onClose,
     // ----------------------------------------
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+    const precioUsd =
+        Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
+    const igvRate = Number(form.cotizacion_info?.igv || form_quotes.igv) || 0;
 
     const projectEquipos = hasSelectedQuote
         ? existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
@@ -65,6 +67,7 @@ export default function AddReportModal({onAddReport, onClose,
 
         await onAddReport({
             ...form,
+            precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
         })
     }
 
@@ -115,7 +118,7 @@ export default function AddReportModal({onAddReport, onClose,
                                     {/* Contenido de Equipos y Materiales */}
                                     <Eq_Mat_Content
                                         title={"EQUIPOS Y MATERIALES"}
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        precioFinal={precioUsd}
                                         Eq_Mt={Number(form.porcentaje_eqmt)}
                                         selectedEquipos={projectEquipos}
                                         selectedMateriales={projectMateriales}
@@ -125,13 +128,13 @@ export default function AddReportModal({onAddReport, onClose,
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        precioFinal={precioUsd}
                                         MO={Number(form.porcentaje_inst)}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
-                                        igv={Number(form.cotizacion_info?.igv)}
+                                        precioFinal={precioUsd}
+                                        igv={igvRate}
                                     />
                                 </div>
                             </div>
@@ -146,6 +149,11 @@ export default function AddReportModal({onAddReport, onClose,
                         >
                             Cancelar
                         </button>
+                        <Button2PDF
+                            form={form}
+                            equipos={projectEquipos}
+                            materiales={projectMateriales}
+                        />
                         <button
                             type="submit"
                             className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"

@@ -124,7 +124,7 @@ class ReportPdfData(BaseModel):
     monto_inst: float = 0.0
     igv: float = 0.0
     total: float = 0.0
-    currency_symbol: str = "S/"
+    currency_symbol: str = "$"
 
     equipos: list[PdfLineItem] = Field(default_factory=list)
     materiales: list[PdfLineItem] = Field(default_factory=list)

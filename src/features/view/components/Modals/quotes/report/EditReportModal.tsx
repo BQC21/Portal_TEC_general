@@ -41,6 +41,9 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // ----------------------------------------
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+    const precioUsd =
+        Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
+    const igvRate = Number(form.cotizacion_info?.igv || form_quotes.igv) || 0;
 
     const projectEquipos = hasSelectedQuote
         ? existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
@@ -71,6 +74,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
         await onUpdateReport({
             ...form,
+            precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
             updated_at: new Date(),
         });
     }
@@ -122,7 +126,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     {/* Contenido de Equipos y Materiales */}
                                     <Eq_Mat_Content
                                         title={"EQUIPOS Y MATERIALES"}
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        precioFinal={precioUsd}
                                         Eq_Mt={Number(form.porcentaje_eqmt)}
                                         selectedEquipos={projectEquipos}
                                         selectedMateriales={projectMateriales}
@@ -132,13 +136,13 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
+                                        precioFinal={precioUsd}
                                         MO={Number(form.porcentaje_inst)}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable
-                                        precioFinal={Number(form.cotizacion_info?.precio_dolares)}
-                                        igv={Number(form.cotizacion_info?.igv)}
+                                        precioFinal={precioUsd}
+                                        igv={igvRate}
                                     />
                                 </div>
                             </div>

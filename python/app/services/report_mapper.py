@@ -146,21 +146,15 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
     pct_eqmt = _to_float(payload.porcentaje_eqmt)
     pct_inst = _to_float(payload.porcentaje_inst)
 
-    # Con tipo de cambio (> 0) se reporta en soles; si no, en USD
-    use_soles = tasa_cambio > 0
-    if not use_soles:
-        tasa_cambio = 1.0
-
-    
-    ## Definir simbolo de moneda
-    currency_symbol = "S/" if use_soles else "$"
+    # El reporte de cotización se emite siempre en USD (mismo criterio que los modales).
+    currency_symbol = "$"
 
     ## --------
     ## Calculos
     ## --------
-    # Precio base (sin IGV) en la moneda del PDF. Siempre definido,
-    # con o sin descuento, para que EQUIPOS + PUESTA EN MARCHA = este monto.
-    subtotal_sin_dscto = round(precio_usd * tasa_cambio if use_soles else precio_usd, 2)
+    # Precio base (sin IGV). Siempre definido, con o sin descuento,
+    # para que EQUIPOS + PUESTA EN MARCHA = este monto.
+    subtotal_sin_dscto = round(precio_usd, 2)
     monto_eqmt = round(subtotal_sin_dscto * (pct_eqmt / 100.0), 2)
     if abs((pct_eqmt + pct_inst) - 100.0) < 1e-9:
         monto_inst = round(subtotal_sin_dscto - monto_eqmt, 2)
