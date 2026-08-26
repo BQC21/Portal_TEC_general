@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";
 import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
 import { formatCurrency } from "@/lib/utils/normalization";
+import Button2PDF from "../../Buttons/quotes/report/button2PDF";
 
 
 export default function ReportTable({report, totalReport, 
@@ -49,6 +50,16 @@ export default function ReportTable({report, totalReport,
                                                 <Button2Trash_report
                                                     report={report}
                                                     onDeleteReport={() => onDeleteReport(report.id)}
+                                                />
+                                            </div>
+                                        </td>
+                                        <td className="border border-slate-200 px-4 py-5">
+                                            <div className="flex items-center gap-4 text-slate-500">
+                                                {/* Añadir botón para generar PDF*/}
+                                                <Button2PDF
+                                                    form={report}
+                                                    equipos={projects_equipos}
+                                                    materiales={projects_materiales}
                                                 />
                                             </div>
                                         </td>
