@@ -90,14 +90,14 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <AddProductTextField
                                 label={TABLE_HEADERS_SUPPLIER[2]}
-                                required
+                                // required
                                 placeholder=" "
                                 value={form_supplier.ruc || ""}
                                 onChange={(value) => updateField("ruc", value)}
                             />
                             <AddProductTextField
                                 label={TABLE_HEADERS_SUPPLIER[3]}
-                                required
+                                // required
                                 placeholder=" "
                                 value={form_supplier.contacto || ""}
                                 onChange={(value) => updateField("contacto", value)}
@@ -106,7 +106,7 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <AddProductTextField
                                 label={TABLE_HEADERS_SUPPLIER[4]}
-                                required
+                                // required
                                 placeholder=" "
                                 value={form_supplier.telefono || ""}
                                 onChange={(value) => updateField("telefono", value)}
