@@ -35,7 +35,9 @@ export function useTypeSelection(
         created_at: selected.created_at,
         updated_at: selected.updated_at,
         marca_id: selected.marca_id,
+        marca_ids: selected.marca_ids,
         marca_info: selected.marca_info,
+        marcas_info: selected.marcas_info
     });
 
     setForm((current) => ({

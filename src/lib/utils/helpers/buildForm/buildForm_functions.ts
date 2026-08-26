@@ -35,7 +35,8 @@ export function buildBrandForm(product: EquiposFormState | MaterialesFormState):
             categoria: info.categoria,
             created_at: info.created_at,
             updated_at: info.updated_at,
-            proveedor_id: info.proveedor_id
+            proveedor_id: info.proveedor_id,
+            proveedor_ids: info.proveedor_ids
         };
     }
 
@@ -54,6 +55,7 @@ export function buildTypeForm(product: EquiposFormState | MaterialesFormState): 
             created_at: info.created_at,
             updated_at: info.updated_at,
             marca_id: info.marca_id,
+            marca_ids: info.marca_ids
         };
     }
 

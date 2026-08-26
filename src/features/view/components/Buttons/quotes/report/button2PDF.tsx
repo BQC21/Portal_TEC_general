@@ -26,7 +26,7 @@ export default function Button2PDF({ form, equipos, materiales }: Button2PDFProp
                 precio_cotizacion: form.precio_cotizacion,
                 validez_oferta: form.validez_oferta,
                 plazo_entrega: form.plazo_entrega,
-                tasa_dscto: form.opción_dscto === "CON DSCTO" ? form.tasa_dscto : 0,
+                tasa_dscto: form.opcion_dscto === "CON DSCTO" ? form.tasa_dscto : 0,
                 cotizacion_id: form.cotizacion_id,
                 cotizacion_info: form.cotizacion_info
                 ? {
