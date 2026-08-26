@@ -18,7 +18,7 @@ export type DSCTOOptions = "CON DSCTO" | "SIN DSCTO"; // tipo de llenado
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de ordenamiento
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado en EQUIPOS / MATERIALES
 export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material
-export const Unidad_Consumible = ["Unidad", "Cientos"] // Unidad si el producto es un CONSUMIBLE
+export const Unidad_Consumible = ["Unidad", "Metros", "Cientos"] // Unidad si el producto es un CONSUMIBLE
 export const Category = ["Equipos", "Materiales", "Ambas"]; // Categoría del proveedor, marca o tipo de producto
 
 // ------------------
