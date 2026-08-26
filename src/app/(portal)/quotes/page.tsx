@@ -132,6 +132,7 @@ export default function QuotesPage(){
                         <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
                             <Button2Add_quote
                                 onAddQuote={handleAddQuote}
+                                existingQuotes={quotes}
                                 project_equipos={project_equipos}
                                 project_materiales={project_materiales}
                             />

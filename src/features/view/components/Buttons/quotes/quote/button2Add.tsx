@@ -5,7 +5,7 @@ import { useState } from "react";
 import { PlusIcon } from "../../../Icons/PlusIcon";
 import AddQuoteModal from "../../../Modals/quotes/quote/AddQuoteModal";
 
-export default function Button2Add_quote({onAddQuote, project_equipos, project_materiales}: Button2ModalPropsQuote){
+export default function Button2Add_quote({onAddQuote, existingQuotes = [], project_equipos, project_materiales}: Button2ModalPropsQuote){
     const [open, setOpen] = useState(false);
 
     return(
@@ -25,6 +25,7 @@ export default function Button2Add_quote({onAddQuote, project_equipos, project_m
                         setOpen(false);
                     }}
                     onClose={() => setOpen(false)}
+                    existingQuotes={existingQuotes}
                     existing_project_equipos={project_equipos}
                     existing_project_materiales={project_materiales}
                 />

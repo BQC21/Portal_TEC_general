@@ -14,7 +14,6 @@ import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quote
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { ManageLocalCosts } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
-import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { Product_selected } from "@/features/view/sub_components/M3/refactor/Product_selected";
 import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
 import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
@@ -201,13 +200,6 @@ export default function EditQuoteModal({
             updateField("gm", String(grossMargin.gm.gm));
         }
     }, [grossMargin.gm.gm]);
-
-    // ----------
-    // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
-    // ----------
-    useEffect(() => {
-        updateField("cod_cotizacion", getQuoteCode());
-    }, []); // solo al montar
 
     // ----------
     // LOGS

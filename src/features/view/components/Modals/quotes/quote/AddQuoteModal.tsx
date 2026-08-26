@@ -25,6 +25,7 @@ import { Equipos } from "@/lib/types/supabase/equipos-types";
 export default function AddQuoteModal({
     onAddQuote,
     onClose,
+    existingQuotes = [],
     existing_project_equipos,
     existing_project_materiales,
 }: AddQuoteModalProps) {
@@ -192,9 +193,16 @@ export default function AddQuoteModal({
     // ----------
     // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
     // ----------
+    const existingQuoteCodesKey = existingQuotes
+        .map((quote) => quote.cod_cotizacion)
+        .join("|");
+
     useEffect(() => {
-        updateField("cod_cotizacion", getQuoteCode());
-    }, []); // solo al montar
+        const nextCode = getQuoteCode(existingQuotes.map((quote) => quote.cod_cotizacion));
+        updateField("cod_cotizacion", nextCode);
+        // Solo al abrir el modal / cuando cambia el listado de códigos.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [existingQuoteCodesKey]);
 
     // ----------
     // LOGS

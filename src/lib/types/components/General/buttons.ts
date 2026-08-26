@@ -53,6 +53,7 @@ export type Button2ModalPropsType = {
 
 export type Button2ModalPropsQuote = {
     onAddQuote: (quote: QuoteFormData) => void;
+    existingQuotes?: Quote[];
     project_equipos: Project_Equipos[];
     project_materiales: Project_Materiales[];
 }

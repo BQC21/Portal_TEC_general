@@ -62,6 +62,7 @@ export type AddTypeModalProps = {
 export type AddQuoteModalProps = {
     onAddQuote: (quote: QuoteFormData) => void;
     onClose: () => void;
+    existingQuotes?: Quote[];
     existing_project_equipos: Project_Equipos[];
     existing_project_materiales: Project_Materiales[];
 }

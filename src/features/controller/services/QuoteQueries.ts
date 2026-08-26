@@ -5,7 +5,58 @@
 import { mapQuoteToSupabaseRow, mapSupabaseRowtoQuote } from "@/lib/mapping/mapping_quotes";
 import { createClient } from "@/lib/supabase/client";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
+import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { QUOTE_TABLE } from "@/lib/utils/namingTolerance";
+
+type PostgrestErrorLike = {
+    code?: string;
+    message?: string;
+} | null;
+
+function isUniqueViolation(error: PostgrestErrorLike) {
+    return error?.code === "23505" || Boolean(error?.message?.includes("duplicate key"));
+}
+
+function isQuoteCodeUniqueViolation(error: PostgrestErrorLike) {
+    const message = error?.message ?? "";
+    return isUniqueViolation(error) && message.includes("cod_cotizacion");
+}
+
+function isQuotePkeyViolation(error: PostgrestErrorLike) {
+    const message = error?.message ?? "";
+    return isUniqueViolation(error) && (
+        message.includes("cotizaciones_pkey") ||
+        message.includes("cotizacion_pkey")
+    );
+}
+
+async function fetchQuoteCodes(supabase: ReturnType<typeof createClient>) {
+    const { data, error } = await supabase
+        .from(QUOTE_TABLE)
+        .select("cod_cotizacion");
+
+    if (error) {
+        throw new Error(`Error al leer códigos de cotización: ${error.message}`);
+    }
+
+    return (data ?? [])
+        .map((row) => String(row.cod_cotizacion ?? ""))
+        .filter(Boolean);
+}
+
+async function fetchLastQuoteId(supabase: ReturnType<typeof createClient>) {
+    const { data, error } = await supabase
+        .from(QUOTE_TABLE)
+        .select("id")
+        .order("id", { ascending: false })
+        .limit(1);
+
+    if (error) return null;
+
+    const lastIdRaw = Array.isArray(data) && data.length > 0 ? data[0]?.id : null;
+    const lastId = Number(lastIdRaw);
+    return Number.isFinite(lastId) ? lastId : null;
+}
 
 // crear
 export async function createQuote(quote: QuoteFormData): Promise<Quote> {
@@ -15,6 +66,9 @@ export async function createQuote(quote: QuoteFormData): Promise<Quote> {
     if (Object.prototype.hasOwnProperty.call(baseRow, "id")){
         delete (baseRow).id;
     }
+
+    const existingCodes = await fetchQuoteCodes(supabase);
+    baseRow.cod_cotizacion = getQuoteCode(existingCodes);
 
     console.debug("[debug] createQuote payload:", baseRow);
 
@@ -26,32 +80,30 @@ export async function createQuote(quote: QuoteFormData): Promise<Quote> {
     };
 
     let { data, error } = await insertQuote(baseRow);
+    let attempts = 0;
 
-    if (error && (error.code === "23505" || error.message.includes("cotizaciones_pkey"))) {
-        const { data: lastRows, error: lastError } = await supabase
-            .from(QUOTE_TABLE)
-            .select("id")
-            .order("id", { ascending: false })
-            .limit(1);
+    while (error && isUniqueViolation(error) && attempts < 5) {
+        attempts += 1;
 
-        if (lastError) {
-            throw new Error(
-                `Error al crear la cotización: ${error.message} - ${JSON.stringify(error)}`
-            );
+        if (isQuoteCodeUniqueViolation(error)) {
+            const codes = await fetchQuoteCodes(supabase);
+            baseRow.cod_cotizacion = getQuoteCode(codes);
+            console.warn("[debug] Retrying createQuote with next code:", baseRow.cod_cotizacion);
+            ({ data, error } = await insertQuote(baseRow));
+            continue;
         }
 
-        const lastIdRaw = Array.isArray(lastRows) && lastRows.length > 0 ? lastRows[0]?.id : null;
-        const lastId = Number(lastIdRaw);
+        if (isQuotePkeyViolation(error) || isUniqueViolation(error)) {
+            const lastId = await fetchLastQuoteId(supabase);
+            if (lastId == null) break;
 
-        if (!Number.isFinite(lastId)) {
-            throw new Error(
-                `Error al crear la cotización: ${error.message} - ${JSON.stringify(error)}`
-            );
+            const retryRow = { ...baseRow, id: lastId + 1 };
+            console.warn("[debug] Retrying createQuote with explicit id:", retryRow.id);
+            ({ data, error } = await insertQuote(retryRow));
+            continue;
         }
 
-        const retryRow = { ...baseRow, id: lastId + 1 };
-        console.warn("[debug] Retrying createQuote with explicit id:", retryRow.id);
-        ({ data, error } = await insertQuote(retryRow));
+        break;
     }
 
     if (error) {
