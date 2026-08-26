@@ -266,12 +266,12 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             <AddEquipoReadonlyField
                                                 label="Número de palets"
                                                 value={String(palets)}
-                                                colorClass={getFieldValueLightClass(String(palets))}
+                                                colorClass={"text-slate-800 bg-[#50A0FF]"}
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Unidades individuales"
                                                 value={String(unidades)}
-                                                colorClass={getFieldValueLightClass(String(unidades))}
+                                                colorClass={"text-slate-800 bg-[#50A0FF]"}
                                             />
                                     </>
                                     )}
