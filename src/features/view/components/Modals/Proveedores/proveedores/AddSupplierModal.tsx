@@ -16,6 +16,7 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
         ...INITIAL_SUPPLIER_FORM,
         categoria: Category[0],
     });
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     function updateField<K extends keyof SupplierFormstate>(field: K, value: SupplierFormstate[K]) {
         setForm_supplier((current) => {
@@ -37,7 +38,7 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
         });
     }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         const codigo = normalizeSupplierCode(form_supplier.codigo ?? "");
@@ -45,10 +46,15 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
             return;
         }
 
-        onAddSupplier({
-            ...form_supplier,
-            codigo,
-        });
+        setSubmitError(null);
+        try {
+            await onAddSupplier({
+                ...form_supplier,
+                codigo,
+            });
+        } catch (err) {
+            setSubmitError(err instanceof Error ? err.message : "No se pudo crear el proveedor.");
+        }
     }
 
     return (
@@ -121,6 +127,9 @@ export default function AddSupplierModal({ onAddSupplier, onClose }: AddSupplier
                         </section>
                     </div>
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
+                        {submitError && (
+                            <p className="mr-auto self-center text-sm font-medium text-red-700">{submitError}</p>
+                        )}
                         <button
                         type="button"
                         onClick={onClose}

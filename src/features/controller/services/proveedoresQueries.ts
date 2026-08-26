@@ -3,6 +3,19 @@ import { createClient } from "@/lib/supabase/client";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";
 import { SUPPLIER_TABLE } from "@/lib/utils/namingTolerance";
 
+function proveedorMutationError(action: string, message: string): Error {
+	if (message.includes("proveedores_ruc_key")) {
+		return new Error("Ya existe un proveedor con ese RUC.");
+	}
+	if (message.includes("proveedores_codigo_key")) {
+		return new Error("Ya existe un proveedor con ese código.");
+	}
+	if (message.includes("proveedores_nombre_key")) {
+		return new Error("Ya existe un proveedor con ese nombre.");
+	}
+	return new Error(`Error al ${action} el proveedor: ${message}`);
+}
+
 export async function createProveedor(supplier: SupplierFormData): Promise<Supplier> {
 	const supabase = await createClient();
 	const supabaseRow = mapSupplierToSupabaseRow(supplier) as Record<string, unknown>;
@@ -14,7 +27,7 @@ export async function createProveedor(supplier: SupplierFormData): Promise<Suppl
 		.single();
 
 	if (error) {
-		throw new Error(`Error al crear el proveedor: ${error.message}`);
+		throw proveedorMutationError("crear", error.message);
 	}
 
 	return mapSupabaseRowToSupplier(data);
@@ -63,7 +76,7 @@ export async function updateProveedor(id: string, supplier: SupplierFormData): P
 		.single();
 
 	if (error) {
-		throw new Error(`Error al actualizar el proveedor: ${error.message}`);
+		throw proveedorMutationError("actualizar", error.message);
 	}
 
 	return mapSupabaseRowToSupplier(data);

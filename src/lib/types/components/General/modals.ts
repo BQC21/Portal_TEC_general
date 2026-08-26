@@ -45,7 +45,7 @@ export type AddZoneModalProps = {
 };
 
 export type AddSupplierModalProps = {
-    onAddSupplier: (supplier: SupplierFormData) => void;
+    onAddSupplier: (supplier: SupplierFormData) => Promise<void> | void;
     onClose: () => void;
 };
 

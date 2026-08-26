@@ -40,7 +40,7 @@ export type Button2ModalPropsZone = {
 };
 
 export type Button2ModalPropsSupplier = {
-    onAddSupplier: (supplier: SupplierFormData) => void;
+    onAddSupplier: (supplier: SupplierFormData) => Promise<void> | void;
 };
 
 export type Button2ModalPropsBrand = {

@@ -8,9 +8,9 @@ export type SupabaseSupplierRow = {
     // propiedades generales
     id?: number | string;
     nombre?: string;
-    ruc?: string;
-    contacto?: string;
-    telefono?: string;
+    ruc?: string | null;
+    contacto?: string | null;
+    telefono?: string | null;
     categoria?: string;
     codigo?: string;
     // fechas

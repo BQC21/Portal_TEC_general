@@ -1,4 +1,5 @@
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage"
+import { emptyToNull } from "@/lib/utils/normalization"
 import { SupabaseSupplierRow, Supplier, SupplierFormData, SupplierFormstate } from "../types/supabase/supplier-types"
 
 // Actualización del formulario
@@ -44,9 +45,9 @@ export function mapSupplierToSupabaseRow(
 ): SupabaseSupplierRow {
     return {
         nombre: supplier.nombre,
-        ruc: supplier.ruc,
-        contacto: supplier.contacto,
-        telefono: supplier.telefono,
+        ruc: emptyToNull(supplier.ruc),
+        contacto: emptyToNull(supplier.contacto),
+        telefono: emptyToNull(supplier.telefono),
         categoria: supplier.categoria,
         codigo: supplier.codigo,
         // fechas
