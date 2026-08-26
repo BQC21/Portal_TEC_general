@@ -23,6 +23,42 @@ function withCurrentItem<T extends { nombre?: string }>(
     return current ? [...items, current] : items;
 }
 
+function linkedIds(ids: Array<number | string | null | undefined>, fallbackId?: number | string | null) {
+    return new Set(
+        [...ids, fallbackId]
+            .map((id) => String(id ?? "").trim())
+            .filter(Boolean),
+    );
+}
+
+function isBrandLinkedToSupplier(
+    brand: Brand,
+    proveedorId?: string,
+    proveedorNombre?: string,
+): boolean {
+    const ids = linkedIds(brand.proveedor_ids ?? [], brand.proveedor_id);
+    if (proveedorId && ids.has(String(proveedorId))) return true;
+    if (proveedorNombre && (
+        brand.proveedor_info?.nombre === proveedorNombre ||
+        (brand.proveedores_info ?? []).some((supplier) => supplier.nombre === proveedorNombre)
+    )) return true;
+    return false;
+}
+
+function isTypeLinkedToBrand(
+    type: Type,
+    marcaId?: string,
+    marcaNombre?: string,
+): boolean {
+    const ids = linkedIds(type.marca_ids ?? [], type.marca_id);
+    if (marcaId && ids.has(String(marcaId))) return true;
+    if (marcaNombre && (
+        type.marca_info?.nombre === marcaNombre ||
+        (type.marcas_info ?? []).some((brand) => brand.nombre === marcaNombre)
+    )) return true;
+    return false;
+}
+
 export function filterBrandsForSupplier(
     brands: Brand[],
     productCategory: ProductCategoryFilter,
@@ -34,25 +70,15 @@ export function filterBrandsForSupplier(
     const inCategory = brands.filter((item) =>
         matchesProductCategory(item.categoria, productCategory),
     );
-
-    const associated = inCategory.filter((item) => {
-        const linkedIds = new Set([
-            ...(item.proveedor_ids ?? []),
-            item.proveedor_id,
-        ].map((id) => String(id ?? "").trim()).filter(Boolean));
-        if (proveedorId && linkedIds.has(String(proveedorId))) return true;
-        if (proveedorNombre && (
-            item.proveedor_info?.nombre === proveedorNombre ||
-            (item.proveedores_info ?? []).some((supplier) => supplier.nombre === proveedorNombre)
-        )) return true;
-        return false;
-    });
+    const associated = brands.filter((item) =>
+        isBrandLinkedToSupplier(item, proveedorId, proveedorNombre),
+    );
 
     const result = associated.length > 0
         ? associated
         : inCategory.filter((item) => cascadeBrandNames.includes(item.nombre ?? ""));
 
-    return withCurrentItem(result, inCategory, currentBrandName);
+    return withCurrentItem(result, brands, currentBrandName);
 }
 
 export function filterTypesForBrand(
@@ -66,23 +92,21 @@ export function filterTypesForBrand(
     const inCategory = types.filter((item) =>
         matchesProductCategory(item.categoria, productCategory),
     );
-
-    const associated = inCategory.filter((item) => {
-        const linkedIds = new Set([
-            ...(item.marca_ids ?? []),
-            item.marca_id,
-        ].map((id) => String(id ?? "").trim()).filter(Boolean));
-        if (marcaId && linkedIds.has(String(marcaId))) return true;
-        if (marcaNombre && (
-            item.marca_info?.nombre === marcaNombre ||
-            (item.marcas_info ?? []).some((brand) => brand.nombre === marcaNombre)
-        )) return true;
-        return false;
-    });
+    const brandSelected = Boolean(marcaId || marcaNombre);
+    const associated = inCategory.filter((item) =>
+        isTypeLinkedToBrand(item, marcaId, marcaNombre),
+    );
+    const fromCascade = inCategory.filter((item) =>
+        cascadeTypeNames.includes(item.nombre ?? ""),
+    );
 
     const result = associated.length > 0
         ? associated
-        : inCategory.filter((item) => cascadeTypeNames.includes(item.nombre ?? ""));
+        : fromCascade.length > 0
+            ? fromCascade
+            : brandSelected
+                ? inCategory
+                : [];
 
     return withCurrentItem(result, inCategory, currentTypeName);
 }
@@ -97,31 +121,11 @@ export function getCatalogCascadeOptions<T extends { proveedor: string; marca: s
     marcaId: string,
 ) {
     const fromCatalogBrands = brands
-        .filter((item) => {
-            const linkedIds = new Set([
-                ...(item.proveedor_ids ?? []),
-                item.proveedor_id,
-            ].map((id) => String(id ?? "").trim()).filter(Boolean));
-            return (proveedorId && linkedIds.has(String(proveedorId))) ||
-                (proveedor && (
-                    item.proveedor_info?.nombre === proveedor ||
-                    (item.proveedores_info ?? []).some((supplier) => supplier.nombre === proveedor)
-                ));
-        })
+        .filter((item) => isBrandLinkedToSupplier(item, proveedorId, proveedor))
         .map((item) => item.nombre ?? "")
         .filter(Boolean);
     const fromCatalogTypes = types
-        .filter((item) => {
-            const linkedIds = new Set([
-                ...(item.marca_ids ?? []),
-                item.marca_id,
-            ].map((id) => String(id ?? "").trim()).filter(Boolean));
-            return (marcaId && linkedIds.has(String(marcaId))) ||
-                (marca && (
-                    item.marca_info?.nombre === marca ||
-                    (item.marcas_info ?? []).some((brand) => brand.nombre === marca)
-                ));
-        })
+        .filter((item) => isTypeLinkedToBrand(item, marcaId, marca))
         .map((item) => item.nombre ?? "")
         .filter(Boolean);
     const fromData = getModalCascadeOptions(existingItems, proveedor, marca);
