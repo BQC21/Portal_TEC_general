@@ -123,6 +123,27 @@ export default function AddQuoteModal({
         });
     }, [form.proyecto_id]);
 
+    const onReplaceMaterial = useCallback((id: string | number, material: Materiales) => {
+        setProjectMateriales((current) => {
+            const currentItem = current.find((item) => item.id === id);
+            if (!currentItem) return current;
+
+            if (current.some((item) => item.id !== id && String(item.material_id) === String(material.id))) {
+                return current.filter((item) => item.id !== id);
+            }
+
+            return current.map((item) =>
+                item.id === id
+                    ? {
+                        ...item,
+                        material_id: String(material.id),
+                        material_info: material,
+                    }
+                    : item,
+            );
+        });
+    }, []);
+
     const onRemoveMaterial = useCallback((id: string | number) => {
         setProjectMateriales((current) => current.filter((item) => item.id !== id));
     }, []);
@@ -270,6 +291,7 @@ export default function AddQuoteModal({
                             onAddEquipo={onAddEquipo}
                             onRemoveEquipo={onRemoveEquipo}
                             onAddMaterial={onAddMaterial}
+                            onReplaceMaterial={onReplaceMaterial}
                             onRemoveMaterial={onRemoveMaterial}
                         />
 
