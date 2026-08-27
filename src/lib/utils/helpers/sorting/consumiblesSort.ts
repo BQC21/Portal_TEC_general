@@ -1,6 +1,7 @@
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
+import { resolveConsumibleTipo } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
 export type ConsumibleTableRow = {
     key: string
@@ -43,7 +44,10 @@ export function buildSortedConsumibles(
         catalogId: item.id,
         cod_producto: item.material_info?.cod_producto ?? "",
         descripcion: item.material_info?.descripcion ?? "",
-        tipo_de_producto: item.material_info?.tipo_de_producto,
+        tipo_de_producto: resolveConsumibleTipo(
+            item.material_info?.descripcion ?? "",
+            item.material_info?.tipo_de_producto,
+        ),
         unidad: item.material_info?.unidad ?? "",
         cantidad: Number(item.cantidad),
         precio_soles: Number(item.material_info?.precio_soles),
@@ -63,7 +67,10 @@ export function buildSortedConsumibles(
             templateIndex: index,
             cod_producto: item.cod_producto,
             descripcion: catalogMaterial?.descripcion ?? item.descripcion,
-            tipo_de_producto: item.tipo_de_producto || catalogMaterial?.tipo_de_producto,
+            tipo_de_producto: resolveConsumibleTipo(
+                catalogMaterial?.descripcion ?? item.descripcion,
+                item.tipo_de_producto || catalogMaterial?.tipo_de_producto,
+            ),
             unidad: catalogMaterial?.unidad ?? "",
             cantidad: Number(item.cantidad),
             precio_soles: Number(catalogMaterial?.precio_soles ?? 0),
