@@ -1,6 +1,6 @@
 import { SelectOption } from "@/lib/types/components/General/form_fields"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
-import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions"
+import { toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions"
 
 export type ConsumibleSelectableFamily =
     | "itm_ac"
@@ -12,6 +12,7 @@ export type ConsumibleSelectableFamily =
     | "cable_fv"
     | "cable_tierra"
     | "tablero"
+    | "bornera"
     | "terminal_pin_100"
     | "terminal_ojal_100"
     | "terminal_ojal"
@@ -19,7 +20,6 @@ export type ConsumibleSelectableFamily =
     | "precintos_100"
     | "tornillos_autorroscantes_100"
     | "tornillo_spack"
-    | "tirafon_1_4"
 
 export type ConsumibleLinkedFamily = "abrazadera" | "prensaestopa" | "curva" | "union" | "conector"
 
@@ -37,6 +37,7 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "cable_fv",
     "cable_tierra",
     "tablero",
+    "bornera",
     "terminal_pin_100",
     "terminal_ojal_100",
     "terminal_ojal",
@@ -44,7 +45,6 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "precintos_100",
     "tornillos_autorroscantes_100",
     "tornillo_spack",
-    "tirafon_1_4",
 ]
 
 export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string> = {
@@ -57,14 +57,14 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     cable_fv: "Cable FV",
     cable_tierra: "Cable de tierra",
     tablero: "Tablero",
-    terminal_pin_100: "100 und terminal tipo pin",
-    terminal_ojal_100: "100 und terminal tipo ojal",
+    bornera: "Bornera",
+    terminal_pin_100: "100to terminal tipo pin",
+    terminal_ojal_100: "100to terminal tipo ojal",
     terminal_ojal: "Terminal tipo ojal",
     terminal_pin: "Terminal tipo pin",
-    precintos_100: "100 und precintos",
-    tornillos_autorroscantes_100: "100 und tornillos autorroscantes",
+    precintos_100: "100to precintos",
+    tornillos_autorroscantes_100: "100to tornillos autorroscantes",
     tornillo_spack: "Tornillo Spack",
-    tirafon_1_4: "Tirafón 1/4\"",
 }
 
 export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
@@ -78,10 +78,11 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     curva: "CANALIZACIÓN",
     union: "CANALIZACIÓN",
     conector: "CANALIZACIÓN",
-    cable_ac: "CABLE",
-    cable_fv: "CABLE",
-    cable_tierra: "CABLE",
+    cable_ac: "CANALIZACIÓN",
+    cable_fv: "CANALIZACIÓN",
+    cable_tierra: "CANALIZACIÓN",
     tablero: "CONSUMIBLE",
+    bornera: "CONSUMIBLE",
     terminal_pin_100: "CONSUMIBLE",
     terminal_ojal_100: "CONSUMIBLE",
     terminal_ojal: "CONSUMIBLE",
@@ -89,8 +90,13 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     precintos_100: "CONSUMIBLE",
     tornillos_autorroscantes_100: "CONSUMIBLE",
     tornillo_spack: "CONSUMIBLE",
-    tirafon_1_4: "CONSUMIBLE",
 }
+
+const TERMINAL_PIN_MM2 = new Set(["10", "16", "25", "35"])
+const TERMINAL_OJAL_MM2 = new Set(["10", "16", "25", "35", "50"])
+const PRECINTOS_MM = new Set(["100", "200", "300"])
+const SPACK_SIZES = new Set(["4x30", "4x50"])
+const AUTORROSCANTE_INCH = new Set(["2", "3", "4"])
 
 export function normalizeConsumibleText(value: string): string {
     return value
@@ -117,12 +123,12 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (description.includes("conduit") && description.includes("flexible")) {
         return "conduit_flexible"
     }
-    if (description.includes("conduit")) return "spd"
+    if (description.includes("conduit")) return "conduit"
     if (description.includes("abrazadera")) return "abrazadera"
     if (description.includes("prensaestopa")) return "prensaestopa"
     if (description.includes("curva")) return "curva"
     if (description.includes("union")) return "union"
-    if (description.includes("conector")) return "conector"
+    if (description.includes("conector") && !description.includes("mc4")) return "conector"
 
     if (description.includes("cable ac")) return "cable_ac"
     if (description.includes("cable fv")) return "cable_fv"
@@ -131,6 +137,7 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     }
 
     if (description.includes("tablero")) return "tablero"
+    if (description.includes("bornera")) return "bornera"
 
     const hundredPack = isHundredPack(description)
     const isPinTerminal = description.includes("terminal") && description.includes("pin")
@@ -149,11 +156,17 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (description.includes("tornillo") && description.includes("spack")) {
         return "tornillo_spack"
     }
-    if (description.includes("tirafon") && /1\s*\/\s*4/.test(description)) {
-        return "tirafon_1_4"
-    }
 
     return null
+}
+
+export function resolveConsumibleTipo(
+    descripcion: string,
+    fallback?: string,
+): string | undefined {
+    const family = getConsumibleFamily(descripcion)
+    if (family) return CONSUMIBLE_FAMILY_TIPO[family]
+    return fallback
 }
 
 export function isSelectableConsumibleFamily(
@@ -184,6 +197,48 @@ export function extractCableFvDimension(descripcion: string): string | null {
     const match = descripcion.match(/(\d+(?:[.,]\d+)?)\s*mm/i)
     if (!match) return null
     return match[1].replace(",", ".")
+}
+
+export function extractMm2(descripcion: string): string | null {
+    const match = descripcion.match(/(\d+(?:[.,]\d+)?)\s*mm\s*(?:2|²)/i)
+    if (!match) return null
+    return match[1].replace(",", ".")
+}
+
+export function extractMmSize(descripcion: string): string | null {
+    const matches = [...descripcion.matchAll(/(\d+(?:[.,]\d+)?)\s*mm(?!\s*(?:2|²))/gi)]
+    if (matches.length === 0) return null
+    return matches[matches.length - 1][1].replace(",", ".")
+}
+
+export function extractSpackSize(descripcion: string): string | null {
+    const match = descripcion.match(/(\d+\s*x\s*\d+)/i)
+    if (!match) return null
+    return match[1].replace(/\s+/g, "").toLowerCase()
+}
+
+export function matchesFamilySize(family: ConsumibleFamily, descripcion: string): boolean {
+    if (family === "terminal_pin") {
+        const mm2 = extractMm2(descripcion)
+        return mm2 != null && TERMINAL_PIN_MM2.has(mm2)
+    }
+    if (family === "terminal_ojal") {
+        const mm2 = extractMm2(descripcion)
+        return mm2 != null && TERMINAL_OJAL_MM2.has(mm2)
+    }
+    if (family === "precintos_100") {
+        const mm = extractMmSize(descripcion)
+        return mm != null && PRECINTOS_MM.has(mm)
+    }
+    if (family === "tornillo_spack") {
+        const size = extractSpackSize(descripcion)
+        return size != null && SPACK_SIZES.has(size)
+    }
+    if (family === "tornillos_autorroscantes_100") {
+        const inch = extractInchSize(descripcion)
+        return inch != null && AUTORROSCANTE_INCH.has(inch)
+    }
+    return true
 }
 
 export function filterMaterialsByFamily(
@@ -227,17 +282,12 @@ export function buildConsumibleFamilyOptions(
     currentMaterialId?: string,
     color?: CableFvColor | null,
 ): SelectOption[] {
-    const label = color
-        ? `${CONSUMIBLE_FAMILY_LABEL[family]} ${color}`
-        : CONSUMIBLE_FAMILY_LABEL[family]
-
-    return [
-        defaultSelectOption(label),
-        ...filterMaterialsByFamily(materiales, family, color)
-            .filter((material) => {
-                const materialId = String(material.id)
-                return materialId === currentMaterialId || !selectedIds.has(materialId)
-            })
-            .map(toProductSelectOption),
-    ]
+    return filterMaterialsByFamily(materiales, family, color)
+        .filter((material) => {
+            const materialId = String(material.id)
+            if (materialId === currentMaterialId) return true
+            if (selectedIds.has(materialId)) return false
+            return matchesFamilySize(family, material.descripcion)
+        })
+        .map(toProductSelectOption)
 }
