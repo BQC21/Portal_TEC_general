@@ -16,6 +16,7 @@ import {
 } from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
 import {
     CONSUMIBLE_FAMILY_LABEL,
+    isExtraConsumibleFamily,
     isSelectableConsumibleFamily,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -88,8 +89,8 @@ export function Consume_PriceTable({
         getRowOptions,
         getCurrentMaterialId,
         handleRowMaterialChange,
-        canAddCableTierra,
-        onAddCableTierra,
+        canAddExtraFamily,
+        onAddExtraFamily,
     } = useConsumeRowSelection({
         items,
         sortedMateriales,
@@ -159,7 +160,7 @@ export function Consume_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.cod_producto || "—"}
                                                 </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                <td className="border-b border-slate-200 px-5 py-5 font-medium">
                                                     {item.selectable ? (
                                                         <div className="flex min-w-[16rem] items-end gap-2">
                                                             <div className="min-w-0 flex-1">
@@ -172,14 +173,21 @@ export function Consume_PriceTable({
                                                                     }
                                                                 />
                                                             </div>
-                                                            {item.family === "cable_tierra"
-                                                                && canAddCableTierra
-                                                                && !item.isPlaceholder ? (
+                                                            {isExtraConsumibleFamily(item.family)
+                                                                && canAddExtraFamily(item.family) ? (
                                                                 <button
                                                                     type="button"
-                                                                    onClick={onAddCableTierra}
+                                                                    onClick={() => {
+                                                                        if (isExtraConsumibleFamily(item.family)) {
+                                                                            onAddExtraFamily(item.family)
+                                                                        }
+                                                                    }}
                                                                     className="table-icon-button"
-                                                                    aria-label="Agregar otro cable de tierra"
+                                                                    aria-label={
+                                                                        item.family === "tablero"
+                                                                            ? "Agregar otro tablero"
+                                                                            : "Agregar otro cable de tierra"
+                                                                    }
                                                                 >
                                                                     <PlusIcon />
                                                                 </button>
@@ -193,11 +201,11 @@ export function Consume_PriceTable({
                                                     {item.unidad || "—"}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.isPlaceholder ? (
+                                                    {item.isPlaceholder && !item.cod_producto ? (
                                                         "—"
                                                     ) : (
                                                         <AddProductNumberField
-                                                            label="Cantidad"
+                                                            label=""
                                                             value={Number(item.cantidad)}
                                                             min={0}
                                                             step={0.01}

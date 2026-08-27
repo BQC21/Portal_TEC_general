@@ -1,6 +1,5 @@
 import { SelectOption } from "@/lib/types/components/General/form_fields"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
-import { toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions"
 
 export type ConsumibleSelectableFamily =
     | "itm_ac"
@@ -23,7 +22,16 @@ export type ConsumibleSelectableFamily =
 
 export type ConsumibleLinkedFamily = "abrazadera" | "prensaestopa" | "curva" | "union" | "conector"
 
-export type ConsumibleFamily = ConsumibleSelectableFamily | ConsumibleLinkedFamily
+export type ConsumibleFamily = ConsumibleSelectableFamily | ConsumibleLinkedFamily | "canaleta"
+
+export const EXTRA_CONSUMIBLE_FAMILIES = ["cable_tierra", "tablero"] as const
+export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
+
+export function isExtraConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleExtraFamily {
+    return family === "cable_tierra" || family === "tablero"
+}
 
 export type CableFvColor = "rojo" | "negro"
 
@@ -78,6 +86,7 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     curva: "CANALIZACIÓN",
     union: "CANALIZACIÓN",
     conector: "CANALIZACIÓN",
+    canaleta: "CANALIZACIÓN",
     cable_ac: "CANALIZACIÓN",
     cable_fv: "CANALIZACIÓN",
     cable_tierra: "CANALIZACIÓN",
@@ -90,6 +99,55 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     precintos_100: "CONSUMIBLE",
     tornillos_autorroscantes_100: "CONSUMIBLE",
     tornillo_spack: "CONSUMIBLE",
+}
+
+const CANALIZACION_FAMILY_ORDER: Record<string, number> = {
+    conduit_flexible: 0,
+    abrazadera: 1,
+    prensaestopa: 2,
+    conduit: 3,
+    curva: 4,
+    union: 5,
+    conector: 6,
+    canaleta: 7,
+    cable_ac: 8,
+    cable_fv: 9,
+    cable_tierra: 10,
+}
+
+export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectableFamily, string>> = {
+    itm_ac: "MSTOF00001",
+    spd: "MPESO00005",
+    itm_dc: "MPESO00001",
+    cable_ac: "MPROJ00001",
+    cable_tierra: "MCAVA00022",
+    tablero: "MCOIN00003",
+}
+
+export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
+    rojo: "MELSI00001",
+    negro: "MELSI00002",
+}
+
+const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
+    "itm_ac",
+    "spd",
+    "itm_dc",
+    "cable_ac",
+    "cable_fv",
+    "cable_tierra",
+    "tablero",
+])
+
+export function isDefaultInsertedFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleSelectableFamily {
+    return family != null && DEFAULT_INSERTED_FAMILIES.has(family as ConsumibleSelectableFamily)
+}
+
+export function getCanalizacionSortOrder(family: ConsumibleFamily | null): number | null {
+    if (!family) return null
+    return family in CANALIZACION_FAMILY_ORDER ? CANALIZACION_FAMILY_ORDER[family] : null
 }
 
 const TERMINAL_PIN_MM2 = new Set(["10", "16", "25", "35"])
@@ -129,6 +187,7 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (description.includes("curva")) return "curva"
     if (description.includes("union")) return "union"
     if (description.includes("conector") && !description.includes("mc4")) return "conector"
+    if (description.includes("canaleta")) return "canaleta"
 
     if (description.includes("cable ac")) return "cable_ac"
     if (description.includes("cable fv")) return "cable_fv"
@@ -275,6 +334,28 @@ export function findCableFvMaterial(
     )
 }
 
+export function getDefaultCodeForFamily(
+    family: ConsumibleSelectableFamily,
+    color?: CableFvColor | null,
+): string | undefined {
+    if (family === "cable_fv" && color) return CABLE_FV_DEFAULT_CODE[color]
+    return CONSUMIBLE_FAMILY_DEFAULT_CODE[family]
+}
+
+export function getDefaultMaterialForFamily(
+    materiales: Materiales[],
+    family: ConsumibleSelectableFamily,
+    color?: CableFvColor | null,
+    usedCodes?: Set<string>,
+): Materiales | undefined {
+    const candidates = filterMaterialsByFamily(materiales, family, color)
+        .filter((material) => matchesFamilySize(family, material.descripcion))
+        .filter((material) => !usedCodes?.has(material.cod_producto))
+
+    const defaultCode = getDefaultCodeForFamily(family, color)
+    return candidates.find((material) => material.cod_producto === defaultCode) ?? candidates[0]
+}
+
 export function buildConsumibleFamilyOptions(
     family: ConsumibleSelectableFamily,
     materiales: Materiales[],
@@ -289,5 +370,8 @@ export function buildConsumibleFamilyOptions(
             if (selectedIds.has(materialId)) return false
             return matchesFamilySize(family, material.descripcion)
         })
-        .map(toProductSelectOption)
+        .map((material) => ({
+            value: String(material.id),
+            label: material.descripcion,
+        }))
 }

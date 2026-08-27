@@ -1,7 +1,14 @@
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
-import { resolveConsumibleTipo } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
+import {
+    CableFvColor,
+    ConsumibleFamily,
+    getCableFvColor,
+    getCanalizacionSortOrder,
+    getConsumibleFamily,
+    resolveConsumibleTipo,
+} from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
 export type ConsumibleTableRow = {
     key: string
@@ -23,6 +30,47 @@ export function getConsumibleGroup(tipo?: string) {
     if (tipo === "PROTECCIÓN") return { order: 0, rowClass: "bg-yellow-100" }
     if (tipo === "CANALIZACIÓN") return { order: 1, rowClass: "bg-blue-100" }
     return { order: 2, rowClass: "bg-green-100" }
+}
+
+type ConsumibleSortableRow = {
+    descripcion: string
+    tipo_de_producto?: string
+    cod_producto: string
+    family?: ConsumibleFamily | null
+    cableColor?: CableFvColor | null
+}
+
+export function compareConsumibleRows(
+    a: ConsumibleSortableRow,
+    b: ConsumibleSortableRow,
+    templateOrder: Map<string, number>,
+): number {
+    const groupDelta =
+        getConsumibleGroup(a.tipo_de_producto).order
+        - getConsumibleGroup(b.tipo_de_producto).order
+    if (groupDelta !== 0) return groupDelta
+
+    const familyA = a.family ?? getConsumibleFamily(a.descripcion)
+    const familyB = b.family ?? getConsumibleFamily(b.descripcion)
+    const canalA = getCanalizacionSortOrder(familyA)
+    const canalB = getCanalizacionSortOrder(familyB)
+    if (canalA != null || canalB != null) {
+        const orderA = canalA ?? 50
+        const orderB = canalB ?? 50
+        if (orderA !== orderB) return orderA - orderB
+    }
+
+    const colorA = a.cableColor ?? (familyA === "cable_fv" ? getCableFvColor(a.descripcion) : null)
+    const colorB = b.cableColor ?? (familyB === "cable_fv" ? getCableFvColor(b.descripcion) : null)
+    if (colorA && colorB && colorA !== colorB) {
+        return colorA === "rojo" ? -1 : 1
+    }
+
+    const orderA = templateOrder.get(a.cod_producto) ?? Number.MAX_SAFE_INTEGER
+    const orderB = templateOrder.get(b.cod_producto) ?? Number.MAX_SAFE_INTEGER
+    if (orderA !== orderB) return orderA - orderB
+
+    return a.cod_producto.localeCompare(b.cod_producto)
 }
 
 export function buildSortedConsumibles(
@@ -80,16 +128,7 @@ export function buildSortedConsumibles(
         }]
     })
 
-    return [...catalogRows, ...templateRows].sort((a, b) => {
-        const groupDelta =
-            getConsumibleGroup(a.tipo_de_producto).order
-            - getConsumibleGroup(b.tipo_de_producto).order
-        if (groupDelta !== 0) return groupDelta
-
-        const orderA = templateOrder.get(a.cod_producto) ?? Number.MAX_SAFE_INTEGER
-        const orderB = templateOrder.get(b.cod_producto) ?? Number.MAX_SAFE_INTEGER
-        if (orderA !== orderB) return orderA - orderB
-
-        return a.cod_producto.localeCompare(b.cod_producto)
-    })
+    return [...catalogRows, ...templateRows].sort((a, b) =>
+        compareConsumibleRows(a, b, templateOrder),
+    )
 }

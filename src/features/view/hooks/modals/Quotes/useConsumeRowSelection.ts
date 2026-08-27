@@ -1,12 +1,16 @@
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
-import { ConsumibleTableRow, getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
+import {
+    compareConsumibleRows,
+    ConsumibleTableRow,
+} from "@/lib/utils/helpers/sorting/consumiblesSort"
 import {
     buildConsumibleFamilyOptions,
     CableFvColor,
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_FAMILY_TIPO,
+    ConsumibleExtraFamily,
     ConsumibleFamily,
     ConsumibleLinkedFamily,
     ConsumibleSelectableFamily,
@@ -17,6 +21,9 @@ import {
     findMaterialByFamilyAndInch,
     getCableFvColor,
     getConsumibleFamily,
+    getDefaultMaterialForFamily,
+    isDefaultInsertedFamily,
+    isExtraConsumibleFamily,
     isSelectableConsumibleFamily,
     matchesFamilySize,
     SELECTABLE_CONSUMIBLE_FAMILIES,
@@ -53,6 +60,26 @@ function applyTemplateMaterial(
     )
 }
 
+function rowFromMaterial(
+    material: Materiales,
+    extras: Pick<ConsumibleDisplayRow, "key" | "source" | "family" | "cableColor" | "selectable" | "isPlaceholder">,
+): ConsumibleDisplayRow {
+    return {
+        ...extras,
+        descripcion: material.descripcion,
+        tipo_de_producto: extras.family
+            ? CONSUMIBLE_FAMILY_TIPO[extras.family]
+            : material.tipo_de_producto,
+        cod_producto: material.cod_producto,
+        unidad: material.unidad,
+        cantidad: 1,
+        precio_soles: Number(material.precio_soles),
+        precio_soles_igv: Number(material.precio_soles_igv),
+        precio_dolares: Number(material.precio_dolares),
+        precio_dolares_igv: Number(material.precio_dolares_igv),
+    }
+}
+
 function matchesFamilyRow(
     row: ConsumibleDisplayRow,
     family: ConsumibleFamily,
@@ -73,7 +100,10 @@ export function useConsumeRowSelection({
     onReplaceMaterial,
     onUpdateItem,
 }: UseConsumeRowSelectionArgs) {
-    const [showExtraCableTierra, setShowExtraCableTierra] = useState(false)
+    const templateOrder = useMemo(
+        () => new Map(items.map((item, index) => [item.cod_producto, index])),
+        [items],
+    )
 
     const displayRows = useMemo<ConsumibleDisplayRow[]>(() => {
         const existingRows: ConsumibleDisplayRow[] = sortedMateriales.map((row) => {
@@ -96,14 +126,32 @@ export function useConsumeRowSelection({
         const hasCableFvColor = (color: CableFvColor) =>
             existingRows.some((row) => row.family === "cable_fv" && row.cableColor === color)
 
-        const cableTierraCount = existingRows.filter((row) => row.family === "cable_tierra").length
+        const usedCodes = new Set(
+            existingRows.map((row) => row.cod_producto).filter(Boolean),
+        )
         const placeholders: ConsumibleDisplayRow[] = []
 
         function pushPlaceholder(
             family: ConsumibleSelectableFamily,
             color?: CableFvColor,
-            extraKey?: string,
         ) {
+            const defaultMaterial = isDefaultInsertedFamily(family)
+                ? getDefaultMaterialForFamily(materiales, family, color, usedCodes)
+                : undefined
+
+            if (defaultMaterial) {
+                usedCodes.add(defaultMaterial.cod_producto)
+                placeholders.push(rowFromMaterial(defaultMaterial, {
+                    key: `placeholder-${family}${color ? `-${color}` : ""}`,
+                    source: "template",
+                    family,
+                    cableColor: color ?? null,
+                    selectable: true,
+                    isPlaceholder: true,
+                }))
+                return
+            }
+
             if (
                 filterMaterialsByFamily(materiales, family, color)
                     .filter((material) => matchesFamilySize(family, material.descripcion))
@@ -116,7 +164,7 @@ export function useConsumeRowSelection({
                 ? `${CONSUMIBLE_FAMILY_LABEL[family]} ${color}`
                 : CONSUMIBLE_FAMILY_LABEL[family]
             placeholders.push({
-                key: `placeholder-${family}${color ? `-${color}` : ""}${extraKey ? `-${extraKey}` : ""}`,
+                key: `placeholder-${family}${color ? `-${color}` : ""}`,
                 source: "template",
                 family,
                 cableColor: color ?? null,
@@ -141,11 +189,8 @@ export function useConsumeRowSelection({
                 continue
             }
 
-            if (family === "cable_tierra") {
-                if (cableTierraCount === 0) pushPlaceholder(family)
-                if (cableTierraCount < 2 && showExtraCableTierra) {
-                    pushPlaceholder(family, undefined, "extra")
-                }
+            if (isExtraConsumibleFamily(family)) {
+                if (!presentFamilies.has(family)) pushPlaceholder(family)
                 continue
             }
 
@@ -154,22 +199,10 @@ export function useConsumeRowSelection({
             }
         }
 
-        const groupedRows = [...existingRows]
-        for (const placeholder of placeholders) {
-            const placeholderOrder = getConsumibleGroup(placeholder.tipo_de_producto).order
-            let insertAt = groupedRows.length
-            for (let index = groupedRows.length - 1; index >= 0; index -= 1) {
-                if (getConsumibleGroup(groupedRows[index].tipo_de_producto).order <= placeholderOrder) {
-                    insertAt = index + 1
-                    break
-                }
-                insertAt = 0
-            }
-            groupedRows.splice(insertAt, 0, placeholder)
-        }
-
-        return groupedRows
-    }, [materiales, showExtraCableTierra, sortedMateriales])
+        return [...existingRows, ...placeholders].sort((a, b) =>
+            compareConsumibleRows(a, b, templateOrder),
+        )
+    }, [materiales, sortedMateriales, templateOrder])
 
     const materialIdByCode = useMemo(() => {
         const map = new Map<string, string>()
@@ -197,11 +230,18 @@ export function useConsumeRowSelection({
                 .map(getAssignedMaterialId)
                 .filter(Boolean),
         )
-        const firstAvailable = filterMaterialsByFamily(
-            materiales,
-            family,
-            family === "cable_fv" ? row.cableColor : null,
-        ).find((material) =>
+        const usedCodes = new Set(
+            displayRows
+                .filter((item) => item.key !== row.key && item.cod_producto)
+                .map((item) => item.cod_producto),
+        )
+        const color = family === "cable_fv" ? row.cableColor : null
+        const defaultMaterial = getDefaultMaterialForFamily(materiales, family, color, usedCodes)
+        if (defaultMaterial && !selectedIds.has(String(defaultMaterial.id))) {
+            return String(defaultMaterial.id)
+        }
+
+        const firstAvailable = filterMaterialsByFamily(materiales, family, color).find((material) =>
             !selectedIds.has(String(material.id))
             && matchesFamilySize(family, material.descripcion),
         )
@@ -314,29 +354,47 @@ export function useConsumeRowSelection({
         }
 
         applyToRow(row, selected)
-        if (row.family === "cable_tierra" && row.isPlaceholder) {
-            setShowExtraCableTierra(false)
-        }
     }
 
-    const cableTierraCount = displayRows.filter((row) =>
-        row.family === "cable_tierra" && !row.isPlaceholder,
-    ).length
-    const unusedCableTierra = filterMaterialsByFamily(materiales, "cable_tierra")
-        .filter((material) => {
-            const used = displayRows.some((row) =>
-                row.family === "cable_tierra" && row.cod_producto === material.cod_producto,
+    function unusedMaterialsForFamily(family: ConsumibleExtraFamily) {
+        return filterMaterialsByFamily(materiales, family).filter((material) => {
+            return !displayRows.some((row) =>
+                row.family === family && row.cod_producto === material.cod_producto,
             )
-            return !used
         })
-    const canAddCableTierra = cableTierraCount === 1 && !showExtraCableTierra && unusedCableTierra.length > 0
+    }
+
+    function canAddExtraFamily(family: ConsumibleExtraFamily) {
+        const visibleCount = displayRows.filter((row) => row.family === family).length
+        return visibleCount >= 1 && unusedMaterialsForFamily(family).length > 0
+    }
+
+    function onAddExtraFamily(family: ConsumibleExtraFamily) {
+        const usedCodes = new Set(
+            displayRows
+                .filter((row) => row.family === family && row.cod_producto)
+                .map((row) => row.cod_producto),
+        )
+        const placeholder = displayRows.find((row) => row.family === family && row.isPlaceholder)
+        if (placeholder) {
+            const currentId = getCurrentMaterialId(placeholder)
+            const current = materiales.find((item) => String(item.id) === currentId)
+            if (current) {
+                onAddMaterial(current)
+                usedCodes.add(current.cod_producto)
+            }
+        }
+
+        const nextMaterial = getDefaultMaterialForFamily(materiales, family, null, usedCodes)
+        if (nextMaterial) onAddMaterial(nextMaterial)
+    }
 
     return {
         displayRows,
         getRowOptions,
         getCurrentMaterialId,
         handleRowMaterialChange,
-        canAddCableTierra,
-        onAddCableTierra: () => setShowExtraCableTierra(true),
+        canAddExtraFamily,
+        onAddExtraFamily,
     }
 }
