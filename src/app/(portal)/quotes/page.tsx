@@ -28,10 +28,10 @@ export default function QuotesPage(){
 
 
     // JOIN EQUIPOS <---> PROYECTOS
-    const { projects_equipos: project_equipos} = useProjectEquipos();
+    const { projects_equipos: project_equipos, refetch: refetch_project_equipos } = useProjectEquipos();
 
     // JOIN MATERIALES <---> PROYECTOS    
-    const { projects_materiales: project_materiales} = useProjectMateriales();
+    const { projects_materiales: project_materiales, refetch: refetch_project_materiales } = useProjectMateriales();
 
     // REPORTES
     const { reports, refetch: refetch_report } = useReports();
@@ -57,6 +57,8 @@ export default function QuotesPage(){
     ) {
         await create_quote(quote);
         await refetch_quote();
+        await refetch_project_equipos();
+        await refetch_project_materiales();
     }
 
     // REPORTES
@@ -82,6 +84,8 @@ export default function QuotesPage(){
         const { id, ...quoteData } = updatedQuote;
         await update_quote(id, quoteData);
         await refetch_quote();
+        await refetch_project_equipos();
+        await refetch_project_materiales();
     }
 
     // REPORTES

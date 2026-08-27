@@ -22,8 +22,8 @@ import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import {
-    resolveQuoteEquipos,
-    resolveQuoteMateriales,
+    syncQuoteEquiposToProject,
+    syncQuoteMaterialesToProject,
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 
@@ -52,34 +52,33 @@ export default function AddQuoteModal({
 
     const [projectEquipos, setProjectEquipos] = useState<Project_Equipos[]>([]);
     const [projectMateriales, setProjectMateriales] = useState<Project_Materiales[]>([]);
-    const skipProjectHydration = useRef(true);
+    const hydratedProjectId = useRef("");
 
     useEffect(() => {
-        if (skipProjectHydration.current) {
-            skipProjectHydration.current = false;
-            return;
-        }
+        const nextProjectId = String(form.proyecto_id ?? "");
+        if (nextProjectId === hydratedProjectId.current) return;
+        hydratedProjectId.current = nextProjectId;
 
-        if (!form.proyecto_id) {
+        if (!nextProjectId) {
             setProjectEquipos([]);
             setProjectMateriales([]);
             return;
         }
 
         setProjectEquipos(
-            existing_project_equipos.filter((item) => item.proyecto_id === form.proyecto_id),
+            existing_project_equipos.filter((item) => String(item.proyecto_id) === nextProjectId),
         );
         setProjectMateriales(
-            existing_project_materiales.filter((item) => item.proyecto_id === form.proyecto_id),
+            existing_project_materiales.filter((item) => String(item.proyecto_id) === nextProjectId),
         );
-        // Solo al elegir/cambiar proyecto: no sobrescribir ediciones locales de cantidad.
+        // Solo al elegir/cambiar proyecto: no sobrescribir ediciones locales.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form.proyecto_id]);
 
     const onUpdateEquipoCantidad = useCallback((id: string | number, cantidad: number) => {
         setProjectEquipos((current) =>
             current.map((item) =>
-                item.id === id ? { ...item, cantidad: String(cantidad) } : item,
+                String(item.id) === String(id) ? { ...item, cantidad: String(cantidad) } : item,
             ),
         );
     }, []);
@@ -104,13 +103,13 @@ export default function AddQuoteModal({
     }, [form.proyecto_id]);
 
     const onRemoveEquipo = useCallback((id: string | number) => {
-        setProjectEquipos((current) => current.filter((item) => item.id !== id));
+        setProjectEquipos((current) => current.filter((item) => String(item.id) !== String(id)));
     }, []);
 
     const onUpdateMaterialCantidad = useCallback((id: string | number, cantidad: number) => {
         setProjectMateriales((current) =>
             current.map((item) =>
-                item.id === id ? { ...item, cantidad: String(cantidad) } : item,
+                String(item.id) === String(id) ? { ...item, cantidad: String(cantidad) } : item,
             ),
         );
     }, []);
@@ -136,15 +135,15 @@ export default function AddQuoteModal({
 
     const onReplaceMaterial = useCallback((id: string | number, material: Materiales) => {
         setProjectMateriales((current) => {
-            const currentItem = current.find((item) => item.id === id);
+            const currentItem = current.find((item) => String(item.id) === String(id));
             if (!currentItem) return current;
 
-            if (current.some((item) => item.id !== id && String(item.material_id) === String(material.id))) {
-                return current.filter((item) => item.id !== id);
+            if (current.some((item) => String(item.id) !== String(id) && String(item.material_id) === String(material.id))) {
+                return current.filter((item) => String(item.id) !== String(id));
             }
 
             return current.map((item) =>
-                item.id === id
+                String(item.id) === String(id)
                     ? {
                         ...item,
                         material_id: String(material.id),
@@ -156,7 +155,7 @@ export default function AddQuoteModal({
     }, []);
 
     const onRemoveMaterial = useCallback((id: string | number) => {
-        setProjectMateriales((current) => current.filter((item) => item.id !== id));
+        setProjectMateriales((current) => current.filter((item) => String(item.id) !== String(id)));
     }, []);
 
     // --- rescatamos su descripción
@@ -174,13 +173,24 @@ export default function AddQuoteModal({
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
-        await onAddQuote({ 
-            ...form, 
-            costos_manuales: withQuoteResourceSnapshot(
-                manualResourceCosts,
-                projectEquipos,
-                projectMateriales,
-            ),
+        const costos_manuales = withQuoteResourceSnapshot(
+            manualResourceCosts,
+            projectEquipos,
+            projectMateriales,
+        );
+        await syncQuoteEquiposToProject(
+            form.proyecto_id,
+            projectEquipos,
+            existing_project_equipos,
+        );
+        await syncQuoteMaterialesToProject(
+            form.proyecto_id,
+            projectMateriales,
+            existing_project_materiales,
+        );
+        await onAddQuote({
+            ...form,
+            costos_manuales,
         });
     }
 
