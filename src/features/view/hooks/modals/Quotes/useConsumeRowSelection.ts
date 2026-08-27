@@ -18,6 +18,7 @@ import {
     getCableFvColor,
     getConsumibleFamily,
     isSelectableConsumibleFamily,
+    matchesFamilySize,
     SELECTABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -42,9 +43,14 @@ function applyTemplateMaterial(
     index: number,
     material: Materiales,
 ) {
+    const family = getConsumibleFamily(material.descripcion)
     onUpdateItem(index, "cod_producto", material.cod_producto)
     onUpdateItem(index, "descripcion", material.descripcion)
-    onUpdateItem(index, "tipo_de_producto", material.tipo_de_producto)
+    onUpdateItem(
+        index,
+        "tipo_de_producto",
+        family ? CONSUMIBLE_FAMILY_TIPO[family] : material.tipo_de_producto,
+    )
 }
 
 function matchesFamilyRow(
@@ -77,6 +83,7 @@ export function useConsumeRowSelection({
                 ...row,
                 family,
                 cableColor,
+                tipo_de_producto: family ? CONSUMIBLE_FAMILY_TIPO[family] : row.tipo_de_producto,
                 selectable: isSelectableConsumibleFamily(family),
             }
         })
@@ -97,7 +104,13 @@ export function useConsumeRowSelection({
             color?: CableFvColor,
             extraKey?: string,
         ) {
-            if (filterMaterialsByFamily(materiales, family, color).length === 0) return
+            if (
+                filterMaterialsByFamily(materiales, family, color)
+                    .filter((material) => matchesFamilySize(family, material.descripcion))
+                    .length === 0
+            ) {
+                return
+            }
 
             const label = color
                 ? `${CONSUMIBLE_FAMILY_LABEL[family]} ${color}`
@@ -166,9 +179,34 @@ export function useConsumeRowSelection({
         return map
     }, [materiales])
 
-    function getCurrentMaterialId(row: ConsumibleDisplayRow): string {
+    function getAssignedMaterialId(row: ConsumibleDisplayRow): string {
         if (!row.cod_producto) return ""
         return materialIdByCode.get(row.cod_producto) ?? ""
+    }
+
+    function getCurrentMaterialId(row: ConsumibleDisplayRow): string {
+        const assigned = getAssignedMaterialId(row)
+        if (assigned) return assigned
+
+        const family = row.family
+        if (!isSelectableConsumibleFamily(family)) return ""
+
+        const selectedIds = new Set(
+            displayRows
+                .filter((item) => item.key !== row.key)
+                .map(getAssignedMaterialId)
+                .filter(Boolean),
+        )
+        const firstAvailable = filterMaterialsByFamily(
+            materiales,
+            family,
+            family === "cable_fv" ? row.cableColor : null,
+        ).find((material) =>
+            !selectedIds.has(String(material.id))
+            && matchesFamilySize(family, material.descripcion),
+        )
+
+        return firstAvailable ? String(firstAvailable.id) : ""
     }
 
     function getRowOptions(row: ConsumibleDisplayRow) {
@@ -178,7 +216,7 @@ export function useConsumeRowSelection({
         const selectedIds = new Set(
             displayRows
                 .filter((item) => item.key !== row.key)
-                .map((item) => getCurrentMaterialId(item))
+                .map(getAssignedMaterialId)
                 .filter(Boolean),
         )
 
@@ -252,6 +290,17 @@ export function useConsumeRowSelection({
             if (inchSize) {
                 syncLinkedInchFamily("abrazadera", inchSize)
                 syncLinkedInchFamily("prensaestopa", inchSize)
+            }
+            return
+        }
+
+        if (family === "conduit") {
+            applyToRow(row, selected)
+            const inchSize = extractInchSize(selected.descripcion)
+            if (inchSize) {
+                syncLinkedInchFamily("curva", inchSize)
+                syncLinkedInchFamily("union", inchSize)
+                syncLinkedInchFamily("conector", inchSize)
             }
             return
         }
