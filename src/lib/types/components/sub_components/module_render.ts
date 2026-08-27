@@ -277,6 +277,7 @@ export type ResourcesTablesProps = {
     onAddEquipo: (equipo: Equipos) => void;
     onRemoveEquipo: (id: string | number) => void;
     onAddMaterial: (material: Materiales) => void;
+    onReplaceMaterial: (id: string | number, material: Materiales) => void;
     onRemoveMaterial: (id: string | number) => void;
 } & ManualCostHandlers;
 
