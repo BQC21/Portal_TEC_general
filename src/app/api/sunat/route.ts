@@ -2,12 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
+        // extraer la fecha actual
         const { searchParams } = new URL(req.url);
         const dateFromRequest = searchParams.get("date");
         const date = dateFromRequest ?? new Intl.DateTimeFormat("en-CA", {
             timeZone: "America/Lima",
         }).format(new Date());
 
+        // extraer la respuesta de la url extraída
         const url = `https://api.decolecta.com/v1/tipo-cambio/sunat?date=${date}`;
         const response = await fetch(url, {
             headers: {
