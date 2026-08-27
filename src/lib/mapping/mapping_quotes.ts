@@ -117,7 +117,9 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         gm: parseNumber(quote.gm) ?? 0,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
-        costos_manuales: quote.costos_manuales,
+        costos_manuales: quote.costos_manuales
+            ? JSON.parse(JSON.stringify(quote.costos_manuales))
+            : quote.costos_manuales,
         depre_tool: parseNumber(quote.depre_tool) ?? 0,
     }
 }
