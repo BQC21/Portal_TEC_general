@@ -1,17 +1,23 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
+import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { buildSortedConsumibles, getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
-import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow"
-import { ConsumeSelector } from "@/features/view/hooks/modals/Quotes/useConsumeSelector"
-import { materialRows } from "@/lib/utils/helpers/project_modals/rows"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
+import {
+    ConsumibleDisplayRow,
+    useConsumeRowSelection,
+} from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
+import {
+    CONSUMIBLE_FAMILY_LABEL,
+    isSelectableConsumibleFamily,
+} from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
 
 export type Consume_PriceTable_props = {
@@ -19,9 +25,42 @@ export type Consume_PriceTable_props = {
     selected_materiales: Project_Materiales[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
     onAddMaterial: (material: Materiales) => void
+    onReplaceMaterial: (id: string | number, material: Materiales) => void
     onRemoveMaterial: (id: string | number) => void
     onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
     onRemoveItem: (index: number) => void
+}
+
+function ConsumibleFamilySelect({
+    row,
+    options,
+    value,
+    onChange,
+}: {
+    row: ConsumibleDisplayRow
+    options: { value: string; label: string }[]
+    value: string
+    onChange: (value: string) => void
+}) {
+    const familyLabel = isSelectableConsumibleFamily(row.family)
+        ? CONSUMIBLE_FAMILY_LABEL[row.family]
+        : "Consumible"
+    const colorSuffix = row.cableColor ? ` ${row.cableColor}` : ""
+
+    return (
+        <select
+            aria-label={`Seleccionar ${familyLabel}${colorSuffix}`}
+            value={value}
+            onChange={(event) => onChange(event.target.value)}
+            className="input-focus w-full min-w-[16rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 transition"
+        >
+            {options.map((option) => (
+                <option key={option.value || option.label} value={option.value}>
+                    {option.label}
+                </option>
+            ))}
+        </select>
+    )
 }
 
 export function Consume_PriceTable({
@@ -29,84 +68,39 @@ export function Consume_PriceTable({
         selected_materiales,
         onUpdateCantidad,
         onAddMaterial,
+        onReplaceMaterial,
         onRemoveMaterial,
         onUpdateItem,
         onRemoveItem,
     }: Consume_PriceTable_props){
     const { materiales } = useMateriales()
-    const [selectedMaterialByRow, setSelectedMaterialByRow] = useState<
-        Record<string, { materialId: string }>
-    >({})
 
-    function handleMaterialChange(value: string, label: string, index: number) {
-        const key = `${label}-${index}`
-        if (!value) {
-            setSelectedMaterialByRow((prev) => {
-                const next = { ...prev }
-                delete next[key]
-                return next
-            })
-            return
-        }
-        setSelectedMaterialByRow((prev) => ({
-            ...prev,
-            [key]: { materialId: value },
-        }))
-    }
-
-    function handleMaterialAdd(label: string, index: number) {
-        const selectedId = selectedMaterialByRow[`${label}-${index}`]?.materialId
-        if (!selectedId) return
-
-        const material = materiales.find((item) => String(item.id) === selectedId)
-        if (!material) return
-
-        onAddMaterial(material)
-        setSelectedMaterialByRow((prev) => {
-            const next = { ...prev }
-            delete next[`${label}-${index}`]
-            return next
-        })
-    }
-
-    // -----------------------------
-    // ORDENAMIENTO DE CONSUMIBLES
-    // -----------------------------
     const sortedMateriales = useMemo(
         () => buildSortedConsumibles(selected_materiales, items, materiales),
         [selected_materiales, items, materiales],
-    );
+    )
+
+    const {
+        displayRows,
+        getRowOptions,
+        getCurrentMaterialId,
+        handleRowMaterialChange,
+        canAddCableTierra,
+        onAddCableTierra,
+    } = useConsumeRowSelection({
+        items,
+        sortedMateriales,
+        materiales,
+        onAddMaterial,
+        onReplaceMaterial,
+        onUpdateItem,
+    })
 
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
-                    {/* <p className="text-2xl font-bold text-slate-900">¡No olvidar el cable a tierra! ⚠️ </p> */}
-                    <div>
-                        <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Selección de materiales</h2>
-                        <div className="flex flex-col gap-4">
-                            {materialRows.map((label, index) => {
-                                const material_filteredOptions = ConsumeSelector(
-                                    label,
-                                    selected_materiales,
-                                    materiales,
-                                );
-
-                                return (
-                                    <SelectionRow
-                                        key={`material-row-${label}-${index}`}
-                                        label={label}
-                                        buttonLabel="Agregar"
-                                        value={selectedMaterialByRow[`${label}-${index}`]?.materialId || ""}
-                                        options={material_filteredOptions}
-                                        onChange={(value) => handleMaterialChange(value, label, index)}
-                                        onClick={() => handleMaterialAdd(label, index)}
-                                    />
-                                );
-                            })}
-                        </div>
-                    </div>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
@@ -153,37 +147,68 @@ export function Consume_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                    {sortedMateriales.length > 0 ? (
-                                        sortedMateriales.map((item) => (
+                                    {displayRows.length > 0 ? (
+                                        displayRows.map((item) => (
                                             <tr
                                                 key={item.key}
                                                 className={getConsumibleGroup(item.tipo_de_producto).rowClass}
                                             >
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.cod_producto}
+                                                    {item.cod_producto || "—"}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.descripcion}
+                                                    {item.selectable ? (
+                                                        <div className="flex min-w-[16rem] items-end gap-2">
+                                                            <div className="min-w-0 flex-1">
+                                                                <ConsumibleFamilySelect
+                                                                    row={item}
+                                                                    options={getRowOptions(item)}
+                                                                    value={getCurrentMaterialId(item)}
+                                                                    onChange={(value) =>
+                                                                        handleRowMaterialChange(item, value)
+                                                                    }
+                                                                />
+                                                            </div>
+                                                            {item.family === "cable_tierra"
+                                                                && canAddCableTierra
+                                                                && !item.isPlaceholder ? (
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={onAddCableTierra}
+                                                                    className="table-icon-button"
+                                                                    aria-label="Agregar otro cable de tierra"
+                                                                >
+                                                                    <PlusIcon />
+                                                                </button>
+                                                            ) : null}
+                                                        </div>
+                                                    ) : (
+                                                        item.descripcion
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.unidad}
+                                                    {item.unidad || "—"}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    <AddProductNumberField
-                                                        label="Cantidad"
-                                                        value={Number(item.cantidad)}
-                                                        min={0}
-                                                        step={0.01}
-                                                        onChange={(value) => {
-                                                            if (item.source === "catalog" && item.catalogId != null) {
-                                                                onUpdateCantidad(item.catalogId, value)
-                                                                return
-                                                            }
-                                                            if (item.templateIndex != null) {
-                                                                onUpdateItem(item.templateIndex, "cantidad", value)
-                                                            }
-                                                        }}
-                                                    />
+                                                    {item.isPlaceholder ? (
+                                                        "—"
+                                                    ) : (
+                                                        <AddProductNumberField
+                                                            label="Cantidad"
+                                                            value={Number(item.cantidad)}
+                                                            min={0}
+                                                            step={0.01}
+                                                            onChange={(value) => {
+                                                                if (item.source === "catalog" && item.catalogId != null) {
+                                                                    onUpdateCantidad(item.catalogId, value)
+                                                                    return
+                                                                }
+                                                                if (item.templateIndex != null) {
+                                                                    onUpdateItem(item.templateIndex, "cantidad", value)
+                                                                }
+                                                            }}
+                                                        />
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.precio_soles), "PEN")}
@@ -197,7 +222,6 @@ export function Consume_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.precio_dolares_igv), "USD")}
                                                 </td>
-                                                {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.precio_soles)*Number(item.cantidad), "PEN")}
                                                 </td>
@@ -211,22 +235,24 @@ export function Consume_PriceTable({
                                                     {formatCurrency(Number(item.precio_dolares_igv)*Number(item.cantidad), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => {
-                                                            if (item.source === "catalog" && item.catalogId != null) {
-                                                                onRemoveMaterial(item.catalogId)
-                                                                return
-                                                            }
-                                                            if (item.templateIndex != null) {
-                                                                onRemoveItem(item.templateIndex)
-                                                            }
-                                                        }}
-                                                        className="table-icon-button"
-                                                        aria-label="Eliminar ítem"
-                                                    >
-                                                        <TrashIcon />
-                                                    </button>
+                                                    {item.isPlaceholder ? null : (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                if (item.source === "catalog" && item.catalogId != null) {
+                                                                    onRemoveMaterial(item.catalogId)
+                                                                    return
+                                                                }
+                                                                if (item.templateIndex != null) {
+                                                                    onRemoveItem(item.templateIndex)
+                                                                }
+                                                            }}
+                                                            className="table-icon-button"
+                                                            aria-label="Eliminar ítem"
+                                                        >
+                                                            <TrashIcon />
+                                                        </button>
+                                                    )}
                                                 </td>
                                             </tr>
                                         ))
