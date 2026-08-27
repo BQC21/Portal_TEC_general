@@ -1,4 +1,4 @@
-// filtrado de productos
+// filtrado estático de productos (BACKUP)
 export function shouldRender_ProductInfoSelection(productType: string) {
     const productMap: { [key: string]: { brand_options: string[]; unit: string } } = {
         "Accesorio": { brand_options: ["LIVOLTEK"], unit: "Unidad" },

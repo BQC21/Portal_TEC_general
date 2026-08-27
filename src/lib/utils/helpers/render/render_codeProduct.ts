@@ -4,6 +4,7 @@ import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { getSupplierInfo } from "../manage_info/getInfo";
 import { getProductTypeCode } from "../manage_info/getCode";
 
+// condición para poder renderizar el código
 export function shouldRender_CodeProduct(
     tipo: TypeFormstate,
     proveedor: SupplierFormstate,
@@ -12,6 +13,7 @@ export function shouldRender_CodeProduct(
     return Boolean(getProductCodePrefix(tipo, proveedor, productCategory));
 }
 
+// función para obtener el prefijo del código
 function getProductCodePrefix(
     tipo: TypeFormstate,
     proveedor: SupplierFormstate,
@@ -25,6 +27,7 @@ function getProductCodePrefix(
     return `${productCode}${supplierCode}`;
 }
 
+// función para  obtener el número siguiente para la codificación
 export function getNextProductRowNumber(
     products: { cod_producto: string }[],
     tipo: TypeFormstate,
@@ -44,6 +47,10 @@ export function getNextProductRowNumber(
 
     return max + 1;
 }
+
+// --------------------------------
+// función para construir el código
+// --------------------------------
 
 export function buildProductCode(
     tipo: TypeFormstate,

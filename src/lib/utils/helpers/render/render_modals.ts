@@ -51,15 +51,8 @@ export function  shouldRenderPanelArray(type: string): boolean {
 
 
 // -----------------------------
-// renderizar fecha de importación solo para productos en importación
-// -----------------------------
-
-export function shouldRenderImportDate(productStatus: string): boolean {
-    return productStatus === "En importación"
-} 
-
-// -----------------------------
-// --- Automatizar el llenado de información de proveedor (RUC, codigo del proveedor) ---
+// --- Triggers para llenado de información de 
+//     proveedor (RUC, codigo del proveedor) ---
 // -----------------------------
 
 export function shouldRender_SupplyInfoSelection(proveedor: SupplierFormstate) {
