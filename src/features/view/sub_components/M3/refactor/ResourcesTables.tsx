@@ -28,6 +28,7 @@ export function ResourcesTables({
     onAddEquipo,
     onRemoveEquipo,
     onAddMaterial,
+    onReplaceMaterial,
     onRemoveMaterial,
 }: ResourcesTablesProps) {
     return(
@@ -61,6 +62,7 @@ export function ResourcesTables({
                         selected_materiales={projectMateriales}
                         onUpdateCantidad={onUpdateMaterialCantidad}
                         onAddMaterial={onAddMaterial}
+                        onReplaceMaterial={onReplaceMaterial}
                         onRemoveMaterial={onRemoveMaterial}
                         onUpdateItem={(index, field, value) =>
                             updateManualCostItem("Recursos.consumible", index, field, value)
