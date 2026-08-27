@@ -30,6 +30,7 @@ export function ResourcesTables({
     onAddMaterial,
     onReplaceMaterial,
     onRemoveMaterial,
+    onAddConsumeItem,
 }: ResourcesTablesProps) {
     return(
         <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
@@ -64,6 +65,7 @@ export function ResourcesTables({
                         onAddMaterial={onAddMaterial}
                         onReplaceMaterial={onReplaceMaterial}
                         onRemoveMaterial={onRemoveMaterial}
+                        onAddConsumeItem={onAddConsumeItem}
                         onUpdateItem={(index, field, value) =>
                             updateManualCostItem("Recursos.consumible", index, field, value)
                         }

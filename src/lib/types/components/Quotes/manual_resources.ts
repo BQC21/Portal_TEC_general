@@ -1,5 +1,8 @@
 
 // Añadir patrón de cantidad
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
+
 export type QuantityPriceItem = {
     id: string;
     descripcion: string;
@@ -63,6 +66,8 @@ export type ManualCosts = {
         sctr: QuantityPriceItem[];
         hotel: MontoItem;
         considerar_epp_reutilizable: boolean;
+        equipos_seleccionados?: Project_Equipos[];
+        materiales_seleccionados?: Project_Materiales[];
     };
     Viaticos: {
         eating: MontoItem;

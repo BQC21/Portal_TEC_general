@@ -3,7 +3,7 @@
 import { AddQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
@@ -21,6 +21,11 @@ import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
+import {
+    resolveQuoteEquipos,
+    resolveQuoteMateriales,
+    withQuoteResourceSnapshot,
+} from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -47,8 +52,14 @@ export default function AddQuoteModal({
 
     const [projectEquipos, setProjectEquipos] = useState<Project_Equipos[]>([]);
     const [projectMateriales, setProjectMateriales] = useState<Project_Materiales[]>([]);
+    const skipProjectHydration = useRef(true);
 
     useEffect(() => {
+        if (skipProjectHydration.current) {
+            skipProjectHydration.current = false;
+            return;
+        }
+
         if (!form.proyecto_id) {
             setProjectEquipos([]);
             setProjectMateriales([]);
@@ -165,7 +176,11 @@ export default function AddQuoteModal({
         event.preventDefault();
         await onAddQuote({ 
             ...form, 
-            costos_manuales: manualResourceCosts,
+            costos_manuales: withQuoteResourceSnapshot(
+                manualResourceCosts,
+                projectEquipos,
+                projectMateriales,
+            ),
         });
     }
 
@@ -189,6 +204,7 @@ export default function AddQuoteModal({
         addManualCostItem, 
         removeManualCostItem,
         updateConsiderarEppReutilizable,
+        addConsumeItem,
     } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
@@ -293,6 +309,7 @@ export default function AddQuoteModal({
                             onAddMaterial={onAddMaterial}
                             onReplaceMaterial={onReplaceMaterial}
                             onRemoveMaterial={onRemoveMaterial}
+                            onAddConsumeItem={addConsumeItem}
                         />
 
                         <ViaticosTables

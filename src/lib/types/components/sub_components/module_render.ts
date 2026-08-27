@@ -279,6 +279,7 @@ export type ResourcesTablesProps = {
     onAddMaterial: (material: Materiales) => void;
     onReplaceMaterial: (id: string | number, material: Materiales) => void;
     onRemoveMaterial: (id: string | number) => void;
+    onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void;
 } & ManualCostHandlers;
 
 export type ViaticosTablesProps = {

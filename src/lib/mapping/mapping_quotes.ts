@@ -14,13 +14,13 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
         Recursos: {
             ...defaults.Recursos,
             ...saved.Recursos,
-            consumible: saved.Recursos?.consumible?.length
+            consumible: Array.isArray(saved.Recursos?.consumible)
                 ? saved.Recursos.consumible
                 : defaults.Recursos.consumible,
-            epp: saved.Recursos?.epp?.length ? saved.Recursos.epp : defaults.Recursos.epp,
-            tooling: saved.Recursos?.tooling?.length ? saved.Recursos.tooling : defaults.Recursos.tooling,
-            personal: saved.Recursos?.personal?.length ? saved.Recursos.personal : defaults.Recursos.personal,
-            sctr: saved.Recursos?.sctr?.length ? saved.Recursos.sctr : defaults.Recursos.sctr,
+            epp: Array.isArray(saved.Recursos?.epp) ? saved.Recursos.epp : defaults.Recursos.epp,
+            tooling: Array.isArray(saved.Recursos?.tooling) ? saved.Recursos.tooling : defaults.Recursos.tooling,
+            personal: Array.isArray(saved.Recursos?.personal) ? saved.Recursos.personal : defaults.Recursos.personal,
+            sctr: Array.isArray(saved.Recursos?.sctr) ? saved.Recursos.sctr : defaults.Recursos.sctr,
             hotel: {
                 ...defaults.Recursos.hotel,
                 ...saved.Recursos?.hotel,
@@ -28,6 +28,8 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             considerar_epp_reutilizable:
                 saved.Recursos?.considerar_epp_reutilizable ??
                 defaults.Recursos.considerar_epp_reutilizable,
+            equipos_seleccionados: saved.Recursos?.equipos_seleccionados,
+            materiales_seleccionados: saved.Recursos?.materiales_seleccionados,
         },
         Viaticos: {
             ...defaults.Viaticos,

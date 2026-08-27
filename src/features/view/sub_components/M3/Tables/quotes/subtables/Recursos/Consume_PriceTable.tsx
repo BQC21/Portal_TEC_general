@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo } from "react"
+import { Fragment, useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
@@ -8,16 +8,26 @@ import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateria
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
-import { buildSortedConsumibles, getConsumibleGroup } from "@/lib/utils/helpers/sorting/consumiblesSort"
+import {
+    buildSortedConsumibles,
+    ConsumibleGroupKey,
+    getConsumibleGroup,
+    groupConsumibleRows,
+} from "@/lib/utils/helpers/sorting/consumiblesSort"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import {
     ConsumibleDisplayRow,
     useConsumeRowSelection,
 } from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
 import {
+    CONSUMIBLE_EXTRA_ADD_LABEL,
     CONSUMIBLE_FAMILY_LABEL,
+    CONSUMIBLE_FAMILY_TIPO,
+    CONSUMIBLE_RESTORE_LABEL,
+    ConsumibleRestorableFamily,
     isExtraConsumibleFamily,
     isSelectableConsumibleFamily,
+    RESTORABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
 
@@ -28,8 +38,32 @@ export type Consume_PriceTable_props = {
     onAddMaterial: (material: Materiales) => void
     onReplaceMaterial: (id: string | number, material: Materiales) => void
     onRemoveMaterial: (id: string | number) => void
+    onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void
     onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
     onRemoveItem: (index: number) => void
+}
+
+function restoreFamiliesForGroup(groupKey: ConsumibleGroupKey): ConsumibleRestorableFamily[] {
+    return RESTORABLE_CONSUMIBLE_FAMILIES.filter(
+        (family) => getConsumibleGroup(CONSUMIBLE_FAMILY_TIPO[family]).key === groupKey,
+    )
+}
+
+function GroupChevron({ collapsed }: { collapsed: boolean }) {
+    return (
+        <svg
+            className={`h-5 w-5 shrink-0 text-slate-700 transition-transform ${collapsed ? "" : "rotate-180"}`}
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            aria-hidden
+        >
+            <path
+                fillRule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clipRule="evenodd"
+            />
+        </svg>
+    )
 }
 
 function ConsumibleFamilySelect({
@@ -74,10 +108,12 @@ export function Consume_PriceTable({
         onAddMaterial,
         onReplaceMaterial,
         onRemoveMaterial,
+        onAddConsumeItem,
         onUpdateItem,
         onRemoveItem,
     }: Consume_PriceTable_props){
     const { materiales } = useMateriales()
+    const [collapsedGroups, setCollapsedGroups] = useState<Set<ConsumibleGroupKey>>(new Set())
 
     const sortedMateriales = useMemo(
         () => buildSortedConsumibles(selected_materiales, items, materiales),
@@ -90,6 +126,7 @@ export function Consume_PriceTable({
         getCurrentMaterialId,
         handleRowMaterialChange,
         canAddExtraFamily,
+        canRestoreFamily,
         onAddExtraFamily,
     } = useConsumeRowSelection({
         items,
@@ -97,8 +134,20 @@ export function Consume_PriceTable({
         materiales,
         onAddMaterial,
         onReplaceMaterial,
+        onAddConsumeItem,
         onUpdateItem,
     })
+
+    const groupedRows = useMemo(() => groupConsumibleRows(displayRows), [displayRows])
+
+    function toggleGroup(key: ConsumibleGroupKey) {
+        setCollapsedGroups((current) => {
+            const next = new Set(current)
+            if (next.has(key)) next.delete(key)
+            else next.add(key)
+            return next
+        })
+    }
 
     return(
         <>
@@ -151,8 +200,50 @@ export function Consume_PriceTable({
                                 </tr>
                             </thead>
                             <tbody>
-                                    {displayRows.length > 0 ? (
-                                        displayRows.map((item) => (
+                                    {groupedRows.length > 0 ? (
+                                        groupedRows.map(({ meta, rows }) => {
+                                            const collapsed = collapsedGroups.has(meta.key)
+                                            const restoreFamilies = restoreFamiliesForGroup(meta.key)
+                                                .filter((family) => canRestoreFamily(family))
+
+                                            return (
+                                                <Fragment key={`group-${meta.key}`}>
+                                                    <tr key={`group-${meta.key}`} className={meta.headerClass}>
+                                                        <td
+                                                            colSpan={13}
+                                                            className="border-b border-slate-200 px-4 py-3"
+                                                        >
+                                                            <div className="flex flex-wrap items-center justify-between gap-3">
+                                                                <button
+                                                                    type="button"
+                                                                    onClick={() => toggleGroup(meta.key)}
+                                                                    aria-expanded={!collapsed}
+                                                                    className="inline-flex items-center gap-2 text-left text-base font-bold text-slate-900"
+                                                                >
+                                                                    <GroupChevron collapsed={collapsed} />
+                                                                    <span>
+                                                                        {meta.label} ({rows.length})
+                                                                    </span>
+                                                                </button>
+                                                                {restoreFamilies.length > 0 ? (
+                                                                    <div className="flex flex-wrap items-center gap-2">
+                                                                        {restoreFamilies.map((family) => (
+                                                                            <button
+                                                                                key={family}
+                                                                                type="button"
+                                                                                onClick={() => onAddExtraFamily(family)}
+                                                                                className="inline-flex items-center gap-1 rounded-lg border border-slate-400 bg-white px-3 py-1.5 text-sm font-semibold text-slate-800 transition hover:bg-slate-50"
+                                                                            >
+                                                                                <PlusIcon />
+                                                                                {CONSUMIBLE_RESTORE_LABEL[family]}
+                                                                            </button>
+                                                                        ))}
+                                                                    </div>
+                                                                ) : null}
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    {collapsed ? null : rows.map((item) => (
                                             <tr
                                                 key={item.key}
                                                 className={getConsumibleGroup(item.tipo_de_producto).rowClass}
@@ -184,9 +275,7 @@ export function Consume_PriceTable({
                                                                     }}
                                                                     className="table-icon-button"
                                                                     aria-label={
-                                                                        item.family === "tablero"
-                                                                            ? "Agregar otro tablero"
-                                                                            : "Agregar otro cable de tierra"
+                                                                        CONSUMIBLE_EXTRA_ADD_LABEL[item.family]
                                                                     }
                                                                 >
                                                                     <PlusIcon />
@@ -266,7 +355,10 @@ export function Consume_PriceTable({
                                                     )}
                                                 </td>
                                             </tr>
-                                        ))
+                                                    ))}
+                                                </Fragment>
+                                            )
+                                        })
                                     ) : (
                                         <tr className="bg-white">
                                             <td colSpan={13} className="px-4 py-10 text-center text-slate-500">

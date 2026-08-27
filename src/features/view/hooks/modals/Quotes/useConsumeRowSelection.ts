@@ -1,4 +1,5 @@
 import { useMemo } from "react"
+import { consumible_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { ConsumibleTableRow } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
@@ -22,6 +23,7 @@ import {
     getDefaultMaterialForFamily,
     isDefaultInsertedFamily,
     isExtraConsumibleFamily,
+    isRestorableConsumibleFamily,
     isSelectableConsumibleFamily,
     matchesFamilySize,
     SELECTABLE_CONSUMIBLE_FAMILIES,
@@ -40,6 +42,7 @@ type UseConsumeRowSelectionArgs = {
     materiales: Materiales[]
     onAddMaterial: (material: Materiales) => void
     onReplaceMaterial: (id: string | number, material: Materiales) => void
+    onAddConsumeItem?: (item: Omit<ConsumeItem, "id">) => void
     onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
 }
 
@@ -96,6 +99,7 @@ export function useConsumeRowSelection({
     materiales,
     onAddMaterial,
     onReplaceMaterial,
+    onAddConsumeItem,
     onUpdateItem,
 }: UseConsumeRowSelectionArgs) {
     const templateOrder = useMemo(
@@ -188,7 +192,9 @@ export function useConsumeRowSelection({
             }
 
             if (isExtraConsumibleFamily(family)) {
-                if (!presentFamilies.has(family)) pushPlaceholder(family)
+                if (!isRestorableConsumibleFamily(family) && !presentFamilies.has(family)) {
+                    pushPlaceholder(family)
+                }
                 continue
             }
 
@@ -362,9 +368,29 @@ export function useConsumeRowSelection({
         })
     }
 
+    function unusedTemplateItemsForFamily(family: ConsumibleExtraFamily) {
+        return consumible_template.filter((item) => {
+            if (getConsumibleFamily(item.descripcion) !== family) return false
+            return !displayRows.some((row) => row.cod_producto === item.cod_producto)
+        })
+    }
+
+    function hasUnusedExtraFamilyItems(family: ConsumibleExtraFamily) {
+        return unusedMaterialsForFamily(family).length > 0
+            || unusedTemplateItemsForFamily(family).length > 0
+    }
+
     function canAddExtraFamily(family: ConsumibleExtraFamily) {
         const visibleCount = displayRows.filter((row) => row.family === family).length
-        return visibleCount >= 1 && unusedMaterialsForFamily(family).length > 0
+        return visibleCount >= 1 && hasUnusedExtraFamilyItems(family)
+    }
+
+    function canRestoreFamily(family: ConsumibleExtraFamily) {
+        if (!isRestorableConsumibleFamily(family)) return false
+        const visibleCount = displayRows.filter((row) =>
+            row.family === family && !row.isPlaceholder,
+        ).length
+        return visibleCount === 0 && hasUnusedExtraFamilyItems(family)
     }
 
     function onAddExtraFamily(family: ConsumibleExtraFamily) {
@@ -384,7 +410,20 @@ export function useConsumeRowSelection({
         }
 
         const nextMaterial = getDefaultMaterialForFamily(materiales, family, null, usedCodes)
-        if (nextMaterial) onAddMaterial(nextMaterial)
+        if (nextMaterial) {
+            onAddMaterial(nextMaterial)
+            return
+        }
+
+        const nextTemplate = unusedTemplateItemsForFamily(family)[0]
+        if (nextTemplate && onAddConsumeItem) {
+            onAddConsumeItem({
+                cod_producto: nextTemplate.cod_producto,
+                descripcion: nextTemplate.descripcion,
+                tipo_de_producto: nextTemplate.tipo_de_producto,
+                cantidad: nextTemplate.cantidad,
+            })
+        }
     }
 
     return {
@@ -393,6 +432,7 @@ export function useConsumeRowSelection({
         getCurrentMaterialId,
         handleRowMaterialChange,
         canAddExtraFamily,
+        canRestoreFamily,
         onAddExtraFamily,
     }
 }

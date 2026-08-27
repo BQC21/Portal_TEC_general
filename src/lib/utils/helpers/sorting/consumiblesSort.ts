@@ -11,11 +11,59 @@ import {
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
+export type ConsumibleGroupKey = "proteccion" | "canalizacion" | "consumible"
+
+export type ConsumibleGroupMeta = {
+    key: ConsumibleGroupKey
+    label: string
+    order: number
+    rowClass: string
+    headerClass: string
+}
+
 // Colorear grupo de material
-export function getConsumibleGroup(tipo?: string) {
-    if (tipo === "PROTECCIÓN") return { order: 0, rowClass: "bg-yellow-100" }
-    if (tipo === "CANALIZACIÓN") return { order: 1, rowClass: "bg-blue-100" }
-    return { order: 2, rowClass: "bg-green-100" }
+export function getConsumibleGroup(tipo?: string): ConsumibleGroupMeta {
+    if (tipo === "PROTECCIÓN") {
+        return {
+            key: "proteccion",
+            label: "Protección",
+            order: 0,
+            rowClass: "bg-yellow-100",
+            headerClass: "bg-yellow-200",
+        }
+    }
+    if (tipo === "CANALIZACIÓN") {
+        return {
+            key: "canalizacion",
+            label: "Canalización",
+            order: 1,
+            rowClass: "bg-blue-100",
+            headerClass: "bg-blue-200",
+        }
+    }
+    return {
+        key: "consumible",
+        label: "Consumible",
+        order: 2,
+        rowClass: "bg-green-100",
+        headerClass: "bg-green-200",
+    }
+}
+
+export function groupConsumibleRows<T extends { tipo_de_producto?: string }>(rows: T[]) {
+    const groups = new Map<ConsumibleGroupKey, { meta: ConsumibleGroupMeta; rows: T[] }>()
+
+    for (const row of rows) {
+        const meta = getConsumibleGroup(row.tipo_de_producto)
+        const current = groups.get(meta.key)
+        if (current) {
+            current.rows.push(row)
+        } else {
+            groups.set(meta.key, { meta, rows: [row] })
+        }
+    }
+
+    return [...groups.values()].sort((a, b) => a.meta.order - b.meta.order)
 }
 
 // Comparar materiales 

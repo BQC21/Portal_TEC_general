@@ -260,12 +260,26 @@ export function ManageLocalCosts(
         }));
     }
 
+    function addConsumeItem(item: Omit<ConsumeItem, "id">) {
+        setManualResourceCosts((current) => ({
+            ...current,
+            Recursos: {
+                ...current.Recursos,
+                consumible: [
+                    ...current.Recursos.consumible,
+                    { id: crypto.randomUUID(), ...item },
+                ],
+            },
+        }));
+    }
+
     return {
         updateManualCostItem,
         updateManualCostMonto,
         addManualCostItem,
         removeManualCostItem,
         updateConsiderarEppReutilizable,
+        addConsumeItem,
     };
 }
 

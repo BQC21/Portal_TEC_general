@@ -3,7 +3,7 @@
 import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
@@ -21,6 +21,11 @@ import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { Equipos } from "@/lib/types/supabase/equipos-types";
+import {
+    resolveQuoteEquipos,
+    resolveQuoteMateriales,
+    withQuoteResourceSnapshot,
+} from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -47,17 +52,27 @@ export default function EditQuoteModal({
     const hasSelectedProject = Boolean(form.proyecto_id);
 
     const [projectEquipos, setProjectEquipos] = useState<Project_Equipos[]>(() =>
-        existingQuote.proyecto_id
-            ? existing_project_equipos.filter((item) => item.proyecto_id === existingQuote.proyecto_id)
-            : [],
+        resolveQuoteEquipos(
+            existingQuote.costos_manuales?.Recursos?.equipos_seleccionados,
+            existingQuote.proyecto_id,
+            existing_project_equipos,
+        ),
     );
     const [projectMateriales, setProjectMateriales] = useState<Project_Materiales[]>(() =>
-        existingQuote.proyecto_id
-            ? existing_project_materiales.filter((item) => item.proyecto_id === existingQuote.proyecto_id)
-            : [],
+        resolveQuoteMateriales(
+            existingQuote.costos_manuales?.Recursos?.materiales_seleccionados,
+            existingQuote.proyecto_id,
+            existing_project_materiales,
+        ),
     );
+    const skipProjectHydration = useRef(true);
 
     useEffect(() => {
+        if (skipProjectHydration.current) {
+            skipProjectHydration.current = false;
+            return;
+        }
+
         if (!form.proyecto_id) {
             setProjectEquipos([]);
             setProjectMateriales([]);
@@ -174,7 +189,11 @@ export default function EditQuoteModal({
         event.preventDefault();
         await onUpdateQuote({ 
             ...form,
-            costos_manuales: manualResourceCosts, 
+            costos_manuales: withQuoteResourceSnapshot(
+                manualResourceCosts,
+                projectEquipos,
+                projectMateriales,
+            ),
             updated_at: new Date(),
         });
     }
@@ -200,6 +219,7 @@ export default function EditQuoteModal({
         addManualCostItem, 
         removeManualCostItem,
         updateConsiderarEppReutilizable,
+        addConsumeItem,
     } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
@@ -291,6 +311,7 @@ export default function EditQuoteModal({
                             onAddMaterial={onAddMaterial}
                             onReplaceMaterial={onReplaceMaterial}
                             onRemoveMaterial={onRemoveMaterial}
+                            onAddConsumeItem={addConsumeItem}
                         />
 
                         <ViaticosTables

@@ -19,18 +19,32 @@ export type ConsumibleSelectableFamily =
     | "precintos_100"
     | "tornillos_autorroscantes_100"
     | "tornillo_spack"
+    | "mc4"
+    | "fusible"
 
 export type ConsumibleLinkedFamily = "abrazadera" | "prensaestopa" | "curva" | "union" | "conector"
 
 export type ConsumibleFamily = ConsumibleSelectableFamily | ConsumibleLinkedFamily | "canaleta"
 
-export const EXTRA_CONSUMIBLE_FAMILIES = ["cable_tierra", "tablero"] as const
+export const EXTRA_CONSUMIBLE_FAMILIES = ["cable_tierra", "tablero", "mc4", "fusible"] as const
 export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
+
+export const RESTORABLE_CONSUMIBLE_FAMILIES = ["mc4", "fusible"] as const
+export type ConsumibleRestorableFamily = (typeof RESTORABLE_CONSUMIBLE_FAMILIES)[number]
 
 export function isExtraConsumibleFamily(
     family: ConsumibleFamily | null,
 ): family is ConsumibleExtraFamily {
-    return family === "cable_tierra" || family === "tablero"
+    return family === "cable_tierra"
+        || family === "tablero"
+        || family === "mc4"
+        || family === "fusible"
+}
+
+export function isRestorableConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleRestorableFamily {
+    return family === "mc4" || family === "fusible"
 }
 
 export type CableFvColor = "rojo" | "negro"
@@ -53,6 +67,8 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "precintos_100",
     "tornillos_autorroscantes_100",
     "tornillo_spack",
+    "mc4",
+    "fusible",
 ]
 
 export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string> = {
@@ -73,6 +89,20 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     precintos_100: "100to precintos",
     tornillos_autorroscantes_100: "100to tornillos autorroscantes",
     tornillo_spack: "Tornillo Spack",
+    mc4: "MC4",
+    fusible: "Fusible + Portafusible",
+}
+
+export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleExtraFamily, string> = {
+    cable_tierra: "Agregar otro cable de tierra",
+    tablero: "Agregar otro tablero",
+    mc4: "Agregar otro MC4",
+    fusible: "Agregar otro fusible + portafusible",
+}
+
+export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
+    mc4: "Agregar MC4",
+    fusible: "Agregar fusible + portafusible",
 }
 
 export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
@@ -99,6 +129,8 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     precintos_100: "CONSUMIBLE",
     tornillos_autorroscantes_100: "CONSUMIBLE",
     tornillo_spack: "CONSUMIBLE",
+    mc4: "MC4",
+    fusible: "PROTECCIÓN",
 }
 
 const CANALIZACION_FAMILY_ORDER: Record<string, number> = {
@@ -177,6 +209,7 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (description.includes("itm") && description.includes("vdc")) return "itm_dc"
     if (description.includes("itm")) return "itm_ac"
     if (description.includes("spd")) return "spd"
+    if (description.includes("fusible") || description.includes("portafusible")) return "fusible"
 
     if (description.includes("conduit") && description.includes("flexible")) {
         return "conduit_flexible"
@@ -186,7 +219,8 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (description.includes("prensaestopa")) return "prensaestopa"
     if (description.includes("curva")) return "curva"
     if (description.includes("union")) return "union"
-    if (description.includes("conector") && !description.includes("mc4")) return "conector"
+    if (description.includes("mc4")) return "mc4"
+    if (description.includes("conector")) return "conector"
     if (description.includes("canaleta")) return "canaleta"
 
     if (description.includes("cable ac")) return "cable_ac"
