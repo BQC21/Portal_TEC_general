@@ -51,6 +51,30 @@ export const MATERIALES_HEADERS = [
     "Acciones",
 ];
 
+export const TABLE_HEADERS_SUPPLIER = [
+    "Nombre del proveedor",
+    "Código del proveedor",
+    "RUC",
+    "Nombre del contacto",
+    "Teléfono",
+    "Categoría",
+    "Acciones",
+]
+
+export const TABLE_HEADERS_BRAND = [
+    "Nombre de la marca",
+    "Categoría",
+    "Proveedores asociados",
+    "Acciones",
+]
+
+export const TABLE_HEADERS_TYPE = [
+    "Nombre del tipo de producto",
+    "Categoría",
+    "Marcas asociadas",
+    "Acciones",
+]
+
 /////////////
 
 export const TABLE_HEADERS_PROJECT = [
@@ -79,34 +103,7 @@ export const TABLE_HEADERS_ZONE = [
     "Acciones",
 ]
 
-
 /////////////
-
-export const TABLE_HEADERS_SUPPLIER = [
-    "Nombre del proveedor",
-    "Código del proveedor",
-    "RUC",
-    "Nombre del contacto",
-    "Teléfono",
-    "Categoría",
-    "Acciones",
-]
-
-
-export const TABLE_HEADERS_BRAND = [
-    "Nombre de la marca",
-    "Categoría",
-    "Proveedores asociados",
-    "Acciones",
-]
-
-
-export const TABLE_HEADERS_TYPE = [
-    "Nombre del tipo de producto",
-    "Categoría",
-    "Marcas asociadas",
-    "Acciones",
-]
 
 export const TABLE_HEADERS_QUOTE = [
     "Código de cotización",

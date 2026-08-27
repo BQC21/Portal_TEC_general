@@ -1,8 +1,3 @@
-// import type { 
-// 	// Product,
-// 	ProductFormState,
-// } from "@/lib/types/supabase/product-types";
-
 import type {
     // Equipos,
     EquiposFormState,
@@ -265,6 +260,9 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     opcion_dscto: "",
 }
 
+// ----------------------------------------------------------
+// Costos de inserción manual en las subtablas de cotización
+// ----------------------------------------------------------
 export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = { 
     Recursos: {
         consumible: consumible_template.map((item) => ({
