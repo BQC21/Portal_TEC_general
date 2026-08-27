@@ -1,3 +1,4 @@
+import { ConsumibleSortableRow, ConsumibleTableRow } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
@@ -10,36 +11,14 @@ import {
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
-export type ConsumibleTableRow = {
-    key: string
-    source: "catalog" | "template"
-    catalogId?: string | number
-    templateIndex?: number
-    cod_producto: string
-    descripcion: string
-    tipo_de_producto?: string
-    unidad: string
-    cantidad: number
-    precio_soles: number
-    precio_soles_igv: number
-    precio_dolares: number
-    precio_dolares_igv: number
-}
-
+// Colorear grupo de material
 export function getConsumibleGroup(tipo?: string) {
     if (tipo === "PROTECCIÓN") return { order: 0, rowClass: "bg-yellow-100" }
     if (tipo === "CANALIZACIÓN") return { order: 1, rowClass: "bg-blue-100" }
     return { order: 2, rowClass: "bg-green-100" }
 }
 
-type ConsumibleSortableRow = {
-    descripcion: string
-    tipo_de_producto?: string
-    cod_producto: string
-    family?: ConsumibleFamily | null
-    cableColor?: CableFvColor | null
-}
-
+// Comparar materiales 
 export function compareConsumibleRows(
     a: ConsumibleSortableRow,
     b: ConsumibleSortableRow,
@@ -73,6 +52,7 @@ export function compareConsumibleRows(
     return a.cod_producto.localeCompare(b.cod_producto)
 }
 
+// Ordenar los materiales
 export function buildSortedConsumibles(
     selected_materiales: Project_Materiales[],
     items: ConsumeItem[],
