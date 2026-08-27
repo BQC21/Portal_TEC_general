@@ -1,3 +1,5 @@
+import {CurrencyCode, PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
+
 // -------------------------
 // Funciones para Normalización y Formateo de Datos
 // -------------------------
@@ -48,13 +50,12 @@ export function toSafeNumber(value: unknown): number {
 	return parsed;
 }
 
-// función para normalizar el código de moneda, asegurando que solo se acepten "PEN" o "USD"
-export function normalizeCurrencyCode(value: unknown): "PEN" | "USD" {
-	if (value === "USD" || value === "PEN") {
-		return value;
+// función para normalizar el código de moneda, 
+export function normalizeCurrencyCode(value: unknown): CurrencyCode {
+	if ((PRICE_CURRENCY_OPTIONS as readonly string[]).includes(String(value))) {
+		return value as CurrencyCode;
 	}
-
-		return "PEN";
+	return "PEN";
 }
 
 // ---- Formateo de números
@@ -67,6 +68,7 @@ export const parseNumber = (v: unknown): number | undefined => {
     return Number.isFinite(n) ? n : undefined;
 };
 
+// Parsear números enteros (undefined -> null)
 export function toNullableInteger(value: unknown): number | null {
     const parsed = parseNumber(value);
     return parsed === undefined ? null : parsed;
@@ -76,6 +78,7 @@ export function toNullableInteger(value: unknown): number | null {
 // ARREGLOS
 // ---------
 
+// normalizar arreglo de strings
 export function normalizeAssociationIds(ids: unknown, fallbackId?: unknown): string[] {
     const fromArray = Array.isArray(ids)
         ? ids.map((id) => String(id ?? "").trim()).filter(Boolean)
@@ -87,19 +90,22 @@ export function normalizeAssociationIds(ids: unknown, fallbackId?: unknown): str
     return fallback ? [fallback] : [];
 }
 
+// Arreglo de numeros enteros
 export function toIntegerIdArray(ids: string[]): number[] {
     return ids
         .map((id) => toNullableInteger(id))
         .filter((id): id is number => id != null);
 }
 
-/** Convierte un valor numérico (number o string de PostgREST) sin redondear a 2 decimales. */
+// Convierte un valor numérico (number o string de PostgREST) 
+// sin redondear a 2 decimales. 
 export function toDecimalNumber(value: unknown): number {
     if (value === null || value === undefined || value === "") return 0;
     const n = typeof value === "number" ? value : Number(String(value).trim());
     return Number.isFinite(n) ? n : 0;
 }
 
+// Conversión de valor EMPTY a NULL
 export function emptyToNull(value: unknown): string | null {
     if (value === null || value === undefined) return null;
     const s = String(value);
@@ -107,7 +113,7 @@ export function emptyToNull(value: unknown): string | null {
 }
 
 // Conversión de número a formato de moneda
-export const formatCurrency = (value: number, currency: "PEN" | "USD"): string => {
+export const formatCurrency = (value: number, currency: CurrencyCode): string => {
     return new Intl.NumberFormat("es-PE", {
         style: "currency",
         currency: currency,
