@@ -46,11 +46,14 @@ function ConsumibleFamilySelect({
         ? CONSUMIBLE_FAMILY_LABEL[row.family]
         : "Consumible"
     const colorSuffix = row.cableColor ? ` ${row.cableColor}` : ""
+    const resolvedValue = options.some((option) => option.value === value)
+        ? value
+        : (options[0]?.value ?? "")
 
     return (
         <select
             aria-label={`Seleccionar ${familyLabel}${colorSuffix}`}
-            value={value}
+            value={resolvedValue}
             onChange={(event) => onChange(event.target.value)}
             className="input-focus w-full min-w-[16rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 transition"
         >
