@@ -44,6 +44,7 @@ next-env.d.ts
 /.agents/
 /.abacusai/
 /.codex/
+/.cursor/
 
 # scripts privados
 /src/passwords/
