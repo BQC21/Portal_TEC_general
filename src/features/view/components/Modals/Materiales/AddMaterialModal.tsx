@@ -23,7 +23,7 @@ import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTyp
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
-import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/project_modals/catalogCascade";
 
 export function AddMaterialModal({
     existingMateriales,

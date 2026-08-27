@@ -12,7 +12,7 @@ import { useMateriales, useMaterialMutations } from "@/features/view/hooks/servi
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
+import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
@@ -22,7 +22,6 @@ import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/
 import Button2MassiveDownload from "@/features/view/components/Buttons/Materiales/Button2MassiveDownload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
-import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();

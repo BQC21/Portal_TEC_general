@@ -12,7 +12,7 @@ import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/u
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
-import { sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
+import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
@@ -22,7 +22,6 @@ import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/But
 import Button2MassiveDownload from "@/features/view/components/Buttons/Equipos/Button2MassiveDownload";
 import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
 import Button2Modal from "@/features/view/components/Buttons/Equipos/Button2Add";
-import { sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();

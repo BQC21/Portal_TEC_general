@@ -1,7 +1,7 @@
 import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow";
 import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
 import { Selectors_BrandProps } from "@/lib/types/components/sub_components/module_render";
-import { SUPPLIER_ROW_KEY } from "@/lib/utils/helpers/modals/supplierOptions";
+import { SUPPLIER_ROW_KEY } from "@/lib/utils/helpers/project_modals/supplierOptions";
 
 export function Selectors_Brand({
     selectedSupplierByRow,

@@ -1,10 +1,8 @@
 import { useMemo } from "react"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
+import { ConsumibleTableRow } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
-import {
-    compareConsumibleRows,
-    ConsumibleTableRow,
-} from "@/lib/utils/helpers/sorting/consumiblesSort"
+import { compareConsumibleRows } from "@/lib/utils/helpers/sorting/consumiblesSort"
 import {
     buildConsumibleFamilyOptions,
     CableFvColor,

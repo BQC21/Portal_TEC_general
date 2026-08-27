@@ -1,3 +1,5 @@
+// Nombrar las filas para los tipos de equipos
+
 export const equipmentRows = [
     "ACCESORIO",
     "BATERÍA",
@@ -5,6 +7,8 @@ export const equipmentRows = [
     "INVERSOR",
     "MÓDULO FV",
 ];
+
+// Nombrar las filas para los tipos de materiales
 
 export const materialRows = [
     "CABLE",

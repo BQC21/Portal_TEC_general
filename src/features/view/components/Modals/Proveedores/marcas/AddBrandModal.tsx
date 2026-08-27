@@ -8,7 +8,7 @@ import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
 import { useSupplierSelectionHandlers } from "@/features/view/hooks/modals/proveedores/useSupplierSelectionHandlers";
-import { applySelectedSuppliersToBrand } from "@/lib/utils/helpers/modals/supplierOptions";
+import { applySelectedSuppliersToBrand } from "@/lib/utils/helpers/project_modals/supplierOptions";
 import { General_info_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/General_info_Brand";
 import { Selectors_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Selectors_Brand";
 import { Tables_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Tables_Brand";

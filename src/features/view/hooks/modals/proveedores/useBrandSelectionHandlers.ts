@@ -6,7 +6,7 @@ import {
     BRAND_ROW_KEY,
     getBrandSelectOptions,
     toSelectedBrandItem,
-} from "@/lib/utils/helpers/modals/brandOptions";
+} from "@/lib/utils/helpers/project_modals/brandOptions";
 
 interface UseBrandSelectionHandlersParams {
     brand: Brand[];

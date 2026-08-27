@@ -7,7 +7,7 @@ import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
 import { EditMaterialModalProps } from "@/lib/types/components/General/modals";
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";

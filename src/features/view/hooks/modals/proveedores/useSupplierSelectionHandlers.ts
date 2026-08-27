@@ -6,7 +6,7 @@ import {
     getSupplierSelectOptions,
     SUPPLIER_ROW_KEY,
     toSelectedSupplierItem,
-} from "@/lib/utils/helpers/modals/supplierOptions";
+} from "@/lib/utils/helpers/project_modals/supplierOptions";
 
 interface UseSupplierSelectionHandlersParams {
     supplier: Supplier[];

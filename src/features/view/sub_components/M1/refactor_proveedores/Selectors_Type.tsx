@@ -1,7 +1,7 @@
 import { SelectionRow } from "@/features/view/components/Form_fields/AddSelectionRow";
 import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
 import { Selectors_TypeProps } from "@/lib/types/components/sub_components/module_render";
-import { BRAND_ROW_KEY } from "@/lib/utils/helpers/modals/brandOptions";
+import { BRAND_ROW_KEY } from "@/lib/utils/helpers/project_modals/brandOptions";
 
 export function Selectors_Type({
     selectedBrandByRow,

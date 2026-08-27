@@ -7,7 +7,7 @@ import {
     filterBrandsForSupplier,
     filterTypesForBrand,
     matchesProductCategory,
-} from "@/lib/utils/helpers/modals/catalogCascade";
+} from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { Unidad_Consumible, Unidad_ModFV } from "@/lib/utils/options";
 
 export function Data_info_M1({

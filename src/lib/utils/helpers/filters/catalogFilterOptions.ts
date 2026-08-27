@@ -5,7 +5,7 @@ import { Brand } from "@/lib/types/supabase/brand.types";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
 import { Type } from "@/lib/types/supabase/type-types";
 import { FilterKey } from "@/lib/utils/options";
-import { matchesProductCategory } from "@/lib/utils/helpers/modals/catalogCascade";
+import { matchesProductCategory } from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { getBrandOptions, getSupplierOptions, getTypeOptions } from "./cascadeFilterOptions";
 
 function uniqueSorted(values: string[]): string[] {

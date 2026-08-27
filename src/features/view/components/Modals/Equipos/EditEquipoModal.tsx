@@ -23,7 +23,7 @@ import { useSuplierSelection } from "@/features/view/hooks/modals/equipos/useSup
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/sub_components/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
-import { getCatalogCascadeOptions } from "@/lib/utils/helpers/modals/catalogCascade";
+import { getCatalogCascadeOptions } from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { buildNextProductCode } from "@/lib/utils/helpers/render/render_codeProduct";
 import { buildBrandForm, buildSupplierForm, buildTypeForm } from "@/lib/utils/helpers/buildForm/buildForm_functions";
 
