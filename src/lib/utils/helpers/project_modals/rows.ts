@@ -13,7 +13,6 @@ export const equipmentRows = [
 export const materialRows = [
     "CABLE",
     "PROTECCIÓN",
-    "MC4",
     "CANALIZACIÓN",
     "CONSUMIBLE",
 ];
