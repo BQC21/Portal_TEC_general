@@ -78,14 +78,48 @@ export function withQuoteResourceSnapshot(
     })
 }
 
+function filterByProject<T extends { proyecto_id: string }>(
+    items: T[],
+    projectId: string | undefined,
+): T[] {
+    const id = asString(projectId)
+    if (!id) return []
+    return items.filter((item) => asString(item.proyecto_id) === id)
+}
+
+export function quoteLiveResourcesKey(
+    equipos: Project_Equipos[],
+    materiales: Project_Materiales[],
+): string {
+    return [
+        "e",
+        ...equipos.map((item) => `${asString(item.equipo_id)}:${asString(item.cantidad)}`).sort(),
+        "m",
+        ...materiales.map((item) => `${asString(item.material_id)}:${asString(item.cantidad)}`).sort(),
+    ].join("|")
+}
+
+function resolveQuoteResources<T>(
+    saved: T[] | undefined,
+    live: T[],
+    catalogLoaded: boolean,
+): T[] {
+    if (live.length > 0) return live
+    if (catalogLoaded) return live
+    return Array.isArray(saved) && saved.length > 0 ? saved : []
+}
+
 export function resolveQuoteEquipos(
     saved: Project_Equipos[] | undefined,
     projectId: string | undefined,
     projectEquipos: Project_Equipos[],
 ): Project_Equipos[] {
-    if (Array.isArray(saved)) return saved
     if (!projectId) return []
-    return projectEquipos.filter((item) => asString(item.proyecto_id) === asString(projectId))
+    return resolveQuoteResources(
+        saved,
+        filterByProject(projectEquipos, projectId),
+        projectEquipos.length > 0,
+    )
 }
 
 export function resolveQuoteMateriales(
@@ -93,9 +127,12 @@ export function resolveQuoteMateriales(
     projectId: string | undefined,
     projectMateriales: Project_Materiales[],
 ): Project_Materiales[] {
-    if (Array.isArray(saved)) return saved
     if (!projectId) return []
-    return projectMateriales.filter((item) => asString(item.proyecto_id) === asString(projectId))
+    return resolveQuoteResources(
+        saved,
+        filterByProject(projectMateriales, projectId),
+        projectMateriales.length > 0,
+    )
 }
 
 export async function syncQuoteEquiposToProject(

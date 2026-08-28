@@ -3,7 +3,7 @@
 import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
@@ -17,13 +17,8 @@ import { ManageLocalCosts } from "@/features/view/hooks/modals/Quotes/useManageL
 import { Product_selected } from "@/features/view/sub_components/M3/refactor/Product_selected";
 import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
 import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
-import { Equipos } from "@/lib/types/supabase/equipos-types";
+import { useQuoteSelectedProducts } from "@/features/view/hooks/modals/Quotes/useQuoteSelectedProducts";
 import {
-    resolveQuoteEquipos,
-    resolveQuoteMateriales,
     syncQuoteEquiposToProject,
     syncQuoteMaterialesToProject,
     withQuoteResourceSnapshot,
@@ -53,134 +48,25 @@ export default function EditQuoteModal({
     
     const hasSelectedProject = Boolean(form.proyecto_id);
 
-    const [projectEquipos, setProjectEquipos] = useState<Project_Equipos[]>(() =>
-        resolveQuoteEquipos(
-            existingQuote.costos_manuales?.Recursos?.equipos_seleccionados,
-            existingQuote.proyecto_id,
-            existing_project_equipos,
-        ),
-    );
-    const [projectMateriales, setProjectMateriales] = useState<Project_Materiales[]>(() =>
-        resolveQuoteMateriales(
-            existingQuote.costos_manuales?.Recursos?.materiales_seleccionados,
-            existingQuote.proyecto_id,
-            existing_project_materiales,
-        ),
-    );
-    const hydratedProjectId = useRef(String(existingQuote.proyecto_id ?? ""));
-
-    useEffect(() => {
-        const nextProjectId = String(form.proyecto_id ?? "");
-        if (nextProjectId === hydratedProjectId.current) return;
-        hydratedProjectId.current = nextProjectId;
-
-        if (!nextProjectId) {
-            setProjectEquipos([]);
-            setProjectMateriales([]);
-            return;
-        }
-
-        setProjectEquipos(
-            existing_project_equipos.filter((item) => String(item.proyecto_id) === nextProjectId),
-        );
-        setProjectMateriales(
-            existing_project_materiales.filter((item) => String(item.proyecto_id) === nextProjectId),
-        );
-        // Solo al elegir/cambiar proyecto: no sobrescribir ediciones locales.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [form.proyecto_id]);
-
-    const onUpdateEquipoCantidad = useCallback((id: string | number, cantidad: number) => {
-        setProjectEquipos((current) =>
-            current.map((item) =>
-                String(item.id) === String(id) ? { ...item, cantidad: String(cantidad) } : item,
-            ),
-        );
-    }, []);
-
-    const onAddEquipo = useCallback((equipo: Equipos) => {
-        setProjectEquipos((current) => {
-            if (current.some((item) => String(item.equipo_id) === String(equipo.id))) {
-                return current;
-            }
-
-            const nextItem: Project_Equipos = {
-                id: `local-equipo-${equipo.id}-${Date.now()}`,
-                equipo_id: String(equipo.id),
-                equipo_info: equipo,
-                proyecto_id: form.proyecto_id,
-                fecha_agregado: new Date(),
-                cantidad: "1",
-            };
-
-            return [...current, nextItem];
-        });
-    }, [form.proyecto_id]);
-
-    const onRemoveEquipo = useCallback((id: string | number) => {
-        setProjectEquipos((current) => current.filter((item) => String(item.id) !== String(id)));
-    }, []);
-
-    const onUpdateMaterialCantidad = useCallback((id: string | number, cantidad: number) => {
-        setProjectMateriales((current) =>
-            current.map((item) =>
-                String(item.id) === String(id) ? { ...item, cantidad: String(cantidad) } : item,
-            ),
-        );
-    }, []);
-
-    const onAddMaterial = useCallback((material: Materiales) => {
-        setProjectMateriales((current) => {
-            if (current.some((item) => String(item.material_id) === String(material.id))) {
-                return current;
-            }
-
-            const nextItem: Project_Materiales = {
-                id: `local-material-${material.id}-${Date.now()}`,
-                material_id: String(material.id),
-                material_info: material,
-                proyecto_id: form.proyecto_id,
-                fecha_agregado: new Date(),
-                cantidad: "1",
-            };
-
-            return [...current, nextItem];
-        });
-    }, [form.proyecto_id]);
-
-    const onReplaceMaterial = useCallback((id: string | number, material: Materiales) => {
-        setProjectMateriales((current) => {
-            const currentItem = current.find((item) => String(item.id) === String(id));
-            if (!currentItem) return current;
-
-            if (current.some((item) => String(item.id) !== String(id) && String(item.material_id) === String(material.id))) {
-                return current.filter((item) => String(item.id) !== String(id));
-            }
-
-            return current.map((item) =>
-                String(item.id) === String(id)
-                    ? {
-                        ...item,
-                        material_id: String(material.id),
-                        material_info: material,
-                    }
-                    : item,
-            );
-        });
-    }, []);
-
-    const onRemoveMaterial = useCallback((id: string | number) => {
-        setProjectMateriales((current) => current.filter((item) => String(item.id) !== String(id)));
-    }, []);
-
-    // --- rescatamos su descripción
-    const equiposDescriptions = projectEquipos
-        .map((item) => item.equipo_info?.descripcion)
-        .filter((description): description is string => Boolean(description));
-
-    const materialesDescriptions = projectMateriales
-        .map((item) => item.material_info?.descripcion)
-        .filter((description): description is string => Boolean(description));
+    const {
+        projectEquipos,
+        projectMateriales,
+        equiposDescriptions,
+        materialesDescriptions,
+        onUpdateEquipoCantidad,
+        onAddEquipo,
+        onRemoveEquipo,
+        onUpdateMaterialCantidad,
+        onAddMaterial,
+        onReplaceMaterial,
+        onRemoveMaterial,
+    } = useQuoteSelectedProducts({
+        proyectoId: form.proyecto_id,
+        existingProjectEquipos: existing_project_equipos,
+        existingProjectMateriales: existing_project_materiales,
+        savedEquipos: existingQuote.costos_manuales?.Recursos?.equipos_seleccionados,
+        savedMateriales: existingQuote.costos_manuales?.Recursos?.materiales_seleccionados,
+    });
 
     // ----------
     // EVENTOS
