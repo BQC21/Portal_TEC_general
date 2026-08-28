@@ -1,9 +1,9 @@
 // --- CONSUMIBLE
 export const consumible_template = [
     // PROTECCIÓN (amarillo)
-    { id: 1, cod_producto: "MPESO00007", descripcion: "Fusible 15 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
-    { id: 2, cod_producto: "MPESO00008", descripcion: "Fusible 20 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
-    { id: 3, cod_producto: "MPESO00009", descripcion: "Fusible 32 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    // { id: 1, cod_producto: "MPESO00007", descripcion: "Fusible 15 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    // { id: 2, cod_producto: "MPESO00008", descripcion: "Fusible 20 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
+    // { id: 3, cod_producto: "MPESO00009", descripcion: "Fusible 32 A + Portafusible", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
     { id: 4, cod_producto: "MSTOF00001", descripcion: "ITM 2x6 A", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
     { id: 5, cod_producto: "MPESO00005", descripcion: "SPD 2x600 VDC", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
     { id: 6, cod_producto: "MPESO00001", descripcion: "ITM 2x20 A 550 VDC", tipo_de_producto: "PROTECCIÓN", cantidad: 1 },
