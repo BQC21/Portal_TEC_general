@@ -125,7 +125,7 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     precintos_100: "CONSUMIBLE",
     tornillos_autorroscantes_100: "CONSUMIBLE",
     tornillo_spack: "CONSUMIBLE",
-    mc4: "MC4",
+    mc4: "CONSUMIBLE",
     fusible: "PROTECCIÓN",
 }
 
