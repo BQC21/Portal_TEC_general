@@ -159,6 +159,14 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
 
+                        // Condicionar para que en los materiales de tipo PROTECCIÓN 
+                        // solo muestren aquellos cuya descripción sea diferente a "FUSIBLE ..."
+                        if (label === "PROTECCIÓN" && material.descripcion.includes("Fusible")) return false;
+
+                        // Condicionar a que solo se muestre los materiales de tipo CABLES 
+                        // que contengan "AC" en su descripción
+                        if (label === "CABLE" && !material.descripcion.includes("AC")) return false;
+
                         const spdRating = extractSpdRating(material.descripcion);
                         if (spdRating !== null) {
                             if (isNaN(spdMin) || spdMin <= 0 || spdRating < spdMin) return false;
