@@ -89,7 +89,7 @@ export function useCostComputes(
         [consumibleRows],
     );
     
-    // EPPs (los reutilizables no entran a este costo; se deprecian con herramientas)
+    // EPPs (los reutilizables no entran a este costo)
     const considerarEppReutilizable = manualCosts.Recursos.considerar_epp_reutilizable !== false;
     const eppReusableTotal = useMemo(() =>
         considerarEppReutilizable
@@ -102,8 +102,8 @@ export function useCostComputes(
     const eppTotal = useMemo(() =>
         manualCosts.Recursos.epp
             .filter((item) => !isReusableEpp(item.descripcion))
-            .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
-        [manualCosts],
+            .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), eppReusableTotal),
+        [manualCosts, eppReusableTotal],
     );
     const eppTotalIgv = useMemo(() =>
         Number(eppTotal) * Number(1.18),
@@ -113,10 +113,8 @@ export function useCostComputes(
     // HERRAMIENTAS
     const toolingTotal = useMemo(() =>
         manualCosts.Recursos.tooling.reduce(
-            (sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario),
-            eppReusableTotal,
-        ),
-        [manualCosts, eppReusableTotal],
+            (sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const toolingTotalIgv = useMemo(() =>
         Number(toolingTotal) * Number(1.18),
