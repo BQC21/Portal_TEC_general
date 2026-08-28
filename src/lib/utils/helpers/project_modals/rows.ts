@@ -3,7 +3,7 @@
 export const equipmentRows = [
     "ACCESORIO",
     "BATERÍA",
-    "ESTRUCTURA",
+    // "ESTRUCTURA",
     "INVERSOR",
     "MÓDULO FV",
 ];
@@ -13,6 +13,6 @@ export const equipmentRows = [
 export const materialRows = [
     "CABLE",
     "PROTECCIÓN",
-    "CANALIZACIÓN",
-    "CONSUMIBLE",
+    // "CANALIZACIÓN",
+    // "CONSUMIBLE",
 ];
