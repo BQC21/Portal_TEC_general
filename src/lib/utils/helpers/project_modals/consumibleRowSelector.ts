@@ -11,7 +11,6 @@ export type ConsumibleSelectableFamily =
     | "cable_fv"
     | "cable_tierra"
     | "tablero"
-    | "bornera"
     | "terminal_pin_100"
     | "terminal_ojal_100"
     | "terminal_ojal"
@@ -59,7 +58,6 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "cable_fv",
     "cable_tierra",
     "tablero",
-    "bornera",
     "terminal_pin_100",
     "terminal_ojal_100",
     "terminal_ojal",
@@ -81,7 +79,6 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     cable_fv: "Cable FV",
     cable_tierra: "Cable de tierra",
     tablero: "Tablero",
-    bornera: "Bornera",
     terminal_pin_100: "100to terminal tipo pin",
     terminal_ojal_100: "100to terminal tipo ojal",
     terminal_ojal: "Terminal tipo ojal",
@@ -121,7 +118,6 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     cable_fv: "CANALIZACIÓN",
     cable_tierra: "CANALIZACIÓN",
     tablero: "CONSUMIBLE",
-    bornera: "CONSUMIBLE",
     terminal_pin_100: "CONSUMIBLE",
     terminal_ojal_100: "CONSUMIBLE",
     terminal_ojal: "CONSUMIBLE",
@@ -230,7 +226,6 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     }
 
     if (description.includes("tablero")) return "tablero"
-    if (description.includes("bornera")) return "bornera"
 
     const hundredPack = isHundredPack(description)
     const isPinTerminal = description.includes("terminal") && description.includes("pin")
