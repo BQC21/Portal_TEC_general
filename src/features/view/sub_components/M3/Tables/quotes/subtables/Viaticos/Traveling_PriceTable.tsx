@@ -40,28 +40,28 @@ export function Traveling_PriceTable({ manualResourceCosts, updateManualCostMont
                                 <tr className="bg-slate-100 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Monto"
+                                            label=""
                                             value={Number(manualResourceCosts.Viaticos.traveling.monto ?? 0)} min={0} step={0.01}
                                             onChange={(value) => updateManualCostMonto("Viaticos.traveling", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Personas"
+                                            label=""
                                             value={Number(manualResourceCosts.Viaticos.traveling.personas ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Viaticos.traveling", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Días"
+                                            label=""
                                             value={Number(manualResourceCosts.Viaticos.traveling.dias ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Viaticos.traveling", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
-                                            label="Precio Total (s/.)"
+                                            label=""
                                             value={formatCurrency(Number(manualResourceCosts.Viaticos.traveling.monto ?? 0) * 
                                                 Number(manualResourceCosts.Viaticos.traveling.personas ?? 0) * 
                                                 Number(manualResourceCosts.Viaticos.traveling.dias ?? 0), "PEN")}

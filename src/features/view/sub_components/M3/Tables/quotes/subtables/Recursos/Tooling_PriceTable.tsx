@@ -49,28 +49,28 @@ export function Tooling_PriceTable({ items, onUpdateItem, onAddItem, onRemoveIte
                                     <tr key={item.id} className="bg-slate-100 text-left">
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
-                                            label="Descripción"
+                                            label=""
                                             value={item.descripcion}
                                             onChange={(value) => onUpdateItem(index, "descripcion", value)}
                                         />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
-                                                label="Cantidad"
+                                                label=""
                                                 value={Number(item.cantidad)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "cantidad", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
-                                                label="Precio Unidad (s/.)"
+                                                label=""
                                                 value={Number(item.precio_unitario)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "precio_unitario", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductReadonlyField
-                                                label="Precio Total (s/.)"
+                                                label=""
                                                 value={formatCurrency(Number(item.cantidad) * Number(item.precio_unitario), "PEN")}
                                             />
                                         </td>

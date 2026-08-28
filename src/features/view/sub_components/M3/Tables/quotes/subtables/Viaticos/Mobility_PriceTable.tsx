@@ -45,28 +45,28 @@ export function Mobility_PriceTable({ manualResourceCosts, updateManualCostMonto
                                 <tr className="bg-slate-100 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Monto"
+                                            label=""
                                             value={Number(mobility.monto ?? 0)} min={0} step={0.01}
                                             onChange={(value) => updateManualCostMonto("Viaticos.mobility", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Personas"
+                                            label=""
                                             value={Number(mobility.personas ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Viaticos.mobility", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Días"
+                                            label=""
                                             value={Number(mobility.dias ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Viaticos.mobility", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
-                                            label="Precio Total (s/.)"
+                                            label=""
                                             value={formatCurrency(total, "PEN")}
                                         />
                                     </td>

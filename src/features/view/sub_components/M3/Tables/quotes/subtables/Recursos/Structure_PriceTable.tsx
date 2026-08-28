@@ -125,7 +125,7 @@ export function Structure_PriceTable({
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <AddProductNumberField
-                                                        label="Cantidad"
+                                                        label=""
                                                         value={Number(item.cantidad)}
                                                         min={0}
                                                         step={0.01}

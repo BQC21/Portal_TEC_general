@@ -52,35 +52,35 @@ export function Personal_PriceTable({ items, onUpdateItem, onAddItem, onRemoveIt
                                     <tr key={item.id} className="bg-slate-100 text-left">
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductTextField
-                                            label="Nombre"
+                                            label=""
                                             value={item.nombre}
                                             onChange={(value) => onUpdateItem(index, "nombre", value)}
                                         />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductTextField
-                                                label="Puesto"
+                                                label=""
                                                 value={item.puesto}
                                                 onChange={(value) => onUpdateItem(index, "puesto", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
-                                                label="Cantidad"
+                                                label=""
                                                 value={Number(item.dias)} min={0} step={0.01}
                                                 onChange={(value) => onUpdateItem(index, "dias", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField
-                                                label="Precio Unidad (s/.)" step={0.01}
+                                                label="" step={0.01}
                                                 value={Number(item.precio_dia)} min={0}
                                                 onChange={(value) => onUpdateItem(index, "precio_dia", value)}
                                             />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductReadonlyField
-                                                label="Precio Total (s/.)"
+                                                label=""
                                                 value={formatCurrency(Number(item.dias) * Number(item.precio_dia), "PEN")}
                                             />
                                         </td>

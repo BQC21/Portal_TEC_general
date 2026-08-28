@@ -41,28 +41,28 @@ export function Hotel_PriceTable({ manualResourceCosts, updateManualCostMonto }:
                                 <tr className="bg-slate-100 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Monto"
+                                            label=""
                                             value={Number(manualResourceCosts.Recursos.hotel.monto ?? 0)} step={0.01}
                                             onChange={(value) => updateManualCostMonto("Recursos.hotel", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Personas"
+                                            label=""
                                             value={Number(manualResourceCosts.Recursos.hotel.personas ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Recursos.hotel", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
-                                            label="Días"
+                                            label=""
                                             value={Number(manualResourceCosts.Recursos.hotel.dias ?? 0)} min={0}
                                             onChange={(value) => updateManualCostMonto("Recursos.hotel", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
-                                            label="Precio Total (s/.)"
+                                            label=""
                                             value={formatCurrency(Number(manualResourceCosts.Recursos.hotel.monto ?? 0) * 
                                                 Number(manualResourceCosts.Recursos.hotel.personas ?? 0) * 
                                                 Number(manualResourceCosts.Recursos.hotel.dias ?? 0), "PEN")}
