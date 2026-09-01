@@ -42,30 +42,30 @@ export function Hotel_PriceTable({ manualResourceCosts, updateManualCostMonto }:
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label=""
-                                            value={Number(manualResourceCosts.Recursos.hotel.monto ?? 0)} step={0.01}
-                                            onChange={(value) => updateManualCostMonto("Recursos.hotel", "monto", value)}
+                                            value={Number(manualResourceCosts.Viaticos.hotel.monto ?? 0)} step={0.01}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.hotel", "monto", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label=""
-                                            value={Number(manualResourceCosts.Recursos.hotel.personas ?? 0)} min={0}
-                                            onChange={(value) => updateManualCostMonto("Recursos.hotel", "personas", value)}
+                                            value={Number(manualResourceCosts.Viaticos.hotel.personas ?? 0)} min={0}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.hotel", "personas", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductNumberField
                                             label=""
-                                            value={Number(manualResourceCosts.Recursos.hotel.dias ?? 0)} min={0}
-                                            onChange={(value) => updateManualCostMonto("Recursos.hotel", "dias", value)}
+                                            value={Number(manualResourceCosts.Viaticos.hotel.dias ?? 0)} min={0}
+                                            onChange={(value) => updateManualCostMonto("Viaticos.hotel", "dias", value)}
                                         />
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         <AddProductReadonlyField
                                             label=""
-                                            value={formatCurrency(Number(manualResourceCosts.Recursos.hotel.monto ?? 0) * 
-                                                Number(manualResourceCosts.Recursos.hotel.personas ?? 0) * 
-                                                Number(manualResourceCosts.Recursos.hotel.dias ?? 0), "PEN")}
+                                            value={formatCurrency(Number(manualResourceCosts.Viaticos.hotel.monto ?? 0) * 
+                                                Number(manualResourceCosts.Viaticos.hotel.personas ?? 0) * 
+                                                Number(manualResourceCosts.Viaticos.hotel.dias ?? 0), "PEN")}
                                         />
                                     </td>
                                 </tr>

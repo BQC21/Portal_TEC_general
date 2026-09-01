@@ -26,7 +26,7 @@ type ManualCostItemValue =
     | ConsumeItem[keyof ConsumeItem];
 
 type ManualCostMontoSection =
-    | "Recursos.hotel"
+    | "Viaticos.hotel"
     | "Viaticos.eating"
     | "Viaticos.traveling"
     | "Viaticos.mobility";
@@ -101,12 +101,12 @@ export function ManageLocalCosts(
         value: MontoItem[keyof MontoItem],
     ) {
         setManualResourceCosts((current) => {
-            if (section === "Recursos.hotel") {
+            if (section === "Viaticos.hotel") {
                 return {
                     ...current,
-                    Recursos: {
-                        ...current.Recursos,
-                        hotel: { ...(current.Recursos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
+                    Viaticos: {
+                        ...current.Viaticos,
+                        hotel: { ...(current.Viaticos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
                     },
                 };
             }

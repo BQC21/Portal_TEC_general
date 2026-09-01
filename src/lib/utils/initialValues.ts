@@ -297,7 +297,6 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
             cantidad: item.cantidad,
             precio_unitario: item.precio_unitario,
         })),
-        hotel: { monto: 0, personas: 0, dias: 0 },
         considerar_epp_reutilizable: true,
     },
     
@@ -305,6 +304,7 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
         eating: { monto: 0, personas: 0, dias: 0 },
         traveling: { monto: 0, personas: 0, dias: 0 },
         mobility: { monto: 0, personas: 0, dias: 0 },
+        hotel: { monto: 0, personas: 0, dias: 0 },
         courier: Courier_template.map((item) => ({
             id: crypto.randomUUID(), // o String(item.id)
             descripcion: item.descripcion,

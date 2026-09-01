@@ -21,10 +21,6 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             tooling: Array.isArray(saved.Recursos?.tooling) ? saved.Recursos.tooling : defaults.Recursos.tooling,
             personal: Array.isArray(saved.Recursos?.personal) ? saved.Recursos.personal : defaults.Recursos.personal,
             sctr: Array.isArray(saved.Recursos?.sctr) ? saved.Recursos.sctr : defaults.Recursos.sctr,
-            hotel: {
-                ...defaults.Recursos.hotel,
-                ...saved.Recursos?.hotel,
-            },
             considerar_epp_reutilizable:
                 saved.Recursos?.considerar_epp_reutilizable ??
                 defaults.Recursos.considerar_epp_reutilizable,
@@ -45,6 +41,10 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             mobility: {
                 ...defaults.Viaticos.mobility,
                 ...saved.Viaticos?.mobility,
+            },
+            hotel: {
+                ...defaults.Viaticos.hotel,
+                ...saved.Viaticos?.hotel,
             },
             courier: saved.Viaticos?.courier?.length
                 ? saved.Viaticos.courier

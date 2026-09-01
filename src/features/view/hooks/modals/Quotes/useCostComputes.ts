@@ -123,8 +123,8 @@ export function useCostComputes(
 
     // HOTEL
     const hotelTotal = useMemo(() =>
-        Number(manualCosts.Recursos.hotel?.monto ?? 0) * Number(manualCosts.Recursos.hotel?.personas ?? 0) * 
-            Number(manualCosts.Recursos.hotel?.dias ?? 0),
+        Number(manualCosts.Viaticos.hotel?.monto ?? 0) * Number(manualCosts.Viaticos.hotel?.personas ?? 0) * 
+            Number(manualCosts.Viaticos.hotel?.dias ?? 0),
         [manualCosts],
     );
     const hotelTotalIgv = useMemo(() =>
@@ -167,7 +167,9 @@ export function useCostComputes(
 
     // VIAJE
     const travelingTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.traveling?.monto ?? 0) * Number(manualCosts.Viaticos.traveling?.personas ?? 0) * Number(manualCosts.Viaticos.traveling?.dias ?? 0),
+        Number(manualCosts.Viaticos.traveling?.monto ?? 0) * 
+        Number(manualCosts.Viaticos.traveling?.personas ?? 0) *
+        Number(manualCosts.Viaticos.traveling?.dias ?? 0),
         [manualCosts],
     );
     const travelingTotalIgv = useMemo(() =>
@@ -177,7 +179,9 @@ export function useCostComputes(
 
     // MOVILIDAD
     const mobilityTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.mobility?.monto ?? 0) * Number(manualCosts.Viaticos.mobility?.personas ?? 0) * Number(manualCosts.Viaticos.mobility?.dias ?? 0),
+        Number(manualCosts.Viaticos.mobility?.monto ?? 0) * 
+        Number(manualCosts.Viaticos.mobility?.personas ?? 0) * 
+        Number(manualCosts.Viaticos.mobility?.dias ?? 0),
         [manualCosts],
     );
     const mobilityTotalIgv = useMemo(() =>
@@ -221,10 +225,6 @@ export function useCostComputes(
             total: toolingTotal,
             igv: toolingTotalIgv,
         },
-        hotel: {
-            total: hotelTotal,
-            igv: hotelTotalIgv,
-        },
         personal: {
             total: personalTotal,
             igv: personalTotalIgv,
@@ -259,6 +259,10 @@ export function useCostComputes(
         mobility: {
             total: mobilityTotal,
             igv: mobilityTotalIgv,
+        },
+        hotel: {
+            total: hotelTotal,
+            igv: hotelTotalIgv,
         },
         courier: {
             total: courierTotal,
@@ -351,10 +355,6 @@ export function useCostComputes(
                 total: toolingTotal,
                 igv: toolingTotalIgv,
             },
-            hotel: {
-                total: hotelTotal,
-                igv: hotelTotalIgv,
-            },
             personal: {
                 total: personalTotal,
                 igv: personalTotalIgv,
@@ -390,6 +390,10 @@ export function useCostComputes(
             mobility: {
                 total: mobilityTotal,
                 igv: mobilityTotalIgv,
+            },
+            hotel: {
+                total: hotelTotal,
+                igv: hotelTotalIgv,
             },
             courier: {
                 total: courierTotal,
