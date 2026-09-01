@@ -186,6 +186,8 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     spd_voltage:  "",
     mppt_number: "",
     cadena_number: "",
+    // dimensionamiento del cable AC
+    rango_distancia: "",
     // almacenamiento energético
     autonomia: "",
     ah_sistema: "",
