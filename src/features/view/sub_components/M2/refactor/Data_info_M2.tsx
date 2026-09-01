@@ -90,7 +90,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                         <>
                                             <AddEquipoReadonlyField
                                                 label="Energía requerida (kWh)"
-                                                value={computedRequirements.energia}
+                                                value={String(Math.ceil(Number(computedRequirements.energia)))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.energia)}
                                             />
                                             <AddEquipoReadonlyField
