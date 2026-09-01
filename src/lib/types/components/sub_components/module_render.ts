@@ -145,6 +145,8 @@ export type Selectors_M2Props = {
     selectedMaterialTable: SelectedMaterialItem[];
     // form del proyecto
     form: ProjectFormState;
+    // actualizador
+    updateField: <K extends keyof ProjectFormState>(field: K, value: ProjectFormState[K]) => void;
     // calculos
     computedRequirements: computedRequirements;
     // tipado de equipos y materiales
