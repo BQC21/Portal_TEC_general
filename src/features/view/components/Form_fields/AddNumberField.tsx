@@ -10,9 +10,10 @@ export function AddProductNumberField({
         min,
         max,
         disabled,
+        centered = false,
     }: AddProductNumberFieldProps) {
     return (
-        <div>
+        <div className={centered ? "text-center" : undefined}>
         <AddProductFieldLabel label={label} required={required} />
         <input
             type="number"
@@ -31,7 +32,7 @@ export function AddProductNumberField({
             }
             disabled={disabled}
             placeholder={typeof min === "number" && Number.isFinite(min) ? String(min) : "0"}
-            className="input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 transition placeholder:text-slate-400 disabled:bg-slate-100 disabled:text-slate-500"
+            className={`input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 transition placeholder:text-slate-400 disabled:bg-slate-100 disabled:text-slate-500 ${centered ? "text-center" : ""}`}
         />
         </div>
     );
