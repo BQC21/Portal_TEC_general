@@ -293,7 +293,7 @@ export function Consume_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.unidad || "—"}
                                                 </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                <td className="border-b border-slate-200 px-6 py-5 font-medium min-w-[6rem]">
                                                     {item.isPlaceholder && !item.cod_producto ? (
                                                         "—"
                                                     ) : (
