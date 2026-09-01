@@ -87,7 +87,7 @@ export default function EquiposPage() {
 			activePath="/equipos"
 		>
 			<main className="min-h-screen bg-background text-foreground">
-				<div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
+				<div className="flex w-full min-w-0 flex-col gap-6 py-5">
                 <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
                     <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
                         <div className="min-w-0 flex-1">

@@ -107,8 +107,8 @@ export function PortalShell({ title, subtitle, activePath, children }: PortalShe
                         </nav>
                     </aside>
                     {/* Contenido del módulo */}
-                    <section className="px-6 py-8 lg:px-8">
-                        <div className="mx-auto max-w-7xl space-y-8">
+                    <section className="min-w-0 px-6 py-8 lg:px-8">
+                        <div className="w-full space-y-8">
                             <div>
                                 <h2 className="text-4xl font-bold tracking-tight text-slate-900">{title}</h2>
                                 <p className="mt-4 text-xl text-slate-500">{subtitle}</p>
