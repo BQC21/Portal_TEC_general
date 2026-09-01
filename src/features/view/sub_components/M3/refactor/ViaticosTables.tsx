@@ -5,6 +5,7 @@ import { Courier_PriceTable } from "../Tables/quotes/subtables/Viaticos/Courier_
 import { Eating_PriceTable } from "../Tables/quotes/subtables/Viaticos/Eating_PriceTable";
 import { Traveling_PriceTable } from "../Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { Mobility_PriceTable } from "../Tables/quotes/subtables/Viaticos/Mobility_PriceTable";
+import { Hotel_PriceTable } from "../Tables/quotes/subtables/Viaticos/Hotel_PriceTable";
 
 export function ViaticosTables({
     viaticos,
@@ -28,6 +29,12 @@ export function ViaticosTables({
                         onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
                         onAddItem={() => addManualCostItem("Viaticos.courier")}
                         onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
+                    />
+                </CollapsibleTableSection>
+                <CollapsibleTableSection title="Hotel">
+                    <Hotel_PriceTable
+                        manualResourceCosts={manualResourceCosts}
+                        updateManualCostMonto={updateManualCostMonto}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Alimentación">

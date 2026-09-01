@@ -89,17 +89,6 @@ export function SummaryCostTable1({
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        Hotel
-                                    </td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(recursosCosts.hotel.total, "PEN")}
-                                    </td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(recursosCosts.hotel.igv, "PEN")}
-                                    </td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         Personal
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">

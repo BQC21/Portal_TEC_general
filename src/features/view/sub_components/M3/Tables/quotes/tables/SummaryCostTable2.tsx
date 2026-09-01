@@ -63,6 +63,17 @@ export function SummaryCostTable2({
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        Hotel
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        {formatCurrency(viaticosCosts.hotel.total, "PEN")}
+                                    </td>
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                        {formatCurrency(viaticosCosts.hotel.igv, "PEN")}
+                                    </td>
+                                </tr>
+                                <tr className="bg-slate-200 text-left">
+                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         Courier
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">

@@ -19,10 +19,6 @@ export type recursos = {
         total: number;
         igv: number;
     };
-    hotel: {
-        total: number;
-        igv: number;
-    };
     personal: {
         total: number;
         igv: number;
@@ -67,6 +63,10 @@ export type viaticos = {
         igv: number;
     };
     mobility: {
+        total: number;
+        igv: number;
+    };
+    hotel: {
         total: number;
         igv: number;
     };

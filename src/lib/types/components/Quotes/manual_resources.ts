@@ -64,7 +64,6 @@ export type ManualCosts = {
         tooling: QuantityPriceItem[];
         personal: PersonalItem[];
         sctr: QuantityPriceItem[];
-        hotel: MontoItem;
         considerar_epp_reutilizable: boolean;
         equipos_seleccionados?: Project_Equipos[];
         materiales_seleccionados?: Project_Materiales[];
@@ -73,6 +72,7 @@ export type ManualCosts = {
         eating: MontoItem;
         traveling: MontoItem;
         mobility: MontoItem;
+        hotel: MontoItem;
         courier: QuantityPriceItem[];
     }
 };

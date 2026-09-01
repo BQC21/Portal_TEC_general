@@ -6,7 +6,6 @@ import { Structure_PriceTable } from "../Tables/quotes/subtables/Recursos/Struct
 import { Consume_PriceTable } from "../Tables/quotes/subtables/Recursos/Consume_PriceTable";
 import { EPP_PriceTable } from "../Tables/quotes/subtables/Recursos/EPP_PriceTable";
 import { Tooling_PriceTable } from "../Tables/quotes/subtables/Recursos/Tooling_PriceTable";
-import { Hotel_PriceTable } from "../Tables/quotes/subtables/Recursos/Hotel_PriceTable";
 import { Personal_PriceTable } from "../Tables/quotes/subtables/Recursos/Personal_PriceTable";
 import { SCTR_PriceTable } from "../Tables/quotes/subtables/Recursos/SCTR_PriceTable";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
@@ -18,7 +17,6 @@ export function ResourcesTables({
     projectMateriales,
     form,
     manualResourceCosts,
-    updateManualCostMonto,
     updateManualCostItem,
     addManualCostItem,
     removeManualCostItem,
@@ -106,12 +104,6 @@ export function ResourcesTables({
                         onUpdateItem={(index, field, value) => updateManualCostItem("Recursos.tooling", index, field, value)}
                         onAddItem={() => addManualCostItem("Recursos.tooling")}
                         onRemoveItem={(index) => removeManualCostItem("Recursos.tooling", index)}
-                    />
-                </CollapsibleTableSection>
-                <CollapsibleTableSection title="Hotel">
-                    <Hotel_PriceTable
-                        manualResourceCosts={manualResourceCosts}
-                        updateManualCostMonto={updateManualCostMonto}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Personal">
