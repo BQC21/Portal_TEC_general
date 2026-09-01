@@ -4,6 +4,7 @@ import Button2Add_finantial from "@/features/view/components/Buttons/quotes/fina
 import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add";
 import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
+import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import FinantialTable from "@/features/view/components/Tables/quotes/FinantialTable";
 import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";
 import ReportTable from "@/features/view/components/Tables/quotes/ReportTable";
@@ -132,61 +133,77 @@ export default function QuotesPage(){
         >
             <main className="min-h-screen bg-background text-foreground">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                            <Button2Add_quote
-                                onAddQuote={handleAddQuote}
-                                existingQuotes={quotes}
-                                project_equipos={project_equipos}
-                                project_materiales={project_materiales}
-                            />
-                        </div>
-                    </section>
-                    <QuoteTable
-                        quote={quotes}
-                        totalQuote={quotes.length}
-                        onUpdateQuote={handleEditQuote}
-                        onDeleteQuote={handleDeleteQuote}
-                        projects_equipos={project_equipos}
-                        projects_materiales={project_materiales}
-                    />
-                </div>
-
-                <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                            <Button2Add_report
-                                onAddReport={handleAddReport}
-                                project_equipos={project_equipos}
-                                project_materiales={project_materiales}
-                            />
-                        </div>
-                    </section>
-                    <ReportTable
-                        report={reports}
-                        totalReport={reports.length}
-                        onUpdateReport={handleEditReport}
-                        onDeleteReport={handleDeleteReport}
-                        projects_equipos={project_equipos}
-                        projects_materiales={project_materiales}
-                    />
-                </div>
-
-                <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                    <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                        <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                            <Button2Add_finantial
-                                onAddFinantial={handleAddFinantial}
-                                project_equipos={project_equipos}
-                            />
-                        </div>
-                    </section>
-                    <FinantialTable
-                        finantial={finantials}
-                        totalFinantial={finantials.length}
-                        onUpdateFinantial={handleEditFinantial}
-                        onDeleteFinantial={handleDeleteFinantial}
-                        projects_equipos={project_equipos}
+                    <ExcelWorkbook
+                        sheets={[
+                            {
+                                id: "cotizaciones",
+                                label: "Cotizaciones",
+                                content: (
+                                    <>
+                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                            <Button2Add_quote
+                                                onAddQuote={handleAddQuote}
+                                                existingQuotes={quotes}
+                                                project_equipos={project_equipos}
+                                                project_materiales={project_materiales}
+                                            />
+                                        </section>
+                                        <QuoteTable
+                                            quote={quotes}
+                                            totalQuote={quotes.length}
+                                            onUpdateQuote={handleEditQuote}
+                                            onDeleteQuote={handleDeleteQuote}
+                                            projects_equipos={project_equipos}
+                                            projects_materiales={project_materiales}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "reportes",
+                                label: "Reportes",
+                                content: (
+                                    <>
+                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                            <Button2Add_report
+                                                onAddReport={handleAddReport}
+                                                project_equipos={project_equipos}
+                                                project_materiales={project_materiales}
+                                            />
+                                        </section>
+                                        <ReportTable
+                                            report={reports}
+                                            totalReport={reports.length}
+                                            onUpdateReport={handleEditReport}
+                                            onDeleteReport={handleDeleteReport}
+                                            projects_equipos={project_equipos}
+                                            projects_materiales={project_materiales}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "finanzas",
+                                label: "Finanzas",
+                                content: (
+                                    <>
+                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                            <Button2Add_finantial
+                                                onAddFinantial={handleAddFinantial}
+                                                project_equipos={project_equipos}
+                                            />
+                                        </section>
+                                        <FinantialTable
+                                            finantial={finantials}
+                                            totalFinantial={finantials.length}
+                                            onUpdateFinantial={handleEditFinantial}
+                                            onDeleteFinantial={handleDeleteFinantial}
+                                            projects_equipos={project_equipos}
+                                        />
+                                    </>
+                                ),
+                            },
+                        ]}
                     />
                 </div>
             </main>

@@ -183,3 +183,26 @@ a {
   background: var(--equipment-row-selected);
   color: #000000;
 }
+
+/* Compact Excel-like density for catalog/list tables */
+.excel-compact table th,
+.excel-compact table td {
+  padding-top: 0.35rem !important;
+  padding-bottom: 0.35rem !important;
+  padding-left: 0.5rem !important;
+  padding-right: 0.5rem !important;
+  font-size: 0.8125rem;
+  line-height: 1.25;
+}
+
+.excel-compact table thead th {
+  font-size: 0.75rem;
+}
+
+.excel-compact .overflow-y-auto {
+  max-height: min(70vh, 42rem) !important;
+}
+
+.excel-compact p {
+  font-size: 0.875rem;
+}

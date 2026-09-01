@@ -1,6 +1,7 @@
 "use client";
 
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
+import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 
 import { useProjects,
     useProjectMutations
@@ -192,37 +193,51 @@ export default function ProjectsPage() {
 
         <main className="min-h-screen bg-background text-foreground">
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <Button2Modal_project
-                            onAddProject={handleAddProject}
-                        />
-                    </div>
-                </section>
-                <ProjectTable
-                    projects={projects}
-                    projects_equipos={project_equipos}
-                    projects_materiales={project_materiales}
-                    totalProjects={projects.length}
-                    onUpdateProject={handleUpdateProject}
-                    onDeleteProject={handleDeleteProject}
-                    onDeleteProjectEquipos={handleDeleteProjectEquipos}
-                    onDeleteProjectMateriales={handleDeleteProjectMateriales}
-                />
-            </div>
-            <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                    <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                        <Button2Modal_zone
-                            onAddZone={handleAddZone}
-                        />
-                    </div>
-                </section>
-                <ZoneTable
-                    zones={sortedZones}
-                    totalZones={sortedZones.length}
-                    onUpdateZone={handleUpdateZone}
-                    onDeleteZone={handleDeleteZone}
+                <ExcelWorkbook
+                    sheets={[
+                        {
+                            id: "proyectos",
+                            label: "Proyectos",
+                            content: (
+                                <>
+                                    <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                        <Button2Modal_project
+                                            onAddProject={handleAddProject}
+                                        />
+                                    </section>
+                                    <ProjectTable
+                                        projects={projects}
+                                        projects_equipos={project_equipos}
+                                        projects_materiales={project_materiales}
+                                        totalProjects={projects.length}
+                                        onUpdateProject={handleUpdateProject}
+                                        onDeleteProject={handleDeleteProject}
+                                        onDeleteProjectEquipos={handleDeleteProjectEquipos}
+                                        onDeleteProjectMateriales={handleDeleteProjectMateriales}
+                                    />
+                                </>
+                            ),
+                        },
+                        {
+                            id: "zonas",
+                            label: "Zonas",
+                            content: (
+                                <>
+                                    <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
+                                        <Button2Modal_zone
+                                            onAddZone={handleAddZone}
+                                        />
+                                    </section>
+                                    <ZoneTable
+                                        zones={sortedZones}
+                                        totalZones={sortedZones.length}
+                                        onUpdateZone={handleUpdateZone}
+                                        onDeleteZone={handleDeleteZone}
+                                    />
+                                </>
+                            ),
+                        },
+                    ]}
                 />
             </div>
         </main>

@@ -4,6 +4,7 @@ import Button2Modal_brand from "@/features/view/components/Buttons/Proveedores/m
 import Button2Modal_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2Add";
 import Button2Modal_type from "@/features/view/components/Buttons/Proveedores/tipo/button2Add";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
+import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import BrandTable from "@/features/view/components/Tables/Proveedores/BrandTable";
 import SupplierTable from "@/features/view/components/Tables/Proveedores/SupplierTable";
 import TypeTable from "@/features/view/components/Tables/Proveedores/TypeTable";
@@ -81,48 +82,61 @@ export default function ProveedoresPage() {
 		>
             <main className="min-h-screen bg-background text-foreground">
                 <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
-                    <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de proveedores</h2>
-
-                        <div className="flex mb-5 w-full xl:justify-end">
-							<Button2Modal_supplier onAddSupplier={handleAddSupplier} />
-                        </div>
-
-                        <SupplierTable
-                            supplier={supplier}
-                            totalSupplier={supplier.length}
-                            onUpdateSupplier={handleUpdateSupplier}
-                            onDeleteSupplier={handleDeleteSupplier}
-                        />
-                    </section>
-                    <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de marcas</h2>
-
-                        <div className="flex mb-5 w-full xl:justify-end">
-							<Button2Modal_brand onAddBrand={handleAddBrand} />
-                        </div>
-
-                        <BrandTable
-                            brand={brand}
-                            totalBrand={brand.length}
-                            onUpdateBrand={handleUpdateBrand}
-                            onDeleteBrand={handleDeleteBrand}
-                        />
-                    </section>
-                    <section className="rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-sm">
-						<h2 className="text-2xl font-semibold tracking-tight text-slate-800">Lista de tipos de producto</h2>
-
-                        <div className="flex mb-5 w-full xl:justify-end">
-							<Button2Modal_type onAddType={handleAddType} />
-                        </div>
-
-                        <TypeTable
-                            type={type}
-                            totalType={type.length}
-                            onUpdateType={handleUpdateType}
-                            onDeleteType={handleDeleteType}
-                        />
-                    </section>
+                    <ExcelWorkbook
+                        sheets={[
+                            {
+                                id: "proveedores",
+                                label: "Lista de proveedores",
+                                content: (
+                                    <>
+                                        <div className="mb-4 flex w-full xl:justify-end">
+                                            <Button2Modal_supplier onAddSupplier={handleAddSupplier} />
+                                        </div>
+                                        <SupplierTable
+                                            supplier={supplier}
+                                            totalSupplier={supplier.length}
+                                            onUpdateSupplier={handleUpdateSupplier}
+                                            onDeleteSupplier={handleDeleteSupplier}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "marcas",
+                                label: "Lista de marcas",
+                                content: (
+                                    <>
+                                        <div className="mb-4 flex w-full xl:justify-end">
+                                            <Button2Modal_brand onAddBrand={handleAddBrand} />
+                                        </div>
+                                        <BrandTable
+                                            brand={brand}
+                                            totalBrand={brand.length}
+                                            onUpdateBrand={handleUpdateBrand}
+                                            onDeleteBrand={handleDeleteBrand}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                id: "tipos",
+                                label: "Lista de tipo de producto",
+                                content: (
+                                    <>
+                                        <div className="mb-4 flex w-full xl:justify-end">
+                                            <Button2Modal_type onAddType={handleAddType} />
+                                        </div>
+                                        <TypeTable
+                                            type={type}
+                                            totalType={type.length}
+                                            onUpdateType={handleUpdateType}
+                                            onDeleteType={handleDeleteType}
+                                        />
+                                    </>
+                                ),
+                            },
+                        ]}
+                    />
                 </div>
             </main>
         </PortalShell>

@@ -25,7 +25,7 @@ export type ConsumibleLinkedFamily = "abrazadera" | "prensaestopa" | "curva" | "
 
 export type ConsumibleFamily = ConsumibleSelectableFamily | ConsumibleLinkedFamily | "canaleta"
 
-export const EXTRA_CONSUMIBLE_FAMILIES = ["cable_tierra", "tablero", "mc4", "fusible"] as const
+export const EXTRA_CONSUMIBLE_FAMILIES = ["itm_ac", "cable_tierra", "tablero", "mc4", "fusible"] as const
 export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
 
 export const RESTORABLE_CONSUMIBLE_FAMILIES = ["mc4", "fusible"] as const
@@ -34,10 +34,16 @@ export type ConsumibleRestorableFamily = (typeof RESTORABLE_CONSUMIBLE_FAMILIES)
 export function isExtraConsumibleFamily(
     family: ConsumibleFamily | null,
 ): family is ConsumibleExtraFamily {
-    return family === "cable_tierra"
+    return family === "itm_ac"
+        || family === "cable_tierra"
         || family === "tablero"
         || family === "mc4"
         || family === "fusible"
+}
+
+export function isItmAcDescription(descripcion: string): boolean {
+    const description = descripcion.toUpperCase()
+    return description.includes("ITM") && !description.includes("VDC")
 }
 
 export function isRestorableConsumibleFamily(
@@ -90,11 +96,20 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     fusible: "Fusible + Portafusible",
 }
 
-export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleExtraFamily, string> = {
+export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
+
+export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
+    itm_ac: "Agregar otra protección ITM AC",
     cable_tierra: "Agregar otro cable de tierra",
     tablero: "Agregar otro tablero",
     mc4: "Agregar otro MC4",
     fusible: "Agregar otro fusible + portafusible",
+}
+
+export function isAddableConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleAddableFamily {
+    return family === "itm_ac" || isExtraConsumibleFamily(family)
 }
 
 export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
@@ -379,6 +394,7 @@ export function getDefaultMaterialForFamily(
 ): Materiales | undefined {
     const candidates = filterMaterialsByFamily(materiales, family, color)
         .filter((material) => matchesFamilySize(family, material.descripcion))
+        .filter((material) => family !== "itm_ac" || isItmAcDescription(material.descripcion))
         .filter((material) => !usedCodes?.has(material.cod_producto))
 
     const defaultCode = getDefaultCodeForFamily(family, color)
@@ -395,6 +411,7 @@ export function buildConsumibleFamilyOptions(
     return filterMaterialsByFamily(materiales, family, color)
         .filter((material) => {
             const materialId = String(material.id)
+            if (family === "itm_ac" && !isItmAcDescription(material.descripcion)) return false
             if (materialId === currentMaterialId) return true
             if (selectedIds.has(materialId)) return false
             return matchesFamilySize(family, material.descripcion)

@@ -135,7 +135,7 @@ export function useQuoteSelectedProducts({
         );
     }, [markEdited]);
 
-    const onAddMaterial = useCallback((material: Materiales) => {
+    const onAddMaterial = useCallback((material: Materiales, cantidad = 1) => {
         markEdited();
         setProjectMateriales((current) => {
             if (current.some((item) => String(item.material_id) === String(material.id))) {
@@ -148,7 +148,7 @@ export function useQuoteSelectedProducts({
                 material_info: material,
                 proyecto_id: String(proyectoId ?? ""),
                 fecha_agregado: new Date(),
-                cantidad: "1",
+                cantidad: String(cantidad),
             };
 
             return [...current, nextItem];

@@ -28,3 +28,14 @@ export type CollapsibleTableSectionProps = {
     defaultOpen?: boolean;
     children: ReactNode;
 };
+
+export type ExcelWorkbookSheet = {
+    id: string;
+    label: string;
+    content: ReactNode;
+};
+
+export type ExcelWorkbookProps = {
+    sheets: ExcelWorkbookSheet[];
+    defaultSheetId?: string;
+};

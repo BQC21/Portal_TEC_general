@@ -59,6 +59,7 @@ export function ResourcesTables({
                     <Consume_PriceTable
                         items={manualResourceCosts.Recursos.consumible}
                         selected_materiales={projectMateriales}
+                        selected_equipos={projectEquipos}
                         onUpdateCantidad={onUpdateMaterialCantidad}
                         onAddMaterial={onAddMaterial}
                         onReplaceMaterial={onReplaceMaterial}

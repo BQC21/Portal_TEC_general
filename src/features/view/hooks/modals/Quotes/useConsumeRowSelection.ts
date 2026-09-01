@@ -4,11 +4,13 @@ import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { ConsumibleTableRow } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { compareConsumibleRows } from "@/lib/utils/helpers/sorting/consumiblesSort"
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
 import {
     buildConsumibleFamilyOptions,
     CableFvColor,
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_FAMILY_TIPO,
+    ConsumibleAddableFamily,
     ConsumibleExtraFamily,
     ConsumibleFamily,
     ConsumibleLinkedFamily,
@@ -21,13 +23,24 @@ import {
     getCableFvColor,
     getConsumibleFamily,
     getDefaultMaterialForFamily,
+    isAddableConsumibleFamily,
     isDefaultInsertedFamily,
+    isItmAcDescription,
     isExtraConsumibleFamily,
     isRestorableConsumibleFamily,
     isSelectableConsumibleFamily,
     matchesFamilySize,
     SELECTABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
+
+function countSelectedInverters(equipos: Project_Equipos[]): number {
+    return equipos.reduce((sum, item) => {
+        const tipo = (item.equipo_info?.tipo_de_producto ?? "").toUpperCase()
+        if (tipo !== "INVERSOR") return sum
+        const qty = Number(item.cantidad)
+        return sum + (Number.isFinite(qty) && qty > 0 ? qty : 1)
+    }, 0)
+}
 
 export type ConsumibleDisplayRow = ConsumibleTableRow & {
     family: ConsumibleFamily | null
@@ -40,7 +53,8 @@ type UseConsumeRowSelectionArgs = {
     items: ConsumeItem[]
     sortedMateriales: ConsumibleTableRow[]
     materiales: Materiales[]
-    onAddMaterial: (material: Materiales) => void
+    selectedEquipos?: Project_Equipos[]
+    onAddMaterial: (material: Materiales, cantidad?: number) => void
     onReplaceMaterial: (id: string | number, material: Materiales) => void
     onAddConsumeItem?: (item: Omit<ConsumeItem, "id">) => void
     onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
@@ -97,11 +111,13 @@ export function useConsumeRowSelection({
     items,
     sortedMateriales,
     materiales,
+    selectedEquipos = [],
     onAddMaterial,
     onReplaceMaterial,
     onAddConsumeItem,
     onUpdateItem,
 }: UseConsumeRowSelectionArgs) {
+    const inverterCount = countSelectedInverters(selectedEquipos)
     const templateOrder = useMemo(
         () => new Map(items.map((item, index) => [item.cod_producto, index])),
         [items],
@@ -360,28 +376,38 @@ export function useConsumeRowSelection({
         applyToRow(row, selected)
     }
 
-    function unusedMaterialsForFamily(family: ConsumibleExtraFamily) {
+    function unusedMaterialsForFamily(family: ConsumibleAddableFamily) {
         return filterMaterialsByFamily(materiales, family).filter((material) => {
+            if (family === "itm_ac" && !isItmAcDescription(material.descripcion)) return false
             return !displayRows.some((row) =>
                 row.family === family && row.cod_producto === material.cod_producto,
             )
         })
     }
 
-    function unusedTemplateItemsForFamily(family: ConsumibleExtraFamily) {
+    function unusedTemplateItemsForFamily(family: ConsumibleAddableFamily) {
         return consumible_template.filter((item) => {
             if (getConsumibleFamily(item.descripcion) !== family) return false
+            if (family === "itm_ac" && !isItmAcDescription(item.descripcion)) return false
             return !displayRows.some((row) => row.cod_producto === item.cod_producto)
         })
     }
 
-    function hasUnusedExtraFamilyItems(family: ConsumibleExtraFamily) {
+    function hasUnusedExtraFamilyItems(family: ConsumibleAddableFamily) {
         return unusedMaterialsForFamily(family).length > 0
             || unusedTemplateItemsForFamily(family).length > 0
     }
 
-    function canAddExtraFamily(family: ConsumibleExtraFamily) {
+    function canAddExtraFamily(family: ConsumibleFamily | null): family is ConsumibleAddableFamily {
+        if (!isAddableConsumibleFamily(family)) return false
+
         const visibleCount = displayRows.filter((row) => row.family === family).length
+        if (family === "itm_ac") {
+            return inverterCount > 1
+                && visibleCount === 1
+                && hasUnusedExtraFamilyItems(family)
+        }
+
         return visibleCount >= 1 && hasUnusedExtraFamilyItems(family)
     }
 
@@ -393,7 +419,7 @@ export function useConsumeRowSelection({
         return visibleCount === 0 && hasUnusedExtraFamilyItems(family)
     }
 
-    function onAddExtraFamily(family: ConsumibleExtraFamily) {
+    function onAddExtraFamily(family: ConsumibleAddableFamily) {
         const usedCodes = new Set(
             displayRows
                 .filter((row) => row.family === family && row.cod_producto)

@@ -6,6 +6,7 @@ import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
+import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
 import {
@@ -25,8 +26,8 @@ import {
     CONSUMIBLE_FAMILY_TIPO,
     CONSUMIBLE_RESTORE_LABEL,
     ConsumibleRestorableFamily,
-    isExtraConsumibleFamily,
     isSelectableConsumibleFamily,
+    isAddableConsumibleFamily,
     RESTORABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -34,8 +35,9 @@ import {
 export type Consume_PriceTable_props = {
     items: ConsumeItem[]
     selected_materiales: Project_Materiales[]
+    selected_equipos?: Project_Equipos[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddMaterial: (material: Materiales) => void
+    onAddMaterial: (material: Materiales, cantidad?: number) => void
     onReplaceMaterial: (id: string | number, material: Materiales) => void
     onRemoveMaterial: (id: string | number) => void
     onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void
@@ -104,6 +106,7 @@ function ConsumibleFamilySelect({
 export function Consume_PriceTable({
         items,
         selected_materiales,
+        selected_equipos = [],
         onUpdateCantidad,
         onAddMaterial,
         onReplaceMaterial,
@@ -132,6 +135,7 @@ export function Consume_PriceTable({
         items,
         sortedMateriales,
         materiales,
+        selectedEquipos: selected_equipos,
         onAddMaterial,
         onReplaceMaterial,
         onAddConsumeItem,
@@ -264,12 +268,12 @@ export function Consume_PriceTable({
                                                                     }
                                                                 />
                                                             </div>
-                                                            {isExtraConsumibleFamily(item.family)
+                                                            {isAddableConsumibleFamily(item.family)
                                                                 && canAddExtraFamily(item.family) ? (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => {
-                                                                        if (isExtraConsumibleFamily(item.family)) {
+                                                                        if (isAddableConsumibleFamily(item.family)) {
                                                                             onAddExtraFamily(item.family)
                                                                         }
                                                                     }}
@@ -299,12 +303,23 @@ export function Consume_PriceTable({
                                                             min={0}
                                                             step={0.01}
                                                             onChange={(value) => {
+                                                                const nextCantidad = Number.isFinite(value) ? value : 0
                                                                 if (item.source === "catalog" && item.catalogId != null) {
-                                                                    onUpdateCantidad(item.catalogId, value)
+                                                                    onUpdateCantidad(item.catalogId, nextCantidad)
                                                                     return
                                                                 }
                                                                 if (item.templateIndex != null) {
-                                                                    onUpdateItem(item.templateIndex, "cantidad", value)
+                                                                    onUpdateItem(item.templateIndex, "cantidad", nextCantidad)
+                                                                    return
+                                                                }
+                                                                if (item.isPlaceholder) {
+                                                                    const materialId = getCurrentMaterialId(item)
+                                                                    const material = materiales.find(
+                                                                        (entry) => String(entry.id) === materialId,
+                                                                    )
+                                                                    if (material) {
+                                                                        onAddMaterial(material, nextCantidad)
+                                                                    }
                                                                 }
                                                             }}
                                                         />

@@ -24,6 +24,7 @@ export function AddProductNumberField({
             max={
                 typeof max === "number" &&
                 Number.isFinite(max) &&
+                max !== Number.POSITIVE_INFINITY &&
                 (typeof min !== "number" || !Number.isFinite(min) || max >= min)
                     ? max
                     : undefined
