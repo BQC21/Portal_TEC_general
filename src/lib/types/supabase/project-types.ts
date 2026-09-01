@@ -45,6 +45,8 @@ export type SupabaseProjectRow = {
     spd_voltage?: number;
     mppt_number?: number;
     cadena_number?: number;
+    // dimensionamiento del cable AC
+    rango_distancia?: string;
     // almacenamiento energético
     autonomia?: number;
     ah_sistema?: number;
@@ -95,6 +97,8 @@ export type Project = {
     spd_voltage: string;
     mppt_number: string;
     cadena_number: string;
+    // dimensionamiento del cable AC
+    rango_distancia: string;
     // almacenamiento energético
     autonomia: string;
     ah_sistema: string;

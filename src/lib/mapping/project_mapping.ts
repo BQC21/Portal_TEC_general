@@ -36,6 +36,8 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         spd_voltage: project.spd_voltage,
         mppt_number: project.mppt_number,
         cadena_number: project.cadena_number,
+        // dimensionamiento del cable AC
+        rango_distancia: project.rango_distancia,
         // almacenamiento energético
         autonomia: project.autonomia,
         ah_sistema: project.ah_sistema,
@@ -95,6 +97,8 @@ export function mapSupabaseRowToProject(
         spd_voltage: row.spd_voltage?.toString() || "",
         mppt_number: row.mppt_number?.toString() || "",
         cadena_number: row.cadena_number?.toString() || "",
+        // dimensionamiento del cable AC
+        rango_distancia: row.rango_distancia?.toString() || "",
         // almacenamiento energético
         autonomia: row.autonomia?.toString() || "",
         ah_sistema: row.ah_sistema?.toString() || "",
@@ -152,6 +156,8 @@ export function mapProjectToSupabaseRow(
         spd_voltage: parseNumber(project.spd_voltage),
         mppt_number: parseNumber(project.mppt_number),
         cadena_number: parseNumber(project.cadena_number),
+        // dimensionamiento del cable AC
+        rango_distancia: project.rango_distancia,
         // almacenamiento energético
         autonomia: parseNumber(project.autonomia),
         ah_sistema: parseNumber(project.ah_sistema),
