@@ -93,6 +93,13 @@ export const AWG_COLOR: Record<string, string> = {
     "4/0": "#FFD966",
 };
 
+// Los fondos amarillos necesitan texto oscuro para que el contenido sea legible.
+const AWG_DARK_TEXT = new Set(["12", "4/0"]);
+
+export function awgTextColor(awg: string): string {
+    return AWG_DARK_TEXT.has(awg) ? "#1E293B" : "#FFFFFF";
+}
+
 /**
  * Devuelve el índice del rango de corriente al que pertenece el valor dado.
  * Retorna -1 cuando la corriente es 0 o supera el máximo cubierto por la matriz.
