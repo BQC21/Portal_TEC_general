@@ -6,7 +6,7 @@ const actionButtonStyles = "shrink-0 whitespace-nowrap rounded-xl border border-
 
 
 export function SelectionRow({ label, buttonLabel, value, options, 
-    onChange, onClick, customSelectClass, required = false }: SelectionRowProps) {
+    onChange, onClick, customSelectClass, required = false, disabled = false }: SelectionRowProps) {
         return (
             <div className={selectionRowStyles}>
                 <div className="min-w-0">
@@ -17,6 +17,7 @@ export function SelectionRow({ label, buttonLabel, value, options,
                         options={options}
                         onChange={onChange}
                         customClass={customSelectClass}
+                        disabled={disabled}
                     />
                 </div>
                 <button type="button" className={actionButtonStyles} onClick={onClick}>

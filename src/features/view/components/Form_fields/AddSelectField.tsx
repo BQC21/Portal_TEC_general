@@ -27,7 +27,7 @@ export function AddProductSelectField({
             value={value ?? ""}
             onChange={(event) => onChange(event.target.value)}
             aria-label={label}
-            className={`input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg transition ${customClass}`}
+            className={`input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg transition disabled:cursor-not-allowed disabled:bg-slate-100 disabled:text-slate-500 ${customClass}`}
         >
             {normalizedOptions.map((option) => (
             <option key={option.value || option.label} value={option.value}>
