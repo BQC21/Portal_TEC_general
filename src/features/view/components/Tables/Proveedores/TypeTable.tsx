@@ -64,7 +64,7 @@ export default function TypeTable({ type,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalType} marcas
+                Mostrando {totalType} tipos de producto
             </p>
         </section>
     )
