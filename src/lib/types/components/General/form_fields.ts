@@ -33,6 +33,7 @@ export type AddProductNumberFieldProps = {
     min?: number | "";
     max?: number | "";
     disabled?: boolean;
+    centered?: boolean; // centra la etiqueta y el valor dentro del campo
 };
 
 // campo para radios de selección
