@@ -11,7 +11,7 @@ export default function BrandTable({ brand,
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
-                <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                <div className="overflow-x-auto !max-h-[85vh] overflow-y-auto">
                     <table className="min-w-full w-max border-separate border-spacing-0">
                         <thead className="sticky top-0 z-10 bg-slate-100">
                             <tr className="bg-slate-100 text-left">

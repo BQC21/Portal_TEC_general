@@ -73,8 +73,8 @@ export default function AddReportModal({onAddReport, onClose,
 
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
-            <div className="max-h-[96vh] w-[96vw] max-w-[1800px] overflow-hidden rounded-3xl bg-white shadow-2xl">
-                <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+            <div className="flex h-[96vh] max-h-[96vh] w-[96vw] max-w-[1800px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+                <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-6 py-5">
                     <h2 className="text-2xl font-bold text-slate-900">Añadir Nuevo Reporte</h2>
                         <button
                             type="button"
@@ -87,7 +87,8 @@ export default function AddReportModal({onAddReport, onClose,
                 </div>
 
                 
-                <form onSubmit={handleSubmit} className="max-h-[calc(96vh-88px)] overflow-y-auto px-6 py-6">
+                <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
+                    <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
                     <AddProductSelectField
                         label="Seleccionar Cotización"
                         required
@@ -141,7 +142,8 @@ export default function AddReportModal({onAddReport, onClose,
                         </>
                     )}
 
-                    <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
+                    </div>
+                    <div className="flex shrink-0 items-center justify-between border-t border-slate-200 px-6 py-5">
                         <button
                             type="button"
                             onClick={onClose}
