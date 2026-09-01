@@ -409,6 +409,7 @@ export default function EditProjectModal({
                         selectedMaterialTable={selectedMaterialTable}
                         computedRequirements={computedRequirements.computedRequirements}
                         form={form}
+                        updateField={(field, value) => updateField(field as keyof ProjectFormState, value)}
                         equipos={equipos}
                         materiales={materiales}
                         selectedEquipmentByRow={selectedEquipmentByRow}

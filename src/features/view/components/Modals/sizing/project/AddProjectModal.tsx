@@ -300,6 +300,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                         selectedEquipmentTable={selectedEquipmentTable}
                         selectedMaterialTable={selectedMaterialTable}
                         form={form}
+                        updateField={(field, value) => updateField(field as keyof ProjectFormState, value)}
                         computedRequirements={computedRequirements.computedRequirements}
                         equipos={equipos}
                         materiales={materiales}
