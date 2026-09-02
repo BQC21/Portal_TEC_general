@@ -4,10 +4,11 @@ import { useEffect } from "react";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
 import { cantidadModuloFVEnTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
-import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
+import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
 
 function structureQuantityMax(
     item: SelectedEquipmentItem,
@@ -27,9 +28,24 @@ function structureQuantityMax(
     return undefined;
 }
 
+// Los tipos habilitados son los mismos que ofrecen los selectores; el CABLE además
+// solo aplica cuando es de corriente alterna.
+function isVisibleEquipment(item: SelectedEquipmentItem): boolean {
+    return equipmentRows.includes(item.row);
+}
+
+function isVisibleMaterial(item: SelectedMaterialItem): boolean {
+    if (!materialRows.includes(item.row)) return false;
+    if (item.row === "CABLE") return item.description.includes("AC");
+    return true;
+}
+
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form, equipos}: Tables_M2_props){
-    const selectedModules = selectedEquipmentTable.filter((row) => row.row === "MÓDULO FV");
+    const visibleEquipmentTable = selectedEquipmentTable.filter(isVisibleEquipment);
+    const visibleMaterialTable = selectedMaterialTable.filter(isVisibleMaterial);
+
+    const selectedModules = visibleEquipmentTable.filter((row) => row.row === "MÓDULO FV");
     const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
     const inverterKey = `${selectedInverter?.id ?? ""}:${selectedInverter?.marca ?? ""}`;
 
@@ -60,8 +76,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                 </tr>
                             </thead>
                             <tbody>
-                                {selectedEquipmentTable.length > 0 ? (
-                                    selectedEquipmentTable.map((item) => (
+                                {visibleEquipmentTable.length > 0 ? (
+                                    visibleEquipmentTable.map((item) => (
                                         <tr key={`${item.row}-${item.id}`} className="bg-white">
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 {item.row === "MÓDULO FV" && item.unidad
@@ -138,8 +154,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                 </tr>
                             </thead>
                             <tbody>
-                                {selectedMaterialTable.length > 0 ? (
-                                    selectedMaterialTable.map((item) => (
+                                {visibleMaterialTable.length > 0 ? (
+                                    visibleMaterialTable.map((item) => (
                                         <tr key={`${item.row}-${item.id}`} className="bg-white">
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 {item.description}
