@@ -3,7 +3,8 @@ import { Equipos } from "../../supabase/equipos-types"
 import { Materiales } from "../../supabase/materiales-types"
 import { Project_Equipos } from "../../supabase/project_equipos_join"
 import { Project_Materiales } from "../../supabase/project_materiales_join"
-import { ConsumeItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
+import { ConsumeItem, ManualCosts, MontoItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
+import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts"
 
 // ---------------
 // RECURSOS
@@ -12,14 +13,14 @@ import { ConsumeItem, PersonalItem, QuantityPriceItem } from "./manual_resources
 export type EP_PriceTable_props = {
     selected_equipos: Project_Equipos[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddEquipo: (equipo: Equipos) => void
+    onAddEquipo: (equipo: Equipos, cantidad?: number) => void
     onRemoveEquipo: (id: string | number) => void
 }
 
 export type Structure_PriceTable_props = {
     selected_equipos: Project_Equipos[]
     onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddEquipo: (equipo: Equipos) => void
+    onAddEquipo: (equipo: Equipos, cantidad?: number) => void
     onRemoveEquipo: (id: string | number) => void
 }
 
@@ -84,3 +85,50 @@ export type Tooling_PriceTable_props = {
 // ---------------
 // VIÁTICOS
 // ---------------
+
+export type Courier_PriceTable_props = {
+    items: QuantityPriceItem[], 
+    onUpdateItem: (
+        index: number, 
+        field: keyof QuantityPriceItem, 
+        value: QuantityPriceItem[keyof QuantityPriceItem]
+    ) => void,
+    onAddItem: () => void,
+    onRemoveItem: (index: number) => void,
+}
+
+export type Eating_PriceTable_props = {
+    manualResourceCosts: ManualCosts, 
+    updateManualCostMonto: (
+        section: ManualCostMontoSection, 
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
+    ) => void
+}
+
+export type Hotel_PriceTable_props = {
+    manualResourceCosts: ManualCosts, 
+    updateManualCostMonto: (
+        section: ManualCostMontoSection, 
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
+    ) => void
+}
+
+export type Mobility_PriceTable_props = {
+    manualResourceCosts: ManualCosts, 
+    updateManualCostMonto: (
+        section: ManualCostMontoSection, 
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
+    ) => void
+}
+
+export type Traveling_PriceTable_props = {
+    manualResourceCosts: ManualCosts, 
+    updateManualCostMonto: (
+        section: ManualCostMontoSection, 
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
+    ) => void
+}

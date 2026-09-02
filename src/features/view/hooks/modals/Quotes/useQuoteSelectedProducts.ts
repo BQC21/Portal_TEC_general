@@ -101,7 +101,7 @@ export function useQuoteSelectedProducts({
         );
     }, [markEdited]);
 
-    const onAddEquipo = useCallback((equipo: Equipos) => {
+    const onAddEquipo = useCallback((equipo: Equipos, cantidad = 1) => {
         markEdited();
         setProjectEquipos((current) => {
             if (current.some((item) => String(item.equipo_id) === String(equipo.id))) {
@@ -114,7 +114,7 @@ export function useQuoteSelectedProducts({
                 equipo_info: equipo,
                 proyecto_id: String(proyectoId ?? ""),
                 fecha_agregado: new Date(),
-                cantidad: "1",
+                cantidad: String(cantidad),
             };
 
             return [...current, nextItem];
