@@ -1,52 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
-import { cantidadModuloFVEnTabla, optionalInputMax } from "@/lib/utils/helpers/computes/PanelNumber";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { computedRequirements } from "@/lib/types/components/Sizing/computes";
-import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
-import { equipmentRows, materialRows } from "@/lib/utils/helpers/project_modals/rows";
-
-function structureQuantityMax(
-    item: SelectedEquipmentItem,
-    form: ProjectFormState,
-    requirements: computedRequirements,
-): number | undefined {
-    if (item.row !== "ESTRUCTURA") return undefined;
-    const packSize = parseInt(item.description.match(/\d+/)?.[0] ?? "", 10);
-    if (!Number.isFinite(packSize) || packSize <= 0) return undefined;
-
-    if (item.description.includes("baterías")) {
-        return optionalInputMax(Math.floor(Number(requirements.num_baterias) / packSize));
-    }
-    if (item.description.includes("módulos")) {
-        return optionalInputMax(Math.floor(Number(form.strings) / packSize));
-    }
-    return undefined;
-}
-
-// --------------------------------------
-// Funciones para confimar visibilidad
-// --------------------------------------
-
-function isVisibleEquipment(item: SelectedEquipmentItem): boolean {
-    return equipmentRows.includes(item.row);
-}
-
-function isVisibleMaterial(item: SelectedMaterialItem): boolean {
-    if (!materialRows.includes(item.row)) return false;
-    if (item.row === "CABLE") return item.description.includes("AC");
-    return true;
-}
-
-// Los ITM de corriente continua protegen una cadena cada uno, así que su cantidad la
-// dicta el número de cadenas del proyecto.
-function isDcBreaker(item: SelectedMaterialItem): boolean {
-    return item.description.includes("ITM") && item.description.includes("VDC");
-}
+import { allowsQuantityOverride, followsCadenaNumber, isAcBreaker, isVisibleEquipment, isVisibleMaterial, materialRowKey, structureQuantityMax } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form, equipos}: Tables_M2_props){
@@ -68,19 +27,30 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
         );
     }, [inverterKey, form.tipo_instalacion, equipos, setSelectedEquipmentTable]);
 
-    // sincronizar cantidad de ITM DC con la cantidad de cadenas
+    // Cantidades liberadas por el usuario: quedan fuera de la sincronización automática.
+    const [overriddenQuantities, setOverriddenQuantities] = useState<string[]>([]);
+
+    function toggleQuantityOverride(key: string) {
+        setOverriddenQuantities((curr) =>
+            curr.includes(key) ? curr.filter((item) => item !== key) : [...curr, key],
+        );
+    }
+
+    // sincronizar cantidad de ITM DC y SPD con la cantidad de cadenas
     useEffect(() => {
         const cadenas = Number(form.cadena_number) || 0;
         setSelectedMaterialTable((curr) => {
             let changed = false;
             const next = curr.map((item) => {
-                if (!isDcBreaker(item) || item.cantidad === cadenas) return item;
+                if (!followsCadenaNumber(item)) return item;
+                if (overriddenQuantities.includes(materialRowKey(item))) return item;
+                if (item.cantidad === cadenas) return item;
                 changed = true;
                 return { ...item, cantidad: cadenas };
             });
             return changed ? next : curr;
         });
-    }, [form.cadena_number, setSelectedMaterialTable]);
+    }, [form.cadena_number, overriddenQuantities, setSelectedMaterialTable]);
 
     return(
         <>
@@ -182,8 +152,13 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                             </thead>
                             <tbody>
                                 {visibleMaterialTable.length > 0 ? (
-                                    visibleMaterialTable.map((item) => (
-                                        <tr key={`${item.row}-${item.id}`} className="bg-white">
+                                    visibleMaterialTable.map((item) => {
+                                        const rowKey = materialRowKey(item);
+                                        const isOverridden = overriddenQuantities.includes(rowKey);
+                                        const isAutoQuantity = followsCadenaNumber(item) || isAcBreaker(item);
+
+                                        return (
+                                        <tr key={rowKey} className="bg-white">
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 {item.description}
                                                 {item.description.includes("Cable AC") && (
@@ -208,25 +183,37 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                         )
                                                     }
                                                     step={1} min={0}
-                                                    disabled={isDcBreaker(item)
+                                                    disabled={(isAutoQuantity && !isOverridden)
                                                         || (item.row === "MC4" && item.description.includes("MC4"))}
                                                 />
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5">
-                                                <button
-                                                    type="button"
-                                                    onClick={() => {
-                                                        setSelectedMaterialTable((current) =>
-                                                            current.filter((row) => row.id !== item.id),
-                                                        );
-                                                    }}
-                                                    className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
-                                                >
-                                                    Eliminar
-                                                </button>
+                                                <div className="flex flex-wrap items-center gap-2">
+                                                    {allowsQuantityOverride(item) && (
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => toggleQuantityOverride(rowKey)}
+                                                            className="rounded-xl border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
+                                                        >
+                                                            {isOverridden ? "Fijar cantidad" : "Cambiar cantidad"}
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            setSelectedMaterialTable((current) =>
+                                                                current.filter((row) => row.id !== item.id),
+                                                            );
+                                                        }}
+                                                        className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-600"
+                                                    >
+                                                        Eliminar
+                                                    </button>
+                                                </div>
                                             </td>
                                         </tr>
-                                    ))
+                                        );
+                                    })
                                 ) : (
                                     <tr className="bg-white">
                                         <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
