@@ -117,9 +117,14 @@ export function Structure_PriceTable({
         onUpdateCantidad(dadosItem.id, dadosQuantity)
     }, [selected_equipos, dadosQuantity, onUpdateCantidad])
 
-    const selectedStructure = useMemo(
-        () => equipos.find((item) => String(item.id) === equipoToAdd),
-        [equipos, equipoToAdd],
+    const hasSelectedStructures = useMemo(
+        () => estructuraEquipos.some(({ isDados: dadosRow }) => !dadosRow),
+        [estructuraEquipos],
+    )
+
+    const hasSelectedDados = useMemo(
+        () => estructuraEquipos.some(({ isDados: dadosRow }) => dadosRow),
+        [estructuraEquipos],
     )
 
     // Estructuras disponibles (sin dados: esos van en el selector secundario)
@@ -162,7 +167,6 @@ export function Structure_PriceTable({
         ]
     }, [equipos, selected_equipos])
 
-    // Añadir estructura y, si hay selección, los dados con su cantidad calculada
     function handleAddEquipo() {
         if (!equipoToAdd) return
 
@@ -170,17 +174,18 @@ export function Structure_PriceTable({
         if (!equipo || equipo.tipo_de_producto !== "ESTRUCTURA" || isDados(equipo.descripcion)) return
 
         onAddEquipo(equipo)
-
-        if (dadosToAdd) {
-            const dados = equipos.find((item) => String(item.id) === dadosToAdd)
-            if (dados && isDados(dados.descripcion)) {
-                // La cantidad definitiva la fija el efecto de sincronización al
-                // recalcular 8×/9× según las estructuras de 4/8 módulos.
-                onAddEquipo(dados, Math.max(1, dadosQuantity))
-            }
-        }
-
         setEquipoToAdd("")
+    }
+
+    function handleAddDados() {
+        if (!dadosToAdd || !hasSelectedStructures) return
+
+        const dados = equipos.find((item) => String(item.id) === dadosToAdd)
+        if (!dados || !isDados(dados.descripcion)) return
+
+        // La cantidad definitiva la fija el efecto de sincronización al
+        // recalcular 8×/9× según las estructuras de 4/8 módulos.
+        onAddEquipo(dados, Math.max(1, dadosQuantity))
         setDadosToAdd("")
     }
 
@@ -327,10 +332,7 @@ export function Structure_PriceTable({
                                         label="Agregar estructura"
                                         value={equipoToAdd}
                                         options={availableEquipoOptions}
-                                        onChange={(value) => {
-                                            setEquipoToAdd(value)
-                                            setDadosToAdd("")
-                                        }}
+                                        onChange={setEquipoToAdd}
                                     />
                                 </div>
                                 <button
@@ -338,19 +340,30 @@ export function Structure_PriceTable({
                                     onClick={handleAddEquipo}
                                     disabled={!equipoToAdd}
                                     className="table-icon-button"
-                                    aria-label="Agregar ítem"
+                                    aria-label="Agregar estructura"
                                 >
                                     <PlusIcon />
                                 </button>
                             </div>
-                            {selectedStructure && (
-                                <div className="min-w-0 sm:pr-14">
-                                    <AddProductSelectField
-                                        label="Agregar dados"
-                                        value={dadosToAdd}
-                                        options={availableDadosOptions}
-                                        onChange={setDadosToAdd}
-                                    />
+                            {hasSelectedStructures && !hasSelectedDados && (
+                                <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                                    <div className="min-w-0 flex-1">
+                                        <AddProductSelectField
+                                            label="Agregar dados"
+                                            value={dadosToAdd}
+                                            options={availableDadosOptions}
+                                            onChange={setDadosToAdd}
+                                        />
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleAddDados}
+                                        disabled={!dadosToAdd}
+                                        className="table-icon-button"
+                                        aria-label="Agregar dados"
+                                    >
+                                        <PlusIcon />
+                                    </button>
                                 </div>
                             )}
                         </div>
