@@ -373,17 +373,6 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                         max={optionalInputMax(Math.floor(Number(computedRequirements.selectedInverter?.cadenas)))}
                                     />
                                 </div>
-                                <div style={{ display: "flex", justifyContent: "center" }}>
-                                    <AddProductNumberField
-                                        label="Número de Cadenas a usarse"
-                                        required
-                                        centered
-                                        value={Number(form.cadena_number) > 0 ? Number(form.cadena_number) : ""}
-                                        onChange={(value) => updateField("cadena_number", String(value))}
-                                        min={0}  step={1}
-                                        max={optionalInputMax(Math.floor(Number(computedRequirements.selectedInverter?.cadenas)))}
-                                    />
-                                </div>
 
 
 
