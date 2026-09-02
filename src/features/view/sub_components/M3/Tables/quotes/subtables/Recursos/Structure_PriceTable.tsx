@@ -23,6 +23,17 @@ function isBatteryStructure(descripcion: string | undefined): boolean {
     return (descripcion ?? "").toLowerCase().includes("batería")
 }
 
+function isDados(descripcion: string | undefined): boolean {
+    return (descripcion ?? "").toLowerCase().includes("dados")
+}
+
+// Dados por estructura según la capacidad de módulos: 4 → 8, 8 → 9.
+function dadosPerStructure(modulesPerStructure: number): number {
+    if (modulesPerStructure === 4) return 8
+    if (modulesPerStructure === 8) return 9
+    return 0
+}
+
 export function Structure_PriceTable({
         selected_equipos,
         onUpdateCantidad,
@@ -31,6 +42,7 @@ export function Structure_PriceTable({
     }: Structure_PriceTable_props){
     const { equipos } = useEquipos()
     const [equipoToAdd, setEquipoToAdd] = useState("")
+    const [dadosToAdd, setDadosToAdd] = useState("")
 
     // La cantidad de estructuras de módulos sigue a los MÓDULO FV seleccionados
     // (no al strings estático del proyecto), para que cambie al editar la cotización.
@@ -56,7 +68,10 @@ export function Structure_PriceTable({
             .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
 
         const moduleOptions: StructureOption[] = structures
-            .filter((item) => !isBatteryStructure(item.equipo_info?.descripcion))
+            .filter((item) =>
+                !isBatteryStructure(item.equipo_info?.descripcion)
+                && !isDados(item.equipo_info?.descripcion),
+            )
             .map((item) => ({
                 id: String(item.id),
                 capacity: unitsPerStructure(item.equipo_info?.descripcion),
@@ -69,31 +84,68 @@ export function Structure_PriceTable({
             : null
 
         return structures.map((item) => {
-            const perStructure = unitsPerStructure(item.equipo_info?.descripcion)
-            if (perStructure <= 0) {
-                return { item, perStructure, cantidad: Number(item.cantidad) }
+            const descripcion = item.equipo_info?.descripcion
+            if (isDados(descripcion)) {
+                return { item, perStructure: 0, cantidad: Number(item.cantidad) || 0, isDados: true }
             }
 
-            const isBattery = isBatteryStructure(item.equipo_info?.descripcion)
+            const perStructure = unitsPerStructure(descripcion)
+            if (perStructure <= 0) {
+                return { item, perStructure, cantidad: Number(item.cantidad), isDados: false }
+            }
+
+            const isBattery = isBatteryStructure(descripcion)
             if (combination && !isBattery) {
-                return { item, perStructure, cantidad: combination.get(String(item.id)) ?? 0 }
+                return {
+                    item,
+                    perStructure,
+                    cantidad: combination.get(String(item.id)) ?? 0,
+                    isDados: false,
+                }
             }
 
             const totalUnits = isBattery ? batteryCount : panelCount
-            return { item, perStructure, cantidad: totalUnits / perStructure }
+            return { item, perStructure, cantidad: totalUnits / perStructure, isDados: false }
         })
     }, [selected_equipos, panelCount, batteryCount])
 
-    // Sincronización de la cantidad de estructuras
+    const dadosQuantity = useMemo(
+        () => estructuraEquipos
+            .filter(({ isDados: dadosRow }) => !dadosRow)
+            .reduce((sum, { perStructure, cantidad }) => {
+                const factor = dadosPerStructure(perStructure)
+                if (factor <= 0) return sum
+                return sum + factor * Math.ceil(cantidad)
+            }, 0),
+        [estructuraEquipos],
+    )
+
+    // Sincronización de la cantidad de estructuras (sin dados)
     useEffect(() => {
-        estructuraEquipos.forEach(({ item, perStructure, cantidad }) => {
-            if (perStructure <= 0) return
+        estructuraEquipos.forEach(({ item, perStructure, cantidad, isDados: dadosRow }) => {
+            if (dadosRow || perStructure <= 0) return
             if (Number(item.cantidad) === cantidad) return
             onUpdateCantidad(item.id, cantidad)
         })
     }, [estructuraEquipos, onUpdateCantidad])
 
-    // Estructuras disponibles
+    // Sincronización de dados: 8× estructuras de 4 módulos, 9× estructuras de 8 módulos
+    useEffect(() => {
+        const dadosItem = selected_equipos.find((item) =>
+            item.equipo_info?.tipo_de_producto === "ESTRUCTURA"
+            && isDados(item.equipo_info?.descripcion),
+        )
+        if (!dadosItem) return
+        if (Number(dadosItem.cantidad) === dadosQuantity) return
+        onUpdateCantidad(dadosItem.id, dadosQuantity)
+    }, [selected_equipos, dadosQuantity, onUpdateCantidad])
+
+    const selectedStructure = useMemo(
+        () => equipos.find((item) => String(item.id) === equipoToAdd),
+        [equipos, equipoToAdd],
+    )
+
+    // Estructuras disponibles (sin dados: esos van en el selector secundario)
     const availableEquipoOptions = useMemo(() => {
         const selectedIds = new Set(
             selected_equipos.map((item) => String(item.equipo_id)),
@@ -104,6 +156,7 @@ export function Structure_PriceTable({
             ...equipos
                 .filter((equipo) =>
                     equipo.tipo_de_producto === "ESTRUCTURA"
+                    && !isDados(equipo.descripcion)
                     && !selectedIds.has(String(equipo.id)),
                 )
                 .map((equipo) => ({
@@ -113,15 +166,45 @@ export function Structure_PriceTable({
         ]
     }, [equipos, selected_equipos])
 
-    // Añadir equipo
+    const availableDadosOptions = useMemo(() => {
+        const selectedIds = new Set(
+            selected_equipos.map((item) => String(item.equipo_id)),
+        )
+
+        return [
+            { value: "", label: "Seleccione dados" },
+            ...equipos
+                .filter((equipo) =>
+                    isDados(equipo.descripcion)
+                    && !selectedIds.has(String(equipo.id)),
+                )
+                .map((equipo) => ({
+                    value: String(equipo.id),
+                    label: `${equipo.cod_producto} — ${equipo.descripcion}`,
+                })),
+        ]
+    }, [equipos, selected_equipos])
+
+    // Añadir estructura y, si hay selección, los dados con su cantidad calculada
     function handleAddEquipo() {
         if (!equipoToAdd) return
 
         const equipo = equipos.find((item) => String(item.id) === equipoToAdd)
-        if (!equipo || equipo.tipo_de_producto !== "ESTRUCTURA") return
+        if (!equipo || equipo.tipo_de_producto !== "ESTRUCTURA" || isDados(equipo.descripcion)) return
 
         onAddEquipo(equipo)
+
+        if (dadosToAdd) {
+            const dados = equipos.find((item) => String(item.id) === dadosToAdd)
+            if (dados && isDados(dados.descripcion)) {
+                // La cantidad definitiva la fija el efecto de sincronización al
+                // recalcular 8×/9× según las estructuras de 4/8 módulos.
+                onAddEquipo(dados, Math.max(1, dadosQuantity))
+            }
+        }
+
         setEquipoToAdd("")
+        setDadosToAdd("")
     }
 
     return(
@@ -176,7 +259,7 @@ export function Structure_PriceTable({
                             </thead>
                             <tbody>
                                     {estructuraEquipos.length > 0 ? (
-                                        estructuraEquipos.map(({ item, cantidad }) => (
+                                        estructuraEquipos.map(({ item, cantidad, isDados: dadosRow }) => (
                                             <tr key={`${item.id}`} className="bg-white">
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.equipo_info?.cod_producto}
@@ -190,7 +273,11 @@ export function Structure_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <AddEquipoReadonlyField
                                                         label=""
-                                                        value={String(Math.ceil(cantidad))}
+                                                        value={String(
+                                                            dadosRow
+                                                                ? Math.ceil(dadosQuantity || cantidad)
+                                                                : Math.ceil(cantidad),
+                                                        )}
                                                     />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
@@ -207,16 +294,32 @@ export function Structure_PriceTable({
                                                 </td>
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_soles)*cantidad, "PEN")}
+                                                    {formatCurrency(
+                                                        Number(item.equipo_info?.precio_soles)
+                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        "PEN",
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_soles_igv)*cantidad, "PEN")}
+                                                    {formatCurrency(
+                                                        Number(item.equipo_info?.precio_soles_igv)
+                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        "PEN",
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares)*cantidad, "USD")}
+                                                    {formatCurrency(
+                                                        Number(item.equipo_info?.precio_dolares)
+                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        "USD",
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares_igv)*cantidad, "USD")}
+                                                    {formatCurrency(
+                                                        Number(item.equipo_info?.precio_dolares_igv)
+                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        "USD",
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <button
@@ -240,24 +343,39 @@ export function Structure_PriceTable({
 
                             </tbody>
                         </table>
-                        <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-end">
-                            <div className="min-w-0 flex-1">
-                                <AddProductSelectField
-                                    label="Agregar estructura"
-                                    value={equipoToAdd}
-                                    options={availableEquipoOptions}
-                                    onChange={setEquipoToAdd}
-                                />
+                        <div className="flex flex-col gap-3 px-4 py-4">
+                            <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                                <div className="min-w-0 flex-1">
+                                    <AddProductSelectField
+                                        label="Agregar estructura"
+                                        value={equipoToAdd}
+                                        options={availableEquipoOptions}
+                                        onChange={(value) => {
+                                            setEquipoToAdd(value)
+                                            setDadosToAdd("")
+                                        }}
+                                    />
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleAddEquipo}
+                                    disabled={!equipoToAdd}
+                                    className="table-icon-button"
+                                    aria-label="Agregar ítem"
+                                >
+                                    <PlusIcon />
+                                </button>
                             </div>
-                            <button
-                                type="button"
-                                onClick={handleAddEquipo}
-                                disabled={!equipoToAdd}
-                                className="table-icon-button"
-                                aria-label="Agregar ítem"
-                            >
-                                <PlusIcon />
-                            </button>
+                            {selectedStructure && (
+                                <div className="min-w-0 sm:pr-14">
+                                    <AddProductSelectField
+                                        label="Agregar dados"
+                                        value={dadosToAdd}
+                                        options={availableDadosOptions}
+                                        onChange={setDadosToAdd}
+                                    />
+                                </div>
+                            )}
                         </div>
                     </div>
                 </section>

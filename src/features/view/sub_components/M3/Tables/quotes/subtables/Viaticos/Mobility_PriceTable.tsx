@@ -1,17 +1,9 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
-import { ManualCosts, MontoItem } from "@/lib/types/components/Quotes/manual_resources";
+import { Mobility_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export function Mobility_PriceTable({ manualResourceCosts, updateManualCostMonto }: { 
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
-}){
+export function Mobility_PriceTable({ manualResourceCosts, updateManualCostMonto }: Mobility_PriceTable_props){
     const mobility = manualResourceCosts.Viaticos.mobility ?? { monto: 0, personas: 0, dias: 0 };
     const total =
         Number(mobility.monto ?? 0) *

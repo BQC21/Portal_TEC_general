@@ -1,18 +1,9 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
-import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
-import { MontoItem } from "@/lib/types/components/Quotes/manual_resources";
-import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
+import { Eating_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export function Eating_PriceTable({ manualResourceCosts, updateManualCostMonto }: { 
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
-}){
+export function Eating_PriceTable({ manualResourceCosts, updateManualCostMonto }: Eating_PriceTable_props){
 
     return(
         <>
