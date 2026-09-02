@@ -18,6 +18,7 @@ import { Product_selected } from "@/features/view/sub_components/M3/refactor/Pro
 import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
 import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
 import { useQuoteSelectedProducts } from "@/features/view/hooks/modals/Quotes/useQuoteSelectedProducts";
+import { ExcelResizableTables } from "@/features/view/components/Shells/ExcelResizableTables";
 import {
     syncQuoteEquiposToProject,
     syncQuoteMaterialesToProject,
@@ -183,7 +184,7 @@ export default function EditQuoteModal({
                     />
 
                     {hasSelectedProject && (
-                        <>
+                        <ExcelResizableTables>
                         <Product_selected
                             equiposDescriptions={equiposDescriptions}
                             materialesDescriptions={materialesDescriptions}
@@ -228,7 +229,7 @@ export default function EditQuoteModal({
                                 precioFinal={precioFinal}
                             />
                         </div>
-                        </>
+                        </ExcelResizableTables>
                     )}
 
                     </div>
