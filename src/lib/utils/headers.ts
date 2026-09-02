@@ -130,6 +130,7 @@ export const TABLE_HEADERS_REPORT = [
 
 export const TABLE_HEADERS_FINANTIAL = [
     "Cotización asociada",
+    "Proyecto asociado",
     "Tiempo de recuperación",
     "LCOE",
     "Creado",
