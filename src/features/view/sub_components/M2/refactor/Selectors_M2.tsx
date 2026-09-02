@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SelectionRow } from "../../../components/Form_fields/AddSelectionRow";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
@@ -30,11 +30,21 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
     isEquipmentTypeSelected, showModuleSelector, showInverterSelector, showBatterySelector,
     handle_onChange, handle_click,
 }: Selectors_M2Props) {
-    // Corriente de diseño: ITM AC mínimo por la cantidad de inversores seleccionados
     const inverterQuantity = Number(
         selectedEquipmentTable.find((item) => item.row === "INVERSOR")?.cantidad ?? 0,
     );
-    const designCurrent = Number(computedRequirements.itm_ac_min) * inverterQuantity;
+
+    // Cascada del cable AC: inversores a considerar -> rango de corriente -> rango de
+    // distancia -> mm2. El usuario puede dimensionar para un subconjunto de los inversores.
+    const [invertersToConsider, setInvertersToConsider] = useState<string>("");
+
+    useEffect(() => {
+        if (!invertersToConsider) return;
+        if (Number(invertersToConsider) > inverterQuantity) setInvertersToConsider("");
+    }, [invertersToConsider, inverterQuantity]);
+
+    const consideredInverters = Number(invertersToConsider) || 0;
+    const designCurrent = Number(computedRequirements.itm_ac_min) * consideredInverters;
 
     const currentIndex = findCurrentRangeIndex(designCurrent);
     const distanceIndex = findDistanceRangeIndex(form.rango_distancia);
@@ -62,9 +72,10 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
 
     // La fila de CABLE es de solo lectura, así que el estado del padre siempre se lleva al
     // cable que dicta la matriz. Al comparar contra lo ya guardado la sincronización se
-    // autocorrige: si "Agregar" limpia la fila, vuelve a quedar con el cable correcto.
+    // autocorrige: si "Agregar" limpia la fila, vuelve a quedar con el cable correcto, y si
+    // la cascada deja de resolver un cable la fila se limpia en lugar de quedar desfasada.
     useEffect(() => {
-        if (cableRowIndex < 0 || !autoCableId) return;
+        if (cableRowIndex < 0) return;
         if (storedCableId === autoCableId) return;
         handle_onChange(autoCableId, "CABLE", cableRowIndex, "MATERIAL");
     }, [autoCableId, storedCableId, cableRowIndex, handle_onChange]);
@@ -81,6 +92,14 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
     const distanceRangeOptions = [
         { value: "", label: "Seleccionar - RANGO DE DISTANCIA" },
         ...DISTANCE_RANGES.map((range) => ({ value: range.label, label: range.label })),
+    ];
+
+    const inverterCountOptions = [
+        { value: "", label: "Seleccionar - CANTIDAD DE INVERSORES" },
+        ...Array.from({ length: Math.max(inverterQuantity, 0) }, (_, index) => {
+            const quantity = index + 1;
+            return { value: String(quantity), label: `Para ${quantity} inversores` };
+        }),
     ];
 
     return (
@@ -262,22 +281,33 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                             </div>
                         </div>
 
-                        {/* selector (rango de corriente) + selector (rango de distancia) */}
+                        {/* inversores a considerar -> rango de corriente -> rango de distancia */}
                         <div>
-                            <h2 className="mt-10 mb-10 text-2xl font-bold text-slate-900">Rangos de dimensionamiento</h2>
+                            <div className="mt-10 mb-10 flex items-center gap-3">
+                                <h2 className="text-2xl font-bold text-slate-900">Número de inversores</h2>
+                                <span className="rounded-xl border border-slate-200 bg-slate-100 px-4 py-1 text-2xl font-bold text-slate-900">
+                                    {inverterQuantity}
+                                </span>
+                            </div>
                             <div className="flex flex-col gap-4">
-                                <AddProductReadonlyField
-                                    label="Corriente de diseño (ITM AC mín. × N° inversores)"
-                                    value={currentIndex >= 0 ? `${designCurrent} A` : "—"}
+                                <AddProductSelectField
+                                    label="INVERSORES A CONSIDERAR"
+                                    value={invertersToConsider}
+                                    options={inverterCountOptions}
+                                    disabled={inverterQuantity <= 0}
+                                    onChange={setInvertersToConsider}
                                 />
                                 <AddProductReadonlyField
-                                    label="RANGO DE CORRIENTE"
-                                    value={currentIndex >= 0 ? CURRENT_RANGES[currentIndex].label : "—"}
+                                    label="RANGO DE CORRIENTE ASOCIADO"
+                                    value={currentIndex >= 0
+                                        ? `${CURRENT_RANGES[currentIndex].label} (${designCurrent} A)`
+                                        : "—"}
                                 />
                                 <AddProductSelectField
                                     label="RANGO DE DISTANCIA"
                                     value={form.rango_distancia || ""}
                                     options={distanceRangeOptions}
+                                    disabled={currentIndex < 0}
                                     onChange={(value) => updateField("rango_distancia", value)}
                                 />
                             </div>
