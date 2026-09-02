@@ -37,6 +37,7 @@ export type SelectedMaterialItem = {
     unidad: string;
     description: string;
     cantidad?: number; // cantidad seleccionada para el proyecto
+    inversores_considerados?: number; // cable AC: inversores con los que se dimensionó
     // ṕrecios
     precio_soles: number;
     precio_dolares: number;

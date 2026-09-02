@@ -18,6 +18,7 @@ interface UseSelectionHandlersParams {
     selectedMaterialByRow: Record<string, { materialId: string; description: string }>;
     selectedEquipmentTable: SelectedEquipmentItem[];
     selectedMaterialTable: SelectedMaterialItem[];
+    invertersToConsider: number;
     setSelectedEquipmentByRow: (value: Record<string, { equipoId: string; description: string }> 
         | ((prev: Record<string, { equipoId: string; description: string }>) => 
             Record<string, { equipoId: string; description: string }>)) => void;
@@ -45,6 +46,7 @@ export function useSelectionHandlers({
     selectedMaterialByRow,
     selectedEquipmentTable,
     selectedMaterialTable,
+    invertersToConsider,
     setSelectedEquipmentByRow,
     setSelectedMaterialByRow,
     setSelectedEquipmentTable,
@@ -243,6 +245,11 @@ export function useSelectionHandlers({
                         description: selectedMaterial.description,
                         codigo: materialDetails.cod_producto,
                         cantidad: cantidadInit,
+                        // El cable AC se dimensiona para un subconjunto de inversores, así que
+                        // se guarda con qué cantidad se resolvió su sección.
+                        inversores_considerados: label === "CABLE" && invertersToConsider > 0
+                            ? invertersToConsider
+                            : undefined,
                         unidad: materialDetails.unidad,
                         precio_soles: materialDetails.precio_soles,
                         precio_dolares: materialDetails.precio_dolares,
@@ -262,6 +269,7 @@ export function useSelectionHandlers({
         },[form,
         computedRequirements,
         equipos,
+        invertersToConsider,
         selectedEquipmentByRow,
         selectedMaterialByRow,
         selectedEquipmentTable,

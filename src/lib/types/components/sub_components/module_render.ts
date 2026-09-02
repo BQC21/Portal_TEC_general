@@ -155,6 +155,9 @@ export type Selectors_M2Props = {
     // equipos y materiales (FILAS)
     selectedEquipmentByRow: Record<string, { equipoId: string; description: string }>;
     selectedMaterialByRow: Record<string, { materialId: string; description: string }>;
+    // inversores a considerar para dimensionar el cable AC
+    invertersToConsider: string;
+    setInvertersToConsider: (value: string) => void;
     // condicionadores
     isEquipmentTypeSelected: (label: string) => boolean;
     showModuleSelector: boolean;

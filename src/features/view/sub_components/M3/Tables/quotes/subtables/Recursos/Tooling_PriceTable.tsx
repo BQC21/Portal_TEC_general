@@ -1,21 +1,12 @@
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
-import { QuantityPriceItem } from "@/lib/types/components/Quotes/manual_resources";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
+import { Tooling_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables";
 
-export function Tooling_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: { 
-    items: QuantityPriceItem[], 
-    onUpdateItem: (
-        index: number, 
-        field: keyof QuantityPriceItem, 
-        value: QuantityPriceItem[keyof QuantityPriceItem]
-    ) => void,
-    onAddItem: () => void,
-    onRemoveItem: (index: number) => void,
-}){
+export function Tooling_PriceTable({ items, onUpdateItem, onAddItem, onRemoveItem }: Tooling_PriceTable_props){
 
     return(
         <>

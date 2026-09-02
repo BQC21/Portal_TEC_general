@@ -6,16 +6,8 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
-import { Equipos } from "@/lib/types/supabase/equipos-types"
 import { formatCurrency } from "@/lib/utils/normalization"
-
-export type EP_PriceTable_props = {
-    selected_equipos: Project_Equipos[]
-    onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddEquipo: (equipo: Equipos) => void
-    onRemoveEquipo: (id: string | number) => void
-}
+import { EP_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 
 export function EP_PriceTable({
     selected_equipos,

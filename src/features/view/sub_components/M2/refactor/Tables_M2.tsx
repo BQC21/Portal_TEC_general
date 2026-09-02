@@ -28,8 +28,10 @@ function structureQuantityMax(
     return undefined;
 }
 
-// Los tipos habilitados son los mismos que ofrecen los selectores; el CABLE además
-// solo aplica cuando es de corriente alterna.
+// --------------------------------------
+// Funciones para confimar visibilidad
+// --------------------------------------
+
 function isVisibleEquipment(item: SelectedEquipmentItem): boolean {
     return equipmentRows.includes(item.row);
 }
@@ -40,20 +42,45 @@ function isVisibleMaterial(item: SelectedMaterialItem): boolean {
     return true;
 }
 
+// Los ITM de corriente continua protegen una cadena cada uno, así que su cantidad la
+// dicta el número de cadenas del proyecto.
+function isDcBreaker(item: SelectedMaterialItem): boolean {
+    return item.description.includes("ITM") && item.description.includes("VDC");
+}
+
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form, equipos}: Tables_M2_props){
+    
+    // VISIBILIDAD
     const visibleEquipmentTable = selectedEquipmentTable.filter(isVisibleEquipment);
     const visibleMaterialTable = selectedMaterialTable.filter(isVisibleMaterial);
 
+    // SELECCIÓN
     const selectedModules = visibleEquipmentTable.filter((row) => row.row === "MÓDULO FV");
     const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
     const inverterKey = `${selectedInverter?.id ?? ""}:${selectedInverter?.marca ?? ""}`;
 
+    // Sincronizar automáticamente si el inversor es SOLÍS
+    // para agregar su datalogger y smart meter
     useEffect(() => {
         setSelectedEquipmentTable((curr) =>
             syncSolisAutoAccessories(curr, equipos, form.tipo_instalacion),
         );
     }, [inverterKey, form.tipo_instalacion, equipos, setSelectedEquipmentTable]);
+
+    // sincronizar cantidad de ITM DC con la cantidad de cadenas
+    useEffect(() => {
+        const cadenas = Number(form.cadena_number) || 0;
+        setSelectedMaterialTable((curr) => {
+            let changed = false;
+            const next = curr.map((item) => {
+                if (!isDcBreaker(item) || item.cantidad === cadenas) return item;
+                changed = true;
+                return { ...item, cantidad: cadenas };
+            });
+            return changed ? next : curr;
+        });
+    }, [form.cadena_number, setSelectedMaterialTable]);
 
     return(
         <>
@@ -159,6 +186,13 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                         <tr key={`${item.row}-${item.id}`} className="bg-white">
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 {item.description}
+                                                {item.description.includes("Cable AC") && (
+                                                    <span className="mt-1 block text-sm font-normal text-slate-500">
+                                                        {item.inversores_considerados
+                                                            ? `Dimensionado para ${item.inversores_considerados} ${item.inversores_considerados === 1 ? "inversor" : "inversores"}`
+                                                            : "Sin cantidad de inversores registrada"}
+                                                    </span>
+                                                )}
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                 <AddProductNumberField
@@ -174,7 +208,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                         )
                                                     }
                                                     step={1} min={0}
-                                                    disabled={item.row === "MC4" && item.description.includes("MC4")}
+                                                    disabled={isDcBreaker(item)
+                                                        || (item.row === "MC4" && item.description.includes("MC4"))}
                                                 />
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5">

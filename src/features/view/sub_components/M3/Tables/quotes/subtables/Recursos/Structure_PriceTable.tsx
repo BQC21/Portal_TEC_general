@@ -1,19 +1,26 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
-import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
+import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"
+import { bestStructureCombination, StructureOption } from "@/lib/utils/helpers/computes/best_structure_arrays"
 
-// La descripción de la estructura indica cuántos paneles soporta, por ejemplo
-// "Estructura para 4 módulos".
-function panelsPerStructure(descripcion: string | undefined): number {
+// La descripción de la estructura indica cuántas unidades soporta, por ejemplo
+// "Estructura coplanar Rupac para 4 módulos" o "Rack para 4 baterías".
+function unitsPerStructure(descripcion: string | undefined): number {
     const parsed = Number.parseInt(descripcion?.match(/\d+/)?.[0] ?? "", 10)
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0
+}
+
+// Las estructuras de baterías se dimensionan contra las baterías seleccionadas, no
+// contra los módulos FV.
+function isBatteryStructure(descripcion: string | undefined): boolean {
+    return (descripcion ?? "").toLowerCase().includes("batería")
 }
 
 export function Structure_PriceTable({
@@ -26,20 +33,48 @@ export function Structure_PriceTable({
     const { equipos } = useEquipos()
     const [equipoToAdd, setEquipoToAdd] = useState("")
 
-    // La cantidad no se edita: es el número de paneles entre los paneles por estructura.
-    const estructuraEquipos = useMemo(
+    const batteryCount = useMemo(
         () => selected_equipos
-            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
-            .map((item) => {
-                const perStructure = panelsPerStructure(item.equipo_info?.descripcion)
-                return {
-                    item,
-                    perStructure,
-                    cantidad: perStructure > 0 ? panelCount / perStructure : Number(item.cantidad),
-                }
-            }),
-        [selected_equipos, panelCount],
+            .filter((item) => item.equipo_info?.tipo_de_producto === "BATERÍA")
+            .reduce((sum, item) => sum + (Number(item.cantidad) || 0), 0),
+        [selected_equipos],
     )
+
+    // La cantidad no se edita: es el total de unidades a soportar (módulos FV o baterías)
+    // entre las que admite cada estructura. Con varias estructuras de módulos el reparto
+    // se resuelve como combinación en lugar de dividir el total en cada fila.
+    const estructuraEquipos = useMemo(() => {
+        const structures = selected_equipos
+            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
+
+        const moduleOptions: StructureOption[] = structures
+            .filter((item) => !isBatteryStructure(item.equipo_info?.descripcion))
+            .map((item) => ({
+                id: String(item.id),
+                capacity: unitsPerStructure(item.equipo_info?.descripcion),
+                unitCost: Number(item.equipo_info?.precio_soles) || 0,
+            }))
+            .filter((option) => option.capacity > 0)
+
+        const combination = moduleOptions.length > 1
+            ? bestStructureCombination(panelCount, moduleOptions)
+            : null
+
+        return structures.map((item) => {
+            const perStructure = unitsPerStructure(item.equipo_info?.descripcion)
+            if (perStructure <= 0) {
+                return { item, perStructure, cantidad: Number(item.cantidad) }
+            }
+
+            const isBattery = isBatteryStructure(item.equipo_info?.descripcion)
+            if (combination && !isBattery) {
+                return { item, perStructure, cantidad: combination.get(String(item.id)) ?? 0 }
+            }
+
+            const totalUnits = isBattery ? batteryCount : panelCount
+            return { item, perStructure, cantidad: totalUnits / perStructure }
+        })
+    }, [selected_equipos, panelCount, batteryCount])
 
     // Sincronización de la cantidad de estructuras
     useEffect(() => {
@@ -145,13 +180,9 @@ export function Structure_PriceTable({
                                                     {item.equipo_info?.unidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    <AddProductNumberField
+                                                    <AddEquipoReadonlyField
                                                         label=""
-                                                        value={cantidad}
-                                                        min={0}
-                                                        step={0.01}
-                                                        disabled
-                                                        onChange={(value) => onUpdateCantidad(item.id, value)}
+                                                        value={String(Math.floor(cantidad))}
                                                     />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">

@@ -56,6 +56,9 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
     const [selectedEquipmentTable, setSelectedEquipmentTable] = useState<SelectedEquipmentItem[]>([]);
     const [selectedMaterialTable, setSelectedMaterialTable] = useState<SelectedMaterialItem[]>([]);
 
+    // inversores considerados para dimensionar el cable AC
+    const [invertersToConsider, setInvertersToConsider] = useState<string>("");
+
     // zona seleccionada
     const selectedZone = form_zone.zona;
 
@@ -161,6 +164,7 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
         selectedMaterialByRow,
         selectedEquipmentTable,
         selectedMaterialTable,
+        invertersToConsider: Number(invertersToConsider) || 0,
         setSelectedEquipmentByRow,
         setSelectedMaterialByRow,
         setSelectedEquipmentTable,
@@ -306,6 +310,8 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                         materiales={materiales}
                         selectedEquipmentByRow={selectedEquipmentByRow}
                         selectedMaterialByRow={selectedMaterialByRow}
+                        invertersToConsider={invertersToConsider}
+                        setInvertersToConsider={setInvertersToConsider}
                         isEquipmentTypeSelected={isEquipmentTypeSelected}
                         showModuleSelector={showModuleSelector}
                         showInverterSelector={showInverterSelector}

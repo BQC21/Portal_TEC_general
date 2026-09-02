@@ -152,6 +152,9 @@ export default function EditProjectModal({
             })),
     );
 
+    // inversores considerados para dimensionar el cable AC
+    const [invertersToConsider, setInvertersToConsider] = useState<string>("");
+
     // zona seleccionada
     const selectedZone = form_zone.zona;
 
@@ -270,6 +273,7 @@ export default function EditProjectModal({
         selectedMaterialByRow,
         selectedEquipmentTable,
         selectedMaterialTable,
+        invertersToConsider: Number(invertersToConsider) || 0,
         setSelectedEquipmentByRow,
         setSelectedMaterialByRow,
         setSelectedEquipmentTable,
@@ -414,6 +418,8 @@ export default function EditProjectModal({
                         materiales={materiales}
                         selectedEquipmentByRow={selectedEquipmentByRow}
                         selectedMaterialByRow={selectedMaterialByRow}
+                        invertersToConsider={invertersToConsider}
+                        setInvertersToConsider={setInvertersToConsider}
                         isEquipmentTypeSelected={isEquipmentTypeSelected}
                         showModuleSelector={showModuleSelector}
                         showInverterSelector={showInverterSelector}

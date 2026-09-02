@@ -50,6 +50,7 @@ export function ResourcesTables({
                 <CollapsibleTableSection title="Estructuras">
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
+                        panelCount={Number(form.proyecto_info?.strings) || 0}
                         onUpdateCantidad={onUpdateEquipoCantidad}
                         onAddEquipo={onAddEquipo}
                         onRemoveEquipo={onRemoveEquipo}

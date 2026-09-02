@@ -5,9 +5,6 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
-import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { formatCurrency } from "@/lib/utils/normalization"
 import {
     buildSortedConsumibles,
@@ -30,20 +27,7 @@ import {
     isAddableConsumibleFamily,
     RESTORABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
-
-
-export type Consume_PriceTable_props = {
-    items: ConsumeItem[]
-    selected_materiales: Project_Materiales[]
-    selected_equipos?: Project_Equipos[]
-    onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddMaterial: (material: Materiales, cantidad?: number) => void
-    onReplaceMaterial: (id: string | number, material: Materiales) => void
-    onRemoveMaterial: (id: string | number) => void
-    onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void
-    onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
-    onRemoveItem: (index: number) => void
-}
+import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 
 function restoreFamiliesForGroup(groupKey: ConsumibleGroupKey): ConsumibleRestorableFamily[] {
     return RESTORABLE_CONSUMIBLE_FAMILIES.filter(

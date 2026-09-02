@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { SelectionRow } from "../../../components/Form_fields/AddSelectionRow";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
@@ -27,6 +27,7 @@ const matrixHeaderStyles = "border border-black bg-white px-1 py-[3px] text-cent
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
     form, updateField, computedRequirements, equipos, materiales, selectedEquipmentByRow, selectedMaterialByRow, 
+    invertersToConsider, setInvertersToConsider,
     isEquipmentTypeSelected, showModuleSelector, showInverterSelector, showBatterySelector,
     handle_onChange, handle_click,
 }: Selectors_M2Props) {
@@ -36,12 +37,10 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
 
     // Cascada del cable AC: inversores a considerar -> rango de corriente -> rango de
     // distancia -> mm2. El usuario puede dimensionar para un subconjunto de los inversores.
-    const [invertersToConsider, setInvertersToConsider] = useState<string>("");
-
     useEffect(() => {
         if (!invertersToConsider) return;
         if (Number(invertersToConsider) > inverterQuantity) setInvertersToConsider("");
-    }, [invertersToConsider, inverterQuantity]);
+    }, [invertersToConsider, inverterQuantity, setInvertersToConsider]);
 
     const consideredInverters = Number(invertersToConsider) || 0;
     const designCurrent = Number(computedRequirements.itm_ac_min) * consideredInverters;
