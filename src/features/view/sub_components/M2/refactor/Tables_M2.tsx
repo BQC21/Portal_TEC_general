@@ -5,7 +5,7 @@ import { AddProductNumberField } from "../../../components/Form_fields/AddNumber
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
 import { cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
-import { allowsQuantityOverride, followsCadenaNumber, isAcBreaker, isVisibleEquipment, isVisibleMaterial, materialRowKey, structureQuantityMax } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
+import { allowsQuantityOverride, followsCadenaNumber, isVisibleEquipment, isVisibleMaterial, materialRowKey, structureQuantityMax } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
 
 export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     selectedMaterialTable, setSelectedMaterialTable, computedRequirements, form, equipos}: Tables_M2_props){
@@ -36,7 +36,14 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
         );
     }
 
-    // sincronizar cantidad de ITM DC y SPD con la cantidad de cadenas
+    // Al agregar un material nuevo la tabla cambia pero cadena_number no, así que la
+    // sincronización necesita esta llave para alcanzar también a los recién agregados.
+    const cadenaSyncKey = selectedMaterialTable
+        .filter(followsCadenaNumber)
+        .map(materialRowKey)
+        .join("|");
+
+    // sincronizar cantidad de ITM DC y SPD con la cantidad de cadenas a usarse
     useEffect(() => {
         const cadenas = Number(form.cadena_number) || 0;
         setSelectedMaterialTable((curr) => {
@@ -50,7 +57,7 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
             });
             return changed ? next : curr;
         });
-    }, [form.cadena_number, overriddenQuantities, setSelectedMaterialTable]);
+    }, [form.cadena_number, cadenaSyncKey, overriddenQuantities, setSelectedMaterialTable]);
 
     return(
         <>
@@ -154,8 +161,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                 {visibleMaterialTable.length > 0 ? (
                                     visibleMaterialTable.map((item) => {
                                         const rowKey = materialRowKey(item);
+                                        const canOverride = allowsQuantityOverride(item);
                                         const isOverridden = overriddenQuantities.includes(rowKey);
-                                        const isAutoQuantity = followsCadenaNumber(item) || isAcBreaker(item);
 
                                         return (
                                         <tr key={rowKey} className="bg-white">
@@ -183,13 +190,13 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                         )
                                                     }
                                                     step={1} min={0}
-                                                    disabled={(isAutoQuantity && !isOverridden)
+                                                    disabled={(canOverride && !isOverridden)
                                                         || (item.row === "MC4" && item.description.includes("MC4"))}
                                                 />
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5">
                                                 <div className="flex flex-wrap items-center gap-2">
-                                                    {allowsQuantityOverride(item) && (
+                                                    {canOverride && (
                                                         <button
                                                             type="button"
                                                             onClick={() => toggleQuantityOverride(rowKey)}

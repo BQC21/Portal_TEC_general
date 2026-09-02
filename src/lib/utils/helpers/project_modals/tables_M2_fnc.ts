@@ -62,7 +62,7 @@ export function followsCadenaNumber(item: SelectedMaterialItem): boolean {
 
 // El usuario puede desbloquear estas cantidades con un botón de la tabla.
 export function allowsQuantityOverride(item: SelectedMaterialItem): boolean {
-    return isSpd(item) || isAcBreaker(item);
+    return isSpd(item) || isAcBreaker(item) || isDcBreaker(item);
 }
 
 export function materialRowKey(item: SelectedMaterialItem): string {
