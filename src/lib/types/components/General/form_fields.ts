@@ -66,6 +66,12 @@ export type AddProductSelectFieldProps = {
     customClass?: string; // Optional custom class for styling
 };
 
+// campo para selectores con búsqueda y lista desplegable propia
+export type AddProductSearchableSelectFieldProps = AddProductSelectFieldProps & {
+    searchPlaceholder?: string;
+    emptyMessage?: string;
+};
+
 export type SelectionRowProps = {
     label: string;
     buttonLabel: string;
