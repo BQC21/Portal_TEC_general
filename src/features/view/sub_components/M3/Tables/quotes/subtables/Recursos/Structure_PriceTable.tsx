@@ -1,24 +1,24 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
-import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
-import { Equipos } from "@/lib/types/supabase/equipos-types"
 import { formatCurrency } from "@/lib/utils/normalization"
+import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 
-export type Structure_PriceTable_props = {
-    selected_equipos: Project_Equipos[]
-    onUpdateCantidad: (id: string | number, cantidad: number) => void
-    onAddEquipo: (equipo: Equipos) => void
-    onRemoveEquipo: (id: string | number) => void
+// La descripción de la estructura indica cuántos paneles soporta, por ejemplo
+// "Estructura para 4 módulos".
+function panelsPerStructure(descripcion: string | undefined): number {
+    const parsed = Number.parseInt(descripcion?.match(/\d+/)?.[0] ?? "", 10)
+    return Number.isFinite(parsed) && parsed > 0 ? parsed : 0
 }
 
 export function Structure_PriceTable({
         selected_equipos,
+        panelCount,
         onUpdateCantidad,
         onAddEquipo,
         onRemoveEquipo,
@@ -26,11 +26,31 @@ export function Structure_PriceTable({
     const { equipos } = useEquipos()
     const [equipoToAdd, setEquipoToAdd] = useState("")
 
+    // La cantidad no se edita: es el número de paneles entre los paneles por estructura.
     const estructuraEquipos = useMemo(
-        () => selected_equipos.filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA"),
-        [selected_equipos],
+        () => selected_equipos
+            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
+            .map((item) => {
+                const perStructure = panelsPerStructure(item.equipo_info?.descripcion)
+                return {
+                    item,
+                    perStructure,
+                    cantidad: perStructure > 0 ? panelCount / perStructure : Number(item.cantidad),
+                }
+            }),
+        [selected_equipos, panelCount],
     )
 
+    // Sincronización de la cantidad de estructuras
+    useEffect(() => {
+        estructuraEquipos.forEach(({ item, perStructure, cantidad }) => {
+            if (perStructure <= 0) return
+            if (Number(item.cantidad) === cantidad) return
+            onUpdateCantidad(item.id, cantidad)
+        })
+    }, [estructuraEquipos, onUpdateCantidad])
+
+    // Estructuras disponibles
     const availableEquipoOptions = useMemo(() => {
         const selectedIds = new Set(
             selected_equipos.map((item) => String(item.equipo_id)),
@@ -50,6 +70,7 @@ export function Structure_PriceTable({
         ]
     }, [equipos, selected_equipos])
 
+    // Añadir equipo
     function handleAddEquipo() {
         if (!equipoToAdd) return
 
@@ -112,7 +133,7 @@ export function Structure_PriceTable({
                             </thead>
                             <tbody>
                                     {estructuraEquipos.length > 0 ? (
-                                        estructuraEquipos.map((item) => (
+                                        estructuraEquipos.map(({ item, cantidad }) => (
                                             <tr key={`${item.id}`} className="bg-white">
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.equipo_info?.cod_producto}
@@ -126,9 +147,10 @@ export function Structure_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <AddProductNumberField
                                                         label=""
-                                                        value={Number(item.cantidad)}
+                                                        value={cantidad}
                                                         min={0}
                                                         step={0.01}
+                                                        disabled
                                                         onChange={(value) => onUpdateCantidad(item.id, value)}
                                                     />
                                                 </td>
@@ -146,16 +168,16 @@ export function Structure_PriceTable({
                                                 </td>
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_soles)*Number(item.cantidad), "PEN")}
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles)*cantidad, "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_soles_igv)*Number(item.cantidad), "PEN")}
+                                                    {formatCurrency(Number(item.equipo_info?.precio_soles_igv)*cantidad, "PEN")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares)*Number(item.cantidad), "USD")}
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares)*cantidad, "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares_igv)*Number(item.cantidad), "USD")}
+                                                    {formatCurrency(Number(item.equipo_info?.precio_dolares_igv)*cantidad, "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <button
