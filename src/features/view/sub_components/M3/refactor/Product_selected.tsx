@@ -87,7 +87,7 @@ export function Product_selected({
                     required
                     value={Number(form.depre_tool) > 0 ? Number(form.depre_tool) : ""}
                     onChange={(value) => updateField("depre_tool", String(value))}
-                    step={0.1}   min={1}   max={12}
+                    step={0.1}   min={1}   max={36}
                 />
             </div>
         </div>
