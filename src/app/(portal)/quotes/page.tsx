@@ -16,6 +16,8 @@ import { useFinantialMutations, useFinantials } from "@/features/view/hooks/serv
 import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-types";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
+import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { useState } from "react";
 
 export default function QuotesPage(){
     // ---------------------------------
@@ -47,6 +49,34 @@ export default function QuotesPage(){
         update: update_finantials,
         remove: remove_finantials,
     } = useFinantialMutations();
+
+    // ---------------------------------
+    // ---- Filtrado -------------------
+    // ---------------------------------
+	const [searchQuote, setSearchQuote] = useState<string>("");
+	const [searchReport, setSearchReport] = useState<string>("");
+	const [searchFinantial, setSearchFinantial] = useState<string>("");
+
+    const filteredQuotes = quotes.filter((quote) => {
+		const matchesDescription = !searchQuote || 
+                quote.proyecto_info?.nombre.toLowerCase().includes(searchQuote.toLowerCase());
+
+		return matchesDescription;
+	});
+
+    const filteredReports = reports.filter((report) => {
+		const matchesDescription = !searchReport || 
+            report.cliente?.toLowerCase().includes(searchReport.toLowerCase());
+
+		return matchesDescription;
+	});
+
+    const filteredFinantial = finantials.filter((finantial) => {
+		const matchesDescription = !searchFinantial || 
+            finantial.cotizacion_info?.proyecto_info?.nombre.toLowerCase().includes(searchFinantial.toLowerCase());
+
+		return matchesDescription;
+	});
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -140,17 +170,26 @@ export default function QuotesPage(){
                                 label: "Cotizaciones",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                                            <Button2Add_quote
-                                                onAddQuote={handleAddQuote}
-                                                existingQuotes={quotes}
-                                                project_equipos={project_equipos}
-                                                project_materiales={project_materiales}
-                                            />
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchQuote}
+                                                    onChange={setSearchQuote}
+                                                    placeholder="Buscar por proyecto asociado..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Add_quote
+                                                    onAddQuote={handleAddQuote}
+                                                    existingQuotes={quotes}
+                                                    project_equipos={project_equipos}
+                                                    project_materiales={project_materiales}
+                                                />
+                                            </div>
                                         </section>
                                         <QuoteTable
-                                            quote={quotes}
-                                            totalQuote={quotes.length}
+                                            quote={filteredQuotes}
+                                            totalQuote={filteredQuotes.length}
                                             onUpdateQuote={handleEditQuote}
                                             onDeleteQuote={handleDeleteQuote}
                                             projects_equipos={project_equipos}
@@ -164,16 +203,25 @@ export default function QuotesPage(){
                                 label: "Reportes",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                                            <Button2Add_report
-                                                onAddReport={handleAddReport}
-                                                project_equipos={project_equipos}
-                                                project_materiales={project_materiales}
-                                            />
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchReport}
+                                                    onChange={setSearchReport}
+                                                    placeholder="Buscar por nombre del cliente..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Add_report
+                                                    onAddReport={handleAddReport}
+                                                    project_equipos={project_equipos}
+                                                    project_materiales={project_materiales}
+                                                />
+                                            </div>
                                         </section>
                                         <ReportTable
-                                            report={reports}
-                                            totalReport={reports.length}
+                                            report={filteredReports}
+                                            totalReport={filteredReports.length}
                                             onUpdateReport={handleEditReport}
                                             onDeleteReport={handleDeleteReport}
                                             projects_equipos={project_equipos}
@@ -187,15 +235,24 @@ export default function QuotesPage(){
                                 label: "Finanzas",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                                            <Button2Add_finantial
-                                                onAddFinantial={handleAddFinantial}
-                                                project_equipos={project_equipos}
-                                            />
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchFinantial}
+                                                    onChange={setSearchFinantial}
+                                                    placeholder="Buscar por proyecto asociado..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Add_finantial
+                                                    onAddFinantial={handleAddFinantial}
+                                                    project_equipos={project_equipos}
+                                                />
+                                            </div>
                                         </section>
                                         <FinantialTable
-                                            finantial={finantials}
-                                            totalFinantial={finantials.length}
+                                            finantial={filteredFinantial}
+                                            totalFinantial={filteredFinantial.length}
                                             onUpdateFinantial={handleEditFinantial}
                                             onDeleteFinantial={handleDeleteFinantial}
                                             projects_equipos={project_equipos}

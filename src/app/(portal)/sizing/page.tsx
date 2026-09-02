@@ -26,8 +26,9 @@ import Button2Modal_project from "@/features/view/components/Buttons/sizing/proj
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
+import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 
 
 export default function ProjectsPage() {
@@ -61,12 +62,32 @@ export default function ProjectsPage() {
     } = useProjectMaterialesMutations();
 
     // ---------------------------------
+    // ---- Filtrado -------------------
+    // ---------------------------------
+	const [searchProject, setSearchProject] = useState<string>("");
+	const [searchZone, setSearchZone] = useState<string>("");
+
+    const filteredProjects = projects.filter((project) => {
+		const matchesDescription = !searchProject || 
+                project.nombre.toLowerCase().includes(searchProject.toLowerCase());
+
+		return matchesDescription;
+	});
+
+    // ---------------------------------
     // ---- Ordenamiento ---------------
     // ---------------------------------
 
     const sortedZones = useMemo(() => {
         return zones.length > 0 ? sortZones(zones, "zona") : [];
     }, [zones]);
+
+    const filteredZones = sortedZones.filter((zone) => {
+		const matchesDescription = !searchZone || 
+            zone.zona?.toLowerCase().includes(searchZone.toLowerCase());
+
+		return matchesDescription;
+	});
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -200,16 +221,25 @@ export default function ProjectsPage() {
                             label: "Proyectos",
                             content: (
                                 <>
-                                    <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                                        <Button2Modal_project
-                                            onAddProject={handleAddProject}
-                                        />
+                                    <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                        <div className="min-w-0 flex-1">
+                                            <SearchBar
+                                                value={searchProject}
+                                                onChange={setSearchProject}
+                                                placeholder="Buscar por nombre del proyecto..."
+                                            />
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <Button2Modal_project
+                                                onAddProject={handleAddProject}
+                                            />
+                                        </div>
                                     </section>
                                     <ProjectTable
-                                        projects={projects}
+                                        projects={filteredProjects}
                                         projects_equipos={project_equipos}
                                         projects_materiales={project_materiales}
-                                        totalProjects={projects.length}
+                                        totalProjects={filteredProjects.length}
                                         onUpdateProject={handleUpdateProject}
                                         onDeleteProject={handleDeleteProject}
                                         onDeleteProjectEquipos={handleDeleteProjectEquipos}
@@ -223,14 +253,23 @@ export default function ProjectsPage() {
                             label: "Zonas",
                             content: (
                                 <>
-                                    <section className="mb-4 flex flex-col gap-3 sm:flex-row sm:justify-end">
-                                        <Button2Modal_zone
-                                            onAddZone={handleAddZone}
-                                        />
+                                    <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                        <div className="min-w-0 flex-1">
+                                            <SearchBar
+                                                value={searchZone}
+                                                onChange={setSearchZone}
+                                                placeholder="Buscar por nombre de la zona..."
+                                            />
+                                        </div>
+                                        <div className="flex flex-wrap items-center gap-3">
+                                            <Button2Modal_zone
+                                                onAddZone={handleAddZone}
+                                            />
+                                        </div>
                                     </section>
                                     <ZoneTable
-                                        zones={sortedZones}
-                                        totalZones={sortedZones.length}
+                                        zones={filteredZones}
+                                        totalZones={filteredZones.length}
                                         onUpdateZone={handleUpdateZone}
                                         onDeleteZone={handleDeleteZone}
                                     />

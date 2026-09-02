@@ -14,6 +14,8 @@ import { useTypes, useTypesMutations } from "@/features/view/hooks/services/useR
 import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
+import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { useState } from "react";
 
 export default function ProveedoresPage() {
 	const { supplier, refetch: refetchSupplier } = useProveedores();
@@ -24,6 +26,34 @@ export default function ProveedoresPage() {
 
     const { type, refetch: refetchType } = useTypes();
 	const { create: createType, update: updateType, remove: removeType} = useTypesMutations();
+
+    // ---------------------------------
+    // ---- Filtrado -------------------
+    // ---------------------------------
+	const [searchSupplier, setSearchSupplier] = useState<string>("");
+	const [searchBrand, setSearchBrand] = useState<string>("");
+	const [searchType, setSearchType] = useState<string>("");
+
+    const filteredSupplier = supplier.filter((supplier) => {
+		const matchesDescription = !searchSupplier || 
+            supplier.nombre?.toLowerCase().includes(searchSupplier.toLowerCase());
+
+		return matchesDescription;
+	});
+
+    const filteredBrand = brand.filter((brand) => {
+		const matchesDescription = !searchBrand || 
+            brand.nombre?.toLowerCase().includes(searchBrand.toLowerCase());
+
+		return matchesDescription;
+	});
+
+    const filteredType = type.filter((type) => {
+		const matchesDescription = !searchType || 
+            type.nombre?.toLowerCase().includes(searchType.toLowerCase());
+
+		return matchesDescription;
+	});
 
     // ---------------------------------
     // ---- Lista de eventos -----------
@@ -89,12 +119,21 @@ export default function ProveedoresPage() {
                                 label: "Lista de proveedores",
                                 content: (
                                     <>
-                                        <div className="mb-4 flex w-full xl:justify-end">
-                                            <Button2Modal_supplier onAddSupplier={handleAddSupplier} />
-                                        </div>
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchSupplier}
+                                                    onChange={setSearchSupplier}
+                                                    placeholder="Buscar por nombre del proveedor..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Modal_supplier onAddSupplier={handleAddSupplier} />
+                                            </div>
+                                        </section>
                                         <SupplierTable
-                                            supplier={supplier}
-                                            totalSupplier={supplier.length}
+                                            supplier={filteredSupplier}
+                                            totalSupplier={filteredSupplier.length}
                                             onUpdateSupplier={handleUpdateSupplier}
                                             onDeleteSupplier={handleDeleteSupplier}
                                         />
@@ -106,12 +145,21 @@ export default function ProveedoresPage() {
                                 label: "Lista de marcas",
                                 content: (
                                     <>
-                                        <div className="mb-4 flex w-full xl:justify-end">
-                                            <Button2Modal_brand onAddBrand={handleAddBrand} />
-                                        </div>
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchBrand}
+                                                    onChange={setSearchBrand}
+                                                    placeholder="Buscar por nombre de la marca..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Modal_brand onAddBrand={handleAddBrand} />
+                                            </div>
+                                        </section>
                                         <BrandTable
-                                            brand={brand}
-                                            totalBrand={brand.length}
+                                            brand={filteredBrand}
+                                            totalBrand={filteredBrand.length}
                                             onUpdateBrand={handleUpdateBrand}
                                             onDeleteBrand={handleDeleteBrand}
                                         />
@@ -123,12 +171,21 @@ export default function ProveedoresPage() {
                                 label: "Lista de tipo de producto",
                                 content: (
                                     <>
-                                        <div className="mb-4 flex w-full xl:justify-end">
-                                            <Button2Modal_type onAddType={handleAddType} />
-                                        </div>
+                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
+                                            <div className="min-w-0 flex-1">
+                                                <SearchBar
+                                                    value={searchType}
+                                                    onChange={setSearchType}
+                                                    placeholder="Buscar por tipo de producto..."
+                                                />
+                                            </div>
+                                            <div className="flex flex-wrap items-center gap-3">
+                                                <Button2Modal_type onAddType={handleAddType} />
+                                            </div>
+                                        </section>
                                         <TypeTable
-                                            type={type}
-                                            totalType={type.length}
+                                            type={filteredType}
+                                            totalType={filteredType.length}
                                             onUpdateType={handleUpdateType}
                                             onDeleteType={handleDeleteType}
                                         />
