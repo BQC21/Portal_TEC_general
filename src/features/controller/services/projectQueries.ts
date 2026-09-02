@@ -7,6 +7,20 @@ import { PROJECTS_TABLE } from "@/lib/utils/namingTolerance"
 // ---- Operaciones CRUD ----
 // --------------------------
 
+// Las restricciones de la tabla se traducen a un mensaje que los modales puedan mostrar.
+function constraintMessage(message: string): string | null {
+    if (message.includes("proyectos_nombre_key")) {
+        return "Ya existe un proyecto con ese nombre. Use otro nombre.";
+    }
+    if (message.includes("proyectos_demanda_electrica_check")) {
+        return "La demanda eléctrica debe ser mayor que cero.";
+    }
+    if (message.includes("fk_zona") || message.includes("zona_id")) {
+        return "Seleccione una zona válida para el proyecto.";
+    }
+    return null;
+}
+
 // crear proyecto
 export async function createProject(project: ProjectFormData): Promise<Project> {
     const supabase = createClient();
@@ -34,7 +48,8 @@ export async function createProject(project: ProjectFormData): Promise<Project> 
 
     // Cuando la secuencia del PK quedó desalineada, Supabase devuelve 23505 sobre proyectos_pkey.
     // En ese caso calculamos el siguiente id disponible y reintentamos con un valor explícito.
-    if (error && (error.code === "23505" || error.message.includes("proyectos_pkey"))) {
+    // El reintento se limita al PK: otros 23505 (como el nombre duplicado) deben informarse.
+    if (error && error.message.includes("proyectos_pkey")) {
         const { data: lastRows, error: lastError } = await supabase
             .from(PROJECTS_TABLE)
             .select("id")
@@ -63,7 +78,10 @@ export async function createProject(project: ProjectFormData): Promise<Project> 
 
     if (error) {
         // Include the full error payload for easier debugging in logs.
-        throw new Error(`Error al crear el proyecto: ${error.message} - ${JSON.stringify(error)}`);
+        throw new Error(
+            constraintMessage(error.message)
+            ?? `Error al crear el proyecto: ${error.message} - ${JSON.stringify(error)}`
+        );
     }
 
     // Supabase may return an array of rows; pick the first one defensively.
@@ -117,7 +135,10 @@ export async function updateProject(id: string, project: ProjectFormData): Promi
     ;
 
     if (error) {
-        throw new Error(`Error al actualizar el proyecto: ${error.message}`);
+        throw new Error(
+            constraintMessage(error.message)
+            ?? `Error al actualizar el proyecto: ${error.message}`
+        );
     }
 
     return await getProjectById(id);
