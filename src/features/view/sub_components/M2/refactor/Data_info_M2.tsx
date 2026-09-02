@@ -419,7 +419,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             />
                                             <AddEquipoReadonlyField
                                                 label="Voltaje de la batería seleccionada"
-                                                value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(3))}
+                                                value={String(Number(computedRequirements.selectedBattery?.vmpp_vmin).toFixed(0))}
                                                 colorClass={getFieldValueDarkClass(String(computedRequirements.selectedBattery?.vmpp_vmin))}
                                             />
                                             <AddEquipoReadonlyField
@@ -445,7 +445,7 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                                             </div>
                                             <AddProductReadonlyField
                                                 label="Capacidad (Ah) del sistema"
-                                                value={String(Number(computedRequirements.ah_sistema).toFixed(3))}
+                                                value={String(Number(computedRequirements.ah_sistema).toFixed(0))}
                                                 colorClass={getFieldValueLightClass(computedRequirements.ah_sistema)}
                                             />
                                             <AddProductReadonlyField
