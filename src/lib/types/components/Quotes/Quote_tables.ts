@@ -18,7 +18,6 @@ export type EP_PriceTable_props = {
 
 export type Structure_PriceTable_props = {
     selected_equipos: Project_Equipos[]
-    panelCount: number
     onUpdateCantidad: (id: string | number, cantidad: number) => void
     onAddEquipo: (equipo: Equipos) => void
     onRemoveEquipo: (id: string | number) => void

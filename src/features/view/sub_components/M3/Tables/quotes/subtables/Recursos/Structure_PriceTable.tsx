@@ -25,13 +25,21 @@ function isBatteryStructure(descripcion: string | undefined): boolean {
 
 export function Structure_PriceTable({
         selected_equipos,
-        panelCount,
         onUpdateCantidad,
         onAddEquipo,
         onRemoveEquipo,
     }: Structure_PriceTable_props){
     const { equipos } = useEquipos()
     const [equipoToAdd, setEquipoToAdd] = useState("")
+
+    // La cantidad de estructuras de módulos sigue a los MÓDULO FV seleccionados
+    // (no al strings estático del proyecto), para que cambie al editar la cotización.
+    const panelCount = useMemo(
+        () => selected_equipos
+            .filter((item) => item.equipo_info?.tipo_de_producto === "MÓDULO FV")
+            .reduce((sum, item) => sum + (Number(item.cantidad) || 0), 0),
+        [selected_equipos],
+    )
 
     const batteryCount = useMemo(
         () => selected_equipos
@@ -182,7 +190,7 @@ export function Structure_PriceTable({
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     <AddEquipoReadonlyField
                                                         label=""
-                                                        value={String(Math.floor(cantidad))}
+                                                        value={String(Math.ceil(cantidad))}
                                                     />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
