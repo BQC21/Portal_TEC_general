@@ -218,9 +218,27 @@ export default function EditProjectModal({
         });
     }
 
+    // La base de datos exige nombre, zona y una demanda eléctrica positiva, así que se
+    // validan aquí para no perder el envío con un error que no se vería en pantalla.
+    function validationError(): string | null {
+        if (!form.nombre.trim()) return "Ingrese el nombre del proyecto.";
+        if (!form.zona_id) return "Seleccione la zona del proyecto.";
+        if (!(Number(form.demanda_electrica) > 0)) {
+            return "Ingrese una demanda eléctrica mayor que cero.";
+        }
+        return null;
+    }
+
     // Aceptar actualización
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        const invalid = validationError();
+        if (invalid) {
+            setSubmitError(invalid);
+            return;
+        }
+
         setSubmitError(null);
         setIsSubmitting(true);
 
@@ -438,25 +456,29 @@ export default function EditProjectModal({
                     />
 
                     </div>
-                    <div className="flex shrink-0 items-center justify-between border-t border-slate-200 px-6 py-5">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {isSubmitting ? "Actualizando..." : "Actualizar Proyecto"}
-                        </button>
+                    <div className="flex shrink-0 flex-col gap-3 border-t border-slate-200 px-6 py-5">
+                        {submitError && (
+                            <p className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                                {submitError}
+                            </p>
+                        )}
+                        <div className="flex items-center justify-between">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-slate-300"
+                            >
+                                {isSubmitting ? "Actualizando..." : "Actualizar Proyecto"}
+                            </button>
+                        </div>
                     </div>
-                    {submitError ? (
-                        <p className="px-6 pb-5 text-sm font-medium text-red-600">{submitError}</p>
-                    ) : null}
                 </form>
             </div>
         </div>

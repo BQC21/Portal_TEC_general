@@ -59,6 +59,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
     // inversores considerados para dimensionar el cable AC
     const [invertersToConsider, setInvertersToConsider] = useState<string>("");
 
+    // estado del envío
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
+
     // zona seleccionada
     const selectedZone = form_zone.zona;
 
@@ -120,38 +124,66 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
         });
     }
 
+    // La base de datos exige nombre, zona y una demanda eléctrica positiva, así que se
+    // validan aquí para no perder el envío con un error que no se vería en pantalla.
+    function validationError(): string | null {
+        if (!form.nombre.trim()) return "Ingrese el nombre del proyecto.";
+        if (!form.zona_id) return "Seleccione la zona del proyecto.";
+        if (!(Number(form.demanda_electrica) > 0)) {
+            return "Ingrese una demanda eléctrica mayor que cero.";
+        }
+        return null;
+    }
+
     // Aceptar inserción
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
+        const invalid = validationError();
+        if (invalid) {
+            setSubmitError(invalid);
+            return;
+        }
+
+        setSubmitError(null);
+        setIsSubmitting(true);
+
         const isAutoEnergy = form.opcion_llenado === "AUTOMÁTICO";
         const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
 
-        await onAddProject({
-            ...form,
-            rendimiento_modulo_porcentaje: String(80),
-            opcion_llenado_paneles: isAutoPanels ? "AUTOMÁTICO" : "MANUAL",
-            energia_requerida: isAutoEnergy
-                ? computedRequirements.computedRequirements.energia
-                : form.energia_requerida,
-            potencia_ac_requerida: isAutoEnergy
-                ? computedRequirements.computedRequirements.potenciaAC
-                : form.potencia_ac_requerida,
-            potencia_dc_requerida: isAutoEnergy
-                ? computedRequirements.computedRequirements.potenciaDC
-                : form.potencia_dc_requerida,
-            strings_min: isAutoPanels
-                ? computedRequirements.computedRequirements.strings_minimos
-                : form.strings_min,
-            strings_max: isAutoPanels
-                ? computedRequirements.computedRequirements.strings_maximos
-                : form.strings_max,
-            itm_ac_min: computedRequirements.computedRequirements.itm_ac_min,
-            itm_dc_min: computedRequirements.computedRequirements.itm_dc_min,
-            spd_voltage: computedRequirements.computedRequirements.spd_min,
-            ah_sistema: computedRequirements.computedRequirements.ah_sistema,
-            num_baterias: computedRequirements.computedRequirements.num_baterias,
-        }, selectedEquipmentTable, selectedMaterialTable);
+        try {
+            await onAddProject({
+                ...form,
+                rendimiento_modulo_porcentaje: String(80),
+                opcion_llenado_paneles: isAutoPanels ? "AUTOMÁTICO" : "MANUAL",
+                energia_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.energia
+                    : form.energia_requerida,
+                potencia_ac_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.potenciaAC
+                    : form.potencia_ac_requerida,
+                potencia_dc_requerida: isAutoEnergy
+                    ? computedRequirements.computedRequirements.potenciaDC
+                    : form.potencia_dc_requerida,
+                strings_min: isAutoPanels
+                    ? computedRequirements.computedRequirements.strings_minimos
+                    : form.strings_min,
+                strings_max: isAutoPanels
+                    ? computedRequirements.computedRequirements.strings_maximos
+                    : form.strings_max,
+                itm_ac_min: computedRequirements.computedRequirements.itm_ac_min,
+                itm_dc_min: computedRequirements.computedRequirements.itm_dc_min,
+                spd_voltage: computedRequirements.computedRequirements.spd_min,
+                ah_sistema: computedRequirements.computedRequirements.ah_sistema,
+                num_baterias: computedRequirements.computedRequirements.num_baterias,
+            }, selectedEquipmentTable, selectedMaterialTable);
+        } catch (error) {
+            setSubmitError(
+                error instanceof Error ? error.message : "Error al crear el proyecto",
+            );
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     // Dentro del componente, después de los otros hooks, agrega:
@@ -329,20 +361,28 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
                         equipos={equipos}
                     />
                     </div>
-                    <div className="flex shrink-0 items-center justify-between border-t border-slate-200 px-6 py-5">
-                        <button
-                            type="button"
-                            onClick={onClose}
-                            className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
-                        >
-                            Cancelar
-                        </button>
-                        <button
-                            type="submit"
-                            className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
-                        >
-                            Añadir Proyecto
-                        </button>
+                    <div className="flex shrink-0 flex-col gap-3 border-t border-slate-200 px-6 py-5">
+                        {submitError && (
+                            <p className="rounded-xl border border-red-300 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                                {submitError}
+                            </p>
+                        )}
+                        <div className="flex items-center justify-between">
+                            <button
+                                type="button"
+                                onClick={onClose}
+                                className="rounded-xl border border-slate-300 px-6 py-3 text-lg font-semibold text-slate-700 transition hover:bg-slate-50"
+                            >
+                                Cancelar
+                            </button>
+                            <button
+                                type="submit"
+                                disabled={isSubmitting}
+                                className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600 disabled:cursor-not-allowed disabled:bg-slate-300"
+                            >
+                                {isSubmitting ? "Añadiendo..." : "Añadir Proyecto"}
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
