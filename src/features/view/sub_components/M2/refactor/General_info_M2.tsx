@@ -1,5 +1,6 @@
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
+import { AddProductSearchableSelectField } from "../../../components/Form_fields/AddSearchableSelectField";
 import { AddProductTextField } from "../../../components/Form_fields/AddTextField";
 import { AddProductUrlField } from "../../../components/Form_fields/AddUrlField";
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
@@ -47,11 +48,13 @@ export function General_info_M2({ form, updateField, form_zone, zones, setForm_z
         </div>
         <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
             <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-                <AddProductSelectField
+                <AddProductSearchableSelectField
                     label="Zona"
                     required
                     value={form_zone.zona ?? ""}
                     options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
+                    searchPlaceholder="Buscar zona..."
+                    emptyMessage="No hay zonas con ese nombre"
                     onChange={(value) => ZoneSelection(value, zones, 
                         setForm_zone, setForm)}
                 />
