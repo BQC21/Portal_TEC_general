@@ -9,10 +9,11 @@ import { formatCurrency } from "@/lib/utils/normalization"
 import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"
 import { bestStructureCombination, StructureOption } from "@/lib/utils/helpers/computes/best_structure_arrays"
-import { dadosPerStructure, isBatteryStructure, isDados, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
+import { dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
 
 export function Structure_PriceTable({
         selected_equipos,
+        projectAngle,
         onUpdateCantidad,
         onAddEquipo,
         onRemoveEquipo,
@@ -139,6 +140,7 @@ export function Structure_PriceTable({
                 .filter((equipo) =>
                     equipo.tipo_de_producto === "ESTRUCTURA"
                     && !isDados(equipo.descripcion)
+                    && matchesStructureAngle(equipo.descripcion, projectAngle)
                     && !selectedIds.has(String(equipo.id)),
                 )
                 .map((equipo) => ({
@@ -146,7 +148,7 @@ export function Structure_PriceTable({
                     label: `${equipo.cod_producto} — ${equipo.descripcion}`,
                 })),
         ]
-    }, [equipos, selected_equipos])
+    }, [equipos, selected_equipos, projectAngle])
 
     const availableDadosOptions = useMemo(() => {
         const selectedIds = new Set(
@@ -172,6 +174,7 @@ export function Structure_PriceTable({
 
         const equipo = equipos.find((item) => String(item.id) === equipoToAdd)
         if (!equipo || equipo.tipo_de_producto !== "ESTRUCTURA" || isDados(equipo.descripcion)) return
+        if (!matchesStructureAngle(equipo.descripcion, projectAngle)) return
 
         onAddEquipo(equipo)
         setEquipoToAdd("")
