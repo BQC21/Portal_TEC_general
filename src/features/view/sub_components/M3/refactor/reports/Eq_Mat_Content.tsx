@@ -1,9 +1,13 @@
+"use client";
+
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function Eq_Mat_Content({
     title, precioFinal, Eq_Mt,
     selectedEquipos, selectedMateriales,
+    hiddenEquipoIds = [],
+    onToggleEquipoVisibility,
 }: Eq_Mat_Content_Props){
     return(
         <>
@@ -34,12 +38,21 @@ export function Eq_Mat_Content({
                                 <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                     Cantidad
                                 </th>
+                                <th className="border-b border-slate-200 px-4 py-4 text-center text-[1.02rem] font-bold text-slate-900">
+                                    Mostrar en PDF
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
                             {selectedEquipos.length > 0 ? (
-                                selectedEquipos.map((item) => (
-                                    <tr key={`${item.id}`} className="bg-white">
+                                selectedEquipos.map((item) => {
+                                    const itemId = String(item.id);
+                                    const visibleInPdf = !hiddenEquipoIds.includes(itemId);
+                                    return (
+                                    <tr
+                                        key={itemId}
+                                        className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                    >
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             {item.equipo_info?.cod_producto}
                                         </td>
@@ -52,11 +65,21 @@ export function Eq_Mat_Content({
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             {item.cantidad}
                                         </td>
+                                        <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
+                                            <input
+                                                type="checkbox"
+                                                checked={visibleInPdf}
+                                                onChange={() => onToggleEquipoVisibility?.(itemId)}
+                                                aria-label={`Mostrar ${item.equipo_info?.descripcion || "equipo"} en el PDF`}
+                                                className="h-5 w-5 accent-orange-500"
+                                            />
+                                        </td>
                                     </tr>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <tr className="bg-white">
-                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                    <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
                                         No hay equipos seleccionados todavía.
                                     </td>
                                 </tr>
@@ -106,7 +129,7 @@ export function Eq_Mat_Content({
                                     </tr>
                                 ))) : (
                                 <tr className="bg-white">
-                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                    <td colSpan={4} className="px-4 py-10 text-center text-slate-500">
                                         No hay materiales seleccionados todavía.
                                     </td>
                                 </tr>
@@ -155,7 +178,7 @@ export function Eq_Mat_Content({
                                     </tr>
                                 ))) : (
                                 <tr className="bg-white">
-                                    <td colSpan={2} className="px-4 py-10 text-center text-slate-500">
+                                    <td colSpan={4} className="px-4 py-10 text-center text-slate-500">
                                         No hay materiales seleccionados todavía.
                                     </td>
                                 </tr>
