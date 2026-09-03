@@ -50,6 +50,7 @@ export function ResourcesTables({
                 <CollapsibleTableSection title="Estructuras">
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
+                        projectAngle={form.proyecto_info?.angulo}
                         onUpdateCantidad={onUpdateEquipoCantidad}
                         onAddEquipo={onAddEquipo}
                         onRemoveEquipo={onRemoveEquipo}
