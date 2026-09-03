@@ -6,7 +6,7 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
-import { DSCTO_type_value, DSCTOOptions } from "@/lib/utils/options";
+import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions } from "@/lib/utils/options";
 
 export function ReportDataInput({
     form, 
@@ -118,7 +118,7 @@ export function ReportDataInput({
 
             <AddProductTextAreaField
                 label = "Forma de pago"
-                value = {String(form.payFormat)}
+                value = {form.payFormat || DEFAULT_PAY_FORMAT}
                 onChange= {(value) => updateField("payFormat", String(value))}
             />
         </div>
