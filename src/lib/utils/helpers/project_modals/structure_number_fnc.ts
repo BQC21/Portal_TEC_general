@@ -21,3 +21,29 @@ export function dadosPerStructure(modulesPerStructure: number): number {
     if (modulesPerStructure === 8) return 9
     return 0
 }
+
+export function isCoplanar(angulo: string | undefined): boolean {
+    return angulo === "Coplanar"
+}
+
+export function isInclinado(angulo: string | undefined): boolean {
+    return angulo === "Inclinado"
+}
+
+function isCoplanarStructure(descripcion: string | undefined): boolean {
+    return (descripcion ?? "").toLowerCase().includes("coplanar")
+}
+
+function isInclinedStructure(descripcion: string | undefined): boolean {
+    return (descripcion ?? "").toLowerCase().includes("regulable")
+}
+
+// Filtra estructuras según la orientación del proyecto (coplanar / inclinado).
+export function matchesStructureAngle(
+    descripcion: string | undefined,
+    angulo: string | undefined,
+): boolean {
+    if (isCoplanarStructure(descripcion)) return isCoplanar(angulo)
+    if (isInclinedStructure(descripcion)) return isInclinado(angulo)
+    return true
+}
