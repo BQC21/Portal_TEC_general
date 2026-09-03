@@ -60,6 +60,7 @@ export default function ReportTable({report, totalReport,
                                                     form={report}
                                                     equipos={projects_equipos}
                                                     materiales={projects_materiales}
+                                                    hiddenEquipoIds={[]}
                                                 />
                                             </div>
                                         </td>
