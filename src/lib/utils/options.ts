@@ -162,3 +162,6 @@ export const EPP_REUSABLE_OPTIONS = [
 ];
 
 export const DSCTO_type_value = ["Porcentaje", "USD"]
+
+export const DEFAULT_PAY_FORMAT =
+    "50% Con la orden de servicio\n50% Al término de instalación";
