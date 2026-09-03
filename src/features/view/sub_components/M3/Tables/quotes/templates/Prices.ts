@@ -47,6 +47,7 @@ export const consumible_template = [
     { id: 42, cod_producto: "MFERR00001", descripcion: "100to Tornillo Autorroscante 2\" x100", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 43, cod_producto: "MCHOQ00015", descripcion: "Cinta doble contacto x 5m", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 44, cod_producto: "MCAVA00034", descripcion: "Silicona Sicaflex", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    { id: 45, cod_producto: "MTISO00005", descripcion: "Conector MC4", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
 ];
 
 

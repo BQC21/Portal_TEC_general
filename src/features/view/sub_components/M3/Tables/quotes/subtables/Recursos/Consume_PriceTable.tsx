@@ -24,6 +24,7 @@ import {
     ConsumibleRestorableFamily,
     isSelectableConsumibleFamily,
     isAddableConsumibleFamily,
+    isFixedConsumibleFamily,
     RESTORABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
@@ -247,7 +248,7 @@ export function Consume_PriceTable({
                                                     {item.cod_producto || "—"}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-5 py-5 font-medium">
-                                                    {item.selectable ? (
+                                                    {item.selectable && !isFixedConsumibleFamily(item.family) ? (
                                                         <div className="flex min-w-[16rem] items-end gap-2">
                                                             <div className="min-w-0 flex-1">
                                                                 <ConsumibleFamilySelect
@@ -279,6 +280,7 @@ export function Consume_PriceTable({
                                                         </div>
                                                     ) : (
                                                         item.descripcion
+                                                            || (item.family === "mc4" ? "Conector MC4" : "—")
                                                     )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
@@ -341,7 +343,7 @@ export function Consume_PriceTable({
                                                     {formatCurrency(Number(item.precio_dolares_igv)*Number(item.cantidad), "USD")}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.isPlaceholder ? null : (
+                                                    {item.isPlaceholder || isFixedConsumibleFamily(item.family) ? null : (
                                                         <button
                                                             type="button"
                                                             onClick={() => {

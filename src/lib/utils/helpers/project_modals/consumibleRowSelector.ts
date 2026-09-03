@@ -39,10 +39,15 @@ export type ConsumibleFamily =
     | ConsumibleLinkedFamily 
 
 // opciones extra
-export const EXTRA_CONSUMIBLE_FAMILIES = ["itm_ac", "cable_tierra", "tablero", "mc4", "fusible"] as const
+export const EXTRA_CONSUMIBLE_FAMILIES = ["itm_ac", 
+    "cable_tierra", 
+    "tablero", 
+    "canaleta", 
+    "fusible"] as const
 export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
 // opciones add-on evidentes
-export const RESTORABLE_CONSUMIBLE_FAMILIES = ["mc4", "fusible"] as const
+export const RESTORABLE_CONSUMIBLE_FAMILIES = [
+    "fusible"] as const
 export type ConsumibleRestorableFamily = (typeof RESTORABLE_CONSUMIBLE_FAMILIES)[number]
 
 //-------------------------
@@ -68,7 +73,6 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "precintos_100",
     "tornillos_autorroscantes_100",
     "tornillo_spack",
-    "mc4",
     "fusible",
 ]
 
@@ -146,6 +150,8 @@ export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectable
     cable_ac: "MPROJ00001",
     cable_tierra: "MCAVA00022",
     tablero: "MCOIN00003",
+    canaleta: "MPROJ00006",
+    mc4: "MTISO00005",
 }
 // Para cables FV
 export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
@@ -161,15 +167,20 @@ export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string>
     itm_ac: "Agregar otra protección ITM AC",
     cable_tierra: "Agregar otro cable de tierra",
     tablero: "Agregar otro tablero",
-    mc4: "Agregar otro MC4",
+    canaleta: "Agregar otra canaleta",
+    // mc4: "Agregar otro MC4",
     fusible: "Agregar otro fusible + portafusible",
 }
 
 // Texto para los consumibles extra
 export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
-    mc4: "Agregar MC4",
+    // mc4: "Agregar MC4",
     fusible: "Agregar fusible + portafusible",
 }
+
+// Familias que siempre deben mostrarse y no pueden eliminarse
+export const FIXED_CONSUMIBLE_FAMILIES = ["mc4"] as const
+export type FixedConsumibleFamily = (typeof FIXED_CONSUMIBLE_FAMILIES)[number]
 
 // Familias que requerirán inserción por default
 const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
@@ -180,6 +191,8 @@ const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
     "cable_fv",
     "cable_tierra",
     "tablero",
+    "canaleta",
+    "mc4",
 ])
 
 // opciones para seleccionables en base a dimensiones
@@ -200,13 +213,20 @@ export function isExtraConsumibleFamily(
     return family === "itm_ac"
         || family === "cable_tierra"
         || family === "tablero"
-        || family === "mc4"
+        || family === "canaleta"
         || family === "fusible"
 }
 export function isAddableConsumibleFamily(
     family: ConsumibleFamily | null,
 ): family is ConsumibleAddableFamily {
+    if (isFixedConsumibleFamily(family)) return false
     return family === "itm_ac" || isExtraConsumibleFamily(family)
+}
+
+export function isFixedConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is FixedConsumibleFamily {
+    return family === "mc4"
 }
 
 // Evalua si la descripcion corresponde a un ITM DC
@@ -219,7 +239,7 @@ export function isItmAcDescription(descripcion: string): boolean {
 export function isRestorableConsumibleFamily(
     family: ConsumibleFamily | null,
 ): family is ConsumibleRestorableFamily {
-    return family === "mc4" || family === "fusible"
+    return family === "fusible"
 }
 
 // Evalúa si necesita inserción por defecto
