@@ -31,6 +31,7 @@ PUESTA_EN_MARCHA_ITEMS = [
 
 # Filtro alineado con Eq_Mat_Content
 MATERIAL_TIPOS_VISIBLE = {"PROTECCIÓN", "CABLE", "PROTECCION"}
+DEFAULT_PAY_FORMAT = "50% Con la orden de servicio\n50% Al término de instalación"
 
 
 def _to_float(value: Any, default: float = 0.0) -> float:
@@ -87,6 +88,9 @@ def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
     lines: list[PdfLineItem] = []
     index = 1
     for item in items:
+        # Considerar la visibilidad configurada en el modal de Reportes
+        if item.visible is False:
+            continue
         info = item.equipo_info
         if not info or not _to_str(info.descripcion):
             continue
@@ -132,6 +136,9 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
     igv_rate = 0.0
     tasa_cambio = 0.0
     tasa_dscto = _to_float(payload.tasa_dscto)
+    opcion_dscto = _to_str(payload.opcion_dscto)
+    formato_dscto = _to_str(payload.formato_dscto, "Porcentaje")
+    pay_format = _to_str(payload.payFormat, DEFAULT_PAY_FORMAT)
 
     if cotizacion:
         cod_cotizacion = _to_str(cotizacion.cod_cotizacion)
@@ -161,11 +168,17 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
     else:
         monto_inst = round(subtotal_sin_dscto * (pct_inst / 100.0), 2)
 
-    # Tasa de descuento del form es % (0-100). IGV de cotización es factor (0.18) o % (18).
-    dscto_factor = tasa_dscto / 100.0 if tasa_dscto > 0 else 0.0
+    # IGV de cotización es factor (0.18) o % (18).
     igv_factor = igv_rate / 100.0 if igv_rate > 1 else igv_rate
 
-    precio_dscto = round(subtotal_sin_dscto * dscto_factor, 2) if dscto_factor > 0 else 0.0
+    # Descuento: Porcentaje → subtotal * (1 - tasa/100); USD → subtotal - tasa.
+    aplica_dscto = opcion_dscto == "CON DSCTO" and tasa_dscto > 0
+    if aplica_dscto and formato_dscto.upper() == "USD":
+        precio_dscto = round(min(tasa_dscto, subtotal_sin_dscto), 2)
+    elif aplica_dscto:
+        precio_dscto = round(subtotal_sin_dscto * (tasa_dscto / 100.0), 2)
+    else:
+        precio_dscto = 0.0
     subtotal = round(subtotal_sin_dscto - precio_dscto, 2)
     igv = round(subtotal * igv_factor, 2)
     total = round(subtotal + igv, 2)
@@ -195,6 +208,9 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         precio_usd=precio_usd,
         tasa_cambio=tasa_cambio,
         tasa_dscto=tasa_dscto,
+        opcion_dscto=opcion_dscto,
+        formato_dscto=formato_dscto,
+        payFormat=pay_format,
         igv_rate=igv_rate,
         subtotal=subtotal,
         precio_dscto=precio_dscto,
