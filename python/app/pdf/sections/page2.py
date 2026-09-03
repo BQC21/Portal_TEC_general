@@ -201,7 +201,11 @@ def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
     symbol = data.currency_symbol
     rows: list = []
 
-    if data.tasa_dscto > 0:
+    if data.precio_dscto > 0:
+        if data.formato_dscto.upper() == "USD":
+            discount_label = f"DESCUENTO ({_money(data.tasa_dscto, symbol)})"
+        else:
+            discount_label = f"DESCUENTO ({data.tasa_dscto:.0f}%)"
         rows.extend(
             [
                 [
@@ -209,7 +213,7 @@ def _totals_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> Tab
                     Paragraph(f"<b>{_money(data.subtotal_sin_dscto, symbol)}</b>", styles["right"]),
                 ],
                 [
-                    Paragraph(f"DESCUENTO ({data.tasa_dscto:.0f}%)", styles["body"]),
+                    Paragraph(discount_label, styles["body"]),
                     Paragraph(_money(data.precio_dscto, symbol), styles["right"]),
                 ],
             ]
@@ -263,7 +267,8 @@ def _conditions_table(data: ReportPdfData, styles: dict[str, ParagraphStyle]) ->
         [
             Paragraph("<b>FORMA DE PAGO</b>", styles["small"]),
             Paragraph(
-                "50% Con la orden de servicio<br/>50% Al término de instalación",
+                (data.payFormat or "50% Con la orden de servicio\n50% Al término de instalación")
+                .replace("\n", "<br/>"),
                 styles["body"],
             ),
             Paragraph(
