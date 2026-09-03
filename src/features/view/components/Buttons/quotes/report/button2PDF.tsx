@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useGenerateReportPdf } from "@/features/view/hooks/api/useGenerateReportPdf";
 import { Button2PDFProps } from "@/lib/types/components/General/buttons";
+import { DEFAULT_PAY_FORMAT } from "@/lib/utils/options";
 
-export default function Button2PDF({ form, equipos, materiales }: Button2PDFProps) {
+export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds = [] }: Button2PDFProps) {
     const [requested, setRequested] = useState(false);
     const { loading, error, generate } = useGenerateReportPdf();
 
@@ -28,6 +29,9 @@ export default function Button2PDF({ form, equipos, materiales }: Button2PDFProp
                 validez_oferta: form.validez_oferta,
                 plazo_entrega: form.plazo_entrega,
                 tasa_dscto: form.opcion_dscto === "CON DSCTO" ? form.tasa_dscto : 0,
+                opcion_dscto: form.opcion_dscto,
+                formato_dscto: form.formato_dscto,
+                payFormat: form.payFormat || DEFAULT_PAY_FORMAT,
                 cotizacion_id: form.cotizacion_id,
                 cotizacion_info: form.cotizacion_info
                 ? {
@@ -44,6 +48,7 @@ export default function Button2PDF({ form, equipos, materiales }: Button2PDFProp
                 // equipos principales
                 equipos: equipos.map((e) => ({
                 cantidad: e.cantidad,
+                visible: !hiddenEquipoIds.includes(String(e.id)),
                 equipo_info: {
                     cod_producto: e.equipo_info?.cod_producto,
                     descripcion: e.equipo_info?.descripcion,
