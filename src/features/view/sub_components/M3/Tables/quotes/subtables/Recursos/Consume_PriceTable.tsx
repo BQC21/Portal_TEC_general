@@ -12,7 +12,6 @@ import {
     getConsumibleGroup,
     groupConsumibleRows,
 } from "@/lib/utils/helpers/sorting/consumiblesSort"
-import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import {
     ConsumibleDisplayRow,
     useConsumeRowSelection,
@@ -99,14 +98,20 @@ export function Consume_PriceTable({
         onUpdateItem,
         onRemoveItem,
     }: Consume_PriceTable_props){
+
+    // recolectar materiales
     const { materiales } = useMateriales()
+    
+    // Determina si se puede colapsar la tabla
     const [collapsedGroups, setCollapsedGroups] = useState<Set<ConsumibleGroupKey>>(new Set())
 
+    // ordenar materiales
     const sortedMateriales = useMemo(
         () => buildSortedConsumibles(selected_materiales, items, materiales),
         [selected_materiales, items, materiales],
     )
 
+    // Manejo de selectores por columna
     const {
         displayRows,
         getRowOptions,
@@ -126,8 +131,10 @@ export function Consume_PriceTable({
         onUpdateItem,
     })
 
+    // almacenar grupos consumibles
     const groupedRows = useMemo(() => groupConsumibleRows(displayRows), [displayRows])
 
+    // Manejador de colapsos (despliegue de tablas)
     function toggleGroup(key: ConsumibleGroupKey) {
         setCollapsedGroups((current) => {
             const next = new Set(current)

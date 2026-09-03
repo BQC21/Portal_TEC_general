@@ -1,6 +1,11 @@
 import { SelectOption } from "@/lib/types/components/General/form_fields"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 
+//-------------------------
+// Tipado de la familia
+//-------------------------
+
+// seleccionables
 export type ConsumibleSelectableFamily =
     | "itm_ac"
     | "spd"
@@ -11,6 +16,7 @@ export type ConsumibleSelectableFamily =
     | "cable_fv"
     | "cable_tierra"
     | "tablero"
+    | "canaleta"
     | "terminal_pin_100"
     | "terminal_ojal_100"
     | "terminal_ojal"
@@ -20,40 +26,30 @@ export type ConsumibleSelectableFamily =
     | "tornillo_spack"
     | "mc4"
     | "fusible"
+// enlazar dimensiones
+export type ConsumibleLinkedFamily = 
+    | "abrazadera" 
+    | "prensaestopa" 
+    | "curva" 
+    | "union" 
+    | "conector"
 
-export type ConsumibleLinkedFamily = "abrazadera" | "prensaestopa" | "curva" | "union" | "conector"
+export type ConsumibleFamily = 
+    | ConsumibleSelectableFamily 
+    | ConsumibleLinkedFamily 
 
-export type ConsumibleFamily = ConsumibleSelectableFamily | ConsumibleLinkedFamily | "canaleta"
-
+// opciones extra
 export const EXTRA_CONSUMIBLE_FAMILIES = ["itm_ac", "cable_tierra", "tablero", "mc4", "fusible"] as const
 export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
-
+// opciones add-on evidentes
 export const RESTORABLE_CONSUMIBLE_FAMILIES = ["mc4", "fusible"] as const
 export type ConsumibleRestorableFamily = (typeof RESTORABLE_CONSUMIBLE_FAMILIES)[number]
 
-export function isExtraConsumibleFamily(
-    family: ConsumibleFamily | null,
-): family is ConsumibleExtraFamily {
-    return family === "itm_ac"
-        || family === "cable_tierra"
-        || family === "tablero"
-        || family === "mc4"
-        || family === "fusible"
-}
+//-------------------------
+// Contenido de la familia
+//-------------------------
 
-export function isItmAcDescription(descripcion: string): boolean {
-    const description = descripcion.toUpperCase()
-    return description.includes("ITM") && !description.includes("VDC")
-}
-
-export function isRestorableConsumibleFamily(
-    family: ConsumibleFamily | null,
-): family is ConsumibleRestorableFamily {
-    return family === "mc4" || family === "fusible"
-}
-
-export type CableFvColor = "rojo" | "negro"
-
+// Familia de materiales consumibles
 export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "itm_ac",
     "spd",
@@ -64,6 +60,7 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "cable_fv",
     "cable_tierra",
     "tablero",
+    "canaleta",
     "terminal_pin_100",
     "terminal_ojal_100",
     "terminal_ojal",
@@ -75,6 +72,7 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "fusible",
 ]
 
+// Asociaciones con la familia de consumibles
 export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string> = {
     itm_ac: "Protección ITM AC",
     spd: "Voltaje SPD",
@@ -85,6 +83,7 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     cable_fv: "Cable FV",
     cable_tierra: "Cable de tierra",
     tablero: "Tablero",
+    canaleta: "Canaleta",
     terminal_pin_100: "100to terminal tipo pin",
     terminal_ojal_100: "100to terminal tipo ojal",
     terminal_ojal: "Terminal tipo ojal",
@@ -96,27 +95,7 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     fusible: "Fusible + Portafusible",
 }
 
-export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
-
-export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
-    itm_ac: "Agregar otra protección ITM AC",
-    cable_tierra: "Agregar otro cable de tierra",
-    tablero: "Agregar otro tablero",
-    mc4: "Agregar otro MC4",
-    fusible: "Agregar otro fusible + portafusible",
-}
-
-export function isAddableConsumibleFamily(
-    family: ConsumibleFamily | null,
-): family is ConsumibleAddableFamily {
-    return family === "itm_ac" || isExtraConsumibleFamily(family)
-}
-
-export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
-    mc4: "Agregar MC4",
-    fusible: "Agregar fusible + portafusible",
-}
-
+// Asociación de los consumible con el tipo de producto
 export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     itm_ac: "PROTECCIÓN",
     spd: "PROTECCIÓN",
@@ -144,6 +123,7 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     fusible: "PROTECCIÓN",
 }
 
+// Ordenar familia de canalización
 const CANALIZACION_FAMILY_ORDER: Record<string, number> = {
     conduit_flexible: 0,
     abrazadera: 1,
@@ -158,6 +138,7 @@ const CANALIZACION_FAMILY_ORDER: Record<string, number> = {
     cable_tierra: 10,
 }
 
+// Código por defecto de los consumibles seleccionables
 export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectableFamily, string>> = {
     itm_ac: "MSTOF00001",
     spd: "MPESO00005",
@@ -166,12 +147,31 @@ export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectable
     cable_tierra: "MCAVA00022",
     tablero: "MCOIN00003",
 }
-
+// Para cables FV
 export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
     rojo: "MELSI00001",
     negro: "MELSI00002",
 }
 
+export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
+export type CableFvColor = "rojo" | "negro"
+
+// Asociaciones con el consumible extra
+export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
+    itm_ac: "Agregar otra protección ITM AC",
+    cable_tierra: "Agregar otro cable de tierra",
+    tablero: "Agregar otro tablero",
+    mc4: "Agregar otro MC4",
+    fusible: "Agregar otro fusible + portafusible",
+}
+
+// Texto para los consumibles extra
+export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
+    mc4: "Agregar MC4",
+    fusible: "Agregar fusible + portafusible",
+}
+
+// Familias que requerirán inserción por default
 const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
     "itm_ac",
     "spd",
@@ -182,30 +182,54 @@ const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
     "tablero",
 ])
 
-export function isDefaultInsertedFamily(
-    family: ConsumibleFamily | null,
-): family is ConsumibleSelectableFamily {
-    return family != null && DEFAULT_INSERTED_FAMILIES.has(family as ConsumibleSelectableFamily)
-}
-
-export function getCanalizacionSortOrder(family: ConsumibleFamily | null): number | null {
-    if (!family) return null
-    return family in CANALIZACION_FAMILY_ORDER ? CANALIZACION_FAMILY_ORDER[family] : null
-}
-
+// opciones para seleccionables en base a dimensiones
 const TERMINAL_PIN_MM2 = new Set(["10", "16", "25", "35"])
 const TERMINAL_OJAL_MM2 = new Set(["10", "16", "25", "35", "50"])
 const PRECINTOS_MM = new Set(["100", "200", "300"])
 const SPACK_SIZES = new Set(["4x30", "4x50"])
 const AUTORROSCANTE_INCH = new Set(["2", "3", "4"])
 
-export function normalizeConsumibleText(value: string): string {
-    return value
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "")
-        .toLowerCase()
+// -------------------
+// Funciones
+// -------------------
+
+// Evalúa si es consumible extra
+export function isExtraConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleExtraFamily {
+    return family === "itm_ac"
+        || family === "cable_tierra"
+        || family === "tablero"
+        || family === "mc4"
+        || family === "fusible"
+}
+export function isAddableConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleAddableFamily {
+    return family === "itm_ac" || isExtraConsumibleFamily(family)
 }
 
+// Evalua si la descripcion corresponde a un ITM DC
+export function isItmAcDescription(descripcion: string): boolean {
+    const description = descripcion.toUpperCase()
+    return description.includes("ITM") && !description.includes("VDC")
+}
+
+// Evalúa si es un componente restaurable (MC4, fusible)
+export function isRestorableConsumibleFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleRestorableFamily {
+    return family === "mc4" || family === "fusible"
+}
+
+// Evalúa si necesita inserción por defecto
+export function isDefaultInsertedFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleSelectableFamily {
+    return family != null && DEFAULT_INSERTED_FAMILIES.has(family as ConsumibleSelectableFamily)
+}
+
+// Evalúa si es un conjunto de 100
 function isHundredPack(description: string): boolean {
     return (
         /\b100(\s*(und|unid|to|unidades?))?\b/.test(description)
@@ -213,6 +237,21 @@ function isHundredPack(description: string): boolean {
     )
 }
 
+// normaliza el texto
+export function normalizeConsumibleText(value: string): string {
+    return value
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .toLowerCase()
+}
+
+// Ordenamiento de materiales tipo CANALIZACIÓN
+export function getCanalizacionSortOrder(family: ConsumibleFamily | null): number | null {
+    if (!family) return null
+    return family in CANALIZACION_FAMILY_ORDER ? CANALIZACION_FAMILY_ORDER[family] : null
+}
+
+// Obtención de la familia del consumible
 export function getConsumibleFamily(descripcion: string): ConsumibleFamily | null {
     const description = normalizeConsumibleText(descripcion)
     if (!description) return null
@@ -262,6 +301,11 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
 
     return null
 }
+
+////////
+////////
+////////
+////////
 
 export function resolveConsumibleTipo(
     descripcion: string,
