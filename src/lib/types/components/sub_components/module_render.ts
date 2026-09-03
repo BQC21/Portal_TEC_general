@@ -301,6 +301,9 @@ export type SummaryCostTable_props = {
 export type QuoteReportTable_Props = {
     precioFinal: number;
     igv: number;
+    opcion_dscto?: string;
+    formato_dscto?: string;
+    tasa_dscto?: string | number;
 };
 
 export type Eq_Mat_Content_Props = {
@@ -309,6 +312,8 @@ export type Eq_Mat_Content_Props = {
     Eq_Mt: number;
     selectedEquipos: Project_Equipos[];
     selectedMateriales: Project_Materiales[];
+    hiddenEquipoIds?: string[];
+    onToggleEquipoVisibility?: (id: string) => void;
 }
 
 export type MO_Content_Props = {

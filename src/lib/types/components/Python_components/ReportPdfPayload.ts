@@ -15,6 +15,9 @@ export type ReportPdfPayload = {
     validez_oferta?: string;
     plazo_entrega?: string;
     tasa_dscto?: string | number;
+    opcion_dscto?: string;
+    formato_dscto?: string;
+    payFormat?: string;
     
     // cotizacion
     cotizacion_id?: string;
@@ -29,6 +32,7 @@ export type ReportPdfPayload = {
     // equipos principales
     equipos?: Array<{
         cantidad?: string | number;
+        visible?: boolean;
         equipo_info?: {
             cod_producto?: string;
             descripcion?: string;

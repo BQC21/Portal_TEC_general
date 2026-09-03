@@ -229,6 +229,7 @@ export type Button2PDFProps = {
     form: ReportFormState;
     equipos: Project_Equipos[];
     materiales: Project_Materiales[];
+    hiddenEquipoIds?: string[];
 };
 
 export type Button2PDFProps_FINANTIAL = {
