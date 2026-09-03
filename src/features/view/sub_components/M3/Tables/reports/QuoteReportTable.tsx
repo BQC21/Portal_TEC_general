@@ -1,10 +1,21 @@
 import { QuoteReportTable_Props } from "@/lib/types/components/sub_components/module_render";
+import { computeReportSubtotal } from "@/lib/utils/helpers/computes/report_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function QuoteReportTable({
-    precioFinal, igv
+    precioFinal, igv, opcion_dscto, formato_dscto, tasa_dscto,
 }: QuoteReportTable_Props){
     const igvFactor = igv > 1 ? igv / 100 : igv;
+    const { subtotalSinDscto, precioDscto, subtotal } = computeReportSubtotal(
+        precioFinal,
+        opcion_dscto,
+        formato_dscto,
+        tasa_dscto,
+    );
+    const hasDiscount = precioDscto > 0;
+    const discountLabel = formato_dscto === "USD"
+        ? `Descuento (${formatCurrency(precioDscto, "USD")})`
+        : `Descuento (${Number(tasa_dscto) || 0}%)`;
 
     return(
         <>
@@ -23,12 +34,32 @@ export function QuoteReportTable({
                             </tr>
                         </thead>
                         <tbody>
+                            {hasDiscount ? (
+                                <>
+                                    <tr className="bg-slate-200 text-left">
+                                        <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
+                                            Subtotal sin descuento ($)
+                                        </td>
+                                        <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
+                                            {formatCurrency(subtotalSinDscto, "USD")}
+                                        </td>
+                                    </tr>
+                                    <tr className="bg-slate-200 text-left">
+                                        <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
+                                            {discountLabel}
+                                        </td>
+                                        <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
+                                            {formatCurrency(precioDscto, "USD")}
+                                        </td>
+                                    </tr>
+                                </>
+                            ) : null}
                             <tr className="bg-slate-200 text-left">
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
                                     Subtotal ($)
                                 </td>
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                    {formatCurrency(precioFinal, "USD")}
+                                    {formatCurrency(subtotal, "USD")}
                                 </td>
                             </tr>
                             <tr className="bg-slate-200 text-left">
@@ -36,7 +67,7 @@ export function QuoteReportTable({
                                     IGV ($)
                                 </td>
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                    {formatCurrency(precioFinal * igvFactor, "USD")}
+                                    {formatCurrency(subtotal * igvFactor, "USD")}
                                 </td>
                             </tr>
                             <tr className="bg-slate-200 text-left">
@@ -44,7 +75,7 @@ export function QuoteReportTable({
                                     Total ($)
                                 </td>
                                 <td className="border-b border-slate-300 bg-slate-50 px-4 py-5 font-semibold text-slate-900">
-                                    {formatCurrency(precioFinal * (1 + igvFactor), "USD")}
+                                    {formatCurrency(subtotal * (1 + igvFactor), "USD")}
                                 </td>
                             </tr>
                         </tbody>
