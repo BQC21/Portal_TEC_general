@@ -3,7 +3,7 @@
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { EditReportModalProps } from "@/lib/types/components/General/modals";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { createReportFormStateFromReport } from "@/lib/mapping/mapping_reports";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
@@ -35,6 +35,9 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         } : INITIAL_QUOTE_FORM
     );
 
+    // Equipos a no mostrarse en el PDF
+    const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
+
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -52,6 +55,18 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     const projectMateriales = hasSelectedQuote
         ? existing_project_materiales.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
         : [];
+
+    // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
+    useEffect(() => {
+        setHiddenEquipoIds([]);
+    }, [form.cotizacion_id]);
+
+    // Intercambiador de estados del checker
+    function toggleEquipoVisibility(id: string) {
+        setHiddenEquipoIds((current) =>
+            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+        );
+    }
 
     // ----------------------------------------
     // ------- EVENTOS ------------------------
@@ -139,6 +154,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         Eq_Mt={Number(form.porcentaje_eqmt)}
                                         selectedEquipos={projectEquipos}
                                         selectedMateriales={projectMateriales}
+                                        hiddenEquipoIds={hiddenEquipoIds}
+                                        onToggleEquipoVisibility={toggleEquipoVisibility}
                                     />
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
@@ -150,6 +167,9 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     <QuoteReportTable
                                         precioFinal={precioUsd}
                                         igv={igvRate}
+                                        opcion_dscto={form.opcion_dscto}
+                                        formato_dscto={form.formato_dscto}
+                                        tasa_dscto={form.tasa_dscto}
                                     />
                                 </div>
                             </div>
@@ -170,6 +190,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                             form={form}
                             equipos={projectEquipos}
                             materiales={projectMateriales}
+                            hiddenEquipoIds={hiddenEquipoIds}
                         />
                         <button
                             type="submit"
