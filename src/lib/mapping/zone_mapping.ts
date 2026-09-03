@@ -1,5 +1,6 @@
 import {Zone, ZoneFormState, ZoneFormData, SupabaseZoneRow} from "@/lib/types/supabase/zone-types"
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage"
+import { parseNumber } from "@/lib/utils/normalization"
 
 // Actualización del formulario
 export function createZoneFormStateFromZone(zone: Zone): ZoneFormState {
@@ -50,15 +51,15 @@ export function mapZoneToSupabaseRow(
     zone: ZoneFormData
 ): SupabaseZoneRow {
     return {
-        zona: zone.zona,
-        // cálculos de radiación
-        latitude: zone.latitude as unknown as number | undefined,
-        longitude: zone.longitude as unknown as number | undefined,
-        ghi_respaldo: zone.ghi_respaldo as unknown as number | undefined,
-        ghi_respaldo_diario: zone.ghi_respaldo_diario as unknown as number | undefined,
-        gti_respaldo: zone.gti_respaldo as unknown as number | undefined,
-        gti_respaldo_diario: zone.gti_respaldo_diario as unknown as number | undefined,
-        hsp_peor_mes: zone.hsp_peor_mes as unknown as number | undefined,
+        zona: zone.zona.trim(),
+        // cálculos de radiación (campos vacíos → undefined para columnas numéricas nullable)
+        latitude: parseNumber(zone.latitude),
+        longitude: parseNumber(zone.longitude),
+        ghi_respaldo: parseNumber(zone.ghi_respaldo),
+        ghi_respaldo_diario: parseNumber(zone.ghi_respaldo_diario),
+        gti_respaldo: parseNumber(zone.gti_respaldo),
+        gti_respaldo_diario: parseNumber(zone.gti_respaldo_diario),
+        hsp_peor_mes: parseNumber(zone.hsp_peor_mes),
         // fechas
         created_at: zone.created_at,
         updated_at: zone.updated_at,

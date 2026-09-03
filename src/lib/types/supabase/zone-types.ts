@@ -26,12 +26,12 @@ export type Zone = {
     id: string;
     zona: string;
     // cálculos de radiación
-    latitude: string;
-    longitude: string;
+    latitude?: string;
+    longitude?: string;
     ghi_respaldo: string;
-    ghi_respaldo_diario: string;
+    ghi_respaldo_diario?: string;
     gti_respaldo: string;
-    gti_respaldo_diario: string;
+    gti_respaldo_diario?: string;
     hsp_peor_mes?: string;
 
     // fechas

@@ -55,13 +55,13 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[1]}
                                 placeholder=" "
-                                value={form_zone.latitude}
+                                value={form_zone.latitude || ""}
                                 onChange={(value) => updateField("latitude", value)}
                             />                           
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[2]}
                                 placeholder=" "
-                                value={form_zone.longitude}
+                                value={form_zone.longitude || ""}
                                 onChange={(value) => updateField("longitude", value)}
                             />                            
                         </section>
@@ -76,7 +76,7 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                                 <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[4]}
                                 placeholder=" "
-                                value={form_zone.gti_respaldo_diario}
+                                value={form_zone.gti_respaldo_diario || ""}
                                 onChange={(value) => updateField("gti_respaldo_diario", value)}
                             />
                             <AddProductTextField
@@ -89,7 +89,7 @@ export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: E
                             <AddProductTextField
                                 label={TABLE_HEADERS_ZONE[6]}
                                 placeholder=" "
-                                value={form_zone.ghi_respaldo_diario}
+                                value={form_zone.ghi_respaldo_diario || ""}
                                 onChange={(value) => updateField("ghi_respaldo_diario", value)}
                             />
                             <AddProductTextField
