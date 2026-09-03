@@ -3,6 +3,7 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { AddProductRadioField } from "@/features/view/components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
+import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { DSCTO_type_value, DSCTOOptions } from "@/lib/utils/options";
@@ -113,6 +114,12 @@ export function ReportDataInput({
             <AddProductRadioField
                 label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
+            />
+
+            <AddProductTextAreaField
+                label = "Forma de pago"
+                value = {String(form.payFormat)}
+                onChange= {(value) => updateField("payFormat", String(value))}
             />
         </div>
     )

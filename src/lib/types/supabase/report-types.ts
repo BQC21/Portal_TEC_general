@@ -27,6 +27,7 @@ export type SupabaseReportRow = {
     tasa_dscto?: number;
     opcion_dscto?: string;
     formato_dscto?: string;
+    payFormat?: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -53,6 +54,7 @@ export type Report = {
     tasa_dscto: string;
     opcion_dscto: string;
     formato_dscto: string;
+    payFormat: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;

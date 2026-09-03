@@ -264,6 +264,7 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     tasa_dscto: "",
     opcion_dscto: "",
     formato_dscto: "",
+    payFormat: "",
 }
 
 // ----------------------------------------------------------
