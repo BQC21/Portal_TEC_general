@@ -263,6 +263,7 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     plazo_entrega: "",
     tasa_dscto: "",
     opcion_dscto: "",
+    formato_dscto: "",
 }
 
 // ----------------------------------------------------------

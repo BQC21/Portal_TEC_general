@@ -160,3 +160,5 @@ export const EPP_REUSABLE_OPTIONS = [
     { value: "CONSIDERAR", label: "Considerar EPPs reutilizables" },
     { value: "NO CONSIDERAR", label: "No considerar EPPs reutilizables" },
 ];
+
+export const DSCTO_type_value = ["Porcentaje", "USD"]

@@ -2,9 +2,10 @@ import { AddProductDateField } from "@/features/view/components/Form_fields/AddD
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductRadioField } from "@/features/view/components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
+import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
-import { DSCTOOptions } from "@/lib/utils/options";
+import { DSCTO_type_value, DSCTOOptions } from "@/lib/utils/options";
 
 export function ReportDataInput({
     form, 
@@ -89,21 +90,30 @@ export function ReportDataInput({
                 label="Incluir tasa de descuento"  checked={form.opcion_dscto == "CON DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("CON DSCTO")}
             />
+
+            {form.opcion_dscto == "CON DSCTO" && (
+                <>
+                    <AddProductSelectField
+                        label = "Formato de la tasa de descuento"
+                        options = {DSCTO_type_value}
+                        value = {String(form.formato_dscto)}
+                        onChange= {(value) => updateField("formato_dscto", String(value))}
+                    />
+                    <AddProductNumberField
+                        label={form.formato_dscto == "Porcentaje" ? "Tasa de descuento (%)" : "Precio de descuento (USD)"}
+                        value={Number(form.tasa_dscto) > 0 ? Number(form.tasa_dscto) : ""}
+                        onChange={(value) => updateField("tasa_dscto", String(value))}
+                        step={0.01}
+                        min={0}
+                        max={form.formato_dscto == "Porcentaje" ? 100 : undefined}
+                    />
+                </>
+            )}
+
             <AddProductRadioField
                 label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
             />
-
-            {form.opcion_dscto == "CON DSCTO" && (
-                <AddProductNumberField
-                    label="Tasa de descuento (%)"
-                    value={Number(form.tasa_dscto) > 0 ? Number(form.tasa_dscto) : ""}
-                    onChange={(value) => updateField("tasa_dscto", String(value))}
-                    step={1}
-                    min={0}
-                    max={100}
-                />
-            )}
         </div>
     )
 }

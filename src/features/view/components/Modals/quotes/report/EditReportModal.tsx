@@ -114,7 +114,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
                     {hasSelectedQuote && (
                         <>
-                            <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr_1fr]">
+                            <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
                                 <div className="grid gap-6">
                                     {/* Inputación de datos */}
                                     <ReportDataInput
@@ -123,8 +123,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     />
 
                                 </div>
-                                <div className="grid gap-6">
-                                    {/* Contenido de Equipos y Materiales */}
+                                {/* <div className="grid gap-6">
                                     <Eq_Mat_Content
                                         title={"EQUIPOS Y MATERIALES"}
                                         precioFinal={precioUsd}
@@ -132,8 +131,15 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         selectedEquipos={projectEquipos}
                                         selectedMateriales={projectMateriales}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="grid gap-6">
+                                    <Eq_Mat_Content
+                                        title={"EQUIPOS Y MATERIALES"}
+                                        precioFinal={precioUsd}
+                                        Eq_Mt={Number(form.porcentaje_eqmt)}
+                                        selectedEquipos={projectEquipos}
+                                        selectedMateriales={projectMateriales}
+                                    />
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}

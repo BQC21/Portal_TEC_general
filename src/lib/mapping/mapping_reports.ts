@@ -24,6 +24,7 @@ export function createReportFormStateFromReport(report: Report): ReportFormState
         plazo_entrega: report.plazo_entrega,
         tasa_dscto: report.tasa_dscto,
         opcion_dscto: report.opcion_dscto,
+        formato_dscto: report.formato_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
@@ -57,6 +58,7 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         plazo_entrega: row.plazo_entrega?.toString() || "",
         tasa_dscto: row.tasa_dscto?.toString() || "",
         opcion_dscto: row.opcion_dscto?.toString() || "",
+        formato_dscto: row.formato_dscto?.toString() || "",
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -82,6 +84,7 @@ export function mapReportToSupabaseRow(report: ReportFormData): SupabaseReportRo
         plazo_entrega: report.plazo_entrega,
         tasa_dscto: parseNumber(report.tasa_dscto),
         opcion_dscto: report.opcion_dscto,
+        formato_dscto: report.formato_dscto,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
