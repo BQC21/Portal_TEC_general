@@ -30,6 +30,13 @@ export default function ReportTable({report, totalReport,
                         <tbody>
                             {report.length > 0 ? (
                                 report.map((report) => {
+                                    const proyectoId = report.cotizacion_info?.proyecto_id;
+                                    const reportEquipos = proyectoId
+                                        ? projects_equipos.filter((item) => item.proyecto_id === proyectoId)
+                                        : [];
+                                    const reportMateriales = proyectoId
+                                        ? projects_materiales.filter((item) => item.proyecto_id === proyectoId)
+                                        : [];
                                     return (
                                     <tr key={report.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.cod_cotizacion}</td>
@@ -58,8 +65,8 @@ export default function ReportTable({report, totalReport,
                                                 {/* Añadir botón para generar PDF*/}
                                                 <Button2PDF
                                                     form={report}
-                                                    equipos={projects_equipos}
-                                                    materiales={projects_materiales}
+                                                    equipos={reportEquipos}
+                                                    materiales={reportMateriales}
                                                     hiddenEquipoIds={[]}
                                                 />
                                             </div>
