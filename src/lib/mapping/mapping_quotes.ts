@@ -1,10 +1,29 @@
-import { ManualCosts } from "../types/components/Quotes/manual_resources";
+import { EatingItem, ManualCosts, MontoItem } from "../types/components/Quotes/manual_resources";
 import { SupabaseProjectRow } from "../types/supabase/project-types";
 import { Quote, QuoteFormData, QuoteFormState, SupabaseQuoteRow } from "../types/supabase/quote-types";
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage";
 import { INITIAL_MANUAL_RESOURCE_COSTS } from "../utils/initialValues";
 import { parseNumber } from "../utils/normalization";
 import { mapSupabaseRowToProject } from "./project_mapping";
+
+function normalizeEatingItems(saved: unknown, defaults: EatingItem[]): EatingItem[] {
+    if (Array.isArray(saved)) {
+        return saved.length > 0 ? saved : defaults;
+    }
+
+    if (saved && typeof saved === "object" && "monto" in saved) {
+        const legacy = saved as MontoItem;
+        return [{
+            id: crypto.randomUUID(),
+            descripcion: "Alimentación",
+            monto: legacy.monto ?? 0,
+            personas: legacy.personas ?? 0,
+            dias: legacy.dias ?? 0,
+        }];
+    }
+
+    return defaults;
+}
 
 function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
     const defaults = INITIAL_MANUAL_RESOURCE_COSTS;
@@ -30,10 +49,7 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
         Viaticos: {
             ...defaults.Viaticos,
             ...saved.Viaticos,
-            eating: {
-                ...defaults.Viaticos.eating,
-                ...saved.Viaticos?.eating,
-            },
+            eating: normalizeEatingItems(saved.Viaticos?.eating, defaults.Viaticos.eating),
             traveling: {
                 ...defaults.Viaticos.traveling,
                 ...saved.Viaticos?.traveling,

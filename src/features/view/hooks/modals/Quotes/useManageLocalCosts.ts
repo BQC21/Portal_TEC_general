@@ -1,6 +1,8 @@
 import {
     ConsumeItem,
+    EatingItem,
     EMPTY_CONSUME_ITEM,
+    EMPTY_EATING_ITEM,
     EMPTY_MONTO_ITEM,
     EMPTY_PERSONAL_ITEM,
     EMPTY_QUANTITY_PRICE_ITEM,
@@ -17,17 +19,22 @@ type ManualCostArraySection =
     | "Recursos.tooling"
     | "Recursos.sctr"
     | "Recursos.personal"
-    | "Viaticos.courier";
+    | "Viaticos.courier"
+    | "Viaticos.eating";
 
-type ManualCostItemField = keyof QuantityPriceItem | keyof PersonalItem | keyof ConsumeItem;
+type ManualCostItemField =
+    | keyof QuantityPriceItem
+    | keyof PersonalItem
+    | keyof ConsumeItem
+    | keyof EatingItem;
 type ManualCostItemValue =
     | QuantityPriceItem[keyof QuantityPriceItem]
     | PersonalItem[keyof PersonalItem]
-    | ConsumeItem[keyof ConsumeItem];
+    | ConsumeItem[keyof ConsumeItem]
+    | EatingItem[keyof EatingItem];
 
 type ManualCostMontoSection =
     | "Viaticos.hotel"
-    | "Viaticos.eating"
     | "Viaticos.traveling"
     | "Viaticos.mobility";
 
@@ -82,6 +89,18 @@ export function ManageLocalCosts(
                 };
             }
 
+            if (section === "Viaticos.eating") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        eating: (current.Viaticos.eating ?? []).map((item, i) =>
+                            i === index ? { ...item, [field]: value } : item,
+                        ),
+                    },
+                };
+            }
+
             return {
                 ...current,
                 Viaticos: {
@@ -107,16 +126,6 @@ export function ManageLocalCosts(
                     Viaticos: {
                         ...current.Viaticos,
                         hotel: { ...(current.Viaticos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
-                    },
-                };
-            }
-
-            if (section === "Viaticos.eating") {
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        eating: { ...(current.Viaticos.eating ?? EMPTY_MONTO_ITEM), [field]: value },
                     },
                 };
             }
@@ -185,6 +194,19 @@ export function ManageLocalCosts(
                 };
             }
 
+            if (section === "Viaticos.eating") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        eating: [
+                            ...(current.Viaticos.eating ?? []),
+                            { id: crypto.randomUUID(), ...EMPTY_EATING_ITEM },
+                        ],
+                    },
+                };
+            }
+
             return {
                 ...current,
                 Viaticos: {
@@ -234,6 +256,18 @@ export function ManageLocalCosts(
                     Recursos: {
                         ...current.Recursos,
                         [subcategory]: current.Recursos[subcategory].filter((_, i) => i !== index),
+                    },
+                };
+            }
+
+            if (section === "Viaticos.eating") {
+                if ((current.Viaticos.eating ?? []).length <= 1) return current;
+
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        eating: (current.Viaticos.eating ?? []).filter((_, i) => i !== index),
                     },
                 };
             }

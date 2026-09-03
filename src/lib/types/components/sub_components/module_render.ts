@@ -13,6 +13,7 @@ import {
     PersonalItem,
     QuantityPriceItem,
     ConsumeItem,
+    EatingItem,
 } from "../Quotes/manual_resources";
 import {
     grossMargin as GrossMarginCompute,
@@ -260,11 +261,12 @@ type ManualCostHandlers = {
     updateManualCostItem: (
         section: ManualCostArraySection,
         index: number,
-        field: keyof QuantityPriceItem | keyof PersonalItem | keyof ConsumeItem,
+        field: keyof QuantityPriceItem | keyof PersonalItem | keyof ConsumeItem | keyof EatingItem,
         value:
             | QuantityPriceItem[keyof QuantityPriceItem]
             | PersonalItem[keyof PersonalItem]
-            | ConsumeItem[keyof ConsumeItem],
+            | ConsumeItem[keyof ConsumeItem]
+            | EatingItem[keyof EatingItem],
     ) => void;
     addManualCostItem: (section: ManualCostArraySection) => void;
     removeManualCostItem: (section: ManualCostArraySection, index: number) => void;

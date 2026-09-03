@@ -38,6 +38,20 @@ export const EMPTY_MONTO_ITEM: MontoItem = {
     dias: 0,
 };
 
+// Añadir patrón de comidas
+export type EatingItem = {
+    id: string;
+    descripcion: string,
+    monto: number,
+    personas: number,
+    dias: number,
+}
+export const EMPTY_EATING_ITEM: Omit<EatingItem, "id">  = {
+    descripcion: "",
+    monto: 0,
+    personas: 0,
+    dias: 0,
+}
 
 // Añadir patrón de consumibles
 export type ConsumeItem = {
@@ -69,7 +83,7 @@ export type ManualCosts = {
         materiales_seleccionados?: Project_Materiales[];
     };
     Viaticos: {
-        eating: MontoItem;
+        eating: EatingItem[];
         traveling: MontoItem;
         mobility: MontoItem;
         hotel: MontoItem;

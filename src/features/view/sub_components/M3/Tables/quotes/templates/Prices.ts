@@ -130,3 +130,9 @@ export const Personal_template = [
     {id: 4, nombre: "Pedro Castillo", puesto: "Técnico", dias: 10, precio_dia: 150.00},
     {id: 5, nombre: "Rolando", puesto: "Técnico", dias: 10, precio_dia: 100.00},
 ];
+
+// --- Eating
+export const Eating_template = [
+    {id: 1, descripcion: "Desayuno-Almuerzo-Cena", monto: 30.00, personas: 7, dias: 10},
+    {id: 2, descripcion: "Almuerzo", monto: 0.00, personas: 0, dias: 10},
+];

@@ -36,11 +36,14 @@ import { ReportFormState } from "../types/supabase/report-types";
 import { ManualCosts } from "../types/components/Quotes/manual_resources";
 
 // Listas
-import { consumible_template, EPP_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
-import { Tooling_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
-import { Courier_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
-import { SCTR_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
-import { Personal_template } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { consumible_template, 
+    EPP_template,
+    Tooling_template,
+    SCTR_template,
+    Courier_template,
+    Personal_template,
+    Eating_template,
+} from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { FinantialFormState } from "../types/supabase/finantial-types";
 
 
@@ -303,7 +306,13 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
     },
     
     Viaticos: {
-        eating: { monto: 0, personas: 0, dias: 0 },
+        eating: Eating_template.map((item) => ({
+            id: crypto.randomUUID(), // o String(item.id)
+            descripcion: item.descripcion,
+            monto: item.monto,
+            personas: item.personas,
+            dias: item.dias,
+        })),
         traveling: { monto: 0, personas: 0, dias: 0 },
         mobility: { monto: 0, personas: 0, dias: 0 },
         hotel: { monto: 0, personas: 0, dias: 0 },

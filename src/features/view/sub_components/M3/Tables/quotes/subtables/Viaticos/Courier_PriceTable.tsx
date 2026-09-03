@@ -39,11 +39,11 @@ export function Courier_PriceTable({ items, onUpdateItem, onAddItem, onRemoveIte
                                     items.map((item, index) => (
                                     <tr key={item.id} className="bg-slate-100 text-left">
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        <AddProductTextField
-                                            label=""
-                                            value={item.descripcion}
-                                            onChange={(value) => onUpdateItem(index, "descripcion", value)}
-                                        />
+                                            <AddProductTextField
+                                                label=""
+                                                value={item.descripcion}
+                                                onChange={(value) => onUpdateItem(index, "descripcion", value)}
+                                            />
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                             <AddProductNumberField

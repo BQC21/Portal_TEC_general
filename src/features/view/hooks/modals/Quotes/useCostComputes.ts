@@ -155,9 +155,12 @@ export function useCostComputes(
 
     // ALIMENTACIÓN
     const eatingTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.eating?.monto ?? 0) * 
-        Number(manualCosts.Viaticos.eating?.personas ?? 0) * 
-        Number(manualCosts.Viaticos.eating?.dias ?? 0),
+        (manualCosts.Viaticos.eating ?? []).reduce(
+            (sum, item) =>
+                sum +
+                Number(item.monto) * Number(item.personas) * Number(item.dias),
+            0,
+        ),
         [manualCosts],
     );
     const eatingTotalIgv = useMemo(() =>

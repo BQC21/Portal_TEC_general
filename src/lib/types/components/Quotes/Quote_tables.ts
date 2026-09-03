@@ -3,7 +3,7 @@ import { Equipos } from "../../supabase/equipos-types"
 import { Materiales } from "../../supabase/materiales-types"
 import { Project_Equipos } from "../../supabase/project_equipos_join"
 import { Project_Materiales } from "../../supabase/project_materiales_join"
-import { ConsumeItem, ManualCosts, MontoItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
+import { ConsumeItem, EatingItem, ManualCosts, MontoItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
 import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts"
 
 // ---------------
@@ -98,12 +98,14 @@ export type Courier_PriceTable_props = {
 }
 
 export type Eating_PriceTable_props = {
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
+    items: EatingItem[], 
+    onUpdateItem: (
+        index: number, 
+        field: keyof EatingItem, 
+        value: EatingItem[keyof EatingItem]
+    ) => void,
+    onAddItem: () => void,
+    onRemoveItem: (index: number) => void,
 }
 
 export type Hotel_PriceTable_props = {

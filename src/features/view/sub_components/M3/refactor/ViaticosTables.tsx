@@ -39,8 +39,10 @@ export function ViaticosTables({
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Alimentación">
                     <Eating_PriceTable
-                        manualResourceCosts={manualResourceCosts}
-                        updateManualCostMonto={updateManualCostMonto}
+                        items={manualResourceCosts.Viaticos.eating ?? []}
+                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.eating", index, field, value)}
+                        onAddItem={() => addManualCostItem("Viaticos.eating")}
+                        onRemoveItem={(index) => removeManualCostItem("Viaticos.eating", index)}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Viajes">
