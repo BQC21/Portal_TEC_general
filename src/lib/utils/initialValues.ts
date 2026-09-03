@@ -17,6 +17,8 @@ import {
     EQUIPOS_TYPE_OPTIONS,
     MATERIALES_TYPE_OPTIONS,
     FILL_OPTIONS,
+    DEFAULT_PAY_FORMAT,
+    DSCTO_type_value,
     SUPPLIER_CODE_OPTIONS_EQUIPOS,
     SUPPLIER_OPTIONS_EQUIPOS,
     BRAND_OPTIONS_EQUIPOS,
@@ -263,8 +265,8 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     plazo_entrega: "",
     tasa_dscto: "",
     opcion_dscto: "",
-    formato_dscto: "",
-    payFormat: "",
+    formato_dscto: DSCTO_type_value[0],
+    payFormat: DEFAULT_PAY_FORMAT,
 }
 
 // ----------------------------------------------------------
