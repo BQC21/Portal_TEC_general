@@ -30,6 +30,7 @@ class EquipoItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     cantidad: NumberLike = None
+    visible: bool = True
     equipo_info: Optional[ProductInfo] = None
 
 
@@ -78,6 +79,9 @@ class ReportFormPayload(BaseModel):
     validez_oferta: Optional[str] = None
     plazo_entrega: Optional[str] = None
     tasa_dscto: NumberLike = None
+    opcion_dscto: Optional[str] = None
+    formato_dscto: Optional[str] = None
+    payFormat: Optional[str] = None
     cotizacion_id: Optional[str] = None
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
@@ -113,6 +117,9 @@ class ReportPdfData(BaseModel):
     validez_oferta: str = ""
     plazo_entrega: str = ""
     tasa_dscto: float = 0.0
+    opcion_dscto: str = ""
+    formato_dscto: str = ""
+    payFormat: str = ""
     precio_usd: float = 0.0
     tasa_cambio: float = 1.0
     igv_rate: float = 0.0
