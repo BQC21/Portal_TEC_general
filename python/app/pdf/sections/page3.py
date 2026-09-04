@@ -178,13 +178,15 @@ def build_page3(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         _LeftMarginDetail("Detail_2_page2.png", width=_SIDEBAR_W, height=16.2 * cm)
     )
     story.append(Spacer(1, 2.35 * cm))
-    story.append(Paragraph("<b>Notas finales para suministro:</b>", section_style))
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Paragraph("<b>SERVICIOS INCLUÍDOS:</b>", section_style))
+    story.append(Spacer(1, 0.2 * cm))   
 
     for text in _SERVICIOS_INCLUIDOS:
         story.append(Paragraph(f"•  {text}", note_style))
 
-    story.append(Spacer(1, 0.2 * cm))
+    story.append(Spacer(1, 2.35 * cm))
+    story.append(Paragraph("<b>TÉRMINOS Y CONDICIONES:</b>", section_style))
+    story.append(Spacer(1, 0.2 * cm))   
 
     for text in _TERMINOS_Y_CONDICIONES:
         story.append(Paragraph(f"•  {text}", note_style))
