@@ -64,14 +64,14 @@ export function ReportDataInput({
                 required
                 value={Number(form.porcentaje_eqmt) > 0 ? Number(form.porcentaje_eqmt) : ""}
                 onChange={(value) => updateField("porcentaje_eqmt", String(value))}
-                step={1} min={1} max={100}
+                step={0.01} min={1} max={100}
             />
             <AddProductNumberField
                 label="Porcentaje de distribución por puesta en marcha"
                 required
                 value={Number(form.porcentaje_inst) > 0 ? Number(form.porcentaje_inst) : ""}
                 onChange={(value) => updateField("porcentaje_inst", String(value))}
-                step={1} min={1} max={100}
+                step={0.01} min={1} max={100}
             />
             {/* Adicionales */}
             <AddProductTextField
