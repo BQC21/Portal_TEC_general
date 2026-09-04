@@ -20,24 +20,26 @@ type ManualCostArraySection =
     | "Recursos.sctr"
     | "Recursos.personal"
     | "Viaticos.courier"
+    | "Viaticos.gastos_viaje";
     // | "Viaticos.eating";
 
 type ManualCostItemField =
     | keyof QuantityPriceItem
     | keyof PersonalItem
     | keyof ConsumeItem
-    | keyof EatingItem;
+    | keyof EatingItem
+    | keyof MontoItem;
 type ManualCostItemValue =
     | QuantityPriceItem[keyof QuantityPriceItem]
     | PersonalItem[keyof PersonalItem]
     | ConsumeItem[keyof ConsumeItem]
-    | EatingItem[keyof EatingItem];
+    | EatingItem[keyof EatingItem]
+    | MontoItem[keyof MontoItem];
 
 type ManualCostMontoSection =
-    // | "Viaticos.hotel"
-    // | "Viaticos.traveling"
-    // | "Viaticos.mobility";
-    | "Viaticos.gastos_viaje";
+    | "Viaticos.hotel"
+    | "Viaticos.traveling"
+    | "Viaticos.mobility";
 
 type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;
 
@@ -90,17 +92,17 @@ export function ManageLocalCosts(
                 };
             }
 
-            // if (section === "Viaticos.eating") {
-            //     return {
-            //         ...current,
-            //         Viaticos: {
-            //             ...current.Viaticos,
-            //             eating: (current.Viaticos.eating ?? []).map((item, i) =>
-            //                 i === index ? { ...item, [field]: value } : item,
-            //             ),
-            //         },
-            //     };
-            // }
+            if (section === "Viaticos.gastos_viaje") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        gastos_viaje: (current.Viaticos.gastos_viaje ?? []).map((item, i) =>
+                            i === index ? { ...item, [field]: value } : item,
+                        ),
+                    },
+                };
+            }
 
             return {
                 ...current,
@@ -141,13 +143,7 @@ export function ManageLocalCosts(
             //     };
             // }
 
-            return {
-                ...current,
-                Viaticos: {
-                    ...current.Viaticos,
-                    traveling: { ...(current.Viaticos.gastos_viaje ?? EMPTY_MONTO_ITEM), [field]: value },
-                },
-            };
+            return current;
         });
     }
 
@@ -195,18 +191,18 @@ export function ManageLocalCosts(
                 };
             }
 
-            // if (section === "Viaticos.eating") {
-            //     return {
-            //         ...current,
-            //         Viaticos: {
-            //             ...current.Viaticos,
-            //             eating: [
-            //                 ...(current.Viaticos.eating ?? []),
-            //                 { id: crypto.randomUUID(), ...EMPTY_EATING_ITEM },
-            //             ],
-            //         },
-            //     };
-            // }
+            if (section === "Viaticos.gastos_viaje") {
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        gastos_viaje: [
+                            ...(current.Viaticos.gastos_viaje ?? []),
+                            { id: crypto.randomUUID(), ...EMPTY_MONTO_ITEM },
+                        ],
+                    },
+                };
+            }
 
             return {
                 ...current,
@@ -272,6 +268,18 @@ export function ManageLocalCosts(
             //         },
             //     };
             // }
+
+            if (section === "Viaticos.gastos_viaje") {
+                if ((current.Viaticos.gastos_viaje ?? []).length <= 1) return current;
+
+                return {
+                    ...current,
+                    Viaticos: {
+                        ...current.Viaticos,
+                        gastos_viaje: current.Viaticos.gastos_viaje.filter((_, i) => i !== index),
+                    },
+                };
+            }
 
             if (current.Viaticos.courier.length <= 1) return current;
 

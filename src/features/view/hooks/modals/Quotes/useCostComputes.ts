@@ -175,15 +175,17 @@ export function useCostComputes(
     // );
 
     // Gastos Viaje
-    const gastos_viajeTotal = useMemo(() =>
-        (manualCosts.Viaticos.gastos_viaje ?? []).reduce(
+    const gastos_viajeTotal = useMemo(() => {
+        const items = Array.isArray(manualCosts.Viaticos.gastos_viaje)
+            ? manualCosts.Viaticos.gastos_viaje
+            : [];
+        return items.reduce(
             (sum, item) =>
                 sum +
                 Number(item.monto) * Number(item.personas) * Number(item.dias),
             0,
-        ),
-        [manualCosts],
-    );
+        );
+    }, [manualCosts]);
     // COURIER
     const courierTotal = useMemo(() =>
         manualCosts.Viaticos.courier.reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),

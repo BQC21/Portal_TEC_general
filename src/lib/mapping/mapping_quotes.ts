@@ -25,6 +25,25 @@ function normalizeEatingItems(saved: unknown, defaults: EatingItem[]): EatingIte
     return defaults;
 }
 
+function normalizeMontoItems(saved: unknown, defaults: MontoItem[]): MontoItem[] {
+    if (Array.isArray(saved)) {
+        return saved.length > 0 ? saved : defaults;
+    }
+
+    if (saved && typeof saved === "object" && "monto" in saved) {
+        const legacy = saved as MontoItem;
+        return [{
+            id: crypto.randomUUID(),
+            descripcion: legacy.descripcion || "Gastos de viaje",
+            monto: legacy.monto ?? 0,
+            personas: legacy.personas ?? 0,
+            dias: legacy.dias ?? 0,
+        }];
+    }
+
+    return defaults;
+}
+
 function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
     const defaults = INITIAL_MANUAL_RESOURCE_COSTS;
     const saved = costs ?? defaults;
@@ -62,10 +81,10 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             //     ...defaults.Viaticos.hotel,
             //     ...saved.Viaticos?.hotel,
             // },
-            gastos_viaje:{
-                ...defaults.Viaticos.gastos_viaje,
-                ...saved.Viaticos?.gastos_viaje,
-            },
+            gastos_viaje: normalizeMontoItems(
+                saved.Viaticos?.gastos_viaje,
+                defaults.Viaticos.gastos_viaje,
+            ),
             courier: saved.Viaticos?.courier?.length
                 ? saved.Viaticos.courier
                 : defaults.Viaticos.courier,

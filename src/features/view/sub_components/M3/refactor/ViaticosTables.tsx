@@ -33,10 +33,12 @@ export function ViaticosTables({
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Gastos de viaje">
                     <GastosViajes_PriceTable
-                        items={manualResourceCosts.Viaticos.gastos_viaje}
-                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
-                        onAddItem={() => addManualCostItem("Viaticos.courier")}
-                        onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
+                        items={Array.isArray(manualResourceCosts.Viaticos.gastos_viaje)
+                            ? manualResourceCosts.Viaticos.gastos_viaje
+                            : []}
+                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.gastos_viaje", index, field, value)}
+                        onAddItem={() => addManualCostItem("Viaticos.gastos_viaje")}
+                        onRemoveItem={(index) => removeManualCostItem("Viaticos.gastos_viaje", index)}
                     />
                 </CollapsibleTableSection>
                 {/* <CollapsibleTableSection title="Hotel">
