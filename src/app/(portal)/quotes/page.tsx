@@ -66,7 +66,7 @@ export default function QuotesPage(){
 
     const filteredReports = reports.filter((report) => {
 		const matchesDescription = !searchReport || 
-            report.cliente?.toLowerCase().includes(searchReport.toLowerCase());
+            report.cotizacion_info?.proyecto_info?.nombre.toLowerCase().includes(searchReport.toLowerCase());
 
 		return matchesDescription;
 	});
@@ -208,7 +208,7 @@ export default function QuotesPage(){
                                                 <SearchBar
                                                     value={searchReport}
                                                     onChange={setSearchReport}
-                                                    placeholder="Buscar por nombre del cliente..."
+                                                    placeholder="Buscar por proyecto asociado..."
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
