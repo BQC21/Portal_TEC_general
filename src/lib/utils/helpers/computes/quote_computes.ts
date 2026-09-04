@@ -77,11 +77,13 @@ export function computeSubtotalViaticos(costs: viaticosItems) {
             costs.eating.total +
             costs.traveling.total +
             costs.mobility.total +
+            costs.hotel.total +
             costs.courier.total,
         igv:
             costs.eating.igv +
             costs.traveling.igv +
             costs.mobility.igv +
+            costs.hotel.igv +
             costs.courier.igv,
     };
 }
