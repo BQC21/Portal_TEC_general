@@ -19,15 +19,19 @@ _CONTENT_INDENT = 1.15 * cm
 _CONTENT_W = 16.85 * cm
 _LINK_BLUE = colors.HexColor("#0A2F6B")
 
-_NOTAS = [
-    "Instalación completa del sistema solar fotovoltaico, incluyendo la conexión eléctrica y pruebas de funcionamiento.",
-    "Incluye revisión de planos eléctricos.",
-    "Incluye entrega de plano unifilar y multifilar del sistema instalado.",
-    "Incluye entrega de manual de usuario.",
-    "Incluye monitoreo gratuito el primer año y mantenimiento dentro de los 6 primeros meses.",
-    "No incluye estructuras adicionales a las necesarias para montar.",
+_SERVICIOS_INCLUIDOS = [
+    "Instalación completa, conexión eléctrica y puesta en funcionamiento del sistema.",
+    "Revisión de planos eléctricos y entrega del plano multifilar del sistema instalado.",
+    "Entrega de manual de usuario y mantenimiento.",
+    "Monitoreo remoto gratuito durante el primer año, sujeto a disponibilidad de internet.",
+    "Un (01) mantenimiento preventivo gratuito dentro de los primeros seis meses posteriores a la puesta en servicio del sistema, previa coordinación.",
 ]
 
+_TERMINOS_Y_CONDICIONES = [
+    "No incluye estructuras o refuerzos adicionales, obras civiles ni trabajos no contemplados en el alcance.",
+    "No incluye la implementación de sistema de protección contra descargas atmosféricas (pararrayos)."
+    "Cualquier trabajo adicional será previamente cotizado y ejecutado únicamente con la aprobación del cliente."
+]
 
 def _rl_image(name: str, width: float, height: float | None = None) -> Image | Spacer:
     path = _ASSETS / name
@@ -177,7 +181,12 @@ def build_page3(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     story.append(Paragraph("<b>Notas finales para suministro:</b>", section_style))
     story.append(Spacer(1, 0.2 * cm))
 
-    for text in _NOTAS:
+    for text in _SERVICIOS_INCLUIDOS:
+        story.append(Paragraph(f"•  {text}", note_style))
+
+    story.append(Spacer(1, 0.2 * cm))
+
+    for text in _TERMINOS_Y_CONDICIONES:
         story.append(Paragraph(f"•  {text}", note_style))
 
     story.append(Spacer(1, 1.45 * cm))
