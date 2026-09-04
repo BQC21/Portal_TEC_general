@@ -63,7 +63,7 @@ export function Eq_Mat_Content({
                                             {item.equipo_info?.unidad}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.cantidad}
+                                            {String(Math.ceil(Number(item.cantidad)))}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
                                             <input
