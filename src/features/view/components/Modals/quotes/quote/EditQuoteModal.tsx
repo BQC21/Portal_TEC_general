@@ -128,6 +128,7 @@ export default function EditQuoteModal({
     const { recursos, viaticos, precioFinal, grossMargin } = useCostComputes(
         projectEquipos, projectMateriales, manualResourceCosts,
         Number(form.gm_general), Number(form.markup), Number(form.gm_viaticos), Number(form.tasa_cambio),
+        Number(form.depre_tool),
     );
 
     // ----------
