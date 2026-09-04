@@ -18,6 +18,7 @@ export function useCostComputes(
     markup: number,
     gm_viaticos: number,
     tasa_cambio: number,
+    depre_tool: number,
 ) {
     const { materiales } = useMateriales();
 
@@ -102,19 +103,22 @@ export function useCostComputes(
     const eppTotal = useMemo(() =>
         manualCosts.Recursos.epp
             .filter((item) => !isReusableEpp(item.descripcion))
-            .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), eppReusableTotal),
-        [manualCosts, eppReusableTotal],
+            .reduce((sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
+        [manualCosts],
     );
     const eppTotalIgv = useMemo(() =>
         Number(eppTotal) * Number(1.18),
         [eppTotal],
     );
 
-    // HERRAMIENTAS
+    // HERRAMIENTAS (incluye EPPs reutilizables y se deprecia)
+    const depre = Number(depre_tool) || 1;
     const toolingTotal = useMemo(() =>
-        manualCosts.Recursos.tooling.reduce(
-            (sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario), 0),
-        [manualCosts],
+        (manualCosts.Recursos.tooling.reduce(
+            (sum, item) => sum + Number(item.cantidad) * Number(item.precio_unitario),
+            eppReusableTotal,
+        )) / depre,
+        [manualCosts, eppReusableTotal, depre],
     );
     const toolingTotalIgv = useMemo(() =>
         Number(toolingTotal) * Number(1.18),
@@ -303,6 +307,8 @@ export function useCostComputes(
         () => computeVentaRecursos(recursosCosts, markup, gm_general, tasa_cambio),
         [recursosCosts, markup, gm_general, tasa_cambio],
     );
+
+    
     // -------- VIÁTICOS
     const subtotal_viaticos = useMemo(
         () => computeSubtotalViaticos(viaticosCosts),
