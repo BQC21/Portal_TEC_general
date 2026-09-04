@@ -33,10 +33,10 @@ export function SummaryCostTable2({
                                         Viaje
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.traveling.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.traveling.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.traveling.igv, "PEN")}
+                                        {formatCurrency(viaticosCosts.traveling.total, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -44,10 +44,10 @@ export function SummaryCostTable2({
                                         Movilidad
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.mobility.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.mobility.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.mobility.igv, "PEN")}
+                                        {formatCurrency(viaticosCosts.mobility.total, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -55,10 +55,10 @@ export function SummaryCostTable2({
                                         Alimentación
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.eating.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.eating.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.eating.igv, "PEN")}
+                                        {formatCurrency(viaticosCosts.eating.total, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -66,10 +66,10 @@ export function SummaryCostTable2({
                                         Hotel
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.hotel.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.hotel.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.hotel.igv, "PEN")}
+                                        {formatCurrency(viaticosCosts.hotel.total, "PEN")}
                                     </td>
                                 </tr>
                                 <tr className="bg-slate-200 text-left">
@@ -77,10 +77,10 @@ export function SummaryCostTable2({
                                         Courier
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.courier.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.courier.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.courier.igv, "PEN")}
+                                        {formatCurrency(viaticosCosts.courier.total, "PEN")}
                                     </td>
                                 </tr>
                                 

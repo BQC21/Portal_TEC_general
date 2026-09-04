@@ -151,22 +151,6 @@ export default function AddQuoteModal({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [existingQuoteCodesKey]);
 
-    // ----------
-    // LOGS
-    // ----------
-
-    console.log("valor del grossMargin", (grossMargin.gm.gm * 100).toFixed(2));
-    // RECURSOS
-    console.log("valor del precio de venta soles", recursos.resumen.ventaSoles);
-    // VIÁTICOS
-    console.log("valor del precio de venta soles", viaticos.resumen.ventaSoles);
-    // DEFINITIVO
-    console.log("valor del precio final", precioFinal.soles);
-    console.log("valor del precio final IGV", precioFinal.solesIgv);
-    console.log("valor del precio final dolares", precioFinal.dolares);
-    console.log("valor del precio final dolares IGV", precioFinal.dolaresIgv);
-
-
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
             <div className="flex h-[96vh] max-h-[96vh] w-[96vw] max-w-[1800px] flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">

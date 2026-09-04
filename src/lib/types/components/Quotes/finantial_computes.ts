@@ -56,23 +56,18 @@ export type recursos = {
 export type viaticos = {
     eating: {
         total: number;
-        igv: number;
     };
     traveling: {
         total: number;
-        igv: number;
     };
     mobility: {
         total: number;
-        igv: number;
     };
     hotel: {
         total: number;
-        igv: number;
     };
     courier: {
         total: number;
-        igv: number;
     };
     resumen: {
         subtotal: {
