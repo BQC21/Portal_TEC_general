@@ -30,18 +30,7 @@ export function SummaryCostTable2({
                             <tbody>
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        Viaje
-                                    </td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.traveling.total/1.18, "PEN")}
-                                    </td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.traveling.total, "PEN")}
-                                    </td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        Movilidad
+                                        Viaje y Movilidad
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {formatCurrency(viaticosCosts.mobility.total/1.18, "PEN")}

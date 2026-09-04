@@ -57,9 +57,6 @@ export type viaticos = {
     eating: {
         total: number;
     };
-    traveling: {
-        total: number;
-    };
     mobility: {
         total: number;
     };

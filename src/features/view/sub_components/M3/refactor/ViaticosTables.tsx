@@ -3,7 +3,6 @@ import { SummaryCostTable2 } from "../Tables/quotes/tables/SummaryCostTable2";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 import { Courier_PriceTable } from "../Tables/quotes/subtables/Viaticos/Courier_PriceTable";
 import { Eating_PriceTable } from "../Tables/quotes/subtables/Viaticos/Eating_PriceTable";
-import { Traveling_PriceTable } from "../Tables/quotes/subtables/Viaticos/Traveling_PriceTable";
 import { Mobility_PriceTable } from "../Tables/quotes/subtables/Viaticos/Mobility_PriceTable";
 import { Hotel_PriceTable } from "../Tables/quotes/subtables/Viaticos/Hotel_PriceTable";
 
@@ -43,12 +42,6 @@ export function ViaticosTables({
                         onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.eating", index, field, value)}
                         onAddItem={() => addManualCostItem("Viaticos.eating")}
                         onRemoveItem={(index) => removeManualCostItem("Viaticos.eating", index)}
-                    />
-                </CollapsibleTableSection>
-                <CollapsibleTableSection title="Viajes">
-                    <Traveling_PriceTable
-                        manualResourceCosts={manualResourceCosts}
-                        updateManualCostMonto={updateManualCostMonto}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="Movilidad">

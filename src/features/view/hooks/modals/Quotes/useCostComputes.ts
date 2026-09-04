@@ -166,13 +166,6 @@ export function useCostComputes(
         ),
         [manualCosts],
     );
-    // VIAJE
-    const travelingTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.traveling?.monto ?? 0) * 
-        Number(manualCosts.Viaticos.traveling?.personas ?? 0) *
-        Number(manualCosts.Viaticos.traveling?.dias ?? 0),
-        [manualCosts],
-    );
     // MOVILIDAD
     const mobilityTotal = useMemo(() =>
         Number(manualCosts.Viaticos.mobility?.monto ?? 0) * 
@@ -235,9 +228,6 @@ export function useCostComputes(
         eating: {
             total: eatingTotal,
         },
-        traveling: {
-            total: travelingTotal,
-        },
         mobility: {
             total: mobilityTotal,
         },
@@ -249,7 +239,6 @@ export function useCostComputes(
         },
     }), [
         eatingTotal,
-        travelingTotal,
         mobilityTotal,
         hotelTotal,
         courierTotal,
@@ -365,9 +354,6 @@ export function useCostComputes(
         viaticos: {
             eating: {
                 total: eatingTotal,
-            },
-            traveling: {
-                total: travelingTotal,
             },
             mobility: {
                 total: mobilityTotal,

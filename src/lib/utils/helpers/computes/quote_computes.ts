@@ -75,13 +75,11 @@ export function computeSubtotalViaticos(costs: viaticosItems) {
     return {
         soles:
             costs.eating.total/1.18 +
-            costs.traveling.total/1.18 +
             costs.mobility.total/1.18 +
             costs.hotel.total/1.18 +
             costs.courier.total/1.18,
         igv:
             costs.eating.total +
-            costs.traveling.total +
             costs.mobility.total +
             costs.hotel.total +
             costs.courier.total,
