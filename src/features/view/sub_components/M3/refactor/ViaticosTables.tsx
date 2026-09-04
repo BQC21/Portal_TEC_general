@@ -2,9 +2,10 @@ import { ViaticosTablesProps } from "@/lib/types/components/sub_components/modul
 import { SummaryCostTable2 } from "../Tables/quotes/tables/SummaryCostTable2";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 import { Courier_PriceTable } from "../Tables/quotes/subtables/Viaticos/Courier_PriceTable";
-import { Eating_PriceTable } from "../Tables/quotes/subtables/Viaticos/Eating_PriceTable";
-import { Mobility_PriceTable } from "../Tables/quotes/subtables/Viaticos/Mobility_PriceTable";
-import { Hotel_PriceTable } from "../Tables/quotes/subtables/Viaticos/Hotel_PriceTable";
+// import { Eating_PriceTable } from "../Tables/quotes/subtables/Viaticos/Eating_PriceTable";
+// import { Mobility_PriceTable } from "../Tables/quotes/subtables/Viaticos/Mobility_PriceTable";
+// import { Hotel_PriceTable } from "../Tables/quotes/subtables/Viaticos/Hotel_PriceTable";
+import { GastosViajes_PriceTable } from "../Tables/quotes/subtables/Viaticos/GastosViajes_PriceTable";
 
 export function ViaticosTables({
     viaticos,
@@ -30,7 +31,15 @@ export function ViaticosTables({
                         onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
                     />
                 </CollapsibleTableSection>
-                <CollapsibleTableSection title="Hotel">
+                <CollapsibleTableSection title="Gastos de viaje">
+                    <GastosViajes_PriceTable
+                        items={manualResourceCosts.Viaticos.gastos_viaje}
+                        onUpdateItem={(index, field, value) => updateManualCostItem("Viaticos.courier", index, field, value)}
+                        onAddItem={() => addManualCostItem("Viaticos.courier")}
+                        onRemoveItem={(index) => removeManualCostItem("Viaticos.courier", index)}
+                    />
+                </CollapsibleTableSection>
+                {/* <CollapsibleTableSection title="Hotel">
                     <Hotel_PriceTable
                         manualResourceCosts={manualResourceCosts}
                         updateManualCostMonto={updateManualCostMonto}
@@ -49,7 +58,7 @@ export function ViaticosTables({
                         manualResourceCosts={manualResourceCosts}
                         updateManualCostMonto={updateManualCostMonto}
                     />
-                </CollapsibleTableSection>
+                </CollapsibleTableSection> */}
             </div>
         </div>
     )

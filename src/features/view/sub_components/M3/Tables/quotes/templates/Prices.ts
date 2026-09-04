@@ -137,3 +137,12 @@ export const Eating_template = [
     {id: 1, descripcion: "Desayuno-Almuerzo-Cena", monto: 30.00, personas: 7, dias: 10},
     {id: 2, descripcion: "Almuerzo", monto: 0.00, personas: 0, dias: 10},
 ];
+
+// --- Gastos Viajes
+export const gastosViajes_template = [
+    {id: 1, descripcion: "Pasajes", monto: 450.00, personas: 7, dias: 10},
+    {id: 2, descripcion: "Movilidad", monto: 20.00, personas: 7, dias: 10},
+    {id: 3, descripcion: "Desayuno-Almuerzo-Cena", monto: 30.00, personas: 7, dias: 10},
+    {id: 4, descripcion: "Alimentación", monto: 20.00, personas: 0, dias: 10},
+    {id: 5, descripcion: "Alojamiento", monto: 70.00, personas: 7, dias: 10},
+];

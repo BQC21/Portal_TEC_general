@@ -28,11 +28,14 @@ export const EMPTY_PERSONAL_ITEM: Omit<PersonalItem, "id"> = {
 
 // Añadir patrón de montos
 export type MontoItem = {
+    id: string;
+    descripcion: string;
     monto: number;
     personas: number;
     dias: number;
 };
-export const EMPTY_MONTO_ITEM: MontoItem = {
+export const EMPTY_MONTO_ITEM: Omit<MontoItem, "id"> = {
+    descripcion: "",
     monto: 0,
     personas: 0,
     dias: 0,
@@ -83,10 +86,11 @@ export type ManualCosts = {
         materiales_seleccionados?: Project_Materiales[];
     };
     Viaticos: {
-        eating: EatingItem[];
-        traveling: MontoItem;
-        mobility: MontoItem;
-        hotel: MontoItem;
+        // eating: EatingItem[];
+        // traveling: MontoItem;
+        // mobility: MontoItem;
+        // hotel: MontoItem;
+        gastos_viaje: MontoItem[];
         courier: QuantityPriceItem[];
     }
 };

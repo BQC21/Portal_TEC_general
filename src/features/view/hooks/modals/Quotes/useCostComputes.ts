@@ -150,27 +150,38 @@ export function useCostComputes(
 
     ///// VIATICOS
 
-    // HOTEL
-    const hotelTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.hotel?.monto ?? 0) * Number(manualCosts.Viaticos.hotel?.personas ?? 0) * 
-            Number(manualCosts.Viaticos.hotel?.dias ?? 0),
-        [manualCosts],
-    );
-    // ALIMENTACIÓN
-    const eatingTotal = useMemo(() =>
-        (manualCosts.Viaticos.eating ?? []).reduce(
+    // // HOTEL
+    // const hotelTotal = useMemo(() =>
+    //     Number(manualCosts.Viaticos.hotel?.monto ?? 0) * Number(manualCosts.Viaticos.hotel?.personas ?? 0) * 
+    //         Number(manualCosts.Viaticos.hotel?.dias ?? 0),
+    //     [manualCosts],
+    // );
+    // // ALIMENTACIÓN
+    // const eatingTotal = useMemo(() =>
+    //     (manualCosts.Viaticos.eating ?? []).reduce(
+    //         (sum, item) =>
+    //             sum +
+    //             Number(item.monto) * Number(item.personas) * Number(item.dias),
+    //         0,
+    //     ),
+    //     [manualCosts],
+    // );
+    // // MOVILIDAD
+    // const mobilityTotal = useMemo(() =>
+    //     Number(manualCosts.Viaticos.mobility?.monto ?? 0) * 
+    //     Number(manualCosts.Viaticos.mobility?.personas ?? 0) * 
+    //     Number(manualCosts.Viaticos.mobility?.dias ?? 0),
+    //     [manualCosts],
+    // );
+
+    // Gastos Viaje
+    const gastos_viajeTotal = useMemo(() =>
+        (manualCosts.Viaticos.gastos_viaje ?? []).reduce(
             (sum, item) =>
                 sum +
                 Number(item.monto) * Number(item.personas) * Number(item.dias),
             0,
         ),
-        [manualCosts],
-    );
-    // MOVILIDAD
-    const mobilityTotal = useMemo(() =>
-        Number(manualCosts.Viaticos.mobility?.monto ?? 0) * 
-        Number(manualCosts.Viaticos.mobility?.personas ?? 0) * 
-        Number(manualCosts.Viaticos.mobility?.dias ?? 0),
         [manualCosts],
     );
     // COURIER
@@ -225,22 +236,26 @@ export function useCostComputes(
 
     // VIÁTICOS (solo ítems; el resumen se calcula después)
     const viaticosCosts = useMemo(() => ({
-        eating: {
-            total: eatingTotal,
-        },
-        mobility: {
-            total: mobilityTotal,
-        },
-        hotel: {
-            total: hotelTotal,
+        // eating: {
+        //     total: eatingTotal,
+        // },
+        // mobility: {
+        //     total: mobilityTotal,
+        // },
+        // hotel: {
+        //     total: hotelTotal,
+        // },
+        gastos_viaje: {
+            total: gastos_viajeTotal,
         },
         courier: {
             total: courierTotal,
         },
     }), [
-        eatingTotal,
-        mobilityTotal,
-        hotelTotal,
+        // eatingTotal,
+        // mobilityTotal,
+        // hotelTotal,
+        gastos_viajeTotal,
         courierTotal,
     ]);
 
@@ -352,14 +367,17 @@ export function useCostComputes(
         // Se registran en los totales de sus subtablas respectivas
         // los precios con IGV incluído
         viaticos: {
-            eating: {
-                total: eatingTotal,
-            },
-            mobility: {
-                total: mobilityTotal,
-            },
-            hotel: {
-                total: hotelTotal,
+            // eating: {
+            //     total: eatingTotal,
+            // },
+            // mobility: {
+            //     total: mobilityTotal,
+            // },
+            // hotel: {
+            //     total: hotelTotal,
+            // },
+            gastos_viaje: {
+                total: gastos_viajeTotal,
             },
             courier: {
                 total: courierTotal,

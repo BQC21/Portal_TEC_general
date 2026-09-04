@@ -44,7 +44,7 @@ import { consumible_template,
     SCTR_template,
     Courier_template,
     Personal_template,
-    Eating_template,
+    gastosViajes_template,
 } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
 import { FinantialFormState } from "../types/supabase/finantial-types";
 
@@ -310,16 +310,23 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
     },
     
     Viaticos: {
-        eating: Eating_template.map((item) => ({
+        // eating: Eating_template.map((item) => ({
+        //     id: crypto.randomUUID(), // o String(item.id)
+        //     descripcion: item.descripcion,
+        //     monto: item.monto,
+        //     personas: item.personas,
+        //     dias: item.dias,
+        // })),
+        // traveling: { monto: 0, personas: 0, dias: 0 },
+        // mobility: { monto: 0, personas: 0, dias: 0 },
+        // hotel: { monto: 0, personas: 0, dias: 0 },
+        gastos_viaje: gastosViajes_template.map((item) => ({
             id: crypto.randomUUID(), // o String(item.id)
             descripcion: item.descripcion,
             monto: item.monto,
             personas: item.personas,
             dias: item.dias,
         })),
-        traveling: { monto: 0, personas: 0, dias: 0 },
-        mobility: { monto: 0, personas: 0, dias: 0 },
-        hotel: { monto: 0, personas: 0, dias: 0 },
         courier: Courier_template.map((item) => ({
             id: crypto.randomUUID(), // o String(item.id)
             descripcion: item.descripcion,

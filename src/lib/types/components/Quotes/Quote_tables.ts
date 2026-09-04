@@ -98,40 +98,51 @@ export type Courier_PriceTable_props = {
     onRemoveItem: (index: number) => void,
 }
 
-export type Eating_PriceTable_props = {
-    items: EatingItem[], 
+export type GastosViajes_PriceTable_props = {
+    items: MontoItem[], 
     onUpdateItem: (
         index: number, 
-        field: keyof EatingItem, 
-        value: EatingItem[keyof EatingItem]
+        field: keyof MontoItem, 
+        value: MontoItem[keyof MontoItem]
     ) => void,
     onAddItem: () => void,
     onRemoveItem: (index: number) => void,
 }
 
-export type Hotel_PriceTable_props = {
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
-}
+// export type Eating_PriceTable_props = {
+//     items: EatingItem[], 
+//     onUpdateItem: (
+//         index: number, 
+//         field: keyof EatingItem, 
+//         value: EatingItem[keyof EatingItem]
+//     ) => void,
+//     onAddItem: () => void,
+//     onRemoveItem: (index: number) => void,
+// }
 
-export type Mobility_PriceTable_props = {
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
-}
+// export type Hotel_PriceTable_props = {
+//     manualResourceCosts: ManualCosts, 
+//     updateManualCostMonto: (
+//         section: ManualCostMontoSection, 
+//         field: keyof MontoItem, 
+//         value: MontoItem[keyof MontoItem]
+//     ) => void
+// }
 
-export type Traveling_PriceTable_props = {
-    manualResourceCosts: ManualCosts, 
-    updateManualCostMonto: (
-        section: ManualCostMontoSection, 
-        field: keyof MontoItem, 
-        value: MontoItem[keyof MontoItem]
-    ) => void
-}
+// export type Mobility_PriceTable_props = {
+//     manualResourceCosts: ManualCosts, 
+//     updateManualCostMonto: (
+//         section: ManualCostMontoSection, 
+//         field: keyof MontoItem, 
+//         value: MontoItem[keyof MontoItem]
+//     ) => void
+// }
+
+// export type Traveling_PriceTable_props = {
+//     manualResourceCosts: ManualCosts, 
+//     updateManualCostMonto: (
+//         section: ManualCostMontoSection, 
+//         field: keyof MontoItem, 
+//         value: MontoItem[keyof MontoItem]
+//     ) => void
+// }

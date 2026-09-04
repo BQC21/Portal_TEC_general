@@ -72,17 +72,16 @@ export function computeVentaRecursos(
 
 
 export function computeSubtotalViaticos(costs: viaticosItems) {
+    let soles = 0;
+
+    for (const [key, value] of Object.entries(costs)) {
+        if (key === "resumen") continue;
+        soles += value.total;
+    }
+
     return {
-        soles:
-            costs.eating.total/1.18 +
-            costs.mobility.total/1.18 +
-            costs.hotel.total/1.18 +
-            costs.courier.total/1.18,
-        igv:
-            costs.eating.total +
-            costs.mobility.total +
-            costs.hotel.total +
-            costs.courier.total,
+        soles,
+        igv: soles * 1.18,
     };
 }
 

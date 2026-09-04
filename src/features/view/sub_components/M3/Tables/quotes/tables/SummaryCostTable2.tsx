@@ -33,13 +33,13 @@ export function SummaryCostTable2({
                                         Viaje y Movilidad
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.mobility.total/1.18, "PEN")}
+                                        {formatCurrency(viaticosCosts.gastos_viaje.total/1.18, "PEN")}
                                     </td>
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                        {formatCurrency(viaticosCosts.mobility.total, "PEN")}
+                                        {formatCurrency(viaticosCosts.gastos_viaje.total, "PEN")}
                                     </td>
                                 </tr>
-                                <tr className="bg-slate-200 text-left">
+                                {/* <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         Alimentación
                                     </td>
@@ -60,7 +60,7 @@ export function SummaryCostTable2({
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {formatCurrency(viaticosCosts.hotel.total, "PEN")}
                                     </td>
-                                </tr>
+                                </tr> */}
                                 <tr className="bg-slate-200 text-left">
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         Courier
@@ -71,7 +71,7 @@ export function SummaryCostTable2({
                                     <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                         {formatCurrency(viaticosCosts.courier.total, "PEN")}
                                     </td>
-                                </tr>
+                                </tr> 
                                 
 
                                 {/*Subtotales*/}

@@ -54,13 +54,7 @@ export type recursos = {
 }
 
 export type viaticos = {
-    eating: {
-        total: number;
-    };
-    mobility: {
-        total: number;
-    };
-    hotel: {
+    gastos_viaje: {
         total: number;
     };
     courier: {
