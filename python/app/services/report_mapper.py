@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import math
+import re
+import unicodedata
 from datetime import datetime
 from typing import Any
 
@@ -32,6 +35,8 @@ PUESTA_EN_MARCHA_ITEMS = [
 # Filtro alineado con Eq_Mat_Content
 MATERIAL_TIPOS_VISIBLE = {"PROTECCIÓN", "CABLE", "PROTECCION"}
 DEFAULT_PAY_FORMAT = "50% Con la orden de servicio\n50% Al término de instalación"
+PANELES_POR_PALET = 36
+_PALET_RE = re.compile(r"\bpalets?\b", re.IGNORECASE)
 
 
 def _to_float(value: Any, default: float = 0.0) -> float:
@@ -84,22 +89,99 @@ def _safe_filename(*parts: str) -> str:
     return f"{base}.pdf"
 
 
+def _normalize_tipo(tipo: str) -> str:
+    stripped = unicodedata.normalize("NFD", tipo.strip().upper())
+    return "".join(ch for ch in stripped if unicodedata.category(ch) != "Mn")
+
+
+def _is_modulo_fv(tipo: str) -> bool:
+    return _normalize_tipo(tipo) in {"MODULO FV", "MODULO"}
+
+
+def _strip_palet(descripcion: str) -> str:
+    text = _PALET_RE.sub("", descripcion)
+    text = re.sub(r"\s{2,}", " ", text)
+    text = re.sub(r"\s+([,;.:])", r"\1", text)
+    return text.strip()
+
+
+def _is_palet_unidad(unidad: str) -> bool:
+    return unidad.strip().lower() == "palet"
+
+
+def _cantidad_modulo_en_unidades(cantidad: Any, unidad: str) -> int:
+    n = max(0, int(math.ceil(_to_float(cantidad))))
+    return n * PANELES_POR_PALET if _is_palet_unidad(unidad) else n
+
+
+def _modulo_group_key(item: EquipoItem) -> str:
+    info = item.equipo_info
+    marca = _to_str(info.marca if info else "")
+    if marca:
+        return f"marca:{marca.lower()}"
+    descripcion = _strip_palet(_to_str(info.descripcion if info else "")).lower()
+    if descripcion:
+        return f"desc:{descripcion}"
+    return f"id:{id(item)}"
+
+
 def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
+    visible_items = [item for item in items if item.visible is not False]
     lines: list[PdfLineItem] = []
+    emitted_groups: set[str] = set()
     index = 1
-    for item in items:
-        # Considerar la visibilidad configurada en el modal de Reportes
-        if item.visible is False:
-            continue
+
+    for item in visible_items:
         info = item.equipo_info
         if not info or not _to_str(info.descripcion):
             continue
+
+        if not _is_modulo_fv(_to_str(info.tipo_de_producto)):
+            lines.append(
+                PdfLineItem(
+                    index=index,
+                    descripcion=_to_str(info.descripcion),
+                    unidad=_to_str(info.unidad, "UNI"),
+                    cantidad=_to_str(item.cantidad, "0"),
+                )
+            )
+            index += 1
+            continue
+
+        key = _modulo_group_key(item)
+        if key in emitted_groups:
+            continue
+        emitted_groups.add(key)
+
+        group = [
+            candidate
+            for candidate in visible_items
+            if candidate.equipo_info
+            and _is_modulo_fv(_to_str(candidate.equipo_info.tipo_de_producto))
+            and _modulo_group_key(candidate) == key
+        ]
+        preferred = next(
+            (
+                candidate
+                for candidate in group
+                if not _is_palet_unidad(_to_str(candidate.equipo_info.unidad if candidate.equipo_info else ""))
+            ),
+            group[0],
+        )
+        preferred_info = preferred.equipo_info
+        cantidad = sum(
+            _cantidad_modulo_en_unidades(
+                candidate.cantidad,
+                _to_str(candidate.equipo_info.unidad if candidate.equipo_info else ""),
+            )
+            for candidate in group
+        )
         lines.append(
             PdfLineItem(
                 index=index,
-                descripcion=_to_str(info.descripcion),
-                unidad=_to_str(info.unidad, "UNI"),
-                cantidad=_to_str(item.cantidad, "0"),
+                descripcion=_strip_palet(_to_str(preferred_info.descripcion if preferred_info else "")),
+                unidad="Unidad",
+                cantidad=str(cantidad),
             )
         )
         index += 1

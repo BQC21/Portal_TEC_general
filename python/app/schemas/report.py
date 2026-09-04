@@ -22,6 +22,7 @@ class ProductInfo(BaseModel):
     descripcion: Optional[str] = None
     unidad: Optional[str] = None
     tipo_de_producto: Optional[str] = None
+    marca: Optional[str] = None
 
 
 class EquipoItem(BaseModel):
