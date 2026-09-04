@@ -125,7 +125,7 @@ export const TABLE_HEADERS_REPORT = [
     "Creado",
     "Actualizado",
     "Acciones",
-    "Generar PDF"
+    // "Generar PDF"
 ]
 
 export const TABLE_HEADERS_FINANTIAL = [

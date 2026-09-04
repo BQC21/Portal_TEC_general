@@ -60,9 +60,8 @@ export default function ReportTable({report, totalReport,
                                                 />
                                             </div>
                                         </td>
-                                        <td className="border border-slate-200 px-4 py-5">
+                                        {/* <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                {/* Añadir botón para generar PDF*/}
                                                 <Button2PDF
                                                     form={report}
                                                     equipos={reportEquipos}
@@ -70,7 +69,7 @@ export default function ReportTable({report, totalReport,
                                                     hiddenEquipoIds={[]}
                                                 />
                                             </div>
-                                        </td>
+                                        </td> */}
                                     </tr>
                                     );
                                 })
