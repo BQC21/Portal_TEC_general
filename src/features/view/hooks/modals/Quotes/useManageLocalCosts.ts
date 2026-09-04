@@ -20,7 +20,7 @@ type ManualCostArraySection =
     | "Recursos.sctr"
     | "Recursos.personal"
     | "Viaticos.courier"
-    | "Viaticos.eating";
+    // | "Viaticos.eating";
 
 type ManualCostItemField =
     | keyof QuantityPriceItem
@@ -34,9 +34,10 @@ type ManualCostItemValue =
     | EatingItem[keyof EatingItem];
 
 type ManualCostMontoSection =
-    | "Viaticos.hotel"
-    | "Viaticos.traveling"
-    | "Viaticos.mobility";
+    // | "Viaticos.hotel"
+    // | "Viaticos.traveling"
+    // | "Viaticos.mobility";
+    | "Viaticos.gastos_viaje";
 
 type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;
 
@@ -89,17 +90,17 @@ export function ManageLocalCosts(
                 };
             }
 
-            if (section === "Viaticos.eating") {
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        eating: (current.Viaticos.eating ?? []).map((item, i) =>
-                            i === index ? { ...item, [field]: value } : item,
-                        ),
-                    },
-                };
-            }
+            // if (section === "Viaticos.eating") {
+            //     return {
+            //         ...current,
+            //         Viaticos: {
+            //             ...current.Viaticos,
+            //             eating: (current.Viaticos.eating ?? []).map((item, i) =>
+            //                 i === index ? { ...item, [field]: value } : item,
+            //             ),
+            //         },
+            //     };
+            // }
 
             return {
                 ...current,
@@ -120,31 +121,31 @@ export function ManageLocalCosts(
         value: MontoItem[keyof MontoItem],
     ) {
         setManualResourceCosts((current) => {
-            if (section === "Viaticos.hotel") {
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        hotel: { ...(current.Viaticos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
-                    },
-                };
-            }
+            // if (section === "Viaticos.hotel") {
+            //     return {
+            //         ...current,
+            //         Viaticos: {
+            //             ...current.Viaticos,
+            //             hotel: { ...(current.Viaticos.hotel ?? EMPTY_MONTO_ITEM), [field]: value },
+            //         },
+            //     };
+            // }
 
-            if (section === "Viaticos.mobility") {
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        mobility: { ...(current.Viaticos.mobility ?? EMPTY_MONTO_ITEM), [field]: value },
-                    },
-                };
-            }
+            // if (section === "Viaticos.mobility") {
+            //     return {
+            //         ...current,
+            //         Viaticos: {
+            //             ...current.Viaticos,
+            //             mobility: { ...(current.Viaticos.mobility ?? EMPTY_MONTO_ITEM), [field]: value },
+            //         },
+            //     };
+            // }
 
             return {
                 ...current,
                 Viaticos: {
                     ...current.Viaticos,
-                    traveling: { ...(current.Viaticos.traveling ?? EMPTY_MONTO_ITEM), [field]: value },
+                    traveling: { ...(current.Viaticos.gastos_viaje ?? EMPTY_MONTO_ITEM), [field]: value },
                 },
             };
         });
@@ -194,18 +195,18 @@ export function ManageLocalCosts(
                 };
             }
 
-            if (section === "Viaticos.eating") {
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        eating: [
-                            ...(current.Viaticos.eating ?? []),
-                            { id: crypto.randomUUID(), ...EMPTY_EATING_ITEM },
-                        ],
-                    },
-                };
-            }
+            // if (section === "Viaticos.eating") {
+            //     return {
+            //         ...current,
+            //         Viaticos: {
+            //             ...current.Viaticos,
+            //             eating: [
+            //                 ...(current.Viaticos.eating ?? []),
+            //                 { id: crypto.randomUUID(), ...EMPTY_EATING_ITEM },
+            //             ],
+            //         },
+            //     };
+            // }
 
             return {
                 ...current,
@@ -260,17 +261,17 @@ export function ManageLocalCosts(
                 };
             }
 
-            if (section === "Viaticos.eating") {
-                if ((current.Viaticos.eating ?? []).length <= 1) return current;
+            // if (section === "Viaticos.eating") {
+            //     if ((current.Viaticos.eating ?? []).length <= 1) return current;
 
-                return {
-                    ...current,
-                    Viaticos: {
-                        ...current.Viaticos,
-                        eating: (current.Viaticos.eating ?? []).filter((_, i) => i !== index),
-                    },
-                };
-            }
+            //     return {
+            //         ...current,
+            //         Viaticos: {
+            //             ...current.Viaticos,
+            //             eating: (current.Viaticos.eating ?? []).filter((_, i) => i !== index),
+            //         },
+            //     };
+            // }
 
             if (current.Viaticos.courier.length <= 1) return current;
 

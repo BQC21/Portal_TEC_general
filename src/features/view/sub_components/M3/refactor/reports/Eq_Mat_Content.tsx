@@ -1,6 +1,7 @@
 "use client";
 
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
+import { toEquipoReportRows } from "@/lib/utils/helpers/computes/PanelNumber";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function Eq_Mat_Content({
@@ -9,6 +10,8 @@ export function Eq_Mat_Content({
     hiddenEquipoIds = [],
     onToggleEquipoVisibility,
 }: Eq_Mat_Content_Props){
+    const equipoRows = toEquipoReportRows(selectedEquipos);
+
     return(
         <>
         <section className="space-y-4">
@@ -44,33 +47,39 @@ export function Eq_Mat_Content({
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedEquipos.length > 0 ? (
-                                selectedEquipos.map((item) => {
-                                    const itemId = String(item.id);
-                                    const visibleInPdf = !hiddenEquipoIds.includes(itemId);
+                            {equipoRows.length > 0 ? (
+                                equipoRows.map((item) => {
+                                    const visibleInPdf = item.ids.every((id) => !hiddenEquipoIds.includes(id));
                                     return (
                                     <tr
-                                        key={itemId}
+                                        key={item.ids.join("-")}
                                         className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
                                     >
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.equipo_info?.cod_producto}
+                                            {item.cod_producto}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.equipo_info?.descripcion}
+                                            {item.descripcion}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.equipo_info?.unidad}
+                                            {item.unidad}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {String(Math.ceil(Number(item.cantidad)))}
+                                            {String(item.cantidad)}
                                         </td>
                                         <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
                                             <input
                                                 type="checkbox"
                                                 checked={visibleInPdf}
-                                                onChange={() => onToggleEquipoVisibility?.(itemId)}
-                                                aria-label={`Mostrar ${item.equipo_info?.descripcion || "equipo"} en el PDF`}
+                                                onChange={() =>
+                                                    item.ids.forEach((id) => {
+                                                        const currentlyVisible = !hiddenEquipoIds.includes(id);
+                                                        if (currentlyVisible === visibleInPdf) {
+                                                            onToggleEquipoVisibility?.(id);
+                                                        }
+                                                    })
+                                                }
+                                                aria-label={`Mostrar ${item.descripcion || "equipo"} en el PDF`}
                                                 className="h-5 w-5 accent-orange-500"
                                             />
                                         </td>

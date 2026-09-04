@@ -54,6 +54,7 @@ export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds 
                     descripcion: e.equipo_info?.descripcion,
                     unidad: e.equipo_info?.unidad,
                     tipo_de_producto: e.equipo_info?.tipo_de_producto,
+                    marca: e.equipo_info?.marca,
                 },
                 })),
 

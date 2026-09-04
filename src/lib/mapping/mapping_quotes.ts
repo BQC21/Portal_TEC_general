@@ -49,18 +49,22 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
         Viaticos: {
             ...defaults.Viaticos,
             ...saved.Viaticos,
-            eating: normalizeEatingItems(saved.Viaticos?.eating, defaults.Viaticos.eating),
-            traveling: {
-                ...defaults.Viaticos.traveling,
-                ...saved.Viaticos?.traveling,
-            },
-            mobility: {
-                ...defaults.Viaticos.mobility,
-                ...saved.Viaticos?.mobility,
-            },
-            hotel: {
-                ...defaults.Viaticos.hotel,
-                ...saved.Viaticos?.hotel,
+            // eating: normalizeEatingItems(saved.Viaticos?.eating, defaults.Viaticos.eating),
+            // traveling: {
+            //     ...defaults.Viaticos.traveling,
+            //     ...saved.Viaticos?.traveling,
+            // },
+            // mobility: {
+            //     ...defaults.Viaticos.mobility,
+            //     ...saved.Viaticos?.mobility,
+            // },
+            // hotel: {
+            //     ...defaults.Viaticos.hotel,
+            //     ...saved.Viaticos?.hotel,
+            // },
+            gastos_viaje:{
+                ...defaults.Viaticos.gastos_viaje,
+                ...saved.Viaticos?.gastos_viaje,
             },
             courier: saved.Viaticos?.courier?.length
                 ? saved.Viaticos.courier

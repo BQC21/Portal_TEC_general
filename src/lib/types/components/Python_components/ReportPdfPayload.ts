@@ -38,6 +38,7 @@ export type ReportPdfPayload = {
             descripcion?: string;
             unidad?: string;
             tipo_de_producto?: string;
+            marca?: string;
         };
     }>;
 
