@@ -22,14 +22,15 @@ _LINK_BLUE = colors.HexColor("#0A2F6B")
 _SERVICIOS_INCLUIDOS = [
     "Instalación completa, conexión eléctrica y puesta en funcionamiento del sistema.",
     "Revisión de planos eléctricos y entrega del plano multifilar del sistema instalado.",
-    "Entrega de manual de usuario y mantenimiento.",
+    "Entrega de manual de usuario y mantenimiento del sistema.",
     "Monitoreo remoto gratuito durante el primer año, sujeto a disponibilidad de internet.",
-    "Un (01) mantenimiento preventivo gratuito dentro de los primeros seis meses posteriores a la puesta en servicio del sistema, previa coordinación.",
+    "Un (01) mantenimiento preventivo gratuito dentro de los primeros seis meses posteriores a la puesta en servicio del sistema, previa coordinación. No Incluyen viáticos para el caso de ser fuera de Lima.",
 ]
 
 _TERMINOS_Y_CONDICIONES = [
-    "No incluye estructuras o refuerzos adicionales, obras civiles ni trabajos no contemplados en el alcance.",
-    "No incluye la implementación de sistema de protección contra descargas atmosféricas (pararrayos)."
+    "No incluye refuerzo de techos, obras civiles ni trabajos no contemplados en el alcance de la propuesta.",
+    "No incluye la implementación de sistema de protección contra descargas atmosféricas (pararrayos).",
+    "No incluye instalación de pozo a tierra.",
     "Cualquier trabajo adicional será previamente cotizado y ejecutado únicamente con la aprobación del cliente."
 ]
 
