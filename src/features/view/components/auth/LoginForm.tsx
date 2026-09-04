@@ -61,7 +61,7 @@ export function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
                 <label htmlFor="email" className="text-sm font-semibold text-slate-700">
-                    Correo corporativo
+                    Nombre de usuario
                 </label>
                 <input
                     id="email"

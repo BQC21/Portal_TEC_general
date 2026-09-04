@@ -30,7 +30,7 @@ export default async function LoginPage() {
                             <div className="mb-8 space-y-2">
                                 <h2 className="text-2xl font-bold tracking-tight text-slate-900">Iniciar sesión</h2>
                                 <p className="text-sm leading-6 text-slate-500">
-                                    Usa tu correo corporativo y tu contraseña.
+                                    Usa tu nombre de usuario y tu contraseña.
                                 </p>
                             </div>
 
