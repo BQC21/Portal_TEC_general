@@ -21,7 +21,7 @@ export type ConsumibleSelectableFamily =
     | "terminal_ojal_100"
     | "terminal_ojal"
     | "terminal_pin"
-    | "precintos_100"
+    | "precintos"
     | "tornillos_autorroscantes_100"
     | "tornillo_spack"
     | "mc4"
@@ -70,7 +70,7 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "terminal_ojal_100",
     "terminal_ojal",
     "terminal_pin",
-    "precintos_100",
+    "precintos",
     "tornillos_autorroscantes_100",
     "tornillo_spack",
     "fusible",
@@ -92,7 +92,7 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     terminal_ojal_100: "100to terminal tipo ojal",
     terminal_ojal: "Terminal tipo ojal",
     terminal_pin: "Terminal tipo pin",
-    precintos_100: "100to precintos",
+    precintos: "Precintos",
     tornillos_autorroscantes_100: "100to tornillos autorroscantes",
     tornillo_spack: "Tornillo Spack",
     mc4: "MC4",
@@ -120,7 +120,7 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     terminal_ojal_100: "CONSUMIBLE",
     terminal_ojal: "CONSUMIBLE",
     terminal_pin: "CONSUMIBLE",
-    precintos_100: "CONSUMIBLE",
+    precintos: "CONSUMIBLE",
     tornillos_autorroscantes_100: "CONSUMIBLE",
     tornillo_spack: "CONSUMIBLE",
     mc4: "CONSUMIBLE",
@@ -253,7 +253,7 @@ export function isDefaultInsertedFamily(
 function isHundredPack(description: string): boolean {
     return (
         /\b100(\s*(und|unid|to|unidades?))?\b/.test(description)
-        || description.includes("100to")
+        || description.includes("100to") || description.includes("precinto")
     )
 }
 
@@ -310,7 +310,9 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (isOjalTerminal) return "terminal_ojal"
     if (isPinTerminal) return "terminal_pin"
 
-    if (hundredPack && description.includes("precinto")) return "precintos_100"
+    if (description.includes("precinto") && !description.includes("sujeta")) {
+        return "precintos"
+    }
     if (hundredPack && description.includes("autorroscant")) {
         return "tornillos_autorroscantes_100"
     }
@@ -378,6 +380,12 @@ export function extractMmSize(descripcion: string): string | null {
     return matches[matches.length - 1][1].replace(",", ".")
 }
 
+function extractMeterSize(descripcion: string): string | null {
+    const match = descripcion.match(/(\d+(?:[.,]\d+)?)\s*m\b/i)
+    if (!match) return null
+    return match[1].replace(",", ".")
+}
+
 export function extractSpackSize(descripcion: string): string | null {
     const match = descripcion.match(/(\d+\s*x\s*\d+)/i)
     if (!match) return null
@@ -393,8 +401,8 @@ export function matchesFamilySize(family: ConsumibleFamily, descripcion: string)
         const mm2 = extractMm2(descripcion)
         return mm2 != null && TERMINAL_OJAL_MM2.has(mm2)
     }
-    if (family === "precintos_100") {
-        const mm = extractMmSize(descripcion)
+    if (family === "precintos") {
+        const mm = extractMmSize(descripcion) ?? extractMeterSize(descripcion)
         return mm != null && PRECINTOS_MM.has(mm)
     }
     if (family === "tornillo_spack") {
