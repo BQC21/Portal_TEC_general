@@ -40,7 +40,7 @@ export function Product_selected({
                     required
                     value={Number(form.markup) > 0 ? Number(form.markup) : ""}
                     onChange={(value) => updateField("markup", String(value))}
-                    step={1}   min={30}   max={50}
+                    step={1}   min={1}   max={100}
                 />
                 <AddProductNumberField
                     label="Porcentaje del margen de riesgos para la tabla de recursos (%)"
