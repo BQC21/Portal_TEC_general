@@ -148,10 +148,11 @@ export function Consume_PriceTable({
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
-                <section className="space-y-4">
+                <section className="space-y-4 w-full">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
-                    <div className="overflow-x-auto rounded-2xl border border-slate-200">
-                        <table className="min-w-full border-separate border-spacing-0">
+                    <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
+                        <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
+                            <table className="min-w-full w-max border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
                                 <tr className="bg-slate-400 text-left">
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
@@ -376,7 +377,8 @@ export function Consume_PriceTable({
                                     )}
 
                             </tbody>
-                        </table>
+                            </table>
+                        </div>
                     </div>
                 </section>
             </div>
