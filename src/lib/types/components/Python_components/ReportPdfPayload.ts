@@ -18,6 +18,7 @@ export type ReportPdfPayload = {
     opcion_dscto?: string;
     formato_dscto?: string;
     payFormat?: string;
+    opcion_firma?: string;
     
     // cotizacion
     cotizacion_id?: string;

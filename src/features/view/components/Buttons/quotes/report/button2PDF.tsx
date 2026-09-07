@@ -32,6 +32,7 @@ export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds 
                 opcion_dscto: form.opcion_dscto,
                 formato_dscto: form.formato_dscto,
                 payFormat: form.payFormat || DEFAULT_PAY_FORMAT,
+                opcion_firma: form.opcion_firma,
                 cotizacion_id: form.cotizacion_id,
                 cotizacion_info: form.cotizacion_info
                 ? {
