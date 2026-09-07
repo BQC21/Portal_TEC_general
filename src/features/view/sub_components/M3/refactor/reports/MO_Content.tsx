@@ -2,8 +2,26 @@ import { MO_Content_Props } from "@/lib/types/components/sub_components/module_r
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function MO_Content({
-    title, precioFinal, MO
+    title, precioFinal, MO,
+    hiddenMOIds = [],
+    onToggleMOVisibility,
 }: MO_Content_Props){
+
+    const MORows = [
+        {ids: ["1"], descripcion: "Acarreo de materiales para instalación"},
+        {ids: ["2"], descripcion: "Realizar trazos y medidas"},
+        {ids: ["3"], descripcion: "Montaje de estructura metálica"},
+        {ids: ["4"], descripcion: "Instalación de paneles (Estructura)"},
+        {ids: ["5"], descripcion: "Instalación de panele (Conexionado)"},
+        {ids: ["6"], descripcion: "Instalación de tablero FV"},
+        {ids: ["7"], descripcion: "Instalación de inversor"},
+        {ids: ["8"], descripcion: "Canalización de acometida DC"},
+        {ids: ["9"], descripcion: "Canalización de acometida AC"},
+        {ids: ["10"], descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
+        {ids: ["11"], descripcion: "Conexión, programación, control y puesta en marcha"},
+        {ids: ["12"], descripcion: "Viáticos"},
+    ];
+
     return(
         <>
             <section className="space-y-4">
@@ -21,61 +39,52 @@ export function MO_Content({
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
                                 <tr className="bg-slate-400 text-white text-left">
-                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"></th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Descripción - PUESTA EN MARCHA
+                                    </th>
+                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                        MOSTRAR EN PDF
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">1</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Acarreo de materiales para instalación</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">2</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Realizar trazos y medidas</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">3</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Montaje de estructura metálica</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">4</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de paneles (Estructura)</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">5</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de panele (Conexionado)</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">6</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de tablero FV</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">7</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Instalación de inversor</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">8</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Canalización de acometida DC</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">9</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Canalización de acometida AC</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">10</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Mediciones, pruebas eléctricas, ajustes y optimización</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">11</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Conexión, programación, control y puesta en marcha</td>
-                                </tr>
-                                <tr className="bg-slate-200 text-left">
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">12</td>
-                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">Viáticos</td>
-                                </tr>
+                                {MORows.length > 0 ? (
+                                    MORows.map((item) => {
+                                        const visibleInPdf = item.ids.every((id) => !hiddenMOIds.includes(id));
+                                        return (
+                                            <tr
+                                                key={item.ids.join("-")}
+                                                className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                            >
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    {item.descripcion}
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={visibleInPdf}
+                                                        onChange={() =>
+                                                            item.ids.forEach((id) => {
+                                                                const currentlyVisible = !hiddenMOIds.includes(id);
+                                                                if (currentlyVisible === visibleInPdf) {
+                                                                    onToggleMOVisibility?.(id);
+                                                                }
+                                                            })
+                                                        }
+                                                        aria-label={`Mostrar ${item.descripcion || "Puesta en marcha"} en el PDF`}
+                                                        className="h-5 w-5 accent-orange-500"
+                                                    />
+                                                </td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr className="bg-white">
+                                        <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
+                                            No hay Puesta en marcha a mostrarse todavía.
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

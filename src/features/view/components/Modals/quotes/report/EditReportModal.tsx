@@ -38,6 +38,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // Equipos a no mostrarse en el PDF
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
 
+    // Puesta en marcha a ocultarse en el PDF
+    const [hiddenMOIds, setHiddenMOIds] = useState<string[]>([]);
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -61,9 +63,19 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         setHiddenEquipoIds([]);
     }, [form.cotizacion_id]);
 
-    // Intercambiador de estados del checker
     function toggleEquipoVisibility(id: string) {
         setHiddenEquipoIds((current) =>
+            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+        );
+    }
+
+    // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
+    useEffect(() => {
+        setHiddenMOIds([]);
+    }, [form.cotizacion_id]);
+
+    function toggleMOVisibility(id: string) {
+        setHiddenMOIds((current) =>
             current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
         );
     }
@@ -138,15 +150,6 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     />
 
                                 </div>
-                                {/* <div className="grid gap-6">
-                                    <Eq_Mat_Content
-                                        title={"EQUIPOS Y MATERIALES"}
-                                        precioFinal={precioUsd}
-                                        Eq_Mt={Number(form.porcentaje_eqmt)}
-                                        selectedEquipos={projectEquipos}
-                                        selectedMateriales={projectMateriales}
-                                    />
-                                </div> */}
                                 <div className="grid gap-6">
                                     <Eq_Mat_Content
                                         title={"EQUIPOS Y MATERIALES"}
@@ -162,6 +165,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={precioUsd}
                                         MO={Number(form.porcentaje_inst)}
+                                        hiddenMOIds={hiddenMOIds}
+                                        onToggleMOVisibility={toggleMOVisibility}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable

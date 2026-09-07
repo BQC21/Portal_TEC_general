@@ -320,6 +320,8 @@ export type MO_Content_Props = {
     title: string;
     precioFinal: number;
     MO: number;
+    hiddenMOIds?: string[];
+    onToggleMOVisibility?: (id: string) => void;
 }
 
 // -----

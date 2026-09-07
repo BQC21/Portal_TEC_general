@@ -51,39 +51,39 @@ export function Eq_Mat_Content({
                                 equipoRows.map((item) => {
                                     const visibleInPdf = item.ids.every((id) => !hiddenEquipoIds.includes(id));
                                     return (
-                                    <tr
-                                        key={item.ids.join("-")}
-                                        className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
-                                    >
-                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.cod_producto}
-                                        </td>
-                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.descripcion}
-                                        </td>
-                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {item.unidad}
-                                        </td>
-                                        <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                            {String(item.cantidad)}
-                                        </td>
-                                        <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
-                                            <input
-                                                type="checkbox"
-                                                checked={visibleInPdf}
-                                                onChange={() =>
-                                                    item.ids.forEach((id) => {
-                                                        const currentlyVisible = !hiddenEquipoIds.includes(id);
-                                                        if (currentlyVisible === visibleInPdf) {
-                                                            onToggleEquipoVisibility?.(id);
-                                                        }
-                                                    })
-                                                }
-                                                aria-label={`Mostrar ${item.descripcion || "equipo"} en el PDF`}
-                                                className="h-5 w-5 accent-orange-500"
-                                            />
-                                        </td>
-                                    </tr>
+                                        <tr
+                                            key={item.ids.join("-")}
+                                            className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                        >
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.cod_producto}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.descripcion}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.unidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {String(item.cantidad)}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={visibleInPdf}
+                                                    onChange={() =>
+                                                        item.ids.forEach((id) => {
+                                                            const currentlyVisible = !hiddenEquipoIds.includes(id);
+                                                            if (currentlyVisible === visibleInPdf) {
+                                                                onToggleEquipoVisibility?.(id);
+                                                            }
+                                                        })
+                                                    }
+                                                    aria-label={`Mostrar ${item.descripcion || "equipo"} en el PDF`}
+                                                    className="h-5 w-5 accent-orange-500"
+                                                />
+                                            </td>
+                                        </tr>
                                     );
                                 })
                             ) : (
