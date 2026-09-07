@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { AddProductDateField } from "@/features/view/components/Form_fields/AddDateField";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductRadioField } from "@/features/view/components/Form_fields/AddRadioField";
@@ -7,11 +10,15 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
+import { GERENTE_FIRMA_PASSWORD } from "@/passwords/keys";
 
 export function ReportDataInput({
     form, 
     updateField,
 }: Quote_selectedProps){
+    const [firmaPassword, setFirmaPassword] = useState("");
+    const firmaAutorizada = firmaPassword === GERENTE_FIRMA_PASSWORD;
+    const incluirFirma = form.opcion_firma === "CON FIRMA";
 
     // Handlers
     function handleOpcionDSCTOChange(value: DSCTOOptions) {
@@ -19,6 +26,9 @@ export function ReportDataInput({
     }
 
     function handleOpcionFIRMChange(value: FIRMOptions) {
+        if (value === "SIN FIRMA") {
+            setFirmaPassword("");
+        }
         updateField("opcion_firma", value);
     }
 
@@ -90,52 +100,69 @@ export function ReportDataInput({
                 value = {form.plazo_entrega || ""}
                 onChange = {(value) => updateField("plazo_entrega", String(value))}
             />
-            {/* Handlers */}
-            <AddProductRadioField
-                label="Incluir tasa de descuento"  checked={form.opcion_dscto == "CON DSCTO"}
-                onChange={() => handleOpcionDSCTOChange("CON DSCTO")}
-            />
-
-            {form.opcion_dscto == "CON DSCTO" && (
-                <>
-                    <AddProductSelectField
-                        label = "Formato de la tasa de descuento"
-                        options = {DSCTO_type_value}
-                        value = {String(form.formato_dscto)}
-                        onChange= {(value) => updateField("formato_dscto", String(value))}
+            <div className="grid items-start gap-6 md:grid-cols-2">
+                <div className="grid gap-2">
+                    <AddProductRadioField
+                        label="Incluir tasa de descuento"  checked={form.opcion_dscto == "CON DSCTO"}
+                        onChange={() => handleOpcionDSCTOChange("CON DSCTO")}
                     />
-                    <AddProductNumberField
-                        label={form.formato_dscto == "Porcentaje" ? "Tasa de descuento (%)" : "Precio de descuento (USD)"}
-                        value={Number(form.tasa_dscto) > 0 ? Number(form.tasa_dscto) : ""}
-                        onChange={(value) => updateField("tasa_dscto", String(value))}
-                        step={0.01}
-                        min={0}
-                        max={form.formato_dscto == "Porcentaje" ? 100 : undefined}
+
+                    {form.opcion_dscto == "CON DSCTO" && (
+                        <>
+                            <AddProductSelectField
+                                label = "Formato de la tasa de descuento"
+                                options = {DSCTO_type_value}
+                                value = {String(form.formato_dscto)}
+                                onChange= {(value) => updateField("formato_dscto", String(value))}
+                            />
+                            <AddProductNumberField
+                                label={form.formato_dscto == "Porcentaje" ? "Tasa de descuento (%)" : "Precio de descuento (USD)"}
+                                value={Number(form.tasa_dscto) > 0 ? Number(form.tasa_dscto) : ""}
+                                onChange={(value) => updateField("tasa_dscto", String(value))}
+                                step={0.01}
+                                min={0}
+                                max={form.formato_dscto == "Porcentaje" ? 100 : undefined}
+                            />
+                        </>
+                    )}
+
+                    <AddProductRadioField
+                        label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
+                        onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
                     />
-                </>
-            )}
+                </div>
 
-            <AddProductRadioField
-                label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
-                onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
-            />
+                <div className="grid gap-2">
+                    <AddProductRadioField
+                        label="Incluir la firma del gerente"  checked={incluirFirma}
+                        onChange={() => handleOpcionFIRMChange("CON FIRMA")}
+                    />
 
-            {/* Handlers */}
-            <AddProductRadioField
-                label="Incluir la firma del gerente"  checked={form.opcion_firma == "Con firma"}
-                onChange={() => handleOpcionFIRMChange("CON FIRMA")}
-            />
+                    {incluirFirma && (
+                        <div className="space-y-2">
+                            <AddProductTextField
+                                label="Contraseña de autorización"
+                                type="password"
+                                autoComplete="off"
+                                value={firmaPassword}
+                                onChange={setFirmaPassword}
+                            />
+                            {firmaPassword ? (
+                                <p className={`text-sm font-semibold ${firmaAutorizada ? "text-emerald-600" : "text-red-600"}`}>
+                                    {firmaAutorizada
+                                        ? "Contraseña correcta. Se incluirá la firma del gerente."
+                                        : "Contraseña incorrecta."}
+                                </p>
+                            ) : null}
+                        </div>
+                    )}
 
-            {form.opcion_firma == "Con firma" && (
-                <>
-                    <p>Se incluirá la firma del gerente</p>
-                </>
-            )}
-
-            <AddProductRadioField
-                label="No incluir la firma del gerente"  checked={form.opcion_dscto == "Sin firma"}
-                onChange={() => handleOpcionFIRMChange("SIN FIRMA")}
-            />
+                    <AddProductRadioField
+                        label="No incluir la firma del gerente"  checked={!incluirFirma}
+                        onChange={() => handleOpcionFIRMChange("SIN FIRMA")}
+                    />
+                </div>
+            </div>
 
             <AddProductTextAreaField
                 label = "Forma de pago"
