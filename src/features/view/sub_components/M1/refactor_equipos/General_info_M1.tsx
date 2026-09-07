@@ -89,7 +89,7 @@ export function General_info_M1_EQ({
                             step={1}
                             min={0}
                         />
-                        {cadenasEditable ? (
+                        {/* {cadenasEditable ? (
                             <AddProductNumberField
                                 label="Número de cadenas"
                                 value={Number(form.cadenas)}
@@ -103,7 +103,14 @@ export function General_info_M1_EQ({
                                 value={String(Number(form.mppt * 2))}
                                 colorClass={getFieldValueLightClass(form.mppt)}
                             />
-                        )}
+                        )} */}
+                        <AddProductNumberField
+                            label="Número de cadenas"
+                            value={Number(form.cadenas)}
+                            onChange={(value) => updateField("cadenas", value)}
+                            step={1}
+                            min={0}
+                        />
                         <AddProductNumberField
                             label="Potencia AC del inversor (kw)"
                             value={Number(form.potencia_ac)}
