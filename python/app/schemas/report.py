@@ -87,6 +87,7 @@ class ReportFormPayload(BaseModel):
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
     materiales: list[MaterialItem] = Field(default_factory=list)
+    hidden_mo_ids: list[str] = Field(default_factory=list)
 
 
 class PdfLineItem(BaseModel):

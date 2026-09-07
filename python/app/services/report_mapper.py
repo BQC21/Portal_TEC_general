@@ -16,20 +16,20 @@ from app.schemas.report import (
     ReportPdfData,
 )
 
-# Alineado a MO_Content / PDF de referencia
-PUESTA_EN_MARCHA_ITEMS = [
-    "Acarreo de materiales para instalación",
-    "Realizar trazos y medidas",
-    "Montaje de estructura metálica",
-    "Instalación de paneles (Estructura)",
-    "Instalación de paneles (Conexionado)",
-    "Instalación de tablero FV",
-    "Instalación de inversor",
-    "Canalización de acometida DC",
-    "Canalización de acometida AC",
-    "Mediciones, pruebas eléctricas, ajustes y optimización",
-    "Conexión, programación, control y puesta en marcha",
-    "Viáticos",
+# Alineado a MO_Content (ids "1".."12") / PDF de referencia
+PUESTA_EN_MARCHA_ITEMS: list[tuple[str, str]] = [
+    ("1", "Acarreo de materiales para instalación"),
+    ("2", "Realizar trazos y medidas"),
+    ("3", "Montaje de estructura metálica"),
+    ("4", "Instalación de paneles (Estructura)"),
+    ("5", "Instalación de paneles (Conexionado)"),
+    ("6", "Instalación de tablero FV"),
+    ("7", "Instalación de inversor"),
+    ("8", "Canalización de acometida DC"),
+    ("9", "Canalización de acometida AC"),
+    ("10", "Mediciones, pruebas eléctricas, ajustes y optimización"),
+    ("11", "Conexión, programación, control y puesta en marcha"),
+    ("12", "Viáticos"),
 ]
 
 # Filtro alineado con Eq_Mat_Content
@@ -210,6 +210,11 @@ def _map_materiales(items: list[MaterialItem]) -> list[PdfLineItem]:
     return lines
 
 
+def _map_puesta_en_marcha(hidden_ids: list[str]) -> list[str]:
+    hidden = {str(item_id).strip() for item_id in hidden_ids if str(item_id).strip()}
+    return [desc for item_id, desc in PUESTA_EN_MARCHA_ITEMS if item_id not in hidden]
+
+
 def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
     cotizacion = payload.cotizacion_info
     proyecto_nombre = "" 
@@ -304,6 +309,6 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         currency_symbol=currency_symbol,
         equipos=_map_equipos(payload.equipos),
         materiales=_map_materiales(payload.materiales),
-        puesta_en_marcha=list(PUESTA_EN_MARCHA_ITEMS),
+        puesta_en_marcha=_map_puesta_en_marcha(payload.hidden_mo_ids),
         filename=filename,
     )
