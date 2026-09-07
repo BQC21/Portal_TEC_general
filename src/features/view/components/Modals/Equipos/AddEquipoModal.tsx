@@ -90,7 +90,6 @@ export function AddEquipoModal({ existingEquipos, onAddEquipos, onClose }: AddEq
         onAddEquipos({
             ...form,
             cod_producto: generatedCode || form.cod_producto,
-            cadenas: form.mppt * 2,
         });
     }
 
