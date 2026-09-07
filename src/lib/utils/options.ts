@@ -167,4 +167,4 @@ export const DSCTO_type_value = ["Porcentaje", "USD"]
 export const DEFAULT_PAY_FORMAT =
     "50% Con la orden de servicio\n50% Al término de instalación";
 
-export const FIRM_OPTION = ["Sin firma", "Con firma"]
+export const FIRM_OPTION: FIRMOptions[] = ["SIN FIRMA", "CON FIRMA"];
