@@ -25,6 +25,7 @@ import {
     SUPPLIER_CODE_OPTIONS_MATERIALES,
     SUPPLIER_OPTIONS_MATERIALES,
     BRAND_OPTIONS_MATERIALES,
+    FIRM_OPTION,
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/supabase/zone-types";
 import { ProjectFormState } from "../types/supabase/project-types";
@@ -267,6 +268,7 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     opcion_dscto: "",
     formato_dscto: DSCTO_type_value[0],
     payFormat: DEFAULT_PAY_FORMAT,
+    opcion_firma: FIRM_OPTION[0],
 }
 
 // ----------------------------------------------------------

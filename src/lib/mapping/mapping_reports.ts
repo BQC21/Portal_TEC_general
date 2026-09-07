@@ -3,7 +3,7 @@ import { Report, ReportFormData, ReportFormState, SupabaseReportRow } from "../t
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage"
 import { parseNumber } from "../utils/normalization"
 import { mapSupabaseRowtoQuote } from "./mapping_quotes"
-import { DEFAULT_PAY_FORMAT, DSCTO_type_value } from "../utils/options"
+import { DEFAULT_PAY_FORMAT, DSCTO_type_value, FIRM_OPTION } from "../utils/options"
 
 // Creador de valores por defecto a partir del formulario
 export function createReportFormStateFromReport(report: Report): ReportFormState{
@@ -27,6 +27,7 @@ export function createReportFormStateFromReport(report: Report): ReportFormState
         opcion_dscto: report.opcion_dscto,
         formato_dscto: report.formato_dscto || DSCTO_type_value[0],
         payFormat: report.payFormat || DEFAULT_PAY_FORMAT,
+        opcion_firma: report.opcion_firma || FIRM_OPTION[0],
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
@@ -62,6 +63,7 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         opcion_dscto: row.opcion_dscto?.toString() || "",
         formato_dscto: row.formato_dscto?.toString() || DSCTO_type_value[0],
         payFormat: row.payFormat?.toString() || DEFAULT_PAY_FORMAT,
+        opcion_firma: row.opcion_firma?.toString() || FIRM_OPTION[0],
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -89,6 +91,7 @@ export function mapReportToSupabaseRow(report: ReportFormData): SupabaseReportRo
         opcion_dscto: report.opcion_dscto,
         formato_dscto: report.formato_dscto,
         payFormat: report.payFormat,
+        opcion_firma: report.opcion_firma,
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at

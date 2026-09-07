@@ -28,6 +28,7 @@ export type SupabaseReportRow = {
     opcion_dscto?: string;
     formato_dscto?: string;
     payFormat?: string;
+    opcion_firma?: string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -55,6 +56,7 @@ export type Report = {
     opcion_dscto: string;
     formato_dscto: string;
     payFormat: string;
+    opcion_firma:string;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
