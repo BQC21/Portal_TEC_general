@@ -298,6 +298,8 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         opcion_dscto=opcion_dscto,
         formato_dscto=formato_dscto,
         payFormat=pay_format,
+        opcion_firma=_to_str(payload.opcion_firma),
+        incluir_firma=_to_str(payload.opcion_firma).upper() == "CON FIRMA",
         igv_rate=igv_rate,
         subtotal=subtotal,
         precio_dscto=precio_dscto,

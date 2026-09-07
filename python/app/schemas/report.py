@@ -83,6 +83,7 @@ class ReportFormPayload(BaseModel):
     opcion_dscto: Optional[str] = None
     formato_dscto: Optional[str] = None
     payFormat: Optional[str] = None
+    opcion_firma: Optional[str] = None
     cotizacion_id: Optional[str] = None
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
@@ -122,6 +123,8 @@ class ReportPdfData(BaseModel):
     opcion_dscto: str = ""
     formato_dscto: str = ""
     payFormat: str = ""
+    opcion_firma: str = ""
+    incluir_firma: bool = False
     precio_usd: float = 0.0
     tasa_cambio: float = 1.0
     igv_rate: float = 0.0
