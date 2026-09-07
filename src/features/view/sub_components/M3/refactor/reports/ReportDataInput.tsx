@@ -10,7 +10,8 @@ import { AddProductTextAreaField } from "@/features/view/components/Form_fields/
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
-import { GERENTE_FIRMA_PASSWORD } from "@/passwords/keys";
+
+export const GERENTE_FIRMA_PASSWORD = "2409Adry$Tere";
 
 export function ReportDataInput({
     form, 
