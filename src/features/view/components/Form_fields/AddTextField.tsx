@@ -10,6 +10,8 @@ type AddProductTextFieldProps = {
   maxLength?: number;
   pattern?: string;
   title?: string;
+  type?: "text" | "password";
+  autoComplete?: string;
 };
 
 export function AddProductTextField({
@@ -22,12 +24,14 @@ export function AddProductTextField({
   maxLength,
   pattern,
   title,
+  type = "text",
+  autoComplete,
 }: AddProductTextFieldProps) {
   return (
     <div>
       <AddProductFieldLabel label={label} required={required} />
       <input
-        type="text"
+        type={type}
         required={required}
         placeholder={placeholder}
         value={value ?? ""}
@@ -35,6 +39,7 @@ export function AddProductTextField({
         maxLength={maxLength}
         pattern={pattern}
         title={title}
+        autoComplete={autoComplete}
         onChange={(event) => onChange(event.target.value)}
         className="input-focus w-full rounded-xl border border-slate-300 px-4 py-3 text-lg text-slate-900 transition placeholder:text-slate-400"
       />

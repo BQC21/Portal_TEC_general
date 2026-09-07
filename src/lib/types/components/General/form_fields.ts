@@ -91,5 +91,7 @@ export type AddProductTextFieldProps = {
     placeholder?: string;
     value: string;
     onChange: (value: string) => void;
+    type?: "text" | "password";
+    autoComplete?: string;
 };
 
