@@ -230,6 +230,7 @@ export type Button2PDFProps = {
     equipos: Project_Equipos[];
     materiales: Project_Materiales[];
     hiddenEquipoIds?: string[];
+    hiddenMOIds?: string[];
 };
 
 export type Button2PDFProps_FINANTIAL = {

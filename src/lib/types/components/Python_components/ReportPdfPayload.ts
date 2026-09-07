@@ -52,4 +52,7 @@ export type ReportPdfPayload = {
             tipo_de_producto?: string;
         };
     }>;
+
+    // Puesta en marcha a ocultar en el PDF (ids de MO_Content)
+    hidden_mo_ids?: string[];
 };

@@ -196,6 +196,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                             equipos={projectEquipos}
                             materiales={projectMateriales}
                             hiddenEquipoIds={hiddenEquipoIds}
+                            hiddenMOIds={hiddenMOIds}
                         />
                         <button
                             type="submit"

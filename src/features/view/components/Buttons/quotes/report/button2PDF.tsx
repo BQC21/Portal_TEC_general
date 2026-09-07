@@ -4,7 +4,7 @@ import { useGenerateReportPdf } from "@/features/view/hooks/api/useGenerateRepor
 import { Button2PDFProps } from "@/lib/types/components/General/buttons";
 import { DEFAULT_PAY_FORMAT } from "@/lib/utils/options";
 
-export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds = [] }: Button2PDFProps) {
+export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds = [], hiddenMOIds = [] }: Button2PDFProps) {
     const [requested, setRequested] = useState(false);
     const { loading, error, generate } = useGenerateReportPdf();
 
@@ -68,6 +68,9 @@ export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds 
                     tipo_de_producto: m.material_info?.tipo_de_producto,
                 },
                 })),
+
+                // puesta en marcha
+                hidden_mo_ids: hiddenMOIds,
             });
     }
     

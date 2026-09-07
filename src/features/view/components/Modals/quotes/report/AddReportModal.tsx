@@ -29,6 +29,7 @@ export default function AddReportModal({onAddReport, onClose,
     const [form, setForm] = useState<ReportFormState>(INITIAL_REPORT_FORM);
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
+    const [hiddenMOIds, setHiddenMOIds] = useState<string[]>([]);
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -49,10 +50,17 @@ export default function AddReportModal({onAddReport, onClose,
 
     useEffect(() => {
         setHiddenEquipoIds([]);
+        setHiddenMOIds([]);
     }, [form.cotizacion_id]);
 
     function toggleEquipoVisibility(id: string) {
         setHiddenEquipoIds((current) =>
+            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+        );
+    }
+
+    function toggleMOVisibility(id: string) {
+        setHiddenMOIds((current) =>
             current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
         );
     }
@@ -150,6 +158,8 @@ export default function AddReportModal({onAddReport, onClose,
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={precioUsd}
                                         MO={Number(form.porcentaje_inst)}
+                                        hiddenMOIds={hiddenMOIds}
+                                        onToggleMOVisibility={toggleMOVisibility}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable
@@ -178,6 +188,7 @@ export default function AddReportModal({onAddReport, onClose,
                             equipos={projectEquipos}
                             materiales={projectMateriales}
                             hiddenEquipoIds={hiddenEquipoIds}
+                            hiddenMOIds={hiddenMOIds}
                         />
                         <button
                             type="submit"
