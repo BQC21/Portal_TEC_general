@@ -16,6 +16,7 @@ import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/fin
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
+import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 
 export default function EditFinantialModal({
     existingFinantial,
@@ -89,7 +90,7 @@ export default function EditFinantialModal({
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSelectField
+                    <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
                         value={form_quotes.cod_cotizacion
@@ -102,6 +103,8 @@ export default function EditFinantialModal({
                                     `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
                             ),
                         ]}
+                        searchPlaceholder="Buscar cotización..."
+                        emptyMessage="No hay cotizaciones con ese nombre"
                         onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
                     />
 

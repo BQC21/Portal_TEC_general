@@ -14,6 +14,7 @@ import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/repor
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
+import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -108,7 +109,7 @@ export default function AddReportModal({onAddReport, onClose,
                 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSelectField
+                    <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
                         value={form_quotes.cod_cotizacion
@@ -121,6 +122,8 @@ export default function AddReportModal({onAddReport, onClose,
                                     `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
                             ),
                         ]}
+                        searchPlaceholder="Buscar cotización..."
+                        emptyMessage="No hay cotizaciones con ese nombre"
                         onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
                     />
 

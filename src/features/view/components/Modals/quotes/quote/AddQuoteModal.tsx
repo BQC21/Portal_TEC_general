@@ -24,6 +24,7 @@ import {
     syncQuoteMaterialesToProject,
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
+import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 
 export default function AddQuoteModal({
     onAddQuote,
@@ -168,11 +169,13 @@ export default function AddQuoteModal({
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSelectField
+                    <AddProductSearchableSelectField
                         label="Seleccionar Proyecto"
                         required
-                        value={form_project.nombre}
+                        value={form_project.nombre ?? ""}
                         options={["Seleccione proyecto", ...projects.map((project) => project.nombre)]}
+                        searchPlaceholder="Buscar proyecto..."
+                        emptyMessage="No hay proyectos con ese nombre"
                         onChange={(value) => ProjectSelection(value, projects, setForm_project, setForm)}
                     />
 
