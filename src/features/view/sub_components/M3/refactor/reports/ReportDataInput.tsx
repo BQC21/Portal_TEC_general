@@ -6,16 +6,20 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
-import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions } from "@/lib/utils/options";
+import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
 
 export function ReportDataInput({
     form, 
     updateField,
 }: Quote_selectedProps){
 
-    // Handler para cambiar la opción de llenado (AUTOMÁTICO | MANUAL)
+    // Handlers
     function handleOpcionDSCTOChange(value: DSCTOOptions) {
         updateField("opcion_dscto", value);
+    }
+
+    function handleOpcionFIRMChange(value: FIRMOptions) {
+        updateField("opcion_firma", value);
     }
 
     return(
@@ -114,6 +118,23 @@ export function ReportDataInput({
             <AddProductRadioField
                 label="No considerar tasa de descuento"  checked={form.opcion_dscto == "SIN DSCTO"}
                 onChange={() => handleOpcionDSCTOChange("SIN DSCTO")}
+            />
+
+            {/* Handlers */}
+            <AddProductRadioField
+                label="Incluir la firma del gerente"  checked={form.opcion_firma == "Con firma"}
+                onChange={() => handleOpcionFIRMChange("CON FIRMA")}
+            />
+
+            {form.opcion_firma == "Con firma" && (
+                <>
+                    <p>Se incluirá la firma del gerente</p>
+                </>
+            )}
+
+            <AddProductRadioField
+                label="No incluir la firma del gerente"  checked={form.opcion_dscto == "Sin firma"}
+                onChange={() => handleOpcionFIRMChange("SIN FIRMA")}
             />
 
             <AddProductTextAreaField
