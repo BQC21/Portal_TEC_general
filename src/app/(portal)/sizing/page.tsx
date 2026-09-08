@@ -35,6 +35,7 @@ import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/
 import { useMemo, useState } from "react";
 import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
 
 
 export default function ProjectsPage() {
@@ -126,6 +127,51 @@ export default function ProjectsPage() {
                 }),
             ),
         );
+        await refetch_project();
+        await fetchProjectEquipos();
+        await fetchProjectMateriales();
+    }
+    async function handleDuplicateProject(project: Project) {
+        const now = new Date();
+        const existingVersions = projects.map((item) => getVersionValue(item.version, item.id));
+        const nextVersion = getNextCopyVersion(
+            getVersionValue(project.version, project.id),
+            existingVersions,
+        );
+        const { id, created_at: _createdAt, updated_at: _updatedAt, version: _version, ...projectData } = project;
+
+        const createdProject = await create_project({
+            ...projectData,
+            version: nextVersion,
+            created_at: now,
+            updated_at: now,
+            demanda_mensual: [...(project.demanda_mensual ?? [])],
+        });
+
+        const sourceEquipos = project_equipos.filter((item) => item.proyecto_id === id);
+        const sourceMateriales = project_materiales.filter((item) => item.proyecto_id === id);
+
+        await Promise.all(
+            sourceEquipos.map((equipo) =>
+                create_project_equipos({
+                    equipo_id: equipo.equipo_id,
+                    proyecto_id: createdProject.id,
+                    fecha_agregado: now,
+                    cantidad: String(equipo.cantidad ?? 1),
+                }),
+            ),
+        );
+        await Promise.all(
+            sourceMateriales.map((material) =>
+                create_project_material({
+                    material_id: material.material_id,
+                    proyecto_id: createdProject.id,
+                    fecha_agregado: now,
+                    cantidad: String(material.cantidad ?? 1),
+                }),
+            ),
+        );
+
         await refetch_project();
         await fetchProjectEquipos();
         await fetchProjectMateriales();
@@ -223,8 +269,8 @@ export default function ProjectsPage() {
                 <ExcelWorkbook
                     sheets={[
                         {
-                            id: "proyectos",
-                            label: "Proyectos",
+                            id: "Dimensionamientos",
+                            label: "Dimensionamientos",
                             content: (
                                 <>
                                     <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
@@ -263,6 +309,7 @@ export default function ProjectsPage() {
                                         onDeleteProject={handleDeleteProject}
                                         onDeleteProjectEquipos={handleDeleteProjectEquipos}
                                         onDeleteProjectMateriales={handleDeleteProjectMateriales}
+                                        onDuplicateProject={handleDuplicateProject}
                                     />
                                 </>
                             ),

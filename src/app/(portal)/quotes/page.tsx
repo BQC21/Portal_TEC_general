@@ -27,6 +27,7 @@ import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
+import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
 
 
 export default function QuotesPage(){
@@ -97,6 +98,27 @@ export default function QuotesPage(){
         quote: QuoteFormData,
     ) {
         await create_quote(quote);
+        await refetch_quote();
+        await refetch_project_equipos();
+        await refetch_project_materiales();
+    }
+
+    async function handleDuplicateQuote(quote: Quote) {
+        const now = new Date();
+        const existingVersions = quotes.map((item) => getVersionValue(item.version, item.id));
+        const nextVersion = getNextCopyVersion(
+            getVersionValue(quote.version, quote.id),
+            existingVersions,
+        );
+        const { id: _id, created_at: _createdAt, updated_at: _updatedAt, version: _version, ...quoteData } = quote;
+
+        await create_quote({
+            ...quoteData,
+            version: nextVersion,
+            created_at: now,
+            updated_at: now,
+            costos_manuales: JSON.parse(JSON.stringify(quote.costos_manuales)),
+        });
         await refetch_quote();
         await refetch_project_equipos();
         await refetch_project_materiales();
@@ -205,6 +227,7 @@ export default function QuotesPage(){
                                             totalQuote={filteredQuotes.length}
                                             onUpdateQuote={handleEditQuote}
                                             onDeleteQuote={handleDeleteQuote}
+                                            onDuplicateQuote={handleDuplicateQuote}
                                             projects_equipos={project_equipos}
                                             projects_materiales={project_materiales}
                                         />
