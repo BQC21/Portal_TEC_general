@@ -1,5 +1,6 @@
 import Button2Edit from "@/features/view/components/Buttons/sizing/project/button2edit";
 import { Button2Trash } from "@/features/view/components/Buttons/sizing/project/button2trash";
+import { Button2Duplicate } from "@/features/view/components/Buttons/shared/button2Duplicate";
 
 import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 
@@ -8,11 +9,13 @@ import{
 } from "@/lib/utils/helpers/manage_info/date_manage"
 import { ProjectTableProps } from "@/lib/types/components/General/tables";
 import { formatDemandaMensual } from "@/lib/utils/normalization";
+import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
 
 export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
     onUpdateProject, onDeleteProject,
     onDeleteProjectEquipos,
-    onDeleteProjectMateriales }: ProjectTableProps) {
+    onDeleteProjectMateriales,
+    onDuplicateProject }: ProjectTableProps) {
 
     return(
         <section className="space-y-4 w-full">
@@ -46,7 +49,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                     return (
                                     <tr key={project.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>Versión</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version, project.id)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
@@ -74,6 +77,10 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                                     project_materiales={projectMateriales}
                                                     onUpdateProject={onUpdateProject}
                                                 />
+                                                <Button2Duplicate
+                                                    title="Duplicar proyecto"
+                                                    onDuplicate={() => onDuplicateProject(project)}
+                                                />
                                                 <Button2Trash
                                                     project={project}
                                                     project_equipos={projectEquipos}
@@ -82,6 +89,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                                     onDeleteProjectEquipos={() => onDeleteProjectEquipos?.(projectEquipos[0]?.id?.toString() ?? "")}
                                                     onDeleteProjectMateriales={() => onDeleteProjectMateriales?.(projectMateriales[0]?.id?.toString() ?? "")}
                                                 />
+
                                             </div>
                                         </td>
                                     </tr>

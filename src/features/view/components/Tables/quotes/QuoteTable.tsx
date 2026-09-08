@@ -1,12 +1,14 @@
 import { QuoteTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_QUOTE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
 import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
 import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
-import { formatCurrency, toDecimalNumber } from "@/lib/utils/normalization";
+import { Button2Duplicate } from "../../Buttons/shared/button2Duplicate";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 export default function QuoteTable({quote, totalQuote, 
-    onUpdateQuote, onDeleteQuote, projects_equipos, projects_materiales}: QuoteTableProps){
+    onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales}: QuoteTableProps){
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -31,7 +33,7 @@ export default function QuoteTable({quote, totalQuote,
                                     <tr key={quote.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>Versión</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(quote.version, quote.id)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.igv}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.tasa_cambio}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(quote.precio_dolares), 'USD')}</td>
@@ -46,6 +48,10 @@ export default function QuoteTable({quote, totalQuote,
                                                     onUpdateQuote={onUpdateQuote}
                                                     project_equipos={projects_equipos}
                                                     project_materiales={projects_materiales}
+                                                />
+                                                <Button2Duplicate
+                                                    title="Duplicar cotización"
+                                                    onDuplicate={() => onDuplicateQuote(quote)}
                                                 />
                                                 <Button2Trash_quote
                                                     quote={quote}
