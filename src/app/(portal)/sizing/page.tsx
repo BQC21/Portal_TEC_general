@@ -22,7 +22,11 @@ import ProjectTable from "@/features/view/components/Tables/sizing/ProjectTable"
 import ZoneTable from "@/features/view/components/Tables/sizing/ZoneTable";
 
 import Button2Modal_zone from "@/features/view/components/Buttons/sizing/zone/button2modal";
+import Button2MassiveClean_zone from "@/features/view/components/Buttons/sizing/zone/button2MassiveClean";
+import Button2MassiveDownload_zone from "@/features/view/components/Buttons/sizing/zone/button2MassiveDownload";
 import Button2Modal_project from "@/features/view/components/Buttons/sizing/project/button2modal";
+import Button2MassiveClean_project from "@/features/view/components/Buttons/sizing/project/button2MassiveClean";
+import Button2MassiveDownload_project from "@/features/view/components/Buttons/sizing/project/button2MassiveDownload";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
@@ -230,6 +234,12 @@ export default function ProjectsPage() {
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-3">
+                                            <Button2MassiveDownload_project
+                                                projects={projects}
+                                                projects_equipos={project_equipos}
+                                                projects_materiales={project_materiales}
+                                            />
+                                            <Button2MassiveClean_project currentCount={projects.length} onSuccess={refetch_project} />
                                             <Button2Modal_project
                                                 onAddProject={handleAddProject}
                                             />
@@ -262,6 +272,8 @@ export default function ProjectsPage() {
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-3">
+                                            <Button2MassiveDownload_zone zones={zones} />
+                                            <Button2MassiveClean_zone currentCount={zones.length} onSuccess={refetch_zone} />
                                             <Button2Modal_zone
                                                 onAddZone={handleAddZone}
                                             />
