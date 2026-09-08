@@ -4,6 +4,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Dashboard inicial",
   description: "Vista principal del portal corporativo",
+  icons: {
+    icon: "/tec_logo.png",
+  },
 };
 
 export default function RootLayout({
