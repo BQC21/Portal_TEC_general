@@ -3,7 +3,7 @@ import { TABLE_HEADERS_QUOTE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
 import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
-import { formatCurrency } from "@/lib/utils/normalization";
+import { formatCurrency, toDecimalNumber } from "@/lib/utils/normalization";
 
 export default function QuoteTable({quote, totalQuote, 
     onUpdateQuote, onDeleteQuote, projects_equipos, projects_materiales}: QuoteTableProps){
@@ -34,6 +34,8 @@ export default function QuoteTable({quote, totalQuote,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.igv}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.tasa_cambio}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(quote.precio_dolares), 'USD')}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{(Number(quote.gm)*100).toFixed(2)} %</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.depre_tool} meses</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
