@@ -1,3 +1,4 @@
+import type { UploadColumn } from "@/lib/utils/helpers/massive/massiveUpload";
 import { Brand, BrandFormData } from "../../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../../supabase/equipos-types";
 import { Finantial, FinantialFormData } from "../../supabase/finantial-types";
@@ -225,6 +226,18 @@ export type DeleteFinantialModalProps = {
 // modals -- subida masiva
 // ------------------
 export type MassiveUploadModalProps = {
+	title: string;
+	description: string;
+	tableName: string;
+	expectedHeaders: readonly string[];
+	columns: UploadColumn[];
+	transformRows?: (
+		rows: Record<string, unknown>[],
+	) => Promise<Record<string, unknown>[]> | Record<string, unknown>[];
+	relatedInserts?: (
+		inserted: Record<string, unknown>[],
+		sourceRows: Record<string, unknown>[],
+	) => Promise<void>;
 	onClose: () => void;
 	onSuccess?: () => void;
 };
