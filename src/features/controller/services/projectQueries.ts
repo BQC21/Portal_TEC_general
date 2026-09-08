@@ -9,8 +9,11 @@ import { PROJECTS_TABLE } from "@/lib/utils/namingTolerance"
 
 // Las restricciones de la tabla se traducen a un mensaje que los modales puedan mostrar.
 function constraintMessage(message: string): string | null {
-    if (message.includes("proyectos_nombre_key")) {
+    if (message.includes("proyectos_nombre_key") || message.includes("proyectos_nombre_original_key")) {
         return "Ya existe un proyecto con ese nombre. Use otro nombre.";
+    }
+    if (message.includes("proyectos_nombre_version_key")) {
+        return "Ya existe una copia de este proyecto con esa versión.";
     }
     if (message.includes("proyectos_demanda_electrica_check")) {
         return "La demanda eléctrica debe ser mayor que cero.";
