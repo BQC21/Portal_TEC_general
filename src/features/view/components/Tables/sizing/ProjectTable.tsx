@@ -58,7 +58,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         <td className="border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words">
                                             {formatDemandaMensual(project.demanda_mensual)}
                                         </td>                        
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(project.demanda_electrica).toFixed(2)} KWh</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(project.demanda_electrica).toFixed(0)} KWh</td>
                                         <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
                                             {equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-"}
                                         </td>
