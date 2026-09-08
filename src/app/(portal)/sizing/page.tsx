@@ -24,9 +24,11 @@ import ZoneTable from "@/features/view/components/Tables/sizing/ZoneTable";
 import Button2Modal_zone from "@/features/view/components/Buttons/sizing/zone/button2modal";
 import Button2MassiveClean_zone from "@/features/view/components/Buttons/sizing/zone/button2MassiveClean";
 import Button2MassiveDownload_zone from "@/features/view/components/Buttons/sizing/zone/button2MassiveDownload";
+import Button2MassiveUpload_zone from "@/features/view/components/Buttons/sizing/zone/button2MassiveUpload";
 import Button2Modal_project from "@/features/view/components/Buttons/sizing/project/button2modal";
 import Button2MassiveClean_project from "@/features/view/components/Buttons/sizing/project/button2MassiveClean";
 import Button2MassiveDownload_project from "@/features/view/components/Buttons/sizing/project/button2MassiveDownload";
+import Button2MassiveUpload_project from "@/features/view/components/Buttons/sizing/project/button2MassiveUpload";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
@@ -234,6 +236,13 @@ export default function ProjectsPage() {
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-3">
+                                            <Button2MassiveUpload_project
+                                                onSuccess={async () => {
+                                                    await refetch_project();
+                                                    await fetchProjectEquipos();
+                                                    await fetchProjectMateriales();
+                                                }}
+                                            />
                                             <Button2MassiveDownload_project
                                                 projects={projects}
                                                 projects_equipos={project_equipos}
@@ -272,6 +281,7 @@ export default function ProjectsPage() {
                                             />
                                         </div>
                                         <div className="flex flex-wrap items-center gap-3">
+                                            <Button2MassiveUpload_zone onSuccess={refetch_zone} />
                                             <Button2MassiveDownload_zone zones={zones} />
                                             <Button2MassiveClean_zone currentCount={zones.length} onSuccess={refetch_zone} />
                                             <Button2Modal_zone

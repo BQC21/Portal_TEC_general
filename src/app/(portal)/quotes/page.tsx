@@ -3,12 +3,15 @@
 import Button2Add_finantial from "@/features/view/components/Buttons/quotes/finantial/button2Add";
 import Button2MassiveClean_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveClean";
 import Button2MassiveDownload_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveDownload";
+import Button2MassiveUpload_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveUpload";
 import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add";
 import Button2MassiveClean_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveClean";
 import Button2MassiveDownload_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveDownload";
+import Button2MassiveUpload_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveUpload";
 import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
 import Button2MassiveClean_report from "@/features/view/components/Buttons/quotes/report/button2MassiveClean";
 import Button2MassiveDownload_report from "@/features/view/components/Buttons/quotes/report/button2MassiveDownload";
+import Button2MassiveUpload_report from "@/features/view/components/Buttons/quotes/report/button2MassiveUpload";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import FinantialTable from "@/features/view/components/Tables/quotes/FinantialTable";
@@ -186,6 +189,7 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_quote onSuccess={refetch_quote} />
                                                 <Button2MassiveDownload_quote quotes={quotes} />
                                                 <Button2MassiveClean_quote currentCount={quotes.length} onSuccess={refetch_quote} />
                                                 <Button2Add_quote
@@ -221,6 +225,7 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_report onSuccess={refetch_report} />
                                                 <Button2MassiveDownload_report reports={reports} />
                                                 <Button2MassiveClean_report currentCount={reports.length} onSuccess={refetch_report} />
                                                 <Button2Add_report
@@ -255,6 +260,7 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_finantial onSuccess={refetch_finantial} />
                                                 <Button2MassiveDownload_finantial finantials={finantials} />
                                                 <Button2MassiveClean_finantial currentCount={finantials.length} onSuccess={refetch_finantial} />
                                                 <Button2Add_finantial

@@ -3,12 +3,15 @@
 import Button2Modal_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2Add";
 import Button2MassiveClean_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveClean";
 import Button2MassiveDownload_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveDownload";
+import Button2MassiveUpload_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveUpload";
 import Button2Modal_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2Add";
 import Button2MassiveClean_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveClean";
 import Button2MassiveDownload_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveDownload";
+import Button2MassiveUpload_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveUpload";
 import Button2Modal_type from "@/features/view/components/Buttons/Proveedores/tipo/button2Add";
 import Button2MassiveClean_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveClean";
 import Button2MassiveDownload_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveDownload";
+import Button2MassiveUpload_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveUpload";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import BrandTable from "@/features/view/components/Tables/Proveedores/BrandTable";
@@ -134,6 +137,7 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_supplier onSuccess={refetchSupplier} />
                                                 <Button2MassiveDownload_supplier supplier={supplier} />
                                                 <Button2MassiveClean_supplier currentCount={supplier.length} onSuccess={refetchSupplier} />
                                                 <Button2Modal_supplier onAddSupplier={handleAddSupplier} />
@@ -162,6 +166,7 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_brand onSuccess={refetchBrand} />
                                                 <Button2MassiveDownload_brand brand={brand} />
                                                 <Button2MassiveClean_brand currentCount={brand.length} onSuccess={refetchBrand} />
                                                 <Button2Modal_brand onAddBrand={handleAddBrand} />
@@ -190,6 +195,7 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <Button2MassiveUpload_type onSuccess={refetchType} />
                                                 <Button2MassiveDownload_type type={type} />
                                                 <Button2MassiveClean_type currentCount={type.length} onSuccess={refetchType} />
                                                 <Button2Modal_type onAddType={handleAddType} />
