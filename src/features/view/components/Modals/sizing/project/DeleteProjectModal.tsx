@@ -34,7 +34,7 @@ export function DeleteProjectModal({ project, onDeleteProject,
                 </p>
             </div>
             <form onSubmit={handleDeleteProduct} className="max-h-[calc(95vh-88px)] overflow-y-auto px-6 py-6">
-                <h2>Detalles del proyecto</h2>
+                <h1>Detalles del proyecto</h1>
                 <AddProductReadonlyField
                     label=""
                     value={project.nombre} 
@@ -50,6 +50,10 @@ export function DeleteProjectModal({ project, onDeleteProject,
                 <AddProductReadonlyField
                     label=""
                     value={String(project.zona_info?.zona)} 
+                />
+                <AddProductReadonlyField
+                    label="Versión del dimensionamiento"
+                    value={project.version} 
                 />
                 <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                     <button

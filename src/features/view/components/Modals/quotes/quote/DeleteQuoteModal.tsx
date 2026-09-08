@@ -43,6 +43,10 @@ export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteMod
                     value={quote.proyecto_info?.nombre || ""} 
                 />
                 <AddProductReadonlyField
+                    label="Versión de la cotización"
+                    value={quote.version} 
+                />
+                <AddProductReadonlyField
                     label="Precio de venta"
                     value={formatCurrency(Number(quote.precio_dolares), "USD")} 
                 />
