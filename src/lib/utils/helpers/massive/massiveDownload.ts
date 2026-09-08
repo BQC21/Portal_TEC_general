@@ -1,5 +1,3 @@
-import { Equipos } from "@/lib/types/supabase/equipos-types";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
 import * as XLSX from "xlsx-js-style";
 
 type ExportCellValue = string | number | null;
@@ -9,46 +7,7 @@ export type ExportColumn<T> = {
 	label: string;
 };
 
-export const EQUIPOS_EXPORT_COLUMNS: ExportColumn<Equipos>[] = [
-	{ key: "cod_prov", label: "COD PROV" },
-	{ key: "proveedor", label: "PROVEEDOR" },
-	{ key: "cod_producto", label: "COD PRODUCTO" },
-	{ key: "tipo_de_producto", label: "TIPO DE PRODUCTO" },
-	{ key: "marca", label: "MARCA" },
-	{ key: "descripcion", label: "DESCRIPCIÓN" },
-	{ key: "unidad", label: "UNIDAD" },
-	{ key: "tipo_conexion", label: "TIPO DE CONEXIÓN" },
-	{ key: "potencia_maxima", label: "POTENCIA MÁXIMA" },
-	{ key: "mppt", label: "# DE MPPT" },
-	{ key: "cadenas", label: "# DE CADENAS" },
-	{ key: "potencia_ac", label: "POTENCIA AC" },
-	{ key: "dod", label: "DoD" },
-	{ key: "vmpp_vmin", label: "VMPP/VMIN" },
-	{ key: "voc_vmax", label: "VOC/VMAX" },
-	{ key: "impp_i_in", label: "IMPP/I IN" },
-	{ key: "isc_i_out", label: "ISC/I OUT" },
-	{ key: "precio_soles", label: "PRECIO S/" },
-	{ key: "precio_dolares", label: "PRECIO $" },
-	{ key: "igv", label: "IGV" },
-	{ key: "precio_soles_igv", label: "PRECIO + IGV S/" },
-	{ key: "precio_dolares_igv", label: "PRECIO + IGV $" },
-];
 
-export const MATERIALES_EXPORT_COLUMNS: ExportColumn<Materiales>[] = [
-	{ key: "cod_prov", label: "COD PROV" },
-	{ key: "proveedor", label: "PROVEEDOR" },
-	{ key: "cod_producto", label: "COD PRODUCTO" },
-	{ key: "tipo_de_producto", label: "TIPO DE PRODUCTO" },
-	{ key: "marca", label: "MARCA" },
-	{ key: "descripcion", label: "DESCRIPCIÓN" },
-	{ key: "parte_electrica", label: "PARTE ELÉCTRICA" },
-	{ key: "unidad", label: "UNIDAD" },
-	{ key: "precio_soles", label: "PRECIO S/" },
-	{ key: "precio_dolares", label: "PRECIO $" },
-	{ key: "igv", label: "IGV" },
-	{ key: "precio_soles_igv", label: "PRECIO + IGV S/" },
-	{ key: "precio_dolares_igv", label: "PRECIO + IGV $" },
-];
 
 export const DOWNLOAD_FORMAT_OPTIONS = ["xlsx", "csv"] as const;
 export type DownloadFormat = (typeof DOWNLOAD_FORMAT_OPTIONS)[number];
