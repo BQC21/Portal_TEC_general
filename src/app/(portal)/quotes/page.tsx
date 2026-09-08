@@ -105,9 +105,11 @@ export default function QuotesPage(){
 
     async function handleDuplicateQuote(quote: Quote) {
         const now = new Date();
-        const existingVersions = quotes.map((item) => getVersionValue(item.version, item.id));
+        const existingVersions = quotes
+            .filter((item) => item.proyecto_id === quote.proyecto_id)
+            .map((item) => getVersionValue(item.version));
         const nextVersion = getNextCopyVersion(
-            getVersionValue(quote.version, quote.id),
+            getVersionValue(quote.version),
             existingVersions,
         );
         const { id: _id, created_at: _createdAt, updated_at: _updatedAt, version: _version, ...quoteData } = quote;

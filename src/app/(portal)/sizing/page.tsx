@@ -133,9 +133,11 @@ export default function ProjectsPage() {
     }
     async function handleDuplicateProject(project: Project) {
         const now = new Date();
-        const existingVersions = projects.map((item) => getVersionValue(item.version, item.id));
+        const existingVersions = projects
+            .filter((item) => item.nombre === project.nombre)
+            .map((item) => getVersionValue(item.version));
         const nextVersion = getNextCopyVersion(
-            getVersionValue(project.version, project.id),
+            getVersionValue(project.version),
             existingVersions,
         );
         const { id, created_at: _createdAt, updated_at: _updatedAt, version: _version, ...projectData } = project;
