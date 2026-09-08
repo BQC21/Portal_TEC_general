@@ -96,7 +96,7 @@ export function General_info_M1_EQ({
                                 onChange={(value) => updateField("cadenas", value)}
                                 step={1}
                                 min={0}
-                            />
+                            /> 
                         ) : (
                             <AddEquipoReadonlyField
                                 label="Número de cadenas"
@@ -169,10 +169,17 @@ export function General_info_M1_EQ({
                                     }
                                 />
                         )}
-                        {unidad === "Unidad" || "UNI" ? (
+                        {unidad === "Palet" ? (
                             <>
                                 <AddProductNumberField
-                                    label="Potencia máxima del panel (kw)"
+                                    label="Números de paneles por palet"
+                                    value={Number(form.paneles_palet)}
+                                    onChange={(value) => updateField("paneles_palet", value)}
+                                    step={0.001}
+                                    min={0}
+                                />
+                                <AddProductNumberField
+                                    label="Potencia máxima del conjunto de paneles (kw)"
                                     value={Number(form.potencia_maxima)}
                                     onChange={(value) => updateField("potencia_maxima", value)}
                                     step={0.001}
@@ -182,7 +189,7 @@ export function General_info_M1_EQ({
                         ) : (
                             <>
                                 <AddProductNumberField
-                                    label="Potencia máxima del conjunto de paneles (kw)"
+                                    label="Potencia máxima del panel (kw)"
                                     value={Number(form.potencia_maxima)}
                                     onChange={(value) => updateField("potencia_maxima", value)}
                                     step={0.001}
