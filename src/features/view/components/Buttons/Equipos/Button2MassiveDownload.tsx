@@ -5,7 +5,7 @@ import { useState } from "react";
 import { MassiveDownloadIcon } from "@/features/view/components/Icons/MassiveDownloadIcon";
 import { MassiveDownloadModal } from "@/features/view/components/Modals/Massive/MassiveDownloadModal";
 import { Button2MassiveDownloadEquiposProps } from "@/lib/types/components/General/buttons";
-import { EQUIPOS_EXPORT_COLUMNS } from "@/lib/utils/helpers/massive/massiveDownload";
+import { EQUIPOS_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
 
 export default function Button2MassiveDownload({ equipos }: Button2MassiveDownloadEquiposProps) {
 	const [open, setOpen] = useState(false);

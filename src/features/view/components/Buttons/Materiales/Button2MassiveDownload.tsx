@@ -5,7 +5,7 @@ import { useState } from "react";
 import { MassiveDownloadIcon } from "@/features/view/components/Icons/MassiveDownloadIcon";
 import { MassiveDownloadModal } from "@/features/view/components/Modals/Massive/MassiveDownloadModal";
 import { Button2MassiveDownloadMaterialesProps } from "@/lib/types/components/General/buttons";
-import { MATERIALES_EXPORT_COLUMNS } from "@/lib/utils/helpers/massive/massiveDownload";
+import { MATERIALES_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
 
 export default function Button2MassiveDownload({ materiales }: Button2MassiveDownloadMaterialesProps) {
 	const [open, setOpen] = useState(false);
