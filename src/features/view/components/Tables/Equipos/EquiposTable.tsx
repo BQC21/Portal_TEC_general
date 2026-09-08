@@ -1,9 +1,19 @@
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
 import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
 import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
-import { displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
+import {
+    displayApplicableCellValue,
+    displayCellValue,
+    getApplicableCellTextClass,
+    getCellTextClass,
+} from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
 import { EquiposTableProps } from "@/lib/types/components/General/tables";
+import {
+    shouldRenderBatteryProp,
+    shouldRenderInversorProp,
+    shouldRenderModuloProp,
+} from "@/lib/utils/helpers/render/render_modals";
 
 export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (
@@ -22,7 +32,22 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                         </thead>
                         <tbody>
                             {equipos.length > 0 ? (
-                                equipos.map((equipo) => (
+                                equipos.map((equipo) => {
+                                    const tipo = equipo.tipo_de_producto;
+                                    const isModulo = shouldRenderModuloProp(tipo);
+                                    const isInversor = shouldRenderInversorProp(tipo);
+                                    const isBateria = shouldRenderBatteryProp(tipo);
+                                    const showPanelesPalet = isModulo;
+                                    const showPotenciaMaxima = isModulo || isInversor;
+                                    const showInversorCount = isInversor;
+                                    const showPotenciaAc = isInversor;
+                                    const showDod = isBateria;
+                                    const showVmpp = isBateria || isInversor || isModulo;
+                                    const showVoc = isInversor || isModulo;
+                                    const showVoltajeNominal = isInversor;
+                                    const showIsc = isInversor || isModulo;
+
+                                    return (
                                     <tr key={equipo.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(equipo.cod_prov)}`}>{displayCellValue(equipo.cod_prov)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.proveedor)}`}>{displayCellValue(equipo.proveedor)}</td>
@@ -31,18 +56,18 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.marca)}`}>{displayCellValue(equipo.marca)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.descripcion)}`}>{displayCellValue(equipo.descripcion)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.unidad)}`}>{displayCellValue(equipo.unidad)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.paneles_palet)}`}>{displayCellValue(equipo.paneles_palet)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.paneles_palet, showPanelesPalet)}`}>{displayApplicableCellValue(equipo.paneles_palet, showPanelesPalet)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.tipo_conexion)}`}>{displayCellValue(equipo.tipo_conexion)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_maxima)}`}>{displayCellValue(equipo.potencia_maxima.toFixed(3))}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.mppt)}`}>{displayCellValue(equipo.mppt)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.cadenas)}`}>{displayCellValue(equipo.cadenas)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.potencia_ac)}`}>{displayCellValue(equipo.potencia_ac)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.dod)}`}>{displayCellValue(equipo.dod.toFixed(0))}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.vmpp_vmin)}`}>{displayCellValue(equipo.vmpp_vmin)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.voc_vmax)}`}>{displayCellValue(equipo.voc_vmax)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.voltaje_nominal_inversor)}`}>{displayCellValue(equipo.voltaje_nominal_inversor)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.potencia_maxima, showPotenciaMaxima)}`}>{displayApplicableCellValue(showPotenciaMaxima ? equipo.potencia_maxima.toFixed(3) : null, showPotenciaMaxima)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.mppt, showInversorCount)}`}>{displayApplicableCellValue(equipo.mppt, showInversorCount)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.cadenas, showInversorCount)}`}>{displayApplicableCellValue(equipo.cadenas, showInversorCount)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.potencia_ac, showPotenciaAc)}`}>{displayApplicableCellValue(equipo.potencia_ac, showPotenciaAc)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.dod, showDod)}`}>{displayApplicableCellValue(showDod ? equipo.dod.toFixed(0) : null, showDod)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.vmpp_vmin, showVmpp)}`}>{displayApplicableCellValue(equipo.vmpp_vmin, showVmpp)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.voc_vmax, showVoc)}`}>{displayApplicableCellValue(equipo.voc_vmax, showVoc)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.voltaje_nominal_inversor, showVoltajeNominal)}`}>{displayApplicableCellValue(equipo.voltaje_nominal_inversor, showVoltajeNominal)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.impp_i_in)}`}>{displayCellValue(equipo.impp_i_in)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.isc_i_out)}`}>{displayCellValue(equipo.isc_i_out)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.isc_i_out, showIsc)}`}>{displayApplicableCellValue(equipo.isc_i_out, showIsc)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.unidad)}`}>{displayCellValue(equipo.unidad)}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_soles)}`}>{toSafeNumber(equipo.precio_soles).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares)}`}>{toSafeNumber(equipo.precio_dolares).toFixed(2)}</td>
@@ -63,7 +88,8 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                             </div>
                                         </td>
                                     </tr>
-                                ))
+                                    );
+                                })
                             ) : (
                                 <tr className="bg-white">
                                     <td colSpan={EQUIPOS_HEADERS.length} className="px-4 py-10 text-center text-slate-500">

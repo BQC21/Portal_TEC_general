@@ -17,6 +17,18 @@ export function getCellTextClass(value: unknown, filledClass = "text-slate-900")
 export function displayCellValue(value: unknown): string {
     return isEmptyCellValue(value) ? "---" : String(value);
 }
+
+export function displayApplicableCellValue(value: unknown, applies: boolean): string {
+    return applies ? displayCellValue(value) : "---";
+}
+
+export function getApplicableCellTextClass(
+    value: unknown,
+    applies: boolean,
+    filledClass = "text-slate-900",
+): string {
+    return applies ? getCellTextClass(value, filledClass) : "text-slate-600";
+}
 // Obtener el tipo de divisa para resaltarlo
 export function getPriceCellClass(product: Product, priceValue: number): string {
     const isCellUSD = priceValue === product.precio_dolares || priceValue === product.precio_dolares_igv;
