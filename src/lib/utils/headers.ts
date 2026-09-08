@@ -79,6 +79,7 @@ export const TABLE_HEADERS_TYPE = [
 
 export const TABLE_HEADERS_PROJECT = [
     "Nombre del proyecto",
+    "Versión del dimensionamiento",
     // "Descripción del proyecto",
     "Zona seleccionada",
     "Orientación del panel",
@@ -112,6 +113,7 @@ export const TABLE_HEADERS_ZONE = [
 export const TABLE_HEADERS_QUOTE = [
     "Código de cotización",
     "Proyecto asociado",
+    "Versión de cotización",
     "IGV",
     "Tasa de cambio",
     "Precio de venta ($)",
