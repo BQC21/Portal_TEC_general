@@ -63,6 +63,8 @@ export type SupabaseProjectRow = {
     opcion_llenado_paneles?: string;
     // demandas mensuales
     demanda_mensual?: number[];
+    // versión del dimensionamiento (NULL = usar id)
+    version?: string | null;
 };
 
 // Campos para la base de datos a visualizarse en el frontend
@@ -115,6 +117,8 @@ export type Project = {
     opcion_llenado_paneles: string;
     // demandas mensuales
     demanda_mensual: number[];
+    // versión del dimensionamiento (vacío = usar id)
+    version: string;
 };
 
 

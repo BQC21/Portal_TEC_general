@@ -54,6 +54,8 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         opcion_llenado_paneles: project.opcion_llenado_paneles === "MANUAL" ? "MANUAL" : "AUTOMÁTICO",
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
+        // versión
+        version: project.version,
     }
 }
 
@@ -118,6 +120,8 @@ export function mapSupabaseRowToProject(
         opcion_llenado_paneles: row.opcion_llenado_paneles === "MANUAL" ? "MANUAL" : "AUTOMÁTICO",
         // demanda mensual
         demanda_mensual: row.demanda_mensual as number[] || [],
+        // versión
+        version: row.version?.toString() || "",
     }
 }
 
@@ -174,5 +178,7 @@ export function mapProjectToSupabaseRow(
         opcion_llenado_paneles: project.opcion_llenado_paneles,
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
+        // versión
+        version: project.version?.trim() ? project.version.trim() : null,
     };
 }

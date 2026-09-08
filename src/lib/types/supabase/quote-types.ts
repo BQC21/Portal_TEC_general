@@ -27,6 +27,8 @@ export type SupabaseQuoteRow = {
     costos_manuales?: ManualCosts | null;
     // parámetros adicionales
     depre_tool?: number;
+    // versión de cotización (NULL = usar id)
+    version?: string | null;
 }
 
 // visualización de la tabla
@@ -50,6 +52,8 @@ export type Quote = {
     costos_manuales: ManualCosts;
     // parámetros adicionales
     depre_tool: string;
+    // versión de cotización (vacío = usar id)
+    version: string;
 }
 
 // manejo de la visualización

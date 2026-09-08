@@ -114,6 +114,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         updated_at: quote.updated_at,
         costos_manuales: normalizeManualCosts(quote.costos_manuales),
         depre_tool: quote.depre_tool,
+        version: quote.version,
     }
 }
 
@@ -139,6 +140,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
         costos_manuales: normalizeManualCosts(row.costos_manuales as ManualCosts | null),
         depre_tool: row.depre_tool?.toString() || "",
+        version: row.version?.toString() || "",
     }
 }
 
@@ -160,5 +162,6 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
             ? JSON.parse(JSON.stringify(quote.costos_manuales))
             : quote.costos_manuales,
         depre_tool: parseNumber(quote.depre_tool) ?? 0,
+        version: quote.version?.trim() ? quote.version.trim() : null,
     }
 }
