@@ -9,16 +9,14 @@ export function formatVersionLabel(version: string | undefined | null) {
     return `Versión ${getVersionValue(version)}`;
 }
 
-export function getNextCopyVersion(sourceVersion: string, existingVersions: string[]) {
-    const prefix = `${sourceVersion}.`;
-    let maxSuffix = 0;
+export function getNextCopyVersion(_sourceVersion: string, existingVersions: string[]) {
+    let maxVersion = 0;
 
     for (const value of existingVersions) {
-        if (!value.startsWith(prefix)) continue;
-        const rest = value.slice(prefix.length);
-        if (!/^\d+$/.test(rest)) continue;
-        maxSuffix = Math.max(maxSuffix, Number(rest));
+        const numeric = Number.parseInt(value, 10);
+        if (!Number.isInteger(numeric) || numeric <= 0) continue;
+        maxVersion = Math.max(maxVersion, numeric);
     }
 
-    return `${sourceVersion}.${maxSuffix + 1}`;
+    return String(maxVersion + 1);
 }
