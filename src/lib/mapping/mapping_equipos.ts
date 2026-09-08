@@ -19,6 +19,7 @@ export function createEquiposFormStateFromEquipos(equipo: Equipos): EquiposFormS
         marca: equipo.marca,
         descripcion: equipo.descripcion,
         // propiedades eléctricas
+        paneles_palet: equipo.paneles_palet,
         tipo_conexion: equipo.tipo_conexion,
         potencia_maxima: equipo.potencia_maxima,
         mppt: equipo.mppt,
@@ -67,6 +68,7 @@ export function mapSupabaseRowToEquipos(
         marca: row.marca || "",
         descripcion: row.descripcion || "",
         // propiedades eléctricas
+        paneles_palet: toDecimalNumber(row.paneles_palet),
         tipo_conexion: row.tipo_de_conexion || row.tipo_conexion || "",
         potencia_maxima: toDecimalNumber(row.potencia_maxima),
         mppt: toDecimalNumber(row.mppt),
@@ -126,6 +128,7 @@ export function mapEquiposToSupabaseRow(
         marca: equipo.marca,
         descripcion: equipo.descripcion,
         // propiedades eléctricas
+        paneles_palet: equipo.paneles_palet,
         tipo_de_conexion: equipo.tipo_conexion,
         potencia_maxima: equipo.potencia_maxima,
         mppt: equipo.mppt,

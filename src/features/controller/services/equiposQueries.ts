@@ -12,6 +12,7 @@ function toEquiposSupabaseRow(equipo: EquiposFormData) {
 		tipo_de_producto: equipo.tipo_de_producto,
 		marca: equipo.marca,
 		descripcion: equipo.descripcion,
+		paneles_palet: equipo.paneles_palet,
 		tipo_de_conexion: equipo.tipo_conexion,
 		potencia_maxima: equipo.potencia_maxima,
 		mppt: equipo.mppt,

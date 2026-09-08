@@ -19,6 +19,7 @@ export type SupabaseEquiposRow = {
     marca?: string;
     descripcion?: string;
     // propiedades eléctricas
+    paneles_palet?: number;
     tipo_de_conexion?: string;
     tipo_conexion?: string;
     potencia_maxima?: number;
@@ -65,6 +66,7 @@ export type Equipos = {
     marca: string;
     descripcion: string;
     // propiedades eléctricas
+    paneles_palet: number;
     tipo_conexion: string;
     potencia_maxima: number;
     mppt: number;

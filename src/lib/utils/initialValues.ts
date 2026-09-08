@@ -62,6 +62,7 @@ export const INITIAL_EQUIPOS_FORM: EquiposFormState = {
     marca: BRAND_OPTIONS_EQUIPOS[0],
     descripcion: "",
     // propiedades eléctricas
+    paneles_palet: 0,
     tipo_conexion: CONNECTION_TYPE_OPTIONS[0],
     potencia_maxima: 0,
     mppt: 0,
