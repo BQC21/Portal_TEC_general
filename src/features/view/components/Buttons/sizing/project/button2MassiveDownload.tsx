@@ -6,7 +6,10 @@ import { MassiveDownloadIcon } from "@/features/view/components/Icons/MassiveDow
 import { MassiveDownloadModal } from "@/features/view/components/Modals/Massive/MassiveDownloadModal";
 import { Button2MassiveDownloadProjectProps } from "@/lib/types/components/General/buttons";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
-import { PROJECT_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	PROJECT_EXPORT_COLUMNS,
+	type ProjectExportRow,
+} from "@/lib/utils/helpers/templates/massiveDownload";
 
 export default function Button2MassiveDownload({
 	projects,
@@ -28,14 +31,18 @@ export default function Button2MassiveDownload({
 		return {
 			nombre: project.nombre ?? "",
 			zona: project.zona_info?.zona ?? "",
+			angulo: project.angulo ?? "",
 			tipo_instalacion: project.tipo_instalacion ?? "",
+			configuracion: project.configuracion ?? "",
+			demanda_mensual: project.demanda_mensual ?? [],
+			demanda_electrica: Number(project.demanda_electrica) || 0,
 			equipos: equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-",
 			materiales: materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-",
 			enlace: project.enlace ?? "",
 			created_at: formatDate(project.created_at),
 			updated_at: formatDate(project.updated_at),
 			estado_proyecto: project.estado_proyecto ?? "",
-		};
+		} satisfies ProjectExportRow;
 	});
 
 	return (

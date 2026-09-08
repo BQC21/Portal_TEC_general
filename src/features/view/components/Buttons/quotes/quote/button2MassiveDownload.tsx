@@ -7,17 +7,22 @@ import { MassiveDownloadModal } from "@/features/view/components/Modals/Massive/
 import { Button2MassiveDownloadQuoteProps } from "@/lib/types/components/General/buttons";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { QUOTE_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	QUOTE_EXPORT_COLUMNS,
+	type QuoteExportRow,
+} from "@/lib/utils/helpers/templates/massiveDownload";
 
 export default function Button2MassiveDownload({ quotes }: Button2MassiveDownloadQuoteProps) {
 	const [open, setOpen] = useState(false);
 
-	const items = quotes.map((quote) => ({
+	const items: QuoteExportRow[] = quotes.map((quote) => ({
 		cod_cotizacion: quote.cod_cotizacion ?? "",
 		proyecto: quote.proyecto_info?.nombre ?? "",
 		igv: quote.igv ?? "",
 		tasa_cambio: quote.tasa_cambio ?? "",
 		precio_dolares: formatCurrency(Number(quote.precio_dolares), "USD"),
+		gm: Number(quote.gm) || 0,
+		depre_tool: Number(quote.depre_tool) || 0,
 		created_at: formatDate(quote.created_at),
 		updated_at: formatDate(quote.updated_at),
 	}));

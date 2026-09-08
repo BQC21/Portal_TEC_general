@@ -7,15 +7,21 @@ import { MassiveDownloadModal } from "@/features/view/components/Modals/Massive/
 import { Button2MassiveDownloadReportProps } from "@/lib/types/components/General/buttons";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { REPORT_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	REPORT_EXPORT_COLUMNS,
+	type ReportExportRow,
+} from "@/lib/utils/helpers/templates/massiveDownload";
 
 export default function Button2MassiveDownload({ reports }: Button2MassiveDownloadReportProps) {
 	const [open, setOpen] = useState(false);
 
-	const items = reports.map((report) => ({
+	const items: ReportExportRow[] = reports.map((report) => ({
 		cotizacion: report.cotizacion_info?.cod_cotizacion ?? "",
 		proyecto: report.cotizacion_info?.proyecto_info?.nombre ?? "",
 		cliente: report.cliente ?? "",
+		ruc_dni: report.ruc_dni ?? "",
+		lugar: report.lugar ?? "",
+		atencion: report.atencion ?? "",
 		porcentaje_eqmt: report.porcentaje_eqmt ?? "",
 		porcentaje_inst: report.porcentaje_inst ?? "",
 		precio_cotizacion: formatCurrency(Number(report.cotizacion_info?.precio_dolares), "USD"),
