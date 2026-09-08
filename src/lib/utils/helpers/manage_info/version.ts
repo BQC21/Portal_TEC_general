@@ -1,10 +1,12 @@
-export function getVersionValue(version: string | undefined | null, id: string) {
+export const DEFAULT_VERSION = "1";
+
+export function getVersionValue(version: string | undefined | null) {
     const trimmed = version?.trim();
-    return trimmed || id;
+    return trimmed || DEFAULT_VERSION;
 }
 
-export function formatVersionLabel(version: string | undefined | null, id: string) {
-    return `Versión ${getVersionValue(version, id)}`;
+export function formatVersionLabel(version: string | undefined | null) {
+    return `Versión ${getVersionValue(version)}`;
 }
 
 export function getNextCopyVersion(sourceVersion: string, existingVersions: string[]) {

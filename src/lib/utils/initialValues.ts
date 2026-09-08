@@ -211,7 +211,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // demandas mensuales
     demanda_mensual: [],
     // versión
-    version: "",
+    version: "1",
 }
 
 // valores iniciales para el estado de form de zonas
@@ -355,7 +355,7 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
     gm: "",
     costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
     depre_tool: "12",
-    version: "",
+    version: "1",
 }
 
 export const INITIAL_FINANTIAL_FORM: FinantialFormState = {
