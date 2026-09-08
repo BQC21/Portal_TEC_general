@@ -47,6 +47,11 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.configuracion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.demanda_mensual}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.demanda_electrica}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
                                         <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
                                             {equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-"}
