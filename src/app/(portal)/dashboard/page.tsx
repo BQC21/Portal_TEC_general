@@ -52,7 +52,7 @@ export default function DashboardPage() {
         },
 
         {
-            title: "Proyectos enlistados",
+            title: "Dimensionamientos enlistados",
             value: projects.length,
             accent: "bg-emerald-50 text-emerald-700",
             icon: "◈",
@@ -73,14 +73,14 @@ export default function DashboardPage() {
             bg_color: "#FF4885"
         },
         {
-            title: "Reportes enlistados",
+            title: "Reportes por generarse enlistados",
             value: reports.length,
             accent: "bg-red-50 text-red-700",
             icon: "▤",
             bg_color: "#FF4885"
         },
         {
-            title: "Finanzas enlistadas",
+            title: "Análisis financieros enlistados",
             value: finantials.length,
             accent: "bg-red-50 text-red-700",
             icon: "▤",
