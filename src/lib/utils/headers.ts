@@ -141,6 +141,13 @@ export const TABLE_HEADERS_REPORT = [
 export const TABLE_HEADERS_FINANTIAL = [
     "Cotización asociada",
     "Proyecto asociado",
+    "Energía de la planta",
+    "Generación 1er año",
+    "Tarifa red ($)",
+    "degradación 1° año (%)",
+    "degradación 2° año (%)",
+    "incremento tarifa (%)",
+    "tasa descuento (%)",
     "Tiempo de recuperación",
     "LCOE",
     "Creado",
