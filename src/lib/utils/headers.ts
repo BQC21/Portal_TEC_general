@@ -8,6 +8,7 @@ export const EQUIPOS_HEADERS = [
     "DESCRIPCIÓN",
     "UNIDAD",
     // propieades eléctricas
+    "PANELES POR PALET",
     "TIPO DE CONEXIÓN",
     "POTENCIA MÁXIMA",
     "# DE MPPT",
