@@ -37,6 +37,8 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                     const isModulo = shouldRenderModuloProp(tipo);
                                     const isInversor = shouldRenderInversorProp(tipo);
                                     const isBateria = shouldRenderBatteryProp(tipo);
+
+                                    // Condiciones para visualizar contenido de la celda
                                     const showPanelesPalet = isModulo;
                                     const showPotenciaMaxima = isModulo || isInversor;
                                     const showInversorCount = isInversor;
