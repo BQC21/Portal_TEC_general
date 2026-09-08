@@ -49,7 +49,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                     return (
                                     <tr key={project.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version, project.id)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
