@@ -119,3 +119,17 @@ export const formatCurrency = (value: number, currency: CurrencyCode): string =>
         currency: currency,
     }).format(value);
 };
+
+// formatear la demanda mensual para que se muestre como
+// arreglo en la tabla de proyectos 
+export function formatDemandaMensual(value: number[] | string | null | undefined) {
+    if (Array.isArray(value)) {
+        return value.join(", ");
+    }
+
+    if (typeof value === "string") {
+        return value.split(/,\s*|\s+/).join(", ");
+    }
+
+    return "";
+}

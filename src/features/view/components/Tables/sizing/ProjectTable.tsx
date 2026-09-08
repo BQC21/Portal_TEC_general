@@ -7,6 +7,7 @@ import{
     formatDate,
 } from "@/lib/utils/helpers/manage_info/date_manage"
 import { ProjectTableProps } from "@/lib/types/components/General/tables";
+import { formatDemandaMensual } from "@/lib/utils/normalization";
 
 export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
     onUpdateProject, onDeleteProject,
@@ -50,7 +51,9 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.configuracion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.demanda_mensual}</td>
+                                        <td className="border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words">
+                                            {formatDemandaMensual(project.demanda_mensual)}
+                                        </td>                        
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.demanda_electrica}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
                                         <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
