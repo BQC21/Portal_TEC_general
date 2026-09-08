@@ -1,18 +1,4 @@
-import { emptyToNull } from "@/lib/utils/normalization";
 import {
-	BRAND_TABLE,
-	EQUIPOS_TABLE,
-	MATERIALES_TABLE,
-	PROJECTS_EQUIPOS_TABLE,
-	PROJECTS_MATERIALES_TABLE,
-	PROJECTS_TABLE,
-	QUOTE_TABLE,
-	SUPPLIER_TABLE,
-	ZONE_TABLE,
-} from "@/lib/utils/namingTolerance";
-import {
-	bulkInsertRows,
-	fetchNameIdMap,
 	headersFromColumns,
 } from "@/lib/utils/helpers/massive/massiveUpload";
 import { UploadColumn } from "@/lib/types/components/Massive/upload";
