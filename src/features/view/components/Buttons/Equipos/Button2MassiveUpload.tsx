@@ -3,8 +3,14 @@
 import { useState } from "react";
 
 import { MassiveUploadIcon } from "@/features/view/components/Icons/MassiveUploadIcon";
-import { MassiveUploadModal } from "@/features/view/components/Modals/Equipos/MassiveUploadModal";
+import { MassiveUploadModal } from "@/features/view/components/Modals/Massive/MassiveUpload";
 import { Button2MassiveUploadProps } from "@/lib/types/components/General/buttons";
+import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
+import {
+	EQUIPOS_UPLOAD_COLUMNS,
+	EQUIPOS_UPLOAD_HEADERS,
+} from "@/lib/utils/helpers/templates/massiveUpload";
+import { transformEquiposRows } from "@/lib/utils/helpers/massive/massiveUpload";
 
 export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUploadProps) {
 	const [open, setOpen] = useState(false);
@@ -21,7 +27,18 @@ export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUpload
 				<span>Subida masiva</span>
 			</button>
 
-			{open && <MassiveUploadModal onClose={() => setOpen(false)} onSuccess={onSuccess} />}
+			{open && (
+				<MassiveUploadModal
+					title="Subida masiva de equipos"
+					description="Selecciona un archivo XLSX con la estructura de la hoja de equipos principales."
+					tableName={EQUIPOS_TABLE}
+					expectedHeaders={EQUIPOS_UPLOAD_HEADERS}
+					columns={EQUIPOS_UPLOAD_COLUMNS}
+					transformRows={transformEquiposRows}
+					onClose={() => setOpen(false)}
+					onSuccess={onSuccess}
+				/>
+			)}
 		</>
 	);
 }

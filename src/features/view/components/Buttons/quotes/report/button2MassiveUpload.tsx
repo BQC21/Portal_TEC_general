@@ -5,12 +5,12 @@ import { useState } from "react";
 import { MassiveUploadIcon } from "@/features/view/components/Icons/MassiveUploadIcon";
 import { MassiveUploadModal } from "@/features/view/components/Modals/Massive/MassiveUpload";
 import { Button2MassiveUploadProps } from "@/lib/types/components/General/buttons";
-import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
+import { REPORT_TABLE } from "@/lib/utils/namingTolerance";
 import {
-	MATERIALES_UPLOAD_COLUMNS,
-	MATERIALES_UPLOAD_HEADERS,
+	REPORT_UPLOAD_COLUMNS,
+	REPORT_UPLOAD_HEADERS,
 } from "@/lib/utils/helpers/templates/massiveUpload";
-import { transformMaterialesRows } from "@/lib/utils/helpers/massive/massiveUpload";
+import { transformReportRows } from "@/lib/utils/helpers/massive/massiveUpload";
 
 export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUploadProps) {
 	const [open, setOpen] = useState(false);
@@ -29,12 +29,12 @@ export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUpload
 
 			{open && (
 				<MassiveUploadModal
-					title="Subida masiva de materiales"
-					description="Selecciona un archivo XLSX con la estructura de la hoja de materiales eléctricos."
-					tableName={MATERIALES_TABLE}
-					expectedHeaders={MATERIALES_UPLOAD_HEADERS}
-					columns={MATERIALES_UPLOAD_COLUMNS}
-					transformRows={transformMaterialesRows}
+					title="Subida masiva de reportes"
+					description="Selecciona un archivo XLSX con la estructura de la hoja de reportes."
+					tableName={REPORT_TABLE}
+					expectedHeaders={REPORT_UPLOAD_HEADERS}
+					columns={REPORT_UPLOAD_COLUMNS}
+					transformRows={transformReportRows}
 					onClose={() => setOpen(false)}
 					onSuccess={onSuccess}
 				/>
