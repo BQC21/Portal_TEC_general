@@ -192,6 +192,11 @@ export type DeleteFinantialModalProps = {
     onDeleteFinantial: (finantialId: string) => void;
 }
 
+export type DuplicateRowButtonProps = {
+    title: string;
+    onDuplicate: () => Promise<void> | void;
+};
+
 // ------------------
 // botones -- borrado masivo
 // ------------------

@@ -34,6 +34,7 @@ export type ProjectTableProps = {
     onDeleteProject: (projectId: string) => void;
     onDeleteProjectEquipos?: (projectEquiposId: string) => void;
     onDeleteProjectMateriales?: (projectMaterialesId: string) => void;
+    onDuplicateProject: (project: Project) => Promise<void> | void;
 };
 
 // materiales
@@ -82,6 +83,7 @@ export type QuoteTableProps = {
     totalQuote: number;
     onUpdateQuote: (quote: Quote) => void;
     onDeleteQuote: (quoteId: string) => void;
+    onDuplicateQuote: (quote: Quote) => Promise<void> | void;
     projects_equipos: Project_Equipos[];
     projects_materiales: Project_Materiales[];
 }
