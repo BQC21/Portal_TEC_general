@@ -1,4 +1,3 @@
-import type { UploadColumn } from "@/lib/utils/helpers/massive/massiveUpload";
 import { Brand, BrandFormData } from "../../supabase/brand.types";
 import { Equipos, EquiposFormData } from "../../supabase/equipos-types";
 import { Finantial, FinantialFormData } from "../../supabase/finantial-types";
@@ -12,6 +11,7 @@ import { Report, ReportFormData } from "../../supabase/report-types";
 import { Supplier, SupplierFormData } from "../../supabase/supplier-types";
 import { Type, TypeFormData } from "../../supabase/type-types";
 import { Zone, ZoneFormData } from "../../supabase/zone-types";
+import { UploadColumn } from "../Massive/upload";
 
 
 
