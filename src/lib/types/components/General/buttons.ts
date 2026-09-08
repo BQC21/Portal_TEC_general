@@ -221,6 +221,40 @@ export type Button2MassiveDownloadMaterialesProps = {
 	materiales: Materiales[];
 };
 
+export type Button2MassiveDownloadSupplierProps = {
+	supplier: Supplier[];
+};
+
+export type Button2MassiveDownloadBrandProps = {
+	brand: Brand[];
+};
+
+export type Button2MassiveDownloadTypeProps = {
+	type: Type[];
+};
+
+export type Button2MassiveDownloadZoneProps = {
+	zones: Zone[];
+};
+
+export type Button2MassiveDownloadProjectProps = {
+	projects: Project[];
+	projects_equipos: Project_Equipos[];
+	projects_materiales: Project_Materiales[];
+};
+
+export type Button2MassiveDownloadQuoteProps = {
+	quotes: Quote[];
+};
+
+export type Button2MassiveDownloadReportProps = {
+	reports: Report[];
+};
+
+export type Button2MassiveDownloadFinantialProps = {
+	finantials: Finantial[];
+};
+
 // ------------------
 // botones -- generar PDF
 // ------------------

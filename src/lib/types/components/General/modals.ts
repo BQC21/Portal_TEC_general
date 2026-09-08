@@ -238,6 +238,14 @@ export type MassiveCleanModalProps = {
 	onSuccess?: () => void;
 };
 
+export type GenericMassiveCleanModalProps = MassiveCleanModalProps & {
+	tableName: string;
+	relatedTableNames?: string[];
+	title: string;
+	description: string;
+	entityLabel: string;
+};
+
 // ------------------
 // modals -- descarga masiva
 // ------------------
