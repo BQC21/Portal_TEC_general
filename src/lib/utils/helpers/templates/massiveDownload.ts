@@ -111,7 +111,11 @@ export type ZoneExportRow = {
 export type ProjectExportRow = {
 	nombre: string;
 	zona: string;
+	angulo: string;
 	tipo_instalacion: string;
+	configuracion: string;
+	demanda_mensual: number[];
+	demanda_electrica: number;
 	equipos: string;
 	materiales: string;
 	enlace: string;
@@ -134,7 +138,11 @@ export const ZONE_EXPORT_COLUMNS: ExportColumn<ZoneExportRow>[] = [
 export const PROJECT_EXPORT_COLUMNS: ExportColumn<ProjectExportRow>[] = [
 	{ key: "nombre", label: "Nombre del proyecto" },
 	{ key: "zona", label: "Zona seleccionada" },
+	{ key: "angulo", label: "Orientación del panel" },
 	{ key: "tipo_instalacion", label: "Tipo de instalación" },
+	{ key: "configuracion", label: "Configuración eléctrica" },
+	{ key: "demanda_mensual", label: "Demanda eléctrica mensual" },
+	{ key: "demanda_electrica", label: "Demanda eléctrica anual" },
 	{ key: "equipos", label: "Equipos principales seleccionados" },
 	{ key: "materiales", label: "Materiales eléctricos seleccionados" },
 	{ key: "enlace", label: "Enlace del proyecto" },
@@ -156,6 +164,8 @@ export type QuoteExportRow = {
 	igv: string;
 	tasa_cambio: string;
 	precio_dolares: string;
+	gm: number;
+	depre_tool: number;
 	created_at: string;
 	updated_at: string;
 };
@@ -164,6 +174,9 @@ export type ReportExportRow = {
 	cotizacion: string;
 	proyecto: string;
 	cliente: string;
+	ruc_dni: string;
+	lugar: string;
+	atencion: string;
 	porcentaje_eqmt: string;
 	porcentaje_inst: string;
 	precio_cotizacion: string;
@@ -174,6 +187,13 @@ export type ReportExportRow = {
 export type FinantialExportRow = {
 	cotizacion: string;
 	proyecto: string;
+	planta: number;
+	generacion: number;
+	tarifa_red: number;
+	degra_1er: number;
+	degra_2do: number;
+	tarifa_crecimiento: number;
+	tasa_descuento: number;
 	tiempo_retorno: string;
 	lcoe: string;
 	created_at: string;
@@ -186,6 +206,8 @@ export const QUOTE_EXPORT_COLUMNS: ExportColumn<QuoteExportRow>[] = [
 	{ key: "igv", label: "IGV" },
 	{ key: "tasa_cambio", label: "Tasa de cambio" },
 	{ key: "precio_dolares", label: "Precio de venta ($)" },
+	{ key: "gm", label: "Gross Margin" },
+	{ key: "depre_tool", label: "Depreciación por herramientas" },
 	{ key: "created_at", label: "Creado" },
 	{ key: "updated_at", label: "Actualizado" },
 ];
@@ -194,6 +216,9 @@ export const REPORT_EXPORT_COLUMNS: ExportColumn<ReportExportRow>[] = [
 	{ key: "cotizacion", label: "Cotización asociada" },
 	{ key: "proyecto", label: "Proyecto asociado" },
 	{ key: "cliente", label: "Nombre del cliente" },
+	{ key: "ruc_dni", label: "RUC del cliente" },
+	{ key: "lugar", label: "Lugar de atención" },
+	{ key: "atencion", label: "Encargado de atención" },
 	{ key: "porcentaje_eqmt", label: "(%) Eq y Mat" },
 	{ key: "porcentaje_inst", label: "(%) Instalación" },
 	{ key: "precio_cotizacion", label: "Precio de cotización" },
@@ -204,6 +229,13 @@ export const REPORT_EXPORT_COLUMNS: ExportColumn<ReportExportRow>[] = [
 export const FINANTIAL_EXPORT_COLUMNS: ExportColumn<FinantialExportRow>[] = [
 	{ key: "cotizacion", label: "Cotización asociada" },
 	{ key: "proyecto", label: "Proyecto asociado" },
+	{ key: "planta", label: "Energía de la planta" },
+	{ key: "generacion", label: "Generación 1er año" },
+	{ key: "tarifa_red", label: "Tarifa red ($)" },
+	{ key: "degra_1er", label: "Degradación 1er año (%)" },
+	{ key: "degra_2do", label: "Degradación 2do año (%)" },
+	{ key: "tarifa_crecimiento", label: "Incremento tarifa (%)" },
+	{ key: "tasa_descuento", label: "Tasa descuento (%)" },
 	{ key: "tiempo_retorno", label: "Tiempo de recuperación" },
 	{ key: "lcoe", label: "LCOE" },
 	{ key: "created_at", label: "Creado" },
