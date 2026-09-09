@@ -14,6 +14,7 @@ export const SORTING_OPTIONS = {
 // Codigos de definición 
 export type CurrencyCode = "PEN" | "USD"; // tipo de cambio
 export type FillOptions = "AUTOMÁTICO" | "MANUAL"; // tipo de llenado
+export type DemandOptions = "MENSUAL" | "FACTOR"; // tipo de llenado
 export type DSCTOOptions = "CON DSCTO" | "SIN DSCTO"; // DESCUENTO ?
 export type FIRMOptions = "CON FIRMA" | "SIN FIRMA"; // tFIRMA ?
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de ordenamiento
