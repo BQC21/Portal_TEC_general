@@ -48,7 +48,7 @@ export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds 
 
                 // equipos principales
                 equipos: equipos.map((e) => ({
-                cantidad: e.cantidad,
+                cantidad: Math.ceil(Number(e.cantidad)),
                 visible: !hiddenEquipoIds.includes(String(e.id)),
                 equipo_info: {
                     cod_producto: e.equipo_info?.cod_producto,
