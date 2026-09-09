@@ -18,7 +18,7 @@ import {
     toPanelIntegerLabel,
 } from "@/lib/utils/helpers/computes/PanelNumber";
 
-export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, handleOpcionLlenadoChangePANELES, computedRequirements, getFieldValueLightClass, 
+export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChange, handleOpcionLlenadoChange, handleOpcionLlenadoChangePANELES, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
     CONNECTION_TYPE_OPTIONS }: Data_info_M2Props) {
 
@@ -60,18 +60,42 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
                         <div>
                             <h2 className="mb-10 text-2xl font-bold text-slate-900">Datos de entrada del sistema</h2>
                             <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Demanda eléctrica mensual</h2>
-                            {MONTH_LABELS.map((month, index) => (
-                                <AddProductNumberField
-                                    key={month}
-                                    label={`Demanda eléctrica - ${month} (kWh)`}
-                                    required
-                                    centered
-                                    value={monthlyValues[index]}
-                                    onChange={(value) => updateMonth(index, value)}
-                                    step={0.01}
-                                    min={0}
+
+                            {/* Handlers */}
+                            <div className="mb-6 flex justify-center gap-8">
+                                <AddProductRadioField
+                                    label="Por mes"
+                                    checked={form.opcion_llenado_demanda === "MENSUAL"}
+                                    onChange={() => handleOpcionDemandaLlenadoChange("MENSUAL")}
                                 />
-                            ))}
+                                <AddProductRadioField
+                                    label="Factor × 12"
+                                    checked={form.opcion_llenado_demanda === "FACTOR"}
+                                    onChange={() => handleOpcionDemandaLlenadoChange("FACTOR")}
+                                />
+                            </div>
+                            {form.opcion_llenado_demanda === "MENSUAL" ? (
+                                MONTH_LABELS.map((month, index) => (
+                                    <AddProductNumberField
+                                        key={month}
+                                        label={`Demanda eléctrica - ${month} (kWh)`}
+                                        required
+                                        centered
+                                        value={monthlyValues[index]}
+                                        onChange={(value) => updateMonth(index, value)}
+                                        step={0.01}
+                                        min={0}
+                                    />
+                                ))) : (
+                                <AddProductNumberField
+                                    label="Demanda mensual típica (kWh)"
+                                    value={Number(form.factor)}
+                                    onChange={(value) => {
+                                        updateField("demanda_electrica", String(Number(value) * 12));
+                                    }}
+                                />
+                            )}
+
                             <h2 className="mt-10 mb-10 text-1xl font-bold text-red-900">Demanda eléctrica anual</h2>
 
                             <AddEquipoReadonlyField
