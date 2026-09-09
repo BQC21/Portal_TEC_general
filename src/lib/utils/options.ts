@@ -170,6 +170,6 @@ export const EPP_REUSABLE_OPTIONS = [
 export const DSCTO_type_value = ["Porcentaje", "USD"]
 
 export const DEFAULT_PAY_FORMAT =
-    "60% Con la Orden de Servicio\n30% Antes del envío de los equipos\n20% Al término de la instalación";
+    "40% Con la Orden de Servicio\n30% Antes del envío de los equipos\n30% Al término de la instalación";
 
 export const FIRM_OPTION: FIRMOptions[] = ["SIN FIRMA", "CON FIRMA"];
