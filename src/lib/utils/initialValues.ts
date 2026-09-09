@@ -26,6 +26,7 @@ import {
     SUPPLIER_OPTIONS_MATERIALES,
     BRAND_OPTIONS_MATERIALES,
     FIRM_OPTION,
+    DEMAND_OPTIONS,
 } from "@/lib/utils/options"
 import { ZoneFormState } from "../types/supabase/zone-types";
 import { ProjectFormState } from "../types/supabase/project-types";
@@ -209,6 +210,8 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // llenado
     opcion_llenado: FILL_OPTIONS[0],
     opcion_llenado_paneles: FILL_OPTIONS[0],
+    opcion_llenado_demanda: DEMAND_OPTIONS[0],
+    factor: "",
     // demandas mensuales
     demanda_mensual: [],
     // versión

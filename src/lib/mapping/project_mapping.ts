@@ -52,6 +52,8 @@ export function createProjectFormStateFromProject(project: Project): ProjectForm
         // llenado
         opcion_llenado: project.opcion_llenado,
         opcion_llenado_paneles: project.opcion_llenado_paneles === "MANUAL" ? "MANUAL" : "AUTOMÁTICO",
+        opcion_llenado_demanda: project.opcion_llenado_demanda === "MENSUAL" ? "MENSUAL" : "FACTOR",
+        factor: project.factor,
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
         // versión
@@ -118,6 +120,8 @@ export function mapSupabaseRowToProject(
         // llenado
         opcion_llenado: row.opcion_llenado?.toString() || "",
         opcion_llenado_paneles: row.opcion_llenado_paneles === "MANUAL" ? "MANUAL" : "AUTOMÁTICO",
+        opcion_llenado_demanda: row.opcion_llenado_demanda === "MENSUAL" ? "MENSUAL" : "FACTOR",
+        factor: row.factor?.toString() || "",
         // demanda mensual
         demanda_mensual: row.demanda_mensual as number[] || [],
         // versión
@@ -176,6 +180,8 @@ export function mapProjectToSupabaseRow(
         // llenado
         opcion_llenado: project.opcion_llenado,
         opcion_llenado_paneles: project.opcion_llenado_paneles,
+        opcion_llenado_demanda: project.opcion_llenado_demanda,
+        factor: parseNumber(project.factor),
         // demandas mensuales
         demanda_mensual: project.demanda_mensual,
         // versión

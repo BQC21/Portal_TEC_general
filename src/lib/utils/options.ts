@@ -150,6 +150,10 @@ export const ANGLE_OPTIONS = [
 export const FILL_OPTIONS = [
     "AUTOMÁTICO", "MANUAL"
 ]
+// forma de cómo llenar la demanda mensual
+export const DEMAND_OPTIONS = [
+    "MENSUAL", "FACTOR"
+]
 
 // ------------------
 // ------------------

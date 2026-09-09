@@ -61,6 +61,8 @@ export type SupabaseProjectRow = {
     // llenado
     opcion_llenado?: string;
     opcion_llenado_paneles?: string;
+    opcion_llenado_demanda?: string;
+    factor?: number;
     // demandas mensuales
     demanda_mensual?: number[];
     // versión del dimensionamiento (NULL = usar id)
@@ -115,6 +117,8 @@ export type Project = {
     // llenado
     opcion_llenado: string;
     opcion_llenado_paneles: string;
+    opcion_llenado_demanda: string;
+    factor: string;
     // demandas mensuales
     demanda_mensual: number[];
     // versión del dimensionamiento (vacío = usar id)
