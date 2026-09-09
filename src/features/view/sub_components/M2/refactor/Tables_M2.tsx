@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
-import { cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
+import { cantidadModuloFVEnTabla, unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
 import { allowsQuantityOverride, followsCadenaNumber, isVisibleEquipment, isVisibleMaterial, materialRowKey, structureQuantityMax } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
 
@@ -15,6 +15,11 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     const visibleMaterialTable = selectedMaterialTable.filter(isVisibleMaterial);
 
     // SELECCIÓN
+    const selectedModules = selectedEquipmentTable.filter((row) => row.row === "MÓDULO FV");
+    const unidadesPendientes = unidadesPendientesModuloFV(
+        Number(form.strings) || 0,
+        selectedModules,
+    );
     const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
     const inverterKey = `${selectedInverter?.id ?? ""}:${selectedInverter?.marca ?? ""}`;
 
@@ -63,6 +68,13 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
+                    {unidadesPendientes > 0 && (
+                        <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+                            Se seleccionaron palets y {unidadesPendientes === 1
+                                ? "falta 1 unidad"
+                                : `faltan ${unidadesPendientes} unidades`} para completar los paneles exactos registrados. Agregue un módulo FV por unidad.
+                        </p>
+                    )}
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
@@ -96,6 +108,7 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                             Number(form.strings) || Number(item.cantidad ?? 0),
                                                             item.paneles_palet ?? 0,
                                                             item.unidad,
+                                                            selectedModules,
                                                         )
                                                         : Number(item.cantidad ?? 0)}
                                                     onChange={(value) =>

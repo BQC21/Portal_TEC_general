@@ -16,11 +16,35 @@ export function panelesPorPaletDeModulo(
     return Number.isFinite(n) && n > 0 ? Math.trunc(n) : 0;
 }
 
+type ModuloFVSelection = {
+    id?: string;
+    unidad?: string | null;
+    paneles_palet?: number | null;
+    cantidad?: number;
+};
+
+export function isPaletModuloFV(unidad?: string | null): boolean {
+    return normalizeModuloFVUnidad(unidad) === "palet";
+}
+
+export function hasSelectedPaletModuloFV(modulos: ModuloFVSelection[]): boolean {
+    return modulos.some((item) => isPaletModuloFV(item.unidad));
+}
+
+export function panelesPorPaletDesdeSeleccion(modulos: ModuloFVSelection[]): number {
+    const palet = modulos.find((item) => isPaletModuloFV(item.unidad));
+    return panelesPorPaletDeModulo(palet?.unidad, palet?.paneles_palet);
+}
+
 export function canAddModuloFV(
-    existing: Array<{ id: string }>,
-    candidate: { id: string },
+    existing: ModuloFVSelection[],
+    candidate: { id: string; unidad?: string | null },
 ): boolean {
-    return !existing.some((item) => item.id === candidate.id);
+    if (existing.some((item) => String(item.id) === candidate.id)) return false;
+    if (hasSelectedPaletModuloFV(existing)) {
+        return normalizeModuloFVUnidad(candidate.unidad) === "unidad";
+    }
+    return true;
 }
 
 export function cantidadesPaletYUnidad(
@@ -42,10 +66,15 @@ export function cantidadModuloFVTabla(
     numeroPaneles: number,
     paneles_por_palet: number,
     unidad?: string | null,
+    usarRestoUnidades = false,
 ): number {
     const paneles = Number(numeroPaneles) || 0;
+    const { palets, unidades } = cantidadesPaletYUnidad(paneles, paneles_por_palet);
     if (normalizeModuloFVUnidad(unidad) === "palet") {
-        return cantidadesPaletYUnidad(paneles, paneles_por_palet).palets;
+        return palets;
+    }
+    if (usarRestoUnidades) {
+        return unidades;
     }
     return Number(paneles.toFixed(0));
 }
@@ -54,8 +83,34 @@ export function cantidadModuloFVEnTabla(
     numeroPaneles: number,
     paneles_por_palet: number,
     unidad?: string | null,
+    modulosSeleccionados: ModuloFVSelection[] = [],
 ): number {
-    return cantidadModuloFVTabla(numeroPaneles, paneles_por_palet, unidad);
+    const esPalet = isPaletModuloFV(unidad);
+    const porPalet = esPalet
+        ? panelesPorPaletDeModulo(unidad, paneles_por_palet)
+        : panelesPorPaletDesdeSeleccion(modulosSeleccionados);
+    return cantidadModuloFVTabla(
+        numeroPaneles,
+        porPalet,
+        unidad,
+        !esPalet && hasSelectedPaletModuloFV(modulosSeleccionados),
+    );
+}
+
+export function unidadesPendientesModuloFV(
+    numeroPaneles: number,
+    modulosSeleccionados: ModuloFVSelection[],
+): number {
+    if (!hasSelectedPaletModuloFV(modulosSeleccionados)) return 0;
+    const { unidades } = cantidadesPaletYUnidad(
+        numeroPaneles,
+        panelesPorPaletDesdeSeleccion(modulosSeleccionados),
+    );
+    if (unidades <= 0) return 0;
+    const tieneUnidad = modulosSeleccionados.some(
+        (item) => normalizeModuloFVUnidad(item.unidad) === "unidad",
+    );
+    return tieneUnidad ? 0 : unidades;
 }
 
 export function toPanelInteger(

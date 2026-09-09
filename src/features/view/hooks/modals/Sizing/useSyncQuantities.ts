@@ -17,6 +17,7 @@ export function useSyncQuantities(form: ProjectFormState, computedRequirements: 
     useEffect(() => {
         const stringsVal = Number(form.strings) || 0;
         setSelectedEquipmentTable((curr) => {
+            const modules = curr.filter((item) => item.row === "MÓDULO FV");
             let changed = false;
             const next = curr.map((item) => {
                 if (item.row !== "MÓDULO FV") return item;
@@ -24,6 +25,7 @@ export function useSyncQuantities(form: ProjectFormState, computedRequirements: 
                     stringsVal,
                     item.paneles_palet ?? 0,
                     item.unidad,
+                    modules,
                 );
                 if (item.cantidad === cantidad) return item;
                 changed = true;

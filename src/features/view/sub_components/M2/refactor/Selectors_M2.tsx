@@ -21,6 +21,7 @@ import {
 } from "@/lib/utils/helpers/project_modals/cableMatrix";
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
 import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
+import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 
 const matrixCellStyles = "border border-black px-1 py-[3px] text-center text-[10px] font-bold leading-tight whitespace-nowrap";
 const matrixHeaderStyles = "border border-black bg-white px-1 py-[3px] text-center text-[10px] font-bold leading-tight text-slate-900 whitespace-nowrap";
@@ -80,6 +81,10 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
     }, [autoCableId, storedCableId, cableRowIndex, handle_onChange]);
 
     const showMissingCableWarning = targetMm2 !== null && !autoCable;
+    const unidadesPendientes = unidadesPendientesModuloFV(
+        Number(form.strings) || 0,
+        selectedEquipmentTable.filter((item) => item.row === "MÓDULO FV"),
+    );
 
     // Las opciones del CABLE se arman con el cable asignado, no con handlerSelector: ese
     // filtro descarta los materiales ya presentes en la tabla y dejaría al selector sin la
@@ -129,16 +134,24 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                 if (!shouldRender) return null;
 
                                 return (
-                                    <SelectionRow
-                                        key={`equipment-${label}-${index}`}
-                                        label={label}
-                                        buttonLabel="Agregar"
-                                        value={selectedEquipmentByRow[`${label}-${index}`]?.equipoId || ""}
-                                        options={equipment_filteredOptions}
-                                        customSelectClass={customSelectClass}
-                                        onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
-                                        onClick={() => handle_click(label, index, "EQUIPO")}
-                                    />
+                                    <div key={`equipment-${label}-${index}`} className="flex flex-col gap-2">
+                                        <SelectionRow
+                                            label={label}
+                                            buttonLabel="Agregar"
+                                            value={selectedEquipmentByRow[`${label}-${index}`]?.equipoId || ""}
+                                            options={equipment_filteredOptions}
+                                            customSelectClass={customSelectClass}
+                                            onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
+                                            onClick={() => handle_click(label, index, "EQUIPO")}
+                                        />
+                                        {label === "MÓDULO FV" && unidadesPendientes > 0 && (
+                                            <p className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
+                                                Se seleccionaron palets y {unidadesPendientes === 1
+                                                    ? "falta 1 unidad"
+                                                    : `faltan ${unidadesPendientes} unidades`} para completar los paneles exactos registrados.
+                                            </p>
+                                        )}
+                                    </div>
                                 );
                                 })}
                             </div>
