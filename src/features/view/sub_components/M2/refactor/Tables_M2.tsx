@@ -15,7 +15,6 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
     const visibleMaterialTable = selectedMaterialTable.filter(isVisibleMaterial);
 
     // SELECCIÓN
-    const selectedModules = visibleEquipmentTable.filter((row) => row.row === "MÓDULO FV");
     const selectedInverter = selectedEquipmentTable.find((item) => item.row === "INVERSOR");
     const inverterKey = `${selectedInverter?.id ?? ""}:${selectedInverter?.marca ?? ""}`;
 
@@ -95,8 +94,8 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                                                     value={item.row === "MÓDULO FV"
                                                         ? cantidadModuloFVEnTabla(
                                                             Number(form.strings) || Number(item.cantidad ?? 0),
+                                                            item.paneles_palet ?? 0,
                                                             item.unidad,
-                                                            selectedModules,
                                                         )
                                                         : Number(item.cantidad ?? 0)}
                                                     onChange={(value) =>
