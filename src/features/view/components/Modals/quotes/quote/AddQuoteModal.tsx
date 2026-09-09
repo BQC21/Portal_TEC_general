@@ -91,15 +91,12 @@ export default function AddQuoteModal({
         await onAddQuote({
             ...form,
             costos_manuales,
+            precio_dolares: String(precioFinal.dolares.toFixed(2)),
         });
     }
 
     function updateField<K extends keyof QuoteFormState>(field: K, value: QuoteFormState[K]) {
-        setForm((current) => {
-            const updated = { ...current, [field]: value, 
-                precio_dolares: String(precioFinal.dolares.toFixed(2)) };
-            return updated;
-        });
+        setForm((current) => ({ ...current, [field]: value }));
     }
 
     // ----------
@@ -137,6 +134,17 @@ export default function AddQuoteModal({
             updateField("gm", String(grossMargin.gm.gm));
         }
     }, [grossMargin.gm.gm]);
+
+    // ----------
+    // SINCRONIZAR PRECIO DÓLARES
+    // ----------
+
+    useEffect(() => {
+        const next = String(precioFinal.dolares.toFixed(2));
+        if (form.precio_dolares !== next) {
+            setForm((current) => ({ ...current, precio_dolares: next }));
+        }
+    }, [precioFinal.dolares]);
 
     // ----------
     // SINCRONIZAR CODIFICACIÓN AUTOMÁTICA 
