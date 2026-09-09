@@ -3,7 +3,7 @@
 import { AddQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
@@ -42,6 +42,14 @@ export default function AddQuoteModal({
     
     const { projects } = useProjects();
     const [form_project, setForm_project] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
+    const quotedProjectIds = useMemo(
+        () => new Set(existingQuotes.map((quote) => String(quote.proyecto_id))),
+        [existingQuotes],
+    );
+    const availableProjects = useMemo(
+        () => projects.filter((project) => !quotedProjectIds.has(String(project.id))),
+        [projects, quotedProjectIds],
+    );
 
     // ----------
     // TECNOLOGÍA SELECCIONADA
@@ -181,10 +189,10 @@ export default function AddQuoteModal({
                         label="Seleccionar Proyecto"
                         required
                         value={form_project.nombre ?? ""}
-                        options={["Seleccione proyecto", ...projects.map((project) => project.nombre)]}
+                        options={["Seleccione proyecto", ...availableProjects.map((project) => project.nombre)]}
                         searchPlaceholder="Buscar proyecto..."
-                        emptyMessage="No hay proyectos con ese nombre"
-                        onChange={(value) => ProjectSelection(value, projects, setForm_project, setForm)}
+                        emptyMessage="No hay proyectos sin cotizar con ese nombre"
+                        onChange={(value) => ProjectSelection(value, availableProjects, setForm_project, setForm)}
                     />
 
                     {hasSelectedProject && (

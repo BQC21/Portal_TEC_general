@@ -2,13 +2,14 @@
 
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddFinantialModalProps } from "@/lib/types/components/General/modals";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { INITIAL_FINANTIAL_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
+import { useFinantials } from "@/features/view/hooks/services/useRealtimeFinantial";
 import { FinantialData } from "@/features/view/sub_components/M3/refactor/finantial/finantial_data";
 import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/finantial/finantial_details";
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
@@ -22,6 +23,15 @@ export default function AddFinantialModal({
     existing_project_equipos,
 }: AddFinantialModalProps){
     const { quotes } = useQuotes();
+    const { finantials } = useFinantials();
+    const analyzedQuoteIds = useMemo(
+        () => new Set(finantials.map((item) => String(item.cotizacion_id))),
+        [finantials],
+    );
+    const availableQuotes = useMemo(
+        () => quotes.filter((quote) => !analyzedQuoteIds.has(String(quote.id))),
+        [quotes, analyzedQuoteIds],
+    );
 
     const [form, setForm] = useState<FinantialFormState>(INITIAL_FINANTIAL_FORM)
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
@@ -93,14 +103,14 @@ export default function AddFinantialModal({
                         }
                         options={[
                             "Seleccione cotización",
-                            ...quotes.map(
+                            ...availableQuotes.map(
                                 (quote) =>
                                     `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
                             ),
                         ]}
                         searchPlaceholder="Buscar cotización..."
-                        emptyMessage="No hay cotizaciones con ese nombre"
-                        onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
+                        emptyMessage="No hay cotizaciones sin análisis financiero con ese nombre"
+                        onChange={(value) => QuoteSelection(value, availableQuotes, setForm_quote, setForm)}
                     />
 
                     {hasSelectedQuote && (

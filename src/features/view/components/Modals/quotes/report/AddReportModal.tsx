@@ -3,7 +3,8 @@
 import { AddReportModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
-import { useEffect, useState } from "react";
+import { useReports } from "@/features/view/hooks/services/useRealtimeReports";
+import { useEffect, useMemo, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
@@ -25,6 +26,15 @@ export default function AddReportModal({onAddReport, onClose,
 
     // usar información de otras tabla
     const { quotes } = useQuotes();
+    const { reports } = useReports();
+    const reportedQuoteIds = useMemo(
+        () => new Set(reports.map((report) => String(report.cotizacion_id))),
+        [reports],
+    );
+    const availableQuotes = useMemo(
+        () => quotes.filter((quote) => !reportedQuoteIds.has(String(quote.id))),
+        [quotes, reportedQuoteIds],
+    );
 
     // valores iniciales
     const [form, setForm] = useState<ReportFormState>(INITIAL_REPORT_FORM);
@@ -117,14 +127,14 @@ export default function AddReportModal({onAddReport, onClose,
                         }
                         options={[
                             "Seleccione cotización",
-                            ...quotes.map(
+                            ...availableQuotes.map(
                                 (quote) =>
                                     `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
                             ),
                         ]}
                         searchPlaceholder="Buscar cotización..."
-                        emptyMessage="No hay cotizaciones con ese nombre"
-                        onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
+                        emptyMessage="No hay cotizaciones sin reporte con ese nombre"
+                        onChange={(value) => QuoteSelection(value, availableQuotes, setForm_quote, setForm)}
                     />
 
                     {hasSelectedQuote && (

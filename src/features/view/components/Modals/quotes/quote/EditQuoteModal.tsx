@@ -3,7 +3,7 @@
 import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
@@ -182,15 +182,6 @@ export default function EditQuoteModal({
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSearchableSelectField
-                        label="Seleccionar Proyecto"
-                        required
-                        value={form_project.nombre ?? ""}
-                        options={["Seleccione proyecto", ...projects.map((project) => project.nombre)]}
-                        searchPlaceholder="Buscar proyecto..."
-                        emptyMessage="No hay proyectos con ese nombre"
-                        onChange={(value) => ProjectSelection(value, projects, setForm_project, setForm)}
-                    />
 
                     {hasSelectedProject && (
                         <ExcelResizableTables>

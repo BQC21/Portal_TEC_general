@@ -124,23 +124,6 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSearchableSelectField
-                        label="Seleccionar Cotización"
-                        required
-                        value={form_quotes.cod_cotizacion
-                            ? `(${form_quotes.cod_cotizacion}) - ${form_quotes.proyecto_info?.nombre ?? ""}` : ""
-                        }
-                        options={[
-                            "Seleccione cotización",
-                            ...quotes.map(
-                                (quote) =>
-                                    `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
-                            ),
-                        ]}
-                        searchPlaceholder="Buscar cotización..."
-                        emptyMessage="No hay cotizaciones con ese nombre"
-                        onChange={(value) => QuoteSelection(value, quotes, setForm_quote, setForm)}
-                    />
 
                     {hasSelectedQuote && (
                         <>
