@@ -28,10 +28,16 @@ function toMonthlyValues(initial?: number[]): MonthlyValue[] {
     return base.map((_, i) => toMonthlyNumber(initial[i]));
 }
 
+export function monthsFromFactor(factor: number): number[] {
+    const value = Number.isFinite(factor) && factor > 0 ? factor : 0;
+    return Array.from({ length: 12 }, () => value);
+}
+
 export function useMonthlyDemand(
     onAnnualChange: (value: string) => void,
     onMonthlyChange: (value: number[]) => void,
-    initialMonths?: number[], 
+    initialMonths?: number[],
+    enabled = true,
 ) {
     const [monthlyValues, setMonthlyValues] = useState<MonthlyValue[]>(
         () => toMonthlyValues(initialMonths),
@@ -49,11 +55,17 @@ export function useMonthlyDemand(
     );
 
     useEffect(() => {
+        if (!enabled) return;
+        setMonthlyValues(toMonthlyValues(initialMonths));
+    }, [enabled]);
+
+    useEffect(() => {
+        if (!enabled) return;
         const asNumbers = monthlyValues.map((m) => (typeof m === "number" ? m : 0));
         const total = asNumbers.reduce((sum, m) => sum + m, 0);
         onAnnualChange(String(total));
         onMonthlyChange(asNumbers);
-    }, [monthlyValues]); // sync al form después del render
+    }, [enabled, monthlyValues]);
 
     const annualTotal = monthlyValues.reduce<number>(
         (sum, monthValue) => sum + (typeof monthValue === "number" ? monthValue : 0),

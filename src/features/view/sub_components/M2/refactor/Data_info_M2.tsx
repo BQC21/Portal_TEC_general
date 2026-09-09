@@ -6,7 +6,7 @@ import { AddProductNumberField } from "../../../components/Form_fields/AddNumber
 import { AddProductRadioField } from "../../../components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
-import { MONTH_LABELS, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
+import { MONTH_LABELS, monthsFromFactor, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
 import {
@@ -32,12 +32,26 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
         [updateField],
     );
 
-    const { monthlyValues, updateMonth, annualTotal } = useMonthlyDemand
-    (handleAnnualDemandChange, handleMonthlyDemandChange, form.demanda_mensual);
+    const isFactorDemand = form.opcion_llenado_demanda === "FACTOR";
+    const { monthlyValues, updateMonth, annualTotal } = useMonthlyDemand(
+        handleAnnualDemandChange,
+        handleMonthlyDemandChange,
+        form.demanda_mensual,
+        !isFactorDemand,
+    );
 
-    const displayedAnnualDemand = annualTotal > 0
-        ? String(annualTotal)
-        : form.demanda_electrica;
+    function applyFactorDemand(factorValue: number) {
+        const factor = Number.isFinite(factorValue) && factorValue > 0 ? factorValue : 0;
+        updateField("factor", factor > 0 ? String(factor) : "");
+        updateField("demanda_electrica", String(factor * 12));
+        updateField("demanda_mensual", monthsFromFactor(factor));
+    }
+
+    const displayedAnnualDemand = isFactorDemand
+        ? String((Number(form.factor) || 0) * 12)
+        : annualTotal > 0
+            ? String(annualTotal)
+            : form.demanda_electrica;
 
     const isAutoPanels = form.opcion_llenado_paneles !== "MANUAL";
     const minPanelesAuto = toPanelInteger(computedRequirements.strings_minimos, "ceil");
@@ -70,8 +84,11 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                 />
                                 <AddProductRadioField
                                     label="Factor × 12"
-                                    checked={form.opcion_llenado_demanda === "FACTOR"}
-                                    onChange={() => handleOpcionDemandaLlenadoChange("FACTOR")}
+                                    checked={isFactorDemand}
+                                    onChange={() => {
+                                        handleOpcionDemandaLlenadoChange("FACTOR");
+                                        applyFactorDemand(Number(form.factor));
+                                    }}
                                 />
                             </div>
                             {form.opcion_llenado_demanda === "MENSUAL" ? (
@@ -89,10 +106,12 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                 ))) : (
                                 <AddProductNumberField
                                     label="Demanda mensual típica (kWh)"
-                                    value={Number(form.factor)}
-                                    onChange={(value) => {
-                                        updateField("demanda_electrica", String(Number(value) * 12));
-                                    }}
+                                    required
+                                    centered
+                                    value={Number(form.factor) > 0 ? Number(form.factor) : ""}
+                                    onChange={(value) => applyFactorDemand(value)}
+                                    step={0.01}
+                                    min={0}
                                 />
                             )}
 
