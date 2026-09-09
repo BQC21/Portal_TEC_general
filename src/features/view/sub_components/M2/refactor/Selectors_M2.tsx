@@ -115,7 +115,7 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                     form, computedRequirements, 
                                     equipos, materiales);
                                 const isSelected = isEquipmentTypeSelected(label);
-                                const customSelectClass = isSelected && (label !== "ACCESORIO" && label !== "ESTRUCTURA")
+                                const customSelectClass = isSelected && (label !== "ACCESORIO" && label !== "ESTRUCTURA" && label !== "MÓDULO FV")
                                     ? "field-row-selected"
                                     : "";
 
