@@ -14,7 +14,7 @@ import type {
 import {
     INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 
-import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, FillOptions } from "@/lib/utils/options"; // opciones
+import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, DemandOptions, FillOptions } from "@/lib/utils/options"; // opciones
 
 // import { useConverterNREL } from "@/features/view/hooks/api/useConverterNREL"
 import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
@@ -305,6 +305,11 @@ export default function EditProjectModal({
         updateField("opcion_llenado", value);
     }
 
+    // Handler para cambiar la opción de demanda eléctrica
+    function handleOpcionDemandaLlenadoChange(value: DemandOptions) {
+        updateField("opcion_llenado_demanda", value);
+    }
+
     // Handler para cambiar la opción de llenado para la cantidad de paneles (AUTOMÁTICO | MANUAL)
     function handleOpcionLlenadoChangePANELES(value: FillOptions) {
         updateField("opcion_llenado_paneles", value);
@@ -348,6 +353,7 @@ export default function EditProjectModal({
                         form={form} 
                         updateField={(field, value) => updateField(field as keyof ProjectFormState, value)} 
                         handleOpcionLlenadoChange={(value) => handleOpcionLlenadoChange(value as FillOptions)}
+                        handleOpcionDemandaLlenadoChange={(value) => handleOpcionDemandaLlenadoChange(value as DemandOptions)}
                         handleOpcionLlenadoChangePANELES={(value) => handleOpcionLlenadoChangePANELES(value as FillOptions)}
                         computedRequirements={computedRequirements.computedRequirements} 
                         getFieldValueLightClass={getFieldValueLightClass} 
