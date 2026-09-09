@@ -210,7 +210,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     // llenado
     opcion_llenado: FILL_OPTIONS[0],
     opcion_llenado_paneles: FILL_OPTIONS[0],
-    opcion_llenado_demanda: DEMAND_OPTIONS[0],
+    opcion_llenado_demanda: DEMAND_OPTIONS[1],
     factor: "",
     // demandas mensuales
     demanda_mensual: [],
