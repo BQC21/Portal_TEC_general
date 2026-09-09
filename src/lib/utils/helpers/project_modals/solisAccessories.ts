@@ -85,6 +85,7 @@ function toSelectedAccessory(equipo: Equipos): SelectedEquipmentItem {
         impp_i_in: equipo.impp_i_in,
         cantidad: 1,
         unidad: equipo.unidad,
+        paneles_palet: equipo.paneles_palet,
         precio_soles: equipo.precio_soles,
         precio_dolares: equipo.precio_dolares,
         precio_soles_igv: equipo.precio_soles_igv,
