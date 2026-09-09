@@ -16,6 +16,7 @@ import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/repor
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
+import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -35,6 +36,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
             ...existingReport.cotizacion_info,
         } : INITIAL_QUOTE_FORM
     );
+
+    const MO_percent = percentMO(Number(form.porcentaje_eqmt))
 
     // Equipos a no mostrarse en el PDF
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
@@ -85,13 +88,22 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // ------- EVENTOS ------------------------
     // ----------------------------------------
 
+    useEffect(() => {
+        const nextInst = Number.isFinite(MO_percent) ? String(MO_percent) : "";
+        if (form.porcentaje_inst !== nextInst) {
+            setForm((current) => ({ ...current, porcentaje_inst: nextInst }));
+        }
+    }, [MO_percent, form.porcentaje_inst]);
+
     // Actualizar Form
     function updateField<K extends keyof ReportFormState>(field: K, value: ReportFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value,
-                precio_cotizacion: String(Number(form_quotes.precio_dolares).toFixed(2),
-                )
+                precio_cotizacion: String(Number(form_quotes.precio_dolares).toFixed(2)),
             };
+            if (field === "porcentaje_eqmt") {
+                updated.porcentaje_inst = String(percentMO(Number(value)));
+            }
             return updated;
         });
     }
@@ -103,6 +115,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         await onUpdateReport({
             ...form,
             precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
+            porcentaje_inst: String(MO_percent),
             updated_at: new Date(),
         });
     }
@@ -133,6 +146,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     <ReportDataInput
                                         form={form}
                                         updateField={updateField}
+                                        MO_percent={MO_percent}
                                     />
 
                                 </div>
@@ -150,7 +164,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={precioUsd}
-                                        MO={Number(form.porcentaje_inst)}
+                                        MO={MO_percent}
                                         hiddenMOIds={hiddenMOIds}
                                         onToggleMOVisibility={toggleMOVisibility}
                                     />

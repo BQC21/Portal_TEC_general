@@ -229,6 +229,7 @@ export type Quote_selectedProps = {
     form: ReportFormState;
     updateField: <K extends keyof ReportFormState>
                 (field: K, value: ReportFormState[K]) => void;
+    MO_percent: number;
 }
 
 export type Finantial_selectedProps = {

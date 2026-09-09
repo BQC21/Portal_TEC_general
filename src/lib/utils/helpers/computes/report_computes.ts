@@ -38,3 +38,7 @@ export function computeReportSubtotal(
         subtotal: base * (1 - factor),
     };
 }
+
+export function percentMO(porcentaje_eqmt: number){
+    return 100 - porcentaje_eqmt
+}
