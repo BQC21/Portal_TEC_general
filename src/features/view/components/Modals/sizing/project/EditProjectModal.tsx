@@ -129,6 +129,7 @@ export default function EditProjectModal({
                 impp_i_in: item.equipo_info!.impp_i_in,
                 cantidad: Number(item.cantidad),
                 unidad: item.equipo_info!.unidad,
+                paneles_palet: item.equipo_info!.paneles_palet,
                 precio_soles: item.equipo_info!.precio_soles,
                 precio_dolares: item.equipo_info!.precio_dolares,
                 precio_soles_igv: item.equipo_info!.precio_soles_igv,
@@ -310,9 +311,6 @@ export default function EditProjectModal({
     }
 
     const isEquipmentTypeSelected = (type: string) => {
-        if (type === "MÓDULO FV") {
-            return selectedEquipmentTable.filter((item) => item.row === type).length >= 2;
-        }
         return selectedEquipmentTable.some(item => item.row === type);
     };
 
