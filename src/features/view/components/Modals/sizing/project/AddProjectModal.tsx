@@ -44,7 +44,10 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
     const { materiales } = useMateriales();
 
     // valores iniciales
-    const [form, setForm] = useState<ProjectFormState>(INITIAL_PROJECT_FORM);
+    const [form, setForm] = useState<ProjectFormState>({
+        ...INITIAL_PROJECT_FORM,
+        estado_proyecto: STATUS_PROJECT_OPTIONS[1],
+    });
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
 
     // ----------------------------------------
@@ -216,9 +219,6 @@ export default function AddProjectModal({ onAddProject, onClose }: AddMProjectod
 
     // Condicionar el estado de la visualización del selector de EQUIPOS
     const isEquipmentTypeSelected = (type: string) => {
-        if (type === "MÓDULO FV") {
-            return selectedEquipmentTable.filter((item) => item.row === type).length >= 2;
-        }
         return selectedEquipmentTable.some(item => item.row === type);
     };
 
