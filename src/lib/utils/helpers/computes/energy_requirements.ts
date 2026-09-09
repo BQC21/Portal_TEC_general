@@ -22,12 +22,12 @@ export function compute_cobertura(demanda: number, energia: number) {
 // Campo fotovoltaico
 // -------------------------
 
-export function min_strings(potenciaDC: number, potenciaMOD: number){
-	return potenciaDC/potenciaMOD;
+export function min_strings(potenciaDC: number, potenciaMOD: number, paneles_palet: number){
+	return paneles_palet == 0 ? potenciaDC/potenciaMOD : potenciaDC/(potenciaMOD/paneles_palet);
 }
 
-export function max_strings(potenciaDC_INV: number, potenciaMOD: number){
-	return potenciaDC_INV/potenciaMOD;
+export function max_strings(potenciaDC_INV: number, potenciaMOD: number, paneles_palet: number){
+	return paneles_palet == 0 ? potenciaDC_INV/potenciaMOD : potenciaDC_INV/(potenciaMOD/paneles_palet);
 }
 
 // -------------------------

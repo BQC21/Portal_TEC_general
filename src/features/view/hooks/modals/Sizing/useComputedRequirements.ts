@@ -32,10 +32,12 @@ export function useComputedRequirements(form: ProjectFormState, formZone: ZoneFo
         const rawStringsMin = min_strings(
             potenciaDCRequerida,
             Number(selectedEquipment?.potencia_maxima ?? 0),
+            Number(selectedEquipment?.paneles_palet ?? 0),
         );
         const rawStringsMax = max_strings(
             Number(selectedInverter?.potencia_maxima ?? 0),
             Number(selectedEquipment?.potencia_maxima ?? 0),
+            Number(selectedEquipment?.paneles_palet ?? 0),
         );
         const strings_minimos = String(
             Number.isFinite(rawStringsMin) && rawStringsMin > 0 ? Math.ceil(rawStringsMin) : 0,
