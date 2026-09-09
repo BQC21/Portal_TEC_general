@@ -142,7 +142,7 @@ def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
                     index=index,
                     descripcion=_to_str(info.descripcion),
                     unidad=_to_str(info.unidad, "UNI"),
-                    cantidad=_to_str(item.cantidad, "0"),
+                    cantidad = str(max(0, math.ceil(_to_float(item.cantidad))))
                 )
             )
             index += 1
