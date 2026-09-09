@@ -203,7 +203,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
     created_at: new Date(),
     updated_at: new Date(),
     // estado
-    estado_proyecto: STATUS_PROJECT_OPTIONS[0],
+    estado_proyecto: STATUS_PROJECT_OPTIONS[1],
     // enlace
     enlace: "",
     // llenado
