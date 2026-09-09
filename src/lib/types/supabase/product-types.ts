@@ -22,6 +22,7 @@ export type SelectedEquipmentItem = {
     isc_i_out: number;
     impp_i_in: string;
     unidad: string;
+    paneles_palet?: number;
     cantidad?: number; // cantidad seleccionada para el proyecto
     // ṕrecios
     precio_soles: number;
