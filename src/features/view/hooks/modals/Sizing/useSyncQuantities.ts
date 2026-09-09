@@ -1,7 +1,7 @@
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { cantidadModuloFVEnTabla, normalizeModuloFVUnidad } from "@/lib/utils/helpers/computes/PanelNumber";
+import { cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
 import { SetStateAction, useEffect } from "react";
 
 export function useSyncQuantities(form: ProjectFormState, computedRequirements: computedRequirements,
@@ -10,18 +10,21 @@ export function useSyncQuantities(form: ProjectFormState, computedRequirements: 
     setSelectedMaterialTable: (value: SetStateAction<SelectedMaterialItem[]>) => void){
     const moduloFvSelectionKey = selectedEquipmentTable
         .filter((item) => item.row === "MÓDULO FV")
-        .map((item) => `${item.id}:${normalizeModuloFVUnidad(item.unidad) ?? ""}`)
+        .map((item) => `${item.id}:${item.unidad}:${item.paneles_palet ?? 0}`)
         .join("|");
 
    // número de strings (módulos FV)
     useEffect(() => {
         const stringsVal = Number(form.strings) || 0;
         setSelectedEquipmentTable((curr) => {
-            const modules = curr.filter((item) => item.row === "MÓDULO FV");
             let changed = false;
             const next = curr.map((item) => {
                 if (item.row !== "MÓDULO FV") return item;
-                const cantidad = cantidadModuloFVEnTabla(stringsVal, item.unidad, modules);
+                const cantidad = cantidadModuloFVEnTabla(
+                    stringsVal,
+                    item.paneles_palet ?? 0,
+                    item.unidad,
+                );
                 if (item.cantidad === cantidad) return item;
                 changed = true;
                 return { ...item, cantidad };

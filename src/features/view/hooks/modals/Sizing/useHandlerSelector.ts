@@ -87,8 +87,6 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                             if (equipo.tipo_de_producto !== label) return false;
                             return canAddModuloFV(selectedModules, {
                                 id: String(equipo.id),
-                                marca: equipo.marca,
-                                unidad: equipo.unidad,
                             });
                         })
                         .map(toModuloFVSelectOption),

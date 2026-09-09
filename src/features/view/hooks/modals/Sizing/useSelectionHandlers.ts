@@ -135,8 +135,6 @@ export function useSelectionHandlers({
                 if (label === "MÓDULO FV") {
                     canAdd = canAddModuloFV(selectedModules, {
                         id: String(equipoDetails.id),
-                        marca: equipoDetails.marca,
-                        unidad: equipoDetails.unidad,
                     });
                 } else if (label !== "ACCESORIO" && label !== "ESTRUCTURA") {
                     canAdd = !selectedEquipmentTable.some((item) => item.row === label);
@@ -150,8 +148,8 @@ export function useSelectionHandlers({
                         : label === "MÓDULO FV"
                         ? cantidadModuloFVEnTabla(
                             Number(form.strings) || 0,
+                            equipoDetails.paneles_palet,
                             equipoDetails.unidad,
-                            selectedModules,
                         )
                         : label === "BATERÍA"
                         ? Number(computedRequirements.num_baterias) || 0
@@ -167,44 +165,32 @@ export function useSelectionHandlers({
                         )
                         : 1;
 
-                setSelectedEquipmentTable((prev: SelectedEquipmentItem[]) => {
-                    const next = [
-                        ...prev,
-                        {
-                            row: label,
-                            id: selectedEquipo.equipoId,
-                            description: selectedEquipo.description,
-                            marca: equipoDetails.marca,
-                            codigo: equipoDetails.cod_producto,
-                            potencia_maxima: equipoDetails.potencia_maxima,
-                            mppt: equipoDetails.mppt,
-                            cadenas: equipoDetails.cadenas,
-                            dod: equipoDetails.dod,
-                            potencia_ac: equipoDetails.potencia_ac,
-                            voc_vmax: equipoDetails.voc_vmax,
-                            vmpp_vmin: equipoDetails.vmpp_vmin,
-                            isc_i_out: equipoDetails.isc_i_out,
-                            impp_i_in: equipoDetails.impp_i_in,
-                            cantidad: cantidadInit,
-                            unidad: equipoDetails.unidad,
-                            precio_soles: equipoDetails.precio_soles,
-                            precio_dolares: equipoDetails.precio_dolares,
-                            precio_soles_igv: equipoDetails.precio_soles_igv,
-                            precio_dolares_igv: equipoDetails.precio_dolares_igv,
-                        },
-                    ];
-                    if (label !== "MÓDULO FV") return next;
-                    const modules = next.filter((item) => item.row === "MÓDULO FV");
-                    const paneles = Number(form.strings) || 0;
-                    return next.map((item) =>
-                        item.row === "MÓDULO FV"
-                            ? {
-                                ...item,
-                                cantidad: cantidadModuloFVEnTabla(paneles, item.unidad, modules),
-                            }
-                            : item,
-                    );
-                });
+                setSelectedEquipmentTable((prev: SelectedEquipmentItem[]) => [
+                    ...prev,
+                    {
+                        row: label,
+                        id: selectedEquipo.equipoId,
+                        description: selectedEquipo.description,
+                        marca: equipoDetails.marca,
+                        codigo: equipoDetails.cod_producto,
+                        potencia_maxima: equipoDetails.potencia_maxima,
+                        mppt: equipoDetails.mppt,
+                        cadenas: equipoDetails.cadenas,
+                        dod: equipoDetails.dod,
+                        potencia_ac: equipoDetails.potencia_ac,
+                        voc_vmax: equipoDetails.voc_vmax,
+                        vmpp_vmin: equipoDetails.vmpp_vmin,
+                        isc_i_out: equipoDetails.isc_i_out,
+                        impp_i_in: equipoDetails.impp_i_in,
+                        cantidad: cantidadInit,
+                        unidad: equipoDetails.unidad,
+                        paneles_palet: equipoDetails.paneles_palet,
+                        precio_soles: equipoDetails.precio_soles,
+                        precio_dolares: equipoDetails.precio_dolares,
+                        precio_soles_igv: equipoDetails.precio_soles_igv,
+                        precio_dolares_igv: equipoDetails.precio_dolares_igv,
+                    },
+                ]);
                 }
 
                 // Limpiar el selector temporal
