@@ -13,6 +13,7 @@ import {
     cantidadesPaletYUnidad,
     optionalInputMax,
     optionalInputMin,
+    panelesPorPaletDeModulo,
     toPanelInteger,
     toPanelIntegerLabel,
 } from "@/lib/utils/helpers/computes/PanelNumber";
@@ -43,7 +44,13 @@ export function Data_info_M2({ form, updateField, handleOpcionLlenadoChange, han
     const maxPanelesAuto = toPanelInteger(computedRequirements.strings_maximos, "floor");
     const minPanelesManual = toPanelInteger(form.strings_min, "ceil");
     const maxPanelesManual = toPanelInteger(form.strings_max, "floor");
-    const { palets, unidades } = cantidadesPaletYUnidad(toPanelInteger(form.strings));
+    const { palets, unidades } = cantidadesPaletYUnidad(
+        toPanelInteger(form.strings),
+        panelesPorPaletDeModulo(
+            computedRequirements.selectedEquipment?.unidad,
+            computedRequirements.selectedEquipment?.paneles_palet,
+        ),
+    );
 
     return (
         <>
