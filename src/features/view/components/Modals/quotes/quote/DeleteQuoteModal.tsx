@@ -4,6 +4,7 @@ import { DeleteQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { formatCurrency } from "@/lib/utils/normalization";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteModalProps){
     // Aceptar actualización
@@ -40,7 +41,7 @@ export function DeleteQuoteModal({quote, onDeleteQuote, onClose}: DeleteQuoteMod
                 />
                 <AddProductReadonlyField
                     label="Nombre del proyecto"
-                    value={quote.proyecto_info?.nombre || ""} 
+                    value={quoteAssociatedLabel(quote) || ""} 
                 />
                 <AddProductReadonlyField
                     label="Versión de la cotización"
