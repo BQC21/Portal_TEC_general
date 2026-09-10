@@ -3,8 +3,6 @@
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useEffect, useState } from "react";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { EditFinantialModalProps } from "@/lib/types/components/General/modals";
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
@@ -16,7 +14,6 @@ import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/fin
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
-import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 
 export default function EditFinantialModal({
     existingFinantial,

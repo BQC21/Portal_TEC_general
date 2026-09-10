@@ -84,7 +84,7 @@ export function ReportDataInput({
             />
             <AddProductReadonlyField
                 label = "Porcentaje de distribución por puesta en marcha"
-                value = {Number.isFinite(MO_percent) ? String(MO_percent) : ""}
+                value = {Number.isFinite(MO_percent) ? String(MO_percent.toFixed(5)) : ""}
                 colorClass={getFieldValueLightClass(String(MO_percent))}
             />
             {/* Adicionales */}
