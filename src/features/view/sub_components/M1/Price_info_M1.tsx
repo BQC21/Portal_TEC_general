@@ -19,13 +19,18 @@ export function Price_info_M1({
     updateField,
 }: Price_info_M1_props){
 
+    // calcular tasa de cambio
     const { sellPrice, buyPrice, date, loading, error } = useConverterSunat();
     const exchangeRate =
         sellPrice > 0 ? sellPrice : buyPrice > 0 ? buyPrice : FALLBACK_EXCHANGE_RATE;
+    
+    // calcular divisa
     const currency: CurrencyCode =
-        form.priceInputCurrency === "PEN" || form.priceInputCurrency === "USD"
-            ? form.priceInputCurrency
-            : "USD";
+    form.priceInputCurrency === "PEN" || form.priceInputCurrency === "USD"
+        ? form.priceInputCurrency
+        : "USD";
+
+    // almacenar precios calculados
     const computedPrices = useMemo(() => {
         const basePen =
             currency === "PEN"
@@ -41,6 +46,7 @@ export function Price_info_M1({
             form.igv,
         );
     }, [currency, exchangeRate, form.igv, form.precio_dolares, form.precio_soles]);
+    
     // Default de moneda si el form aún no tiene priceInputCurrency
     useEffect(() => {
         if (form.priceInputCurrency !== "PEN" && form.priceInputCurrency !== "USD") {
@@ -49,6 +55,7 @@ export function Price_info_M1({
         // Solo al montar / cuando llega vacío; no depender de updateField (inline en modales)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [form.priceInputCurrency]);
+    
     // Mantener IGV y moneda convertida alineados con el cálculo actual
     useEffect(() => {
         const nextPen = roundMoney(computedPrices.pricePen);
@@ -80,6 +87,7 @@ export function Price_info_M1({
         form.precio_soles,
         form.precio_soles_igv,
     ]);
+    
     function syncPrices(next: {
         currency: CurrencyCode;
         precio_soles: number;
@@ -174,7 +182,7 @@ export function Price_info_M1({
                         options={[...PRICE_CURRENCY_OPTIONS]}
                         onChange={(value) => handleCurrencyModeChange(value as CurrencyCode)}
                     />
-                    <p className="text-sm text-slate-500">{rateLabel}</p>
+                    <h1 className="text-2xl text-slate-500">{rateLabel}</h1>
                     <div className="space-y-3">
                         <p className="text-sm font-semibold text-slate-800">Ingresar precio en:</p>
                         <div className="flex flex-wrap gap-6">
