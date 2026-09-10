@@ -99,32 +99,28 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
                 required
                 value={Number(form.degra_1er) > 0 ? Number(form.degra_1er) : ""}
                 onChange={(value) => updateField("degra_1er", String(value))}
-                step={0.01}
-                min={0}
+                step={0.01} min={0} max={100}
             />
             <AddProductNumberField
                 label="(%) degradación desde el 2do año"
                 required
                 value={Number(form.degra_2do) > 0 ? Number(form.degra_2do) : ""}
                 onChange={(value) => updateField("degra_2do", String(value))}
-                step={0.01}
-                min={0}
+                step={0.01} min={0} max={100}
             />
             <AddProductNumberField
                 label="(%) incremento de la tarifa"
                 required
                 value={Number(form.tarifa_crecimiento) > 0 ? Number(form.tarifa_crecimiento) : ""}
                 onChange={(value) => updateField("tarifa_crecimiento", String(value))}
-                step={0.01}
-                min={0}
+                step={0.01} min={0} max={100}
             />
             <AddProductNumberField
                 label="Tasa de descuento (%)"
                 required
                 value={Number(form.tasa_descuento) > 0 ? Number(form.tasa_descuento) : ""}
                 onChange={(value) => updateField("tasa_descuento", String(value))}
-                step={0.01}
-                min={0}
+                step={0.01} min={0} max={100}
             />
             {showReplacementFields && (
                 <AddProductSelectField
