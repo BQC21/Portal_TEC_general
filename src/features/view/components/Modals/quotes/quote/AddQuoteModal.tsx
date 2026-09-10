@@ -197,6 +197,9 @@ export default function AddQuoteModal({
 
                     {hasSelectedProject && (
                         <ExcelResizableTables>
+
+                        <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.proyecto_info?.nombre}</h1>
+
                         <Product_selected
                             equiposDescriptions={equiposDescriptions}
                             materialesDescriptions={materialesDescriptions}

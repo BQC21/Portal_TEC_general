@@ -141,7 +141,11 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                     {hasSelectedQuote && (
                         <>
                             <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
+
                                 <div className="grid gap-6">
+                                <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>
+
+
                                     {/* Inputación de datos */}
                                     <ReportDataInput
                                         form={form}

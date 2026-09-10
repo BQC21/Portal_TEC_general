@@ -116,6 +116,8 @@ export default function AddFinantialModal({
                     {hasSelectedQuote && (
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
+                            <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>
+                                
                                 <FinantialData
                                     form={form}
                                     updateField={updateField}
