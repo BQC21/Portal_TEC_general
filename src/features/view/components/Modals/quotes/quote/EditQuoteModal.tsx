@@ -8,8 +8,6 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
 import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
-import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
@@ -24,7 +22,8 @@ import {
     syncQuoteMaterialesToProject,
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
-import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -49,6 +48,8 @@ export default function EditQuoteModal({
     // ----------    
     
     const hasSelectedProject = Boolean(form.proyecto_id);
+    const isIndependent = !isQuoteLinkedToProject(form);
+    const showQuoteBody = hasSelectedProject || isIndependent;
 
     const {
         projectEquipos,
@@ -183,10 +184,35 @@ export default function EditQuoteModal({
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
 
-                    {hasSelectedProject && (
+                    {isIndependent && (
+                        <div className="mb-6 space-y-4">
+                            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-slate-700">
+                                <p className="text-lg font-medium">
+                                    Esta cotización no está asociada a un proyecto de dimensionamiento.
+                                </p>
+                                <p className="mt-1 text-base">
+                                    Se sugiere asignarle un nombre para identificarla en el listado.
+                                </p>
+                            </div>
+                            <AddProductTextField
+                                label="Nombre de la cotización independiente"
+                                value={form.nombre_cotizacion ?? ""}
+                                onChange={(value) => updateField("nombre_cotizacion", value)}
+                                placeholder="Ej. Consulta libre"
+                            />
+                        </div>
+                    )}
+
+                    {showQuoteBody && (
                         <ExcelResizableTables>
 
-                        <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.proyecto_info?.nombre}</h1>
+                        <h1 className="text-2xl font-bold text-slate-500">
+                            {isIndependent
+                                ? form.nombre_cotizacion?.trim()
+                                    ? `Cotización independiente --- ${form.nombre_cotizacion}`
+                                    : "Cotización independiente"
+                                : `Proyecto --- ${form.proyecto_info?.nombre ?? ""}`}
+                        </h1>
 
                         <Product_selected
                             equiposDescriptions={equiposDescriptions}
