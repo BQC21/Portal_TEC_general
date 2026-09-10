@@ -22,6 +22,7 @@ export const EQUIPOS_HEADERS = [
     "ISC/I OUT",
     // precios
     // "UNIDAD",
+    "Tasa de cambio",
     "PRECIO S/",
     "PRECIO $",
     "IGV",
@@ -45,6 +46,7 @@ export const MATERIALES_HEADERS = [
     "PARTE ELÉCTRICA",
     // precios
     "UNIDAD",
+    "Tasa de cambio",
     "PRECIO S/",
     "PRECIO $",
     "IGV",
