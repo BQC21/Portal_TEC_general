@@ -50,3 +50,4 @@ next-env.d.ts
 /src/passwords/
 /python/output/
 /context/
+/test_sprite_tests/
