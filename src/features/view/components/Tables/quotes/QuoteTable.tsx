@@ -6,6 +6,7 @@ import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
 import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
 import { Button2Duplicate } from "../../Buttons/shared/button2Duplicate";
 import { formatCurrency } from "@/lib/utils/normalization";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function QuoteTable({quote, totalQuote, 
     onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales}: QuoteTableProps){
@@ -32,7 +33,8 @@ export default function QuoteTable({quote, totalQuote,
                                     return (
                                     <tr key={quote.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td>
+                                        {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td> */}
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(quote)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(quote.version)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.igv}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.tasa_cambio}</td>
