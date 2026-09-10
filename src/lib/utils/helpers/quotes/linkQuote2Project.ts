@@ -6,11 +6,14 @@ export function isQuoteLinkedToProject(quote: {
 }
 export function quoteAssociatedLabel(quote: {
     proyecto_info?: { nombre?: string };
-    nombre?: string | null;
+    nombre_cotizacion?: string | null;
 }) {
+    // en caso exista un proyecto asociado
     const projectName = quote.proyecto_info?.nombre?.trim();
     if (projectName) return projectName;
-    const custom = quote.nombre?.trim();
+    // en caso es una cotización independiente y tiene nombre
+    const custom = quote.nombre_cotizacion?.trim();
     if (custom) return custom;
+    // en caso es una cotización independiente y NO tiene nombre 
     return "---";
 }
