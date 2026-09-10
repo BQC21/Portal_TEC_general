@@ -5,6 +5,7 @@ import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";
 import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
 import { formatCurrency } from "@/lib/utils/normalization";
 import Button2PDF from "../../Buttons/quotes/report/button2PDF";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 
 export default function ReportTable({report, totalReport, 
@@ -40,7 +41,7 @@ export default function ReportTable({report, totalReport,
                                     return (
                                     <tr key={report.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.cod_cotizacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.proyecto_info?.nombre}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(report.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cliente}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.ruc_dni}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.lugar}</td>

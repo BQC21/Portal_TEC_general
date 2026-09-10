@@ -4,10 +4,11 @@ export function isQuoteLinkedToProject(quote: {
 }) {
     return Boolean(quote.proyecto_id) || Boolean(quote.proyecto_info?.id);
 }
-export function quoteAssociatedLabel(quote: {
+export function quoteAssociatedLabel(quote?: {
     proyecto_info?: { nombre?: string };
     nombre_cotizacion?: string | null;
-}) {
+} | null) {
+    if (!quote) return "---";
     // en caso exista un proyecto asociado
     const projectName = quote.proyecto_info?.nombre?.trim();
     if (projectName) return projectName;
