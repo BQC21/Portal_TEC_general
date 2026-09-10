@@ -17,6 +17,7 @@ import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/M
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -142,7 +143,7 @@ export default function AddReportModal({onAddReport, onClose,
                             "Seleccione cotización",
                             ...availableQuotes.map(
                                 (quote) =>
-                                    `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
+                                    `(${quote.cod_cotizacion}) - ${quoteAssociatedLabel(quote) ?? ""}`
                             ),
                         ]}
                         searchPlaceholder="Buscar cotización..."
