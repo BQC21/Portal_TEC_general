@@ -51,3 +51,6 @@ next-env.d.ts
 /python/output/
 /context/
 /test_sprite_tests/
+/testsprite_tests/
+testsprite_tests/tmp/
+testsprite_tests/tmp/config.json
