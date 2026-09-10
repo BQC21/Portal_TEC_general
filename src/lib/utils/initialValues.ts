@@ -371,7 +371,7 @@ export const INITIAL_FINANTIAL_FORM: FinantialFormState = {
     generacion: "90",
     tarifa_red: "80",
     degra_1er: "1",
-    degra_2do: "40",
+    degra_2do: "0.4",
     tarifa_crecimiento: "2",
     tasa_descuento: "10",
     lcoe: "",

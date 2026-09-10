@@ -4,7 +4,6 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddFinantialModalProps } from "@/lib/types/components/General/modals";
 import { useEffect, useMemo, useState } from "react";
 import { INITIAL_FINANTIAL_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
