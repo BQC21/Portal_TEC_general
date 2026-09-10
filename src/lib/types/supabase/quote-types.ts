@@ -9,7 +9,7 @@ export type QuoteFormData = Omit<Quote, "id">
 export type SupabaseQuoteRow = {
     id?: number | string;
     cod_cotizacion?: string;
-    proyecto_id?: number | string;
+    proyecto_id?: number | string | null;
     proyecto_info?: SupabaseProjectRow;
     proyectos?: SupabaseProjectRow;
     igv?: number;

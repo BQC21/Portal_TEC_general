@@ -150,7 +150,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
 export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
     return{
         cod_cotizacion: quote.cod_cotizacion,
-        proyecto_id: quote.proyecto_id,
+        proyecto_id: quote.proyecto_id?.toString().trim() ? quote.proyecto_id : null,
         igv: parseNumber(quote.igv),
         tasa_cambio: parseNumber(quote.tasa_cambio),
         precio_dolares: parseNumber(quote.precio_dolares),
