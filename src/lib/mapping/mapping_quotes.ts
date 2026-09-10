@@ -110,6 +110,7 @@ export function createQuoteFormStateFromQuote(quote: Quote): QuoteFormState{
         gm_general: quote.gm_general,
         gm_viaticos: quote.gm_viaticos,
         gm: quote.gm,
+        nombre_cotizacion: quote.nombre_cotizacion,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
         costos_manuales: normalizeManualCosts(quote.costos_manuales),
@@ -136,6 +137,7 @@ export function mapSupabaseRowtoQuote(row: SupabaseQuoteRow): Quote{
         gm_general: row.gm_general?.toString() || "",
         gm_viaticos: row.gm_viaticos?.toString() || "",
         gm: row.gm?.toString() || "",
+        nombre_cotizacion: row.nombre_cotizacion?.toString() || "",
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
         costos_manuales: normalizeManualCosts(row.costos_manuales as ManualCosts | null),
@@ -156,6 +158,7 @@ export function mapQuoteToSupabaseRow(quote: QuoteFormData): SupabaseQuoteRow {
         gm_general: parseNumber(quote.gm_general) ?? 0,
         gm_viaticos: parseNumber(quote.gm_viaticos) ?? 0,
         gm: parseNumber(quote.gm) ?? 0,
+        nombre_cotizacion: quote.nombre_cotizacion,
         created_at: quote.created_at,
         updated_at: quote.updated_at,
         costos_manuales: quote.costos_manuales

@@ -357,6 +357,7 @@ export const INITIAL_QUOTE_FORM: QuoteFormState = {
     gm_general: "5",
     gm_viaticos: "10",
     gm: "",
+    nombre_cotizacion: "",
     costos_manuales: INITIAL_MANUAL_RESOURCE_COSTS,
     depre_tool: "12",
     version: "1",
