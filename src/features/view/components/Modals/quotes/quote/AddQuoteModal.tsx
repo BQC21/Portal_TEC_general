@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { ProjectSelection } from "@/features/view/hooks/modals/Quotes/useProjectSelection";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
@@ -56,6 +55,9 @@ export default function AddQuoteModal({
     // ----------
 
     const hasSelectedProject = Boolean(form.proyecto_id);
+
+    const [isIndependent, setIndependent] = useState(false);
+    const showQuoteBody = hasSelectedProject || isIndependent;
 
     const {
         projectEquipos,
@@ -185,20 +187,46 @@ export default function AddQuoteModal({
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
-                    <AddProductSearchableSelectField
-                        label="Seleccionar Proyecto"
-                        required
-                        value={form_project.nombre ?? ""}
-                        options={["Seleccione proyecto", ...availableProjects.map((project) => project.nombre)]}
-                        searchPlaceholder="Buscar proyecto..."
-                        emptyMessage="No hay proyectos sin cotizar con ese nombre"
-                        onChange={(value) => ProjectSelection(value, availableProjects, setForm_project, setForm)}
-                    />
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                        <div className="min-w-0 flex-1">
+                            <AddProductSearchableSelectField
+                                label="Seleccionar Proyecto"
+                                required={!isIndependent}
+                                disabled={isIndependent}
+                                value={form_project.nombre ?? ""}
+                                options={["Seleccione proyecto", ...availableProjects.map((project) => project.nombre)]}
+                                searchPlaceholder="Buscar proyecto..."
+                                emptyMessage="No hay proyectos sin cotizar con ese nombre"
+                                onChange={(value) => {
+                                    setIndependent(false);
+                                    ProjectSelection(value, availableProjects, setForm_project, setForm);
+                                }}
+                            />
+                        </div>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setIndependent(true);
+                                ProjectSelection("Seleccione proyecto", availableProjects, setForm_project, setForm);
+                            }}
+                            className={`shrink-0 rounded-xl px-6 py-3 text-lg font-semibold transition ${
+                                isIndependent
+                                    ? "bg-brand-500 text-white hover:bg-brand-600"
+                                    : "border border-slate-300 text-slate-700 hover:bg-slate-50"
+                            }`}
+                        >
+                            Cotización independiente
+                        </button>
+                    </div>
 
-                    {hasSelectedProject && (
+                    {showQuoteBody && (
                         <ExcelResizableTables>
 
-                        <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.proyecto_info?.nombre}</h1>
+                        <h1 className="text-2xl font-bold text-slate-500">
+                            {isIndependent
+                                ? "Cotización independiente"
+                                : `Proyecto --- ${form.proyecto_info?.nombre ?? ""}`}
+                        </h1>
 
                         <Product_selected
                             equiposDescriptions={equiposDescriptions}
