@@ -50,6 +50,9 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                     const showVoltajeNominal = isInversor;
                                     const showIsc = isInversor || isModulo;
 
+                                    // tasa de cambio
+                                    const exchange_rate = (equipo.precio_soles/equipo.precio_dolares).toFixed(3)
+
                                     return (
                                     <tr key={equipo.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(equipo.cod_prov)}`}>{displayCellValue(equipo.cod_prov)}</td>
@@ -72,6 +75,7 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.impp_i_in)}`}>{displayCellValue(equipo.impp_i_in)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getApplicableCellTextClass(equipo.isc_i_out, showIsc)}`}>{displayApplicableCellValue(equipo.isc_i_out, showIsc)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.unidad)}`}>{displayCellValue(equipo.unidad)}</td> */}
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(exchange_rate)}`}>{displayApplicableCellValue(exchange_rate, true)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_soles)}`}>{toSafeNumber(equipo.precio_soles).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares)}`}>{toSafeNumber(equipo.precio_dolares).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.igv)}`}>{toSafeNumber(equipo.igv).toFixed(2)}</td>
