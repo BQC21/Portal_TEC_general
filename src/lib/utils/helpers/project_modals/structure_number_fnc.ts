@@ -39,10 +39,12 @@ function isInclinedStructure(descripcion: string | undefined): boolean {
 }
 
 // Filtra estructuras según la orientación del proyecto (coplanar / inclinado).
+// Sin ángulo (cotización independiente) se admiten todas las alternativas.
 export function matchesStructureAngle(
     descripcion: string | undefined,
     angulo: string | undefined,
 ): boolean {
+    if (!angulo?.trim()) return true // COTIZACIÓN INDEPENDIENTE
     if (isCoplanarStructure(descripcion)) return isCoplanar(angulo)
     if (isInclinedStructure(descripcion)) return isInclinado(angulo)
     return true

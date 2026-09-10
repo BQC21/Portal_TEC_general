@@ -10,6 +10,7 @@ import { Personal_PriceTable } from "../Tables/quotes/subtables/Recursos/Persona
 import { SCTR_PriceTable } from "../Tables/quotes/subtables/Recursos/SCTR_PriceTable";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { EPP_REUSABLE_OPTIONS } from "@/lib/utils/options";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export function ResourcesTables({
     recursos,
@@ -49,7 +50,11 @@ export function ResourcesTables({
                 <CollapsibleTableSection title="Estructuras">
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
-                        projectAngle={form.proyecto_info?.angulo}
+                        projectAngle={
+                            isQuoteLinkedToProject(form)
+                                ? form.proyecto_info?.angulo
+                                : undefined
+                        }
                         onUpdateCantidad={onUpdateEquipoCantidad}
                         onAddEquipo={onAddEquipo}
                         onRemoveEquipo={onRemoveEquipo}
