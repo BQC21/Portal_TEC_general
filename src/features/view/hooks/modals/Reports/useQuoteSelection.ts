@@ -1,5 +1,6 @@
 import { Quote, QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
+import { quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { SetStateAction } from "react";
 
 type FormWithQuoteSelection = {
@@ -25,11 +26,14 @@ export function QuoteSelection<T extends FormWithQuoteSelection>(
         return;
     }
 
-    // búsqueda de la cotización seleccionada
-    const selected = quotes.find(
-        (quote) =>
-            `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}` === value
-    );
+    // búsqueda de la cotización seleccionada (incluye independientes sin proyecto)
+    const codeMatch = /^\((.+?)\) - /.exec(value)?.[1];
+    const selected = quotes.find((quote) => quote.cod_cotizacion === codeMatch)
+        ?? quotes.find((quote) => quoteOptionLabel(quote) === value)
+        ?? quotes.find(
+            (quote) =>
+                `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}` === value
+        );
 
     if (selected){
         setForm_quote({

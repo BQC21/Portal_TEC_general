@@ -17,7 +17,7 @@ import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/M
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
-import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteAssociatedLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -51,17 +51,24 @@ export default function AddReportModal({onAddReport, onClose,
     // ----------------------------------------
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+    const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
+    const showReportBody = hasSelectedQuote;
+
     const precioUsd =
         Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
     const igvRate = Number(form.cotizacion_info?.igv || form_quotes.igv) || 0;
 
-    const projectEquipos = hasSelectedQuote
-        ? existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
-        : [];
+    const projectEquipos = !hasSelectedQuote
+        ? []
+        : isIndependent
+            ? (form.cotizacion_info?.costos_manuales?.Recursos?.equipos_seleccionados ?? [])
+            : existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id);
 
-    const projectMateriales = hasSelectedQuote
-        ? existing_project_materiales.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
-        : [];
+    const projectMateriales = !hasSelectedQuote
+        ? []
+        : isIndependent
+            ? (form.cotizacion_info?.costos_manuales?.Recursos?.materiales_seleccionados ?? [])
+            : existing_project_materiales.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id);
 
     useEffect(() => {
         setHiddenEquipoIds([]);
@@ -136,27 +143,26 @@ export default function AddReportModal({onAddReport, onClose,
                     <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
-                        value={form_quotes.cod_cotizacion
-                            ? `(${form_quotes.cod_cotizacion}) - ${form_quotes.proyecto_info?.nombre ?? ""}` : ""
-                        }
+                        value={form_quotes.cod_cotizacion ? quoteOptionLabel(form_quotes) : ""}
                         options={[
                             "Seleccione cotización",
-                            ...availableQuotes.map(
-                                (quote) =>
-                                    `(${quote.cod_cotizacion}) - ${quoteAssociatedLabel(quote) ?? ""}`
-                            ),
+                            ...availableQuotes.map((quote) => quoteOptionLabel(quote)),
                         ]}
                         searchPlaceholder="Buscar cotización..."
                         emptyMessage="No hay cotizaciones sin reporte con ese nombre"
                         onChange={(value) => QuoteSelection(value, availableQuotes, setForm_quote, setForm)}
                     />
 
-                    {hasSelectedQuote && (
+                    {showReportBody && (
                         <>
                             <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
 
                                 <div className="grid gap-6">
-                                <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>
+                                <h1 className="text-2xl font-bold text-slate-500">
+                                    {isIndependent
+                                        ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
+                                        : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
+                                </h1>
 
                                     {/* Inputación de datos */}
                                     <ReportDataInput

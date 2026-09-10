@@ -17,3 +17,11 @@ export function quoteAssociatedLabel(quote: {
     // en caso es una cotización independiente y NO tiene nombre 
     return "---";
 }
+
+export function quoteOptionLabel(quote: {
+    cod_cotizacion?: string | null;
+    proyecto_info?: { nombre?: string };
+    nombre_cotizacion?: string | null;
+}) {
+    return `(${quote.cod_cotizacion ?? ""}) - ${quoteAssociatedLabel(quote)}`;
+}
