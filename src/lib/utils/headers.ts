@@ -28,6 +28,8 @@ export const EQUIPOS_HEADERS = [
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
     // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     "Acciones",
 ];
 
@@ -49,6 +51,8 @@ export const MATERIALES_HEADERS = [
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
     // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     "Acciones",
 ];
 

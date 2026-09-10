@@ -14,6 +14,7 @@ import {
     shouldRenderInversorProp,
     shouldRenderModuloProp,
 } from "@/lib/utils/helpers/render/render_modals";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (
@@ -76,6 +77,8 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.igv)}`}>{toSafeNumber(equipo.igv).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_soles_igv)}`}>{toSafeNumber(equipo.precio_soles_igv).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares_igv)}`}>{toSafeNumber(equipo.precio_dolares_igv).toFixed(2)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.created_at)}`}>{formatDate(equipo.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.updated_at)}`}>{formatDate(equipo.updated_at)}</td>
                                         {/* acciones */}
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
