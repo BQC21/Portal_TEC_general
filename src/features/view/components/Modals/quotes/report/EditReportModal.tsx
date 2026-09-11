@@ -17,7 +17,7 @@ import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/M
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
-import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
@@ -120,6 +120,12 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
         await onUpdateReport({
             ...form,
+            cotizacion_info: form.cotizacion_info
+                ? {
+                    ...form.cotizacion_info,
+                    nombre_cotizacion: form_quotes.nombre_cotizacion,
+                }
+                : form.cotizacion_info,
             precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
             porcentaje_inst: String(MO_percent),
             updated_at: new Date(),
@@ -144,12 +150,50 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
 
+                    {isIndependent && (
+                        <div className="mb-6 space-y-4">
+                            <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-slate-700">
+                                <p className="text-lg font-medium">
+                                    Esta cotización no está asociada a un proyecto de dimensionamiento.
+                                </p>
+                                <p className="mt-1 text-base">
+                                    Se sugiere asignarle un nombre para identificarla en el listado.
+                                </p>
+                            </div>
+                            <AddProductTextField
+                                label="Nombre de la cotización independiente"
+                                value={form.cotizacion_info?.nombre_cotizacion ?? form_quotes.nombre_cotizacion ?? ""}
+                                onChange={(value) => {
+                                    setForm_quote((current) => ({ ...current, nombre_cotizacion: value }))
+                                    setForm((current) =>
+                                        current.cotizacion_info
+                                            ? {
+                                                ...current,
+                                                cotizacion_info: {
+                                                    ...current.cotizacion_info,
+                                                    nombre_cotizacion: value,
+                                                },
+                                            }
+                                            : current,
+                                    )
+                                }}
+                                placeholder="Ej. Consulta libre"
+                            />
+                        </div>
+                    )}
+
                     {showReportBody && (
                         <>
                             <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
 
                                 <div className="grid gap-6">
-                                <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>
+                                <h1 className="text-2xl font-bold text-slate-500">
+                                    {isIndependent
+                                        ? form_quotes.nombre_cotizacion?.trim()
+                                            ? `Cotización independiente --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`
+                                            : "Cotización independiente"
+                                        : `Proyecto --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`}
+                                </h1>
 
 
                                     {/* Inputación de datos */}

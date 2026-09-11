@@ -1,6 +1,8 @@
+import { updateQuoteNombreCotizacion } from "@/features/controller/services/QuoteQueries";
 import { mapFinantialToSupabaseRow, mapSupabaseRowtoFinantial } from "@/lib/mapping/mapping_finantial";
 import { createClient } from "@/lib/supabase/client";
 import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-types";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { FINANTIAL_TABLE } from "@/lib/utils/namingTolerance";
 
 // crear
@@ -96,6 +98,18 @@ export async function getFinantialById(id: string): Promise<Finantial> {
 // actualizar
 export async function updateFinantial(id: string, finantial: FinantialFormData): Promise<Finantial> {
     const supabase = createClient();
+    const quoteId = finantial.cotizacion_id?.toString();
+    if (
+        quoteId
+        && finantial.cotizacion_info
+        && !isQuoteLinkedToProject(finantial.cotizacion_info)
+    ) {
+        await updateQuoteNombreCotizacion(
+            quoteId,
+            finantial.cotizacion_info.nombre_cotizacion ?? "",
+        );
+    }
+
     const baseRow = mapFinantialToSupabaseRow(finantial) as Record<string, unknown>;
 
     const { error } = await supabase.from(FINANTIAL_TABLE)

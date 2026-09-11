@@ -1,6 +1,8 @@
+import { updateQuoteNombreCotizacion } from "@/features/controller/services/QuoteQueries";
 import { mapReportToSupabaseRow, mapSupabaseRowtoReport } from "@/lib/mapping/mapping_reports";
 import { createClient } from "@/lib/supabase/client";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { REPORT_TABLE } from "@/lib/utils/namingTolerance";
 
 // crear
@@ -96,6 +98,18 @@ export async function getReportById(id: string): Promise<Report> {
 // actualizar
 export async function updateReport(id: string, report: ReportFormData): Promise<Report> {
     const supabase = createClient();
+    const quoteId = report.cotizacion_id?.toString();
+    if (
+        quoteId
+        && report.cotizacion_info
+        && !isQuoteLinkedToProject(report.cotizacion_info)
+    ) {
+        await updateQuoteNombreCotizacion(
+            quoteId,
+            report.cotizacion_info.nombre_cotizacion ?? "",
+        );
+    }
+
     const baseRow = mapReportToSupabaseRow(report) as Record<string, unknown>;
 
     const { error } = await supabase.from(REPORT_TABLE)

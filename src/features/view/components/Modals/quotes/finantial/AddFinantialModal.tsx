@@ -39,7 +39,7 @@ export default function AddFinantialModal({
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
     const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
-    const showFinantialBody = hasSelectedQuote;
+    const showFinantialBody = hasSelectedQuote || isIndependent;
 
     // útil para el inversor seleccionado
     const projectEquipos = hasSelectedQuote
@@ -115,10 +115,12 @@ export default function AddFinantialModal({
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
                             <h1 className="text-2xl font-bold text-slate-500">
-                                {isIndependent
-                                    ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
-                                    : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
-                            </h1>                                
+                                    {isIndependent
+                                        ? form.cotizacion_info?.nombre_cotizacion?.trim()
+                                            ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
+                                            : "Cotización independiente"
+                                        : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
+                                </h1>                              
                                 <FinantialData
                                     form={form}
                                     updateField={updateField}

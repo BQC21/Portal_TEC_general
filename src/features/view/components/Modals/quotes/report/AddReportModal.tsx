@@ -18,6 +18,7 @@ import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
 import { isQuoteLinkedToProject, quoteAssociatedLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function AddReportModal({onAddReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -52,7 +53,7 @@ export default function AddReportModal({onAddReport, onClose,
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
     const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
-    const showReportBody = hasSelectedQuote;
+    const showReportBody = hasSelectedQuote || isIndependent;
 
     const precioUsd =
         Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
@@ -140,6 +141,7 @@ export default function AddReportModal({onAddReport, onClose,
                 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
+                    
                     <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
@@ -160,7 +162,9 @@ export default function AddReportModal({onAddReport, onClose,
                                 <div className="grid gap-6">
                                 <h1 className="text-2xl font-bold text-slate-500">
                                     {isIndependent
-                                        ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
+                                        ? form.cotizacion_info?.nombre_cotizacion?.trim()
+                                            ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
+                                            : "Cotización independiente"
                                         : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
                                 </h1>
 

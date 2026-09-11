@@ -165,6 +165,21 @@ export async function updateQuote(id: string, quote: QuoteFormData): Promise<Quo
     return await getQuoteById(id);
 }
 
+export async function updateQuoteNombreCotizacion(
+    id: string,
+    nombre_cotizacion: string,
+): Promise<void> {
+    const supabase = createClient();
+    const { error } = await supabase
+        .from(QUOTE_TABLE)
+        .update({ nombre_cotizacion })
+        .eq("id", id);
+
+    if (error) {
+        throw new Error(`Error al actualizar el nombre de la cotización: ${error.message}`);
+    }
+}
+
 // remover
 export async function deleteQuote(id: string): Promise<void> {
     const supabase = createClient();

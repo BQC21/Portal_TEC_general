@@ -28,6 +28,7 @@ import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
 import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 
 export default function QuotesPage(){
@@ -76,15 +77,19 @@ export default function QuotesPage(){
 	});
 
     const filteredReports = reports.filter((report) => {
-		const matchesDescription = !searchReport || 
-            report.cotizacion_info?.proyecto_info?.nombre.toLowerCase().includes(searchReport.toLowerCase());
+		const matchesDescription = !searchReport ||
+            quoteAssociatedLabel(report.cotizacion_info)
+                .toLowerCase()
+                .includes(searchReport.toLowerCase());
 
 		return matchesDescription;
 	});
 
     const filteredFinantial = finantials.filter((finantial) => {
-		const matchesDescription = !searchFinantial || 
-            finantial.cotizacion_info?.proyecto_info?.nombre.toLowerCase().includes(searchFinantial.toLowerCase());
+		const matchesDescription = !searchFinantial ||
+            quoteAssociatedLabel(finantial.cotizacion_info)
+                .toLowerCase()
+                .includes(searchFinantial.toLowerCase());
 
 		return matchesDescription;
 	});
@@ -149,6 +154,8 @@ export default function QuotesPage(){
         const { id, ...quoteData } = updatedQuote;
         await update_quote(id, quoteData);
         await refetch_quote();
+        await refetch_report();
+        await refetch_finantial();
         await refetch_project_equipos();
         await refetch_project_materiales();
     }
@@ -160,6 +167,8 @@ export default function QuotesPage(){
         const { id, ...reportData } = updatedReport;
         await update_report(id, reportData);
         await refetch_report();
+        await refetch_quote();
+        await refetch_finantial();
     }
 
     // FINANZAS
@@ -169,6 +178,8 @@ export default function QuotesPage(){
         const { id, ...finantialData } = updatedFinantial;
         await update_finantials(id, finantialData);
         await refetch_finantial();
+        await refetch_quote();
+        await refetch_report();
     }
 
     //------ Remover
