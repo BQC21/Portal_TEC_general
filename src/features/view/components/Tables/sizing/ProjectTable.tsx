@@ -48,27 +48,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                     
                                     return (
                                     <tr key={project.id} className="bg-white">
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
-                                        {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.configuracion}</td>
-                                        <td className="border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words">
-                                            {formatDemandaMensual(project.demanda_mensual)}
-                                        </td>                        
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(project.demanda_electrica).toFixed(0)} KWh</td>
-                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
-                                            {equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-"}
-                                        </td>
-                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
-                                            {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
-                                        </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500`}>{project.enlace}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
+
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit
@@ -92,6 +72,28 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
 
                                             </div>
                                         </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
+                                        {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.configuracion}</td>
+                                        <td className="border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words">
+                                            {formatDemandaMensual(project.demanda_mensual)}
+                                        </td>                        
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(project.demanda_electrica).toFixed(0)} KWh</td>
+                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
+                                            {equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-"}
+                                        </td>
+                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
+                                            {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
+                                        </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500`}>{project.enlace}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
+                                        
                                     </tr>
                                     );
                                 })

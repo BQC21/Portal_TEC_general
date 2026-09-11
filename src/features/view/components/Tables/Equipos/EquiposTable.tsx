@@ -55,6 +55,19 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
 
                                     return (
                                     <tr key={equipo.id} className="bg-white">
+                                        {/* acciones */}
+                                        <td className="border border-slate-200 px-4 py-5">
+                                            <div className="flex items-center gap-4 text-slate-500">
+                                                <Button2Edit
+                                                    equipo={equipo}
+                                                    onUpdateEquipo={onUpdateEquipos}
+                                                />
+                                                <Button2Trash 
+                                                    equipo={equipo}
+                                                    onDeleteEquipo={onDeleteEquipos}
+                                                />
+                                            </div>
+                                        </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(equipo.cod_prov)}`}>{displayCellValue(equipo.cod_prov)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.proveedor)}`}>{displayCellValue(equipo.proveedor)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.cod_producto)}`}>{displayCellValue(equipo.cod_producto)}</td>
@@ -83,19 +96,6 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.precio_dolares_igv)}`}>{toSafeNumber(equipo.precio_dolares_igv).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.created_at)}`}>{formatDate(equipo.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.updated_at)}`}>{formatDate(equipo.updated_at)}</td>
-                                        {/* acciones */}
-                                        <td className="border border-slate-200 px-4 py-5">
-                                            <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
-                                                    equipo={equipo}
-                                                    onUpdateEquipo={onUpdateEquipos}
-                                                />
-                                                <Button2Trash 
-                                                    equipo={equipo}
-                                                    onDeleteEquipo={onDeleteEquipos}
-                                                />
-                                            </div>
-                                        </td>
                                     </tr>
                                     );
                                 })

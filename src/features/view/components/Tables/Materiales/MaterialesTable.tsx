@@ -31,6 +31,20 @@ export function MaterialesTable({ materiales, totalMateriales,
 
                                     return (
                                         <tr key={material.id} className="bg-white">
+                                            
+                                            {/* acciones */}
+                                            <td className="border border-slate-200 px-4 py-5">
+                                                <div className="flex items-center gap-4 text-slate-500">
+                                                    <Button2Edit
+                                                        material={material}
+                                                        onUpdateMateriales={onUpdateMateriales}
+                                                    />
+                                                    <Button2Trash 
+                                                        material={material}
+                                                        onDeleteMaterial={onDeleteMateriales}
+                                                    />
+                                                </div>
+                                            </td>
                                             <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(material.cod_prov)}`}>{displayCellValue(material.cod_prov)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.proveedor)}`}>{displayCellValue(material.proveedor)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.cod_producto)}`}>{displayCellValue(material.cod_producto)}</td>
@@ -47,19 +61,7 @@ export function MaterialesTable({ materiales, totalMateriales,
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.precio_dolares_igv)}`}>{toSafeNumber(material.precio_dolares_igv).toFixed(2)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.created_at)}`}>{formatDate(material.created_at)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.updated_at)}`}>{formatDate(material.updated_at)}</td>
-                                            {/* acciones */}
-                                            <td className="border border-slate-200 px-4 py-5">
-                                                <div className="flex items-center gap-4 text-slate-500">
-                                                    <Button2Edit
-                                                        material={material}
-                                                        onUpdateMateriales={onUpdateMateriales}
-                                                    />
-                                                    <Button2Trash 
-                                                        material={material}
-                                                        onDeleteMaterial={onDeleteMateriales}
-                                                    />
-                                                </div>
-                                            </td>
+                                            
                                         </tr>
                                     )
                                 })

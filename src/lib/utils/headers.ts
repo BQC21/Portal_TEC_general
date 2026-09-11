@@ -1,4 +1,5 @@
 export const EQUIPOS_HEADERS = [
+    "Acciones",
     // propiedades generales
     "COD PROV",
     "PROVEEDOR",
@@ -31,10 +32,10 @@ export const EQUIPOS_HEADERS = [
     // eventos
     "Fecha creada",
     "Fecha actualizada",
-    "Acciones",
 ];
 
 export const MATERIALES_HEADERS = [
+    "Acciones",
     // propiedades generales
     "COD PROV",
     "PROVEEDOR",
@@ -55,7 +56,6 @@ export const MATERIALES_HEADERS = [
     // eventos
     "Fecha creada",
     "Fecha actualizada",
-    "Acciones",
 ];
 
 export const TABLE_HEADERS_SUPPLIER = [
@@ -85,6 +85,7 @@ export const TABLE_HEADERS_TYPE = [
 /////////////
 
 export const TABLE_HEADERS_PROJECT = [
+    "Acciones",
     "Nombre del proyecto",
     "Versión del dimensionamiento",
     // "Descripción del proyecto",
@@ -100,7 +101,6 @@ export const TABLE_HEADERS_PROJECT = [
     "Fecha creada",
     "Fecha actualizada",
     "Estado del proyecto",
-    "Acciones",
 ]
 
 export const TABLE_HEADERS_ZONE = [
@@ -118,6 +118,7 @@ export const TABLE_HEADERS_ZONE = [
 /////////////
 
 export const TABLE_HEADERS_QUOTE = [
+    "Acciones",
     "Código de cotización",
     "Proyecto asociado",
     "Versión de cotización",
@@ -128,10 +129,10 @@ export const TABLE_HEADERS_QUOTE = [
     "Depreciación por herramientas",
     "Creado",
     "Actualizado",
-    "Acciones",
 ]
 
 export const TABLE_HEADERS_REPORT = [
+    "Acciones",
     "Cotización asociada",
     "Proyecto asociado",
     "Nombre del cliente",
@@ -143,11 +144,11 @@ export const TABLE_HEADERS_REPORT = [
     "Precio de cotización",
     "Creado",
     "Actualizado",
-    "Acciones",
     // "Generar PDF"
 ]
 
 export const TABLE_HEADERS_FINANTIAL = [
+    "Acciones",
     "Cotización asociada",
     "Proyecto asociado",
     "Energía de la planta",
@@ -161,5 +162,4 @@ export const TABLE_HEADERS_FINANTIAL = [
     "LCOE",
     "Creado",
     "Actualizado",
-    "Acciones",
 ]
