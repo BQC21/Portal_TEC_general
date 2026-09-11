@@ -17,6 +17,8 @@ import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/M
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -50,6 +52,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // ----------------------------------------
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+    
+    const isIndependent = !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
+    const showReportBody = hasSelectedQuote || isIndependent;
+
     const precioUsd =
         Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
     const igvRate = Number(form.cotizacion_info?.igv || form_quotes.igv) || 0;
@@ -138,7 +144,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
 
-                    {hasSelectedQuote && (
+                    {showReportBody && (
                         <>
                             <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
 

@@ -4,6 +4,7 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { DeleteReportModalProps } from "@/lib/types/components/General/modals";
 import { formatCurrency } from "@/lib/utils/normalization";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export function DeleteReportModal({report, onDeleteReport, onClose}: DeleteReportModalProps){
     // Aceptar actualización
@@ -40,7 +41,7 @@ export function DeleteReportModal({report, onDeleteReport, onClose}: DeleteRepor
                 />
                 <AddProductReadonlyField
                     label="Nombre del proyecto"
-                    value={report.cotizacion_info?.proyecto_info?.nombre || ""} 
+                    value={quoteAssociatedLabel(report.cotizacion_info)} 
                 />
                 <AddProductReadonlyField
                     label="Precio de cotización ($)"
