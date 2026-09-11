@@ -16,6 +16,7 @@ import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
+import { isQuoteLinkedToProject, quoteAssociatedLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function AddFinantialModal({
     onAddFinantial,
@@ -37,6 +38,8 @@ export default function AddFinantialModal({
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+    const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
+    const showFinantialBody = hasSelectedQuote;
 
     // útil para el inversor seleccionado
     const projectEquipos = hasSelectedQuote
@@ -98,26 +101,24 @@ export default function AddFinantialModal({
                     <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
-                        value={form_quotes.cod_cotizacion
-                            ? `(${form_quotes.cod_cotizacion}) - ${form_quotes.proyecto_info?.nombre ?? ""}` : ""
-                        }
+                        value={form_quotes.cod_cotizacion ? quoteOptionLabel(form_quotes) : ""}
                         options={[
                             "Seleccione cotización",
-                            ...availableQuotes.map(
-                                (quote) =>
-                                    `(${quote.cod_cotizacion}) - ${quote.proyecto_info?.nombre ?? ""}`
-                            ),
+                            ...availableQuotes.map((quote) => quoteOptionLabel(quote)),
                         ]}
                         searchPlaceholder="Buscar cotización..."
                         emptyMessage="No hay cotizaciones sin análisis financiero con ese nombre"
                         onChange={(value) => QuoteSelection(value, availableQuotes, setForm_quote, setForm)}
                     />
 
-                    {hasSelectedQuote && (
+                    {showFinantialBody && (
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
-                            <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>
-                                
+                            <h1 className="text-2xl font-bold text-slate-500">
+                                {isIndependent
+                                    ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
+                                    : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
+                            </h1>                                
                                 <FinantialData
                                     form={form}
                                     updateField={updateField}

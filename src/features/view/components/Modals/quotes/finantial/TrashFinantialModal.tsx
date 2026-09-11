@@ -4,6 +4,7 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { AddProductReadonlyField } from "../../../Form_fields/AddReadonlyField";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { DeleteFinantialModalProps } from "@/lib/types/components/General/modals";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export function DeleteFinantialModal({finantial, onDeleteFinantial, onClose}: DeleteFinantialModalProps){
     // Aceptar actualización
@@ -40,7 +41,7 @@ export function DeleteFinantialModal({finantial, onDeleteFinantial, onClose}: De
                 />
                 <AddProductReadonlyField
                     label="Nombre del proyecto"
-                    value={finantial.cotizacion_info?.proyecto_info?.nombre || ""} 
+                    value={quoteAssociatedLabel(finantial.cotizacion_info)} 
                 />
                 <AddProductReadonlyField
                     label="Precio de cotización ($)"

@@ -14,6 +14,7 @@ import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/fin
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
+import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function EditFinantialModal({
     existingFinantial,
@@ -32,6 +33,9 @@ export default function EditFinantialModal({
     );
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
+
+    const isIndependent = !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
+    const showFinantialBody = hasSelectedQuote || isIndependent;
 
     const projectEquipos = hasSelectedQuote
         ? existing_project_equipos.filter(
@@ -88,7 +92,7 @@ export default function EditFinantialModal({
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
 
-                    {hasSelectedQuote && (
+                    {showFinantialBody && (
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
                             <h1 className="text-2xl font-bold text-slate-500">Proyecto --- {form.cotizacion_info?.proyecto_info?.nombre}</h1>

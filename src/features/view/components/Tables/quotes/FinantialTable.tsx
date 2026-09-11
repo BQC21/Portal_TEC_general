@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import Button2Edit_finantial from "../../Buttons/quotes/finantial/button2Edit";
 import { Button2Trash_finantial } from "../../Buttons/quotes/finantial/button2Delete";
 import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function FinantialTable({finantial, totalFinantial, 
     onUpdateFinantial, onDeleteFinantial, projects_equipos}: FinantialTableProps){
@@ -44,7 +45,7 @@ export default function FinantialTable({finantial, totalFinantial,
                                             </div>
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.cod_cotizacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.proyecto_info?.nombre}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(finantial.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.planta} MWh</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.generacion} MWh</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>$ {finantial.tarifa_red}</td>
