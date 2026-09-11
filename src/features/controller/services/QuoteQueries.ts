@@ -82,6 +82,7 @@ export async function createQuote(quote: QuoteFormData): Promise<Quote> {
     let { data, error } = await insertQuote(baseRow);
     let attempts = 0;
 
+    // control de errores
     while (error && isUniqueViolation(error) && attempts < 5) {
         attempts += 1;
 
