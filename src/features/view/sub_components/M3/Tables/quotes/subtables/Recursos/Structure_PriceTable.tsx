@@ -19,22 +19,27 @@ export function Structure_PriceTable({
         onAddEquipo,
         onRemoveEquipo,
     }: Structure_PriceTable_props){
+
+    // ---------------
+    // ESTADOS
+    // ---------------
+
     const { equipos } = useEquipos()
     const [equipoToAdd, setEquipoToAdd] = useState("")
     const [dadosToAdd, setDadosToAdd] = useState("")
 
-    // La cantidad de estructuras de módulos sigue a los MÓDULO FV seleccionados
-    // (no al strings estático del proyecto), para que cambie al editar la cotización.
+    
+
+    // ---------------
+    // ALMACENAMIENTO cantidad
+    // ---------------
+
     const panelCount = useMemo(
         () => selected_equipos
             .filter((item) => item.equipo_info?.tipo_de_producto === "MÓDULO FV")
             .reduce(
                 (sum, item) => 
-                    sum + cantidadModuloFVComoUnidades(
-                        item.cantidad,
-                        item.equipo_info?.unidad,
-                        item.equipo_info?.paneles_palet,
-                    ),
+                    sum + cantidadModuloFVComoUnidades(item.cantidad),
                 0,
             ),
         [selected_equipos],
@@ -48,57 +53,76 @@ export function Structure_PriceTable({
     )
 
     // La cantidad no se edita: es el total de unidades a soportar (módulos FV o baterías)
-    // entre las que admite cada estructura. Con varias estructuras de módulos el reparto
-    // se resuelve como combinación en lugar de dividir el total en cada fila.
+    // entre las que admite cada estructura. Con varias estructuras del mismo tipo el
+    // reparto se resuelve como combinación en lugar de dividir el total en cada fila.
     const estructuraEquipos = useMemo(() => {
         const structures = selected_equipos
             .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
 
-        const moduleOptions: StructureOption[] = structures
-            .filter((item) =>
-                !isBatteryStructure(item.equipo_info?.descripcion)
-                && !isDados(item.equipo_info?.descripcion),
-            )
-            .map((item) => ({
-                id: String(item.id),
-                capacity: unitsPerStructure(item.equipo_info?.descripcion),
-                unitCost: Number(item.equipo_info?.precio_soles) || 0,
-            }))
-            .filter((option) => option.capacity > 0)
+        const toOptions = (items: typeof structures): StructureOption[] =>
+            items
+                .map((item) => ({
+                    id: String(item.id),
+                    capacity: unitsPerStructure(item.equipo_info?.descripcion),
+                    unitCost: Number(item.equipo_info?.precio_soles) || 0,
+                }))
+                .filter((option) => option.capacity > 0)
 
-        const combination = moduleOptions.length > 1
+        const moduleOptions = toOptions(structures.filter((item) =>
+            !isBatteryStructure(item.equipo_info?.descripcion)
+            && !isDados(item.equipo_info?.descripcion),
+        ))
+        const batteryOptions = toOptions(structures.filter((item) =>
+            isBatteryStructure(item.equipo_info?.descripcion),
+        ))
+
+        const moduleCombination = moduleOptions.length > 1
             ? bestStructureCombination(panelCount, moduleOptions)
+            : null
+        const batteryCombination = batteryOptions.length > 1
+            ? bestStructureCombination(batteryCount, batteryOptions, "at-least")
             : null
 
         return structures.map((item) => {
             const descripcion = item.equipo_info?.descripcion
             if (isDados(descripcion)) {
-                return { item, perStructure: 0, cantidad: Number(item.cantidad) || 0, isDados: true }
+                return { item, perStructure: 0, cantidad: Number(item.cantidad) || 0, isDados: true, isBattery: false }
             }
 
             const perStructure = unitsPerStructure(descripcion)
+            const isBattery = isBatteryStructure(descripcion)
             if (perStructure <= 0) {
-                return { item, perStructure, cantidad: Number(item.cantidad), isDados: false }
+                return { item, perStructure, cantidad: Number(item.cantidad), isDados: false, isBattery }
             }
 
-            const isBattery = isBatteryStructure(descripcion)
-            if (combination && !isBattery) {
+            if (moduleCombination && !isBattery) {
                 return {
                     item,
                     perStructure,
-                    cantidad: combination.get(String(item.id)) ?? 0,
+                    cantidad: moduleCombination.get(String(item.id)) ?? 0,
                     isDados: false,
+                    isBattery,
+                }
+            }
+
+            if (batteryCombination && isBattery) {
+                return {
+                    item,
+                    perStructure,
+                    cantidad: batteryCombination.get(String(item.id)) ?? 0,
+                    isDados: false,
+                    isBattery,
                 }
             }
 
             const totalUnits = isBattery ? batteryCount : panelCount
-            return { item, perStructure, cantidad: totalUnits / perStructure, isDados: false }
+            return { item, perStructure, cantidad: totalUnits / perStructure, isDados: false, isBattery }
         })
     }, [selected_equipos, panelCount, batteryCount])
 
     const dadosQuantity = useMemo(
         () => estructuraEquipos
-            .filter(({ isDados: dadosRow }) => !dadosRow)
+            .filter(({ isDados: dadosRow, isBattery }) => !dadosRow && !isBattery)
             .reduce((sum, { perStructure, cantidad }) => {
                 const factor = dadosPerStructure(perStructure)
                 if (factor <= 0) return sum
@@ -106,6 +130,11 @@ export function Structure_PriceTable({
             }, 0),
         [estructuraEquipos],
     )
+
+    // ---------------
+    // SINCRONIZACIÓN
+    // ---------------
+
 
     // Sincronización de la cantidad de estructuras (sin dados)
     useEffect(() => {
@@ -127,6 +156,10 @@ export function Structure_PriceTable({
         onUpdateCantidad(dadosItem.id, dadosQuantity)
     }, [selected_equipos, dadosQuantity, onUpdateCantidad])
 
+    // ---------------
+    // ALMACENAMIENTO booleano
+    // ---------------
+
     const hasSelectedStructures = useMemo(
         () => estructuraEquipos.some(({ isDados: dadosRow }) => !dadosRow),
         [estructuraEquipos],
@@ -137,7 +170,10 @@ export function Structure_PriceTable({
         [estructuraEquipos],
     )
 
-    // Estructuras disponibles (sin dados: esos van en el selector secundario)
+    // ---------------
+    // DISPONIBILIDAD
+    // ---------------
+    
     const availableEquipoOptions = useMemo(() => {
         const selectedIds = new Set(
             selected_equipos.map((item) => String(item.equipo_id)),
@@ -177,6 +213,10 @@ export function Structure_PriceTable({
                 })),
         ]
     }, [equipos, selected_equipos])
+
+    // ---------
+    // HANDLERS
+    // ---------
 
     function handleAddEquipo() {
         if (!equipoToAdd) return

@@ -1,14 +1,28 @@
-// La descripción de la estructura indica cuántas unidades soporta, por ejemplo
-// "Estructura coplanar Rupac para 4 módulos" o "Rack para 4 baterías".
-export function unitsPerStructure(descripcion: string | undefined): number {
-    const parsed = Number.parseInt(descripcion?.match(/\d+/)?.[0] ?? "", 10)
+function normalizeStructureText(value: string): string {
+    return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+}
+
+function parsePositiveInt(value: string | undefined): number {
+    const parsed = Number.parseInt(value ?? "", 10)
     return Number.isFinite(parsed) && parsed > 0 ? parsed : 0
 }
 
+// La descripción de la estructura indica cuántas unidades soporta, por ejemplo
+// "Estructura coplanar Rupac para 4 módulos" o "RACK PARA 6 BATERIAS FLH48100R13G2".
+export function unitsPerStructure(descripcion: string | undefined): number {
+    const text = normalizeStructureText(descripcion ?? "")
+    const qualified = text.match(/(\d+)\s*(?:modulos?|baterias?)/)
+    if (qualified) return parsePositiveInt(qualified[1])
+    return parsePositiveInt(text.match(/\d+/)?.[0])
+}
+
 // Las estructuras de baterías se dimensionan contra las baterías seleccionadas, no
-// contra los módulos FV.
+// contra los módulos FV. Acepta "batería", "bateria", "baterías" y "baterias".
 export function isBatteryStructure(descripcion: string | undefined): boolean {
-    return (descripcion ?? "").toLowerCase().includes("batería")
+    return normalizeStructureText(descripcion ?? "").includes("bateria")
 }
 
 export function isDados(descripcion: string | undefined): boolean {

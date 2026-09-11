@@ -170,6 +170,13 @@ export function cantidadModuloFVComoUnidades(
     return n;
 }
 
+export function cantidadBateriaComoUnidades(
+    cantidad: unknown,
+): number {
+    const n = Math.max(0, Math.ceil(Number(cantidad) || 0));
+    return n;
+}
+
 export type EquipoReportDisplayRow = {
     ids: string[];
     cod_producto: string;
