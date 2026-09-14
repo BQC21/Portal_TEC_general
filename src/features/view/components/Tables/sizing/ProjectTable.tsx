@@ -72,6 +72,8 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
 
                                             </div>
                                         </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
@@ -90,8 +92,6 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                             {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500`}>{project.enlace}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
                                         
                                     </tr>

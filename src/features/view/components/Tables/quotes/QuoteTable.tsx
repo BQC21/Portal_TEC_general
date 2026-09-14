@@ -51,6 +51,8 @@ export default function QuoteTable({quote, totalQuote,
                                                 />
                                             </div>
                                         </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(quote)}</td>
@@ -60,8 +62,6 @@ export default function QuoteTable({quote, totalQuote,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(quote.precio_dolares), 'USD')}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{(Number(quote.gm)*100).toFixed(2)} %</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.depre_tool} meses</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.updated_at)}</td>
                                         
                                     </tr>
                                     );

@@ -44,6 +44,8 @@ export default function FinantialTable({finantial, totalFinantial,
                                                 />
                                             </div>
                                         </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(finantial.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.planta} MWh</td>
@@ -55,8 +57,7 @@ export default function FinantialTable({finantial, totalFinantial,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.tasa_descuento} %</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{displayPayback(finantial.tiempo_retorno)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.lcoe} USD/MWh</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.updated_at)}</td>
+                                        
                                         
                                     </tr>
                                     );

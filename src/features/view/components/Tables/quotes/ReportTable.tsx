@@ -55,6 +55,8 @@ export default function ReportTable({report, totalReport,
                                                 />
                                             </div>
                                         </td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(report.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cliente}</td>
@@ -64,8 +66,7 @@ export default function ReportTable({report, totalReport,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(report.porcentaje_eqmt).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(report.porcentaje_inst).toFixed(2)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(report.cotizacion_info?.precio_dolares), "USD")}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
+            
                                         
                                         {/* <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
