@@ -86,6 +86,8 @@ export const TABLE_HEADERS_TYPE = [
 
 export const TABLE_HEADERS_PROJECT = [
     "Acciones",
+    "Fecha creada",
+    "Fecha actualizada",
     "Nombre del proyecto",
     "Versión del dimensionamiento",
     // "Descripción del proyecto",
@@ -98,8 +100,6 @@ export const TABLE_HEADERS_PROJECT = [
     "Equipos principales seleccionados",
     "Materiales eléctricos seleccionados",
     "Enlace del proyecto",
-    "Fecha creada",
-    "Fecha actualizada",
     "Estado del proyecto",
 ]
 
@@ -119,6 +119,8 @@ export const TABLE_HEADERS_ZONE = [
 
 export const TABLE_HEADERS_QUOTE = [
     "Acciones",
+    "Creado",
+    "Actualizado",
     "Código de cotización",
     "Proyecto asociado",
     "Versión de cotización",
@@ -127,12 +129,12 @@ export const TABLE_HEADERS_QUOTE = [
     "Precio de venta ($)",
     "Gross Margin",
     "Depreciación por herramientas",
-    "Creado",
-    "Actualizado",
 ]
 
 export const TABLE_HEADERS_REPORT = [
     "Acciones",
+    "Creado",
+    "Actualizado",
     "Cotización asociada",
     "Proyecto asociado",
     "Nombre del cliente",
@@ -142,13 +144,13 @@ export const TABLE_HEADERS_REPORT = [
     "(%) Eq y Mat",
     "(%) Instalación",
     "Precio de cotización",
-    "Creado",
-    "Actualizado",
     // "Generar PDF"
 ]
 
 export const TABLE_HEADERS_FINANTIAL = [
     "Acciones",
+    "Creado",
+    "Actualizado",
     "Cotización asociada",
     "Proyecto asociado",
     "Energía de la planta",
@@ -160,6 +162,4 @@ export const TABLE_HEADERS_FINANTIAL = [
     "Tasa descuento (%)",
     "Tiempo de recuperación",
     "LCOE",
-    "Creado",
-    "Actualizado",
 ]
