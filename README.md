@@ -17,7 +17,7 @@ Se desarrolla un portal corporativo empresarial que será desplegado en un sitio
 4. PostgreSQL: motor SQL incrustado en Supabase
 5. TailwindCSS: librería para estilización
 6. API de la sunat (https://apis.net.pe/api-tipo-cambio.html): integración del tipo de cambio (USD -> PEN)
-7. Vercel: alojamiento de la apliación desarrollada en Next.js
+7. Vercel: alojamiento de la aplicación desarrollada en Next.js
 
 ## Autenticación
 El portal usa Supabase Auth para controlar el acceso a las rutas internas. La entrada pública queda en `/login`, mientras que `/dashboard`,`/products` y el resto de módulos requieren sesión activa.
