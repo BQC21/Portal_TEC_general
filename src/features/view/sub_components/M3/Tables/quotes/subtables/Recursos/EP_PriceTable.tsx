@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
-import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
+import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
@@ -57,7 +57,8 @@ export function EP_PriceTable({
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Equipos Principales</h2>
-                    <div className="overflow-x-auto rounded-2xl border border-slate-200">
+                    <div className="rounded-2xl border border-slate-200">
+                        <div className="overflow-x-auto">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
                                 <tr className="bg-slate-400 text-left">
@@ -171,12 +172,15 @@ export function EP_PriceTable({
                                 )}
                             </tbody>
                         </table>
+                        </div>
                         <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-end">
                             <div className="min-w-0 flex-1">
-                                <AddProductSelectField
+                                <AddProductSearchableSelectField
                                     label="Agregar equipo"
                                     value={equipoToAdd}
                                     options={availableEquipoOptions}
+                                    searchPlaceholder="Buscar equipo..."
+                                    emptyMessage="No hay equipos con ese nombre"
                                     onChange={setEquipoToAdd}
                                 />
                             </div>
