@@ -75,6 +75,8 @@ export default function AddQuoteModal({
         proyectoId: form.proyecto_id,
         existingProjectEquipos: existing_project_equipos,
         existingProjectMateriales: existing_project_materiales,
+        savedEquipos: form.costos_manuales?.Recursos?.equipos_seleccionados,
+        savedMateriales: form.costos_manuales?.Recursos?.materiales_seleccionados,
     });
 
     // ----------
@@ -88,16 +90,18 @@ export default function AddQuoteModal({
             projectEquipos,
             projectMateriales,
         );
-        await syncQuoteEquiposToProject(
-            form.proyecto_id,
-            projectEquipos,
-            existing_project_equipos,
-        );
-        await syncQuoteMaterialesToProject(
-            form.proyecto_id,
-            projectMateriales,
-            existing_project_materiales,
-        );
+        if (!isIndependent && form.proyecto_id) {
+            await syncQuoteEquiposToProject(
+                form.proyecto_id,
+                projectEquipos,
+                existing_project_equipos,
+            );
+            await syncQuoteMaterialesToProject(
+                form.proyecto_id,
+                projectMateriales,
+                existing_project_materiales,
+            );
+        }
         await onAddQuote({
             ...form,
             costos_manuales,
