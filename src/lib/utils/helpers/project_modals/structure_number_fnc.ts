@@ -19,6 +19,14 @@ export function unitsPerStructure(descripcion: string | undefined): number {
     return parsePositiveInt(text.match(/\d+/)?.[0])
 }
 
+export function cantidadEstructurasParaUnidades(
+    totalUnits: number,
+    perStructure: number,
+): number {
+    if (!(perStructure > 0) || !Number.isFinite(totalUnits) || totalUnits <= 0) return 0
+    return Math.ceil(totalUnits / perStructure)
+}
+
 // Las estructuras de baterías se dimensionan contra las baterías seleccionadas, no
 // contra los módulos FV. Acepta "batería", "bateria", "baterías" y "baterias".
 export function isBatteryStructure(descripcion: string | undefined): boolean {

@@ -9,7 +9,7 @@ import { formatCurrency } from "@/lib/utils/normalization"
 import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"
 import { bestStructureCombination, StructureOption } from "@/lib/utils/helpers/computes/best_structure_arrays"
-import { dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
+import { cantidadEstructurasParaUnidades, dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
 import { cantidadModuloFVComoUnidades } from "@/lib/utils/helpers/computes/PanelNumber"
 
 export function Structure_PriceTable({
@@ -38,8 +38,12 @@ export function Structure_PriceTable({
         () => selected_equipos
             .filter((item) => item.equipo_info?.tipo_de_producto === "MÓDULO FV")
             .reduce(
-                (sum, item) => 
-                    sum + cantidadModuloFVComoUnidades(item.cantidad),
+                (sum, item) =>
+                    sum + cantidadModuloFVComoUnidades(
+                        item.cantidad,
+                        item.equipo_info?.unidad,
+                        item.equipo_info?.paneles_palet ?? undefined,
+                    ),
                 0,
             ),
         [selected_equipos],
@@ -116,7 +120,13 @@ export function Structure_PriceTable({
             }
 
             const totalUnits = isBattery ? batteryCount : panelCount
-            return { item, perStructure, cantidad: totalUnits / perStructure, isDados: false, isBattery }
+            return {
+                item,
+                perStructure,
+                cantidad: cantidadEstructurasParaUnidades(totalUnits, perStructure),
+                isDados: false,
+                isBattery,
+            }
         })
     }, [selected_equipos, panelCount, batteryCount])
 
