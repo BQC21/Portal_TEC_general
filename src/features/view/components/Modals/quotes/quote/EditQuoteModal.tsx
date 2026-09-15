@@ -67,8 +67,8 @@ export default function EditQuoteModal({
         proyectoId: form.proyecto_id,
         existingProjectEquipos: existing_project_equipos,
         existingProjectMateriales: existing_project_materiales,
-        savedEquipos: existingQuote.costos_manuales?.Recursos?.equipos_seleccionados,
-        savedMateriales: existingQuote.costos_manuales?.Recursos?.materiales_seleccionados,
+        savedEquipos: form.costos_manuales?.Recursos?.equipos_seleccionados,
+        savedMateriales: form.costos_manuales?.Recursos?.materiales_seleccionados,
     });
 
     // ----------
@@ -82,16 +82,18 @@ export default function EditQuoteModal({
             projectEquipos,
             projectMateriales,
         );
-        await syncQuoteEquiposToProject(
-            form.proyecto_id,
-            projectEquipos,
-            existing_project_equipos,
-        );
-        await syncQuoteMaterialesToProject(
-            form.proyecto_id,
-            projectMateriales,
-            existing_project_materiales,
-        );
+        if (!isIndependent && form.proyecto_id) {
+            await syncQuoteEquiposToProject(
+                form.proyecto_id,
+                projectEquipos,
+                existing_project_equipos,
+            );
+            await syncQuoteMaterialesToProject(
+                form.proyecto_id,
+                projectMateriales,
+                existing_project_materiales,
+            );
+        }
         await onUpdateQuote({
             ...form,
             costos_manuales,
