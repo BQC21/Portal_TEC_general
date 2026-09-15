@@ -17,6 +17,7 @@ import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/use
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
 import { isQuoteLinkedToProject, quoteAssociatedLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 
 export default function AddFinantialModal({
     onAddFinantial,
@@ -41,12 +42,12 @@ export default function AddFinantialModal({
     const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
     const showFinantialBody = hasSelectedQuote || isIndependent;
 
-    // útil para el inversor seleccionado
-    const projectEquipos = hasSelectedQuote
-        ? existing_project_equipos.filter(
-            (item) => item.proyecto_id === form.cotizacion_info?.proyecto_id
-        )
-        : [];
+    const { equipos: projectEquipos } = resolveQuoteDisplayResources({
+        hasSelectedQuote,
+        isIndependent,
+        quote: form.cotizacion_info ?? form_quotes,
+        existingEquipos: existing_project_equipos,
+    });
 
     // enganchar los cálculos financieros
     const { analysis, maxYear, addYear, removeYear } = useFinantialComputes(

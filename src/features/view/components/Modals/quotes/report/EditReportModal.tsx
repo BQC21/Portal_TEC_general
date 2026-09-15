@@ -18,6 +18,7 @@ import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
 import { isQuoteLinkedToProject, quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
@@ -60,13 +61,13 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
     const igvRate = Number(form.cotizacion_info?.igv || form_quotes.igv) || 0;
 
-    const projectEquipos = hasSelectedQuote
-        ? existing_project_equipos.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
-        : [];
-
-    const projectMateriales = hasSelectedQuote
-        ? existing_project_materiales.filter((item) => item.proyecto_id === form.cotizacion_info?.proyecto_id)
-        : [];
+    const { equipos: projectEquipos, materiales: projectMateriales } = resolveQuoteDisplayResources({
+        hasSelectedQuote,
+        isIndependent,
+        quote: form.cotizacion_info ?? form_quotes,
+        existingEquipos: existing_project_equipos,
+        existingMateriales: existing_project_materiales,
+    });
 
     // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
     useEffect(() => {

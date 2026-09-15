@@ -15,6 +15,7 @@ import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantia
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
 import { isQuoteLinkedToProject, quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 
 export default function EditFinantialModal({
@@ -38,11 +39,12 @@ export default function EditFinantialModal({
     const isIndependent = !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
     const showFinantialBody = hasSelectedQuote || isIndependent;
 
-    const projectEquipos = hasSelectedQuote
-        ? existing_project_equipos.filter(
-            (item) => item.proyecto_id === form.cotizacion_info?.proyecto_id
-        )
-        : [];
+    const { equipos: projectEquipos } = resolveQuoteDisplayResources({
+        hasSelectedQuote,
+        isIndependent,
+        quote: form.cotizacion_info ?? form_quotes,
+        existingEquipos: existing_project_equipos,
+    });
 
     const { analysis, maxYear, addYear, removeYear } = useFinantialComputes(
         form,
