@@ -34,35 +34,27 @@ export function useQuoteSelectedProducts({
     const hydratedProjectId = useRef(String(proyectoId ?? ""));
     const hydratedKey = useRef(
         quoteLiveResourcesKey(
-            existingProjectEquipos.filter((item) => String(item.proyecto_id) === String(proyectoId ?? "")),
-            existingProjectMateriales.filter((item) => String(item.proyecto_id) === String(proyectoId ?? "")),
+            resolveQuoteEquipos(savedEquipos, proyectoId, existingProjectEquipos),
+            resolveQuoteMateriales(savedMateriales, proyectoId, existingProjectMateriales),
         ),
     );
     const localEdited = useRef(false);
 
     useEffect(() => {
         const nextProjectId = String(proyectoId ?? "");
-        if (!nextProjectId) {
-            hydratedProjectId.current = "";
-            hydratedKey.current = "";
-            localEdited.current = false;
-            setProjectEquipos([]);
-            setProjectMateriales([]);
-            return;
-        }
-
-        const liveEquipos = existingProjectEquipos.filter(
-            (item) => String(item.proyecto_id) === nextProjectId,
-        );
-        const liveMateriales = existingProjectMateriales.filter(
-            (item) => String(item.proyecto_id) === nextProjectId,
-        );
-        const nextKey = quoteLiveResourcesKey(liveEquipos, liveMateriales);
         const nextEquipos = resolveQuoteEquipos(savedEquipos, nextProjectId, existingProjectEquipos);
         const nextMateriales = resolveQuoteMateriales(
             savedMateriales,
             nextProjectId,
             existingProjectMateriales,
+        );
+        const nextKey = quoteLiveResourcesKey(
+            nextProjectId
+                ? existingProjectEquipos.filter((item) => String(item.proyecto_id) === nextProjectId)
+                : nextEquipos,
+            nextProjectId
+                ? existingProjectMateriales.filter((item) => String(item.proyecto_id) === nextProjectId)
+                : nextMateriales,
         );
 
         const projectChanged = nextProjectId !== hydratedProjectId.current;

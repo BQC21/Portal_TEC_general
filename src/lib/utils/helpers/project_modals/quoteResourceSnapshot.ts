@@ -99,6 +99,10 @@ export function quoteLiveResourcesKey(
     ].join("|")
 }
 
+function snapshotOrEmpty<T>(saved: T[] | undefined): T[] {
+    return Array.isArray(saved) ? saved : []
+}
+
 function resolveQuoteResources<T>(
     saved: T[] | undefined,
     live: T[],
@@ -106,7 +110,7 @@ function resolveQuoteResources<T>(
 ): T[] {
     if (live.length > 0) return live
     if (catalogLoaded) return live
-    return Array.isArray(saved) && saved.length > 0 ? saved : []
+    return snapshotOrEmpty(saved)
 }
 
 export function resolveQuoteEquipos(
@@ -114,7 +118,7 @@ export function resolveQuoteEquipos(
     projectId: string | undefined,
     projectEquipos: Project_Equipos[],
 ): Project_Equipos[] {
-    if (!projectId) return []
+    if (!asString(projectId)) return snapshotOrEmpty(saved)
     return resolveQuoteResources(
         saved,
         filterByProject(projectEquipos, projectId),
@@ -127,12 +131,41 @@ export function resolveQuoteMateriales(
     projectId: string | undefined,
     projectMateriales: Project_Materiales[],
 ): Project_Materiales[] {
-    if (!projectId) return []
+    if (!asString(projectId)) return snapshotOrEmpty(saved)
     return resolveQuoteResources(
         saved,
         filterByProject(projectMateriales, projectId),
         projectMateriales.length > 0,
     )
+}
+
+type QuoteResourceSource = {
+    proyecto_id?: string | null
+    costos_manuales?: ManualCosts | null
+} | null | undefined
+
+export function resolveQuoteDisplayResources(params: {
+    hasSelectedQuote?: boolean
+    isIndependent: boolean
+    quote?: QuoteResourceSource
+    existingEquipos: Project_Equipos[]
+    existingMateriales?: Project_Materiales[]
+}): { equipos: Project_Equipos[]; materiales: Project_Materiales[] } {
+    if (params.hasSelectedQuote === false) {
+        return { equipos: [], materiales: [] }
+    }
+
+    if (params.isIndependent) {
+        return {
+            equipos: snapshotOrEmpty(params.quote?.costos_manuales?.Recursos?.equipos_seleccionados),
+            materiales: snapshotOrEmpty(params.quote?.costos_manuales?.Recursos?.materiales_seleccionados),
+        }
+    }
+
+    return {
+        equipos: filterByProject(params.existingEquipos, params.quote?.proyecto_id ?? undefined),
+        materiales: filterByProject(params.existingMateriales ?? [], params.quote?.proyecto_id ?? undefined),
+    }
 }
 
 export async function syncQuoteEquiposToProject(
