@@ -315,6 +315,7 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
             precio_unitario: item.precio_unitario,
         })),
         considerar_epp_reutilizable: true,
+        estructuras_cantidad_manual: false,
     },
     
     Viaticos: {
