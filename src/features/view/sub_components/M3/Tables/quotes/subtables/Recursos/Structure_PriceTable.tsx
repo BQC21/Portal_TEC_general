@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField"
+import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
@@ -15,6 +16,8 @@ import { cantidadModuloFVComoUnidades } from "@/lib/utils/helpers/computes/Panel
 export function Structure_PriceTable({
         selected_equipos,
         projectAngle,
+        cantidadManual = false,
+        onCantidadManualChange,
         onUpdateCantidad,
         onAddEquipo,
         onRemoveEquipo,
@@ -148,15 +151,17 @@ export function Structure_PriceTable({
 
     // Sincronización de la cantidad de estructuras (sin dados)
     useEffect(() => {
+        if (cantidadManual) return
         estructuraEquipos.forEach(({ item, perStructure, cantidad, isDados: dadosRow }) => {
             if (dadosRow || perStructure <= 0) return
             if (Number(item.cantidad) === cantidad) return
             onUpdateCantidad(item.id, cantidad)
         })
-    }, [estructuraEquipos, onUpdateCantidad])
+    }, [cantidadManual, estructuraEquipos, onUpdateCantidad])
 
     // Sincronización de dados: 8× estructuras de 4 módulos, 9× estructuras de 8 módulos
     useEffect(() => {
+        if (cantidadManual) return
         const dadosItem = selected_equipos.find((item) =>
             item.equipo_info?.tipo_de_producto === "ESTRUCTURA"
             && isDados(item.equipo_info?.descripcion),
@@ -164,7 +169,7 @@ export function Structure_PriceTable({
         if (!dadosItem) return
         if (Number(dadosItem.cantidad) === dadosQuantity) return
         onUpdateCantidad(dadosItem.id, dadosQuantity)
-    }, [selected_equipos, dadosQuantity, onUpdateCantidad])
+    }, [cantidadManual, selected_equipos, dadosQuantity, onUpdateCantidad])
 
     // ---------------
     // ALMACENAMIENTO booleano
@@ -255,7 +260,38 @@ export function Structure_PriceTable({
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold text-slate-900">Costos de Estructuras</h2>
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                        <h2 className="text-2xl font-bold text-slate-900">Costos de Estructuras</h2>
+                        <div className="flex flex-wrap gap-2">
+                            <button
+                                type="button"
+                                onClick={() => onCantidadManualChange?.(false)}
+                                className={`rounded-xl px-4 py-2 text-base font-semibold transition ${
+                                    !cantidadManual
+                                        ? "bg-brand-500 text-white hover:bg-brand-600"
+                                        : "border border-slate-300 text-slate-700 hover:bg-slate-50"
+                                }`}
+                            >
+                                Cantidad automática
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => onCantidadManualChange?.(true)}
+                                className={`rounded-xl px-4 py-2 text-base font-semibold transition ${
+                                    cantidadManual
+                                        ? "bg-brand-500 text-white hover:bg-brand-600"
+                                        : "border border-slate-300 text-slate-700 hover:bg-slate-50"
+                                }`}
+                            >
+                                Cantidad manual
+                            </button>
+                        </div>
+                    </div>
+                    <p className="text-sm text-slate-500">
+                        {cantidadManual
+                            ? "Puede editar las cantidades de estructuras y dados de forma independiente a los módulos o baterías seleccionados."
+                            : "Las cantidades se calculan automáticamente según los módulos FV o baterías seleccionados."}
+                    </p>
                     <div className="overflow-x-auto rounded-2xl border border-slate-200">
                         <table className="min-w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
@@ -303,7 +339,12 @@ export function Structure_PriceTable({
                             </thead>
                             <tbody>
                                     {estructuraEquipos.length > 0 ? (
-                                        estructuraEquipos.map(({ item, cantidad, isDados: dadosRow }) => (
+                                        estructuraEquipos.map(({ item, cantidad, isDados: dadosRow }) => {
+                                            const displayCantidad = cantidadManual
+                                                ? Number(item.cantidad) || 0
+                                                : (dadosRow ? dadosQuantity || cantidad : cantidad)
+
+                                            return (
                                             <tr key={`${item.id}`} className="bg-white">
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.equipo_info?.cod_producto}
@@ -315,14 +356,25 @@ export function Structure_PriceTable({
                                                     {item.equipo_info?.unidad}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    <AddEquipoReadonlyField
-                                                        label=""
-                                                        value={String(
-                                                            dadosRow
-                                                                ? Math.ceil(dadosQuantity || cantidad)
-                                                                : Math.ceil(cantidad),
-                                                        )}
-                                                    />
+                                                    {cantidadManual ? (
+                                                        <AddProductNumberField
+                                                            label=""
+                                                            value={Number.isFinite(displayCantidad) ? displayCantidad : ""}
+                                                            min={0}
+                                                            step={1}
+                                                            onChange={(value) =>
+                                                                onUpdateCantidad(
+                                                                    item.id,
+                                                                    Number.isFinite(value) ? value : 0,
+                                                                )
+                                                            }
+                                                        />
+                                                    ) : (
+                                                        <AddEquipoReadonlyField
+                                                            label=""
+                                                            value={String(Math.ceil(displayCantidad))}
+                                                        />
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.equipo_info?.precio_soles), "PEN")}
@@ -339,29 +391,25 @@ export function Structure_PriceTable({
                                                 {/* Cálculo automático */}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(
-                                                        Number(item.equipo_info?.precio_soles)
-                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        Number(item.equipo_info?.precio_soles) * displayCantidad,
                                                         "PEN",
                                                     )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(
-                                                        Number(item.equipo_info?.precio_soles_igv)
-                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        Number(item.equipo_info?.precio_soles_igv) * displayCantidad,
                                                         "PEN",
                                                     )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(
-                                                        Number(item.equipo_info?.precio_dolares)
-                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        Number(item.equipo_info?.precio_dolares) * displayCantidad,
                                                         "USD",
                                                     )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(
-                                                        Number(item.equipo_info?.precio_dolares_igv)
-                                                            * (dadosRow ? dadosQuantity || cantidad : cantidad),
+                                                        Number(item.equipo_info?.precio_dolares_igv) * displayCantidad,
                                                         "USD",
                                                     )}
                                                 </td>
@@ -376,7 +424,8 @@ export function Structure_PriceTable({
                                                     </button>
                                                 </td>
                                             </tr>
-                                        ))
+                                            );
+                                        })
                                     ) : (
                                         <tr className="bg-white">
                                             <td colSpan={13} className="px-4 py-10 text-center text-slate-500">
