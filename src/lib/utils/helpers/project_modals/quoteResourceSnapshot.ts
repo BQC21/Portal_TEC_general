@@ -155,7 +155,9 @@ export function resolveQuoteDisplayResources(params: {
         return { equipos: [], materiales: [] }
     }
 
-    if (params.isIndependent) {
+    const hasUnionSnapshot = Boolean(params.quote?.costos_manuales?.union?.quote_ids?.length)
+
+    if (params.isIndependent || hasUnionSnapshot) {
         return {
             equipos: snapshotOrEmpty(params.quote?.costos_manuales?.Recursos?.equipos_seleccionados),
             materiales: snapshotOrEmpty(params.quote?.costos_manuales?.Recursos?.materiales_seleccionados),
