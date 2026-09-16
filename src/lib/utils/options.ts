@@ -19,6 +19,7 @@ export type DSCTOOptions = "CON DSCTO" | "SIN DSCTO"; // DESCUENTO ?
 export type FIRMOptions = "CON FIRMA" | "SIN FIRMA"; // tFIRMA ?
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null; // tipo de ordenamiento
 export type FilterKey = "type" | "brand" | "supplier"; // forma de filtrado en EQUIPOS / MATERIALES
+export type QuoteMode = "project" | "independent" | "united"; // forma de cotizar
 export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material
 export const Unidad_Consumible = ["Unidad", "Metros", "Cientos"] // Unidad si el producto es un CONSUMIBLE
 export const Category = ["Equipos", "Materiales", "Ambas"]; // Categoría del proveedor, marca o tipo de producto
