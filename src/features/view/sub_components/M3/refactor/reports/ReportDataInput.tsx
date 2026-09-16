@@ -11,6 +11,7 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
 import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 export const GERENTE_FIRMA_PASSWORD = "2409Adry$Tere";
 
 export function ReportDataInput({
@@ -49,7 +50,7 @@ export function ReportDataInput({
             />
             <AddProductReadonlyField
                 label="Nombre del proyecto"
-                value={String(form.cotizacion_info?.proyecto_info?.nombre)}
+                value={quoteAssociatedLabel(form.cotizacion_info)}
             />
             <AddProductDateField
                 label="Fecha de cotización"
