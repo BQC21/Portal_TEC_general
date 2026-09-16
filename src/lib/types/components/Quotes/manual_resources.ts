@@ -87,6 +87,7 @@ export type ManualCosts = {
         personal: PersonalItem[];
         sctr: QuantityPriceItem[];
         considerar_epp_reutilizable: boolean;
+        estructuras_cantidad_manual?: boolean;
         equipos_seleccionados?: Project_Equipos[];
         materiales_seleccionados?: Project_Materiales[];
     };

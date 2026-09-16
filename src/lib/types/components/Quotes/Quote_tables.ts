@@ -20,6 +20,8 @@ export type EP_PriceTable_props = {
 export type Structure_PriceTable_props = {
     selected_equipos: Project_Equipos[]
     projectAngle?: string
+    cantidadManual?: boolean
+    onCantidadManualChange?: (value: boolean) => void
     onUpdateCantidad: (id: string | number, cantidad: number) => void
     onAddEquipo: (equipo: Equipos, cantidad?: number) => void
     onRemoveEquipo: (id: string | number) => void
