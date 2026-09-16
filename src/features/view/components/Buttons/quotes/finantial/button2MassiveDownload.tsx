@@ -11,13 +11,14 @@ import {
 	FINANTIAL_EXPORT_COLUMNS,
 	type FinantialExportRow,
 } from "@/lib/utils/helpers/templates/massiveDownload";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function Button2MassiveDownload({ finantials }: Button2MassiveDownloadFinantialProps) {
 	const [open, setOpen] = useState(false);
 
 	const items: FinantialExportRow[] = finantials.map((finantial) => ({
 		cotizacion: finantial.cotizacion_info?.cod_cotizacion ?? "",
-		proyecto: finantial.cotizacion_info?.proyecto_info?.nombre ?? "",
+		proyecto: quoteAssociatedLabel(finantial.cotizacion_info),
 		planta: Number(finantial.planta) || 0,
 		generacion: Number(finantial.generacion) || 0,
 		tarifa_red: Number(finantial.tarifa_red) || 0,

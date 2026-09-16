@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useGenerateReportPdf } from "@/features/view/hooks/api/useGenerateReportPdf";
 import { Button2PDFProps } from "@/lib/types/components/General/buttons";
 import { DEFAULT_PAY_FORMAT } from "@/lib/utils/options";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds = [], hiddenMOIds = [] }: Button2PDFProps) {
     const [requested, setRequested] = useState(false);
@@ -41,7 +42,7 @@ export default function Button2PDF({ form, equipos, materiales, hiddenEquipoIds 
                     igv: form.cotizacion_info.igv,
                     tasa_cambio: form.cotizacion_info.tasa_cambio,
                     proyecto_info: {
-                        nombre: form.cotizacion_info.proyecto_info?.nombre,
+                        nombre: quoteAssociatedLabel(form.cotizacion_info),
                     },
                     }
                 : undefined,

@@ -11,13 +11,14 @@ import {
 	REPORT_EXPORT_COLUMNS,
 	type ReportExportRow,
 } from "@/lib/utils/helpers/templates/massiveDownload";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function Button2MassiveDownload({ reports }: Button2MassiveDownloadReportProps) {
 	const [open, setOpen] = useState(false);
 
 	const items: ReportExportRow[] = reports.map((report) => ({
 		cotizacion: report.cotizacion_info?.cod_cotizacion ?? "",
-		proyecto: report.cotizacion_info?.proyecto_info?.nombre ?? "",
+		proyecto: quoteAssociatedLabel(report.cotizacion_info),
 		cliente: report.cliente ?? "",
 		ruc_dni: report.ruc_dni ?? "",
 		lugar: report.lugar ?? "",

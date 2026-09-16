@@ -11,13 +11,14 @@ import {
 	QUOTE_EXPORT_COLUMNS,
 	type QuoteExportRow,
 } from "@/lib/utils/helpers/templates/massiveDownload";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function Button2MassiveDownload({ quotes }: Button2MassiveDownloadQuoteProps) {
 	const [open, setOpen] = useState(false);
 
 	const items: QuoteExportRow[] = quotes.map((quote) => ({
 		cod_cotizacion: quote.cod_cotizacion ?? "",
-		proyecto: quote.proyecto_info?.nombre ?? "",
+		proyecto: quoteAssociatedLabel(quote),
 		igv: quote.igv ?? "",
 		tasa_cambio: quote.tasa_cambio ?? "",
 		precio_dolares: formatCurrency(Number(quote.precio_dolares), "USD"),

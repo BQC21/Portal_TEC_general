@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useGenerateReportPdf } from "@/features/view/hooks/api/useGenerateReportPdf";
 import { Button2PDFProps_FINANTIAL } from "@/lib/types/components/General/buttons";
+import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export default function Button2PDF_FINANTIAL({
     form,
@@ -43,7 +44,7 @@ export default function Button2PDF_FINANTIAL({
                       cod_cotizacion: form.cotizacion_info.cod_cotizacion,
                       precio_dolares: form.cotizacion_info.precio_dolares,
                       proyecto_info: {
-                          nombre: form.cotizacion_info.proyecto_info?.nombre,
+                          nombre: quoteAssociatedLabel(form.cotizacion_info),
                       },
                   }
                 : undefined,
