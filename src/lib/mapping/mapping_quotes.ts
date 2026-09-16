@@ -62,6 +62,9 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             considerar_epp_reutilizable:
                 saved.Recursos?.considerar_epp_reutilizable ??
                 defaults.Recursos.considerar_epp_reutilizable,
+            estructuras_cantidad_manual:
+                saved.Recursos?.estructuras_cantidad_manual ??
+                defaults.Recursos.estructuras_cantidad_manual,
             equipos_seleccionados: saved.Recursos?.equipos_seleccionados,
             materiales_seleccionados: saved.Recursos?.materiales_seleccionados,
         },
