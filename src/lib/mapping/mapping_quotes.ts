@@ -89,6 +89,12 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
                 ? saved.Viaticos.courier
                 : defaults.Viaticos.courier,
         },
+        union: saved.union && Array.isArray(saved.union.quote_ids)
+            ? {
+                quote_ids: saved.union.quote_ids.map(String),
+                cantidad: Number(saved.union.cantidad) || saved.union.quote_ids.length,
+            }
+            : undefined,
     };
 }
 

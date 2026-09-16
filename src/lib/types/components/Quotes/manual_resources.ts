@@ -71,6 +71,11 @@ export const EMPTY_CONSUME_ITEM: Omit<ConsumeItem, "id"> = {
     cantidad: 0,
 };
 
+export type QuoteUnionInfo = {
+    quote_ids: string[];
+    cantidad: number;
+};
+
 // ---------------------------
 // Asignación manual de costos
 // ---------------------------
@@ -92,5 +97,6 @@ export type ManualCosts = {
         // hotel: MontoItem;
         gastos_viaje: MontoItem[];
         courier: QuantityPriceItem[];
-    }
+    };
+    union?: QuoteUnionInfo;
 };
