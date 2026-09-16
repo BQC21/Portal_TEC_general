@@ -106,6 +106,9 @@ export function mergeManualCosts(costsList: ManualCosts[]): ManualCosts {
             considerar_epp_reutilizable: costsList.every(
                 (costs) => costs.Recursos.considerar_epp_reutilizable !== false,
             ),
+            estructuras_cantidad_manual: costsList.some(
+                (costs) => costs.Recursos.estructuras_cantidad_manual,
+            ),
         },
         Viaticos: {
             gastos_viaje: costsList.flatMap((costs) => withFreshIds(costs.Viaticos.gastos_viaje)),
