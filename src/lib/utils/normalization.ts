@@ -139,21 +139,21 @@ export function formatDemandaMensual(value: number[] | string | null | undefined
 // UNIÓN DE QUOTES
 // -----------------
 
-function addPair(
+export function addPair(
     a: { total: number; igv: number },
     b: { total: number; igv: number },
 ) {
     return { total: a.total + b.total, igv: a.igv + b.igv };
 }
 
-function addSoles(
+export function addSoles(
     a: { soles: number; igv: number },
     b: { soles: number; igv: number },
 ) {
     return { soles: a.soles + b.soles, igv: a.igv + b.igv };
 }
 
-function addVenta(
+export function addVenta(
     a: typeof EMPTY_VENTA,
     b: typeof EMPTY_VENTA,
 ) {
