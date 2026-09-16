@@ -1,4 +1,5 @@
 import {CurrencyCode, PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
+import { EMPTY_VENTA } from "./empty";
 
 // -------------------------
 // Funciones para Normalización y Formateo de Datos
@@ -132,4 +133,34 @@ export function formatDemandaMensual(value: number[] | string | null | undefined
     }
 
     return "";
+}
+
+// -----------------
+// UNIÓN DE QUOTES
+// -----------------
+
+function addPair(
+    a: { total: number; igv: number },
+    b: { total: number; igv: number },
+) {
+    return { total: a.total + b.total, igv: a.igv + b.igv };
+}
+
+function addSoles(
+    a: { soles: number; igv: number },
+    b: { soles: number; igv: number },
+) {
+    return { soles: a.soles + b.soles, igv: a.igv + b.igv };
+}
+
+function addVenta(
+    a: typeof EMPTY_VENTA,
+    b: typeof EMPTY_VENTA,
+) {
+    return {
+        ventaSoles: a.ventaSoles + b.ventaSoles,
+        ventaSolesIgv: a.ventaSolesIgv + b.ventaSolesIgv,
+        ventaDolares: a.ventaDolares + b.ventaDolares,
+        ventaDolaresIgv: a.ventaDolaresIgv + b.ventaDolaresIgv,
+    };
 }

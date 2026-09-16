@@ -1,14 +1,14 @@
 import { grossMargin as GrossMarginShape,
     precioFinal, recursos, viaticos } from "../types/components/Quotes/finantial_computes";
 
-const EMPTY_VENTA = {
+export const EMPTY_VENTA = {
     ventaSoles: 0,
     ventaSolesIgv: 0,
     ventaDolares: 0,
     ventaDolaresIgv: 0,
 };
 
-const EMPTY_SOLES = { soles: 0, igv: 0 };
+export const EMPTY_SOLES = { soles: 0, igv: 0 };
 
 export const EMPTY_RECURSOS: recursos = {
     equiposPrincipales: { total: 0, igv: 0 },
