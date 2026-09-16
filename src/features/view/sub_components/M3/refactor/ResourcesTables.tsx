@@ -22,6 +22,7 @@ export function ResourcesTables({
     addManualCostItem,
     removeManualCostItem,
     updateConsiderarEppReutilizable,
+    updateEstructurasCantidadManual,
     onUpdateEquipoCantidad,
     onUpdateMaterialCantidad,
     onAddEquipo,
@@ -55,6 +56,8 @@ export function ResourcesTables({
                                 ? form.proyecto_info?.angulo
                                 : undefined
                         }
+                        cantidadManual={Boolean(manualResourceCosts.Recursos.estructuras_cantidad_manual)}
+                        onCantidadManualChange={updateEstructurasCantidadManual}
                         onUpdateCantidad={onUpdateEquipoCantidad}
                         onAddEquipo={onAddEquipo}
                         onRemoveEquipo={onRemoveEquipo}
