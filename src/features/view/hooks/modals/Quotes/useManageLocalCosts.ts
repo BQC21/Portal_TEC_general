@@ -303,6 +303,16 @@ export function ManageLocalCosts(
         }));
     }
 
+    function updateEstructurasCantidadManual(value: boolean) {
+        setManualResourceCosts((current) => ({
+            ...current,
+            Recursos: {
+                ...current.Recursos,
+                estructuras_cantidad_manual: value,
+            },
+        }));
+    }
+
     function addConsumeItem(item: Omit<ConsumeItem, "id">) {
         setManualResourceCosts((current) => ({
             ...current,
@@ -322,6 +332,7 @@ export function ManageLocalCosts(
         addManualCostItem,
         removeManualCostItem,
         updateConsiderarEppReutilizable,
+        updateEstructurasCantidadManual,
         addConsumeItem,
     };
 }
