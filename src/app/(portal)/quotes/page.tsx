@@ -70,8 +70,10 @@ export default function QuotesPage(){
 	const [searchFinantial, setSearchFinantial] = useState<string>("");
 
     const filteredQuotes = quotes.filter((quote) => {
-		const matchesDescription = !searchQuote || 
-                quote.proyecto_info?.nombre.toLowerCase().includes(searchQuote.toLowerCase());
+		const matchesDescription = !searchQuote ||
+            quoteAssociatedLabel(quote)
+                .toLowerCase()
+                .includes(searchQuote.toLowerCase());
 
 		return matchesDescription;
 	});
