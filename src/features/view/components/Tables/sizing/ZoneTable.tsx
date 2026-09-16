@@ -3,6 +3,7 @@ import { Button2Trash } from "@/features/view/components/Buttons/sizing/zone/but
 import { ZoneTableProps } from "@/lib/types/components/General/tables";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export default function ProjectTable({ zones, 
     totalZones, 
@@ -38,6 +39,8 @@ export default function ProjectTable({ zones,
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.ghi_respaldo}</td>
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.ghi_respaldo_diario}</td>
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.hsp_peor_mes}</td>
+                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{formatDate(zone.created_at)}</td>
+                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{formatDate(zone.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit

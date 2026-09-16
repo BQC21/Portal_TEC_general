@@ -119,6 +119,9 @@ export const TABLE_HEADERS_ZONE = [
     "GHI Diario (Coplanar)",
     "HSP (Peor mes)",
     "Acciones",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
 ]
 
 /////////////
