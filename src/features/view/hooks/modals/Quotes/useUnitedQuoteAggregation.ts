@@ -8,10 +8,6 @@ import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Pro
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import {
     computeQuoteCostTotals,
-    EMPTY_GROSS_MARGIN,
-    EMPTY_PRECIO_FINAL,
-    EMPTY_RECURSOS,
-    EMPTY_VIATICOS,
     sumQuoteCostTotals,
 } from "@/lib/utils/helpers/computes/quote_cost_totals";
 import {
@@ -20,6 +16,7 @@ import {
     mergeProjectMateriales,
     productDescriptions,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
+import { EMPTY_GROSS_MARGIN, EMPTY_PRECIO_FINAL, EMPTY_RECURSOS, EMPTY_VIATICOS } from "@/lib/utils/empty";
 
 type UseUnitedQuoteAggregationParams = {
     quotes: Quote[];
