@@ -1,5 +1,8 @@
 export const EQUIPOS_HEADERS = [
     "Acciones",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     // propiedades generales
     "COD PROV",
     "PROVEEDOR",
@@ -29,13 +32,16 @@ export const EQUIPOS_HEADERS = [
     "IGV",
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
-    // eventos
-    "Fecha creada",
-    "Fecha actualizada",
+    // // eventos
+    // "Fecha creada",
+    // "Fecha actualizada",
 ];
 
 export const MATERIALES_HEADERS = [
     "Acciones",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     // propiedades generales
     "COD PROV",
     "PROVEEDOR",
@@ -53,9 +59,9 @@ export const MATERIALES_HEADERS = [
     "IGV",
     "PRECIO + IGV S/",
     "PRECIO + IGV $",
-    // eventos
-    "Fecha creada",
-    "Fecha actualizada",
+    // // eventos
+    // "Fecha creada",
+    // "Fecha actualizada",
 ];
 
 export const TABLE_HEADERS_SUPPLIER = [
