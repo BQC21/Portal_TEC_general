@@ -8,15 +8,15 @@ import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createFinantialFormStateFromFinantial } from "@/lib/mapping/mapping_finantial";
 import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
-import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { FinantialData } from "@/features/view/sub_components/M3/refactor/finantial/finantial_data";
 import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/finantial/finantial_details";
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
-import { isQuoteLinkedToProject, quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 
 export default function EditFinantialModal({
     existingFinantial,
@@ -24,8 +24,6 @@ export default function EditFinantialModal({
     onClose,
     existing_project_equipos,
 }: EditFinantialModalProps){
-    const { quotes } = useQuotes();
-
     const [form, setForm] = useState<FinantialFormState>(() => createFinantialFormStateFromFinantial(existingFinantial))
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(() => 
         existingFinantial.cotizacion_info ? {
@@ -36,13 +34,15 @@ export default function EditFinantialModal({
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
 
-    const isIndependent = !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
-    const showFinantialBody = hasSelectedQuote || isIndependent;
+    const selectedQuote = form.cotizacion_info ?? form_quotes;
+    const isUnited = isUnitedQuote(selectedQuote);
+    const isIndependent = !isQuoteLinkedToProject(selectedQuote) && !isUnited;
+    const showFinantialBody = hasSelectedQuote || isIndependent || isUnited;
 
     const { equipos: projectEquipos } = resolveQuoteDisplayResources({
         hasSelectedQuote,
-        isIndependent,
-        quote: form.cotizacion_info ?? form_quotes,
+        isIndependent: isIndependent || isUnited,
+        quote: selectedQuote,
         existingEquipos: existing_project_equipos,
     });
 
@@ -137,11 +137,7 @@ export default function EditFinantialModal({
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
                             <h1 className="text-2xl font-bold text-slate-500">
-                                {isIndependent
-                                    ? form_quotes.nombre_cotizacion?.trim()
-                                        ? `Cotización independiente --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`
-                                        : "Cotización independiente"
-                                    : `Proyecto --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`}
+                                {quoteHeadingLabel(form.cotizacion_info ?? form_quotes)}
                             </h1>
                             
                                 <FinantialData

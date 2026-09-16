@@ -16,8 +16,9 @@ import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
-import { isQuoteLinkedToProject, quoteAssociatedLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteHeadingLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
+import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 
 export default function AddFinantialModal({
     onAddFinantial,
@@ -39,13 +40,15 @@ export default function AddFinantialModal({
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
 
     const hasSelectedQuote = Boolean(form.cotizacion_id);
-    const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
-    const showFinantialBody = hasSelectedQuote || isIndependent;
+    const selectedQuote = form.cotizacion_info ?? form_quotes;
+    const isUnited = hasSelectedQuote && isUnitedQuote(selectedQuote);
+    const isIndependent = hasSelectedQuote && !isQuoteLinkedToProject(selectedQuote) && !isUnited;
+    const showFinantialBody = hasSelectedQuote || isIndependent || isUnited;
 
     const { equipos: projectEquipos } = resolveQuoteDisplayResources({
         hasSelectedQuote,
-        isIndependent,
-        quote: form.cotizacion_info ?? form_quotes,
+        isIndependent: isIndependent || isUnited,
+        quote: selectedQuote,
         existingEquipos: existing_project_equipos,
     });
 
@@ -116,11 +119,7 @@ export default function AddFinantialModal({
                         <div className="mt-6 grid gap-6 xl:grid-cols-[minmax(280px,0.9fr)_minmax(320px,1.1fr)_minmax(420px,1.4fr)]">
                             <div className="grid gap-6 content-start">
                             <h1 className="text-2xl font-bold text-slate-500">
-                                    {isIndependent
-                                        ? form.cotizacion_info?.nombre_cotizacion?.trim()
-                                            ? `Cotización independiente --- ${quoteAssociatedLabel(form_quotes)}`
-                                            : "Cotización independiente"
-                                        : `Proyecto --- ${quoteAssociatedLabel(form_quotes)}`}
+                                    {quoteHeadingLabel(form_quotes)}
                                 </h1>                              
                                 <FinantialData
                                     form={form}

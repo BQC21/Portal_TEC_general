@@ -1,25 +1,22 @@
 "use client"
 
-import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { EditReportModalProps } from "@/lib/types/components/General/modals";
 import { useEffect, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { createReportFormStateFromReport } from "@/lib/mapping/mapping_reports";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
-import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
-import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
-import { isQuoteLinkedToProject, quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
+import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 
 export default function EditReportModal({existingReport, onUpdateReport, onClose,
     existing_project_equipos, existing_project_materiales
@@ -27,9 +24,6 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // ----------------------------
     // ------- Estados ------------
     // ----------------------------
-
-    // usar información de la tabla
-    const { quotes } = useQuotes();
 
     // valores iniciales
     const [form, setForm] = useState<ReportFormState>(() => createReportFormStateFromReport(existingReport))
@@ -54,8 +48,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // proyecto seleccionado
     const hasSelectedQuote = Boolean(form.cotizacion_id);
     
-    const isIndependent = !isQuoteLinkedToProject(form.cotizacion_info ?? form_quotes);
-    const showReportBody = hasSelectedQuote || isIndependent;
+    const selectedQuote = form.cotizacion_info ?? form_quotes;
+    const isUnited = isUnitedQuote(selectedQuote);
+    const isIndependent = !isQuoteLinkedToProject(selectedQuote) && !isUnited;
+    const showReportBody = hasSelectedQuote || isIndependent || isUnited;
 
     const precioUsd =
         Number(form.cotizacion_info?.precio_dolares || form.precio_cotizacion || form_quotes.precio_dolares) || 0;
@@ -63,8 +59,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
     const { equipos: projectEquipos, materiales: projectMateriales } = resolveQuoteDisplayResources({
         hasSelectedQuote,
-        isIndependent,
-        quote: form.cotizacion_info ?? form_quotes,
+        isIndependent: isIndependent || isUnited,
+        quote: selectedQuote,
         existingEquipos: existing_project_equipos,
         existingMateriales: existing_project_materiales,
     });
@@ -189,11 +185,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
                                 <div className="grid gap-6">
                                 <h1 className="text-2xl font-bold text-slate-500">
-                                    {isIndependent
-                                        ? form_quotes.nombre_cotizacion?.trim()
-                                            ? `Cotización independiente --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`
-                                            : "Cotización independiente"
-                                        : `Proyecto --- ${quoteAssociatedLabel(form.cotizacion_info ?? form_quotes)}`}
+                                    {quoteHeadingLabel(form.cotizacion_info ?? form_quotes)}
                                 </h1>
 
 

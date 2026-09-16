@@ -2,12 +2,9 @@
 
 import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
 import { useEffect, useMemo, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/lib/mapping/mapping_quotes";
-import { INITIAL_PROJECT_FORM } from "@/lib/utils/initialValues";
-import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
 import { useCostComputes } from "@/features/view/hooks/modals/Quotes/useCostComputes";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
@@ -23,7 +20,17 @@ import {
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { UnitedQuotesPanel } from "@/features/view/sub_components/M3/refactor/UnitedQuotesPanel";
+import { useUnitedQuoteAggregation } from "@/features/view/hooks/modals/Quotes/useUnitedQuoteAggregation";
+import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
+import {
+    eligibleQuotesForUnion,
+    getUnitedQuoteInfo,
+    isUnitedQuote,
+    MIN_UNITED_QUOTES,
+    productDescriptions,
+} from "@/lib/utils/helpers/quotes/unitedQuotes";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 
@@ -34,13 +41,28 @@ export default function EditQuoteModal({
     // ----------
 
     const [form, setForm] = useState<QuoteFormState>(() => createQuoteFormStateFromQuote(existingQuote))
-    
-    const { projects } = useProjects();
-    const [form_project, setForm_project] = useState<ProjectFormState>(() => 
-        existingQuote.proyecto_info ? {
-            ...INITIAL_PROJECT_FORM,
-            ...existingQuote.proyecto_info,
-        } : INITIAL_PROJECT_FORM
+    const { quotes } = useQuotes();
+
+    const unitedInfo = getUnitedQuoteInfo(existingQuote);
+    const isUnited = isUnitedQuote(existingQuote);
+    const unitedIds = unitedInfo?.quote_ids ?? [];
+    const unitedCount = unitedInfo?.cantidad || unitedIds.length || MIN_UNITED_QUOTES;
+
+    const unionEligibleQuotes = useMemo(
+        () => eligibleQuotesForUnion(quotes, existingQuote.id),
+        [quotes, existingQuote.id],
+    );
+
+    const unitedAggregation = useUnitedQuoteAggregation({
+        quotes,
+        selectedIds: unitedIds,
+        existingProjectEquipos: existing_project_equipos,
+        existingProjectMateriales: existing_project_materiales,
+    });
+
+    const unitedFallbackDescriptions = productDescriptions(
+        form.costos_manuales?.Recursos?.equipos_seleccionados ?? [],
+        form.costos_manuales?.Recursos?.materiales_seleccionados ?? [],
     );
 
     // ----------
@@ -48,8 +70,8 @@ export default function EditQuoteModal({
     // ----------    
     
     const hasSelectedProject = Boolean(form.proyecto_id);
-    const isIndependent = !isQuoteLinkedToProject(form);
-    const showQuoteBody = hasSelectedProject || isIndependent;
+    const isIndependent = !isQuoteLinkedToProject(form) && !isUnited;
+    const showQuoteBody = (hasSelectedProject || isIndependent) && !isUnited;
 
     const {
         projectEquipos,
@@ -77,6 +99,16 @@ export default function EditQuoteModal({
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
+
+        if (isUnited) {
+            await onUpdateQuote({
+                ...form,
+                nombre_cotizacion: form.nombre_cotizacion?.trim() ?? "",
+                updated_at: new Date(),
+            });
+            return;
+        }
+
         const costos_manuales = withQuoteResourceSnapshot(
             manualResourceCosts,
             projectEquipos,
@@ -136,37 +168,26 @@ export default function EditQuoteModal({
     // ----------
 
     useEffect(() => {
+        if (isUnited) return;
         const nextGm = String(grossMargin.gm.gm);
         if (Number(grossMargin.gm.gm) > 0 && form.gm !== nextGm) {
             updateField("gm", String(grossMargin.gm.gm));
         }
-    }, [grossMargin.gm.gm]);
+    }, [grossMargin.gm.gm, isUnited]);
 
     // ----------
     // SINCRONIZAR PRECIO DÓLARES
     // ----------
 
     useEffect(() => {
+        if (isUnited) return;
         const next = String(precioFinal.dolares.toFixed(2));
         if (form.precio_dolares !== next) {
             setForm((current) => ({ ...current, precio_dolares: next }));
         }
-    }, [precioFinal.dolares]);
+    }, [precioFinal.dolares, isUnited]);
 
-    // ----------
-    // LOGS
-    // ----------
-
-    console.log("valor del grossMargin", (grossMargin.gm.gm * 100).toFixed(2));
-    // RECURSOS
-    console.log("valor del precio de venta soles", recursos.resumen.ventaSoles);
-    // VIÁTICOS
-    console.log("valor del precio de venta soles", viaticos.resumen.ventaSoles);
-    // DEFINITIVO
-    console.log("valor del precio final", precioFinal.soles);
-    console.log("valor del precio final IGV", precioFinal.solesIgv);
-    console.log("valor del precio final dolares", precioFinal.dolares);
-    console.log("valor del precio final dolares IGV", precioFinal.dolaresIgv);
+    const unitedHasLiveChildren = unitedAggregation.selectedQuotes.length > 0;
 
     return(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
@@ -185,6 +206,43 @@ export default function EditQuoteModal({
 
                 <form onSubmit={handleSubmit} className="flex min-h-0 flex-1 flex-col">
                     <div className="modal-scroll min-h-0 flex-1 px-6 py-6">
+
+                    {isUnited && (
+                        <div className="mb-6 space-y-6">
+                            <div className="rounded-2xl border border-sky-200 bg-sky-50 px-4 py-3 text-slate-700">
+                                <p className="text-lg font-medium">
+                                    Esta cotización es la unión de otras cotizaciones
+                                </p>
+                                <p className="mt-1 text-base">
+                                    Solo puede actualizar el nombre. La cantidad y las cotizaciones seleccionadas quedan fijas.
+                                </p>
+                            </div>
+                            <UnitedQuotesPanel
+                                nombre={form.nombre_cotizacion ?? ""}
+                                onNombreChange={(value) => updateField("nombre_cotizacion", value)}
+                                cantidad={unitedCount}
+                                onCantidadChange={() => undefined}
+                                selectedIds={unitedIds}
+                                onSelectQuote={() => undefined}
+                                availableQuotes={unionEligibleQuotes}
+                                allQuotes={quotes}
+                                equiposDescriptions={
+                                    unitedHasLiveChildren
+                                        ? unitedAggregation.equiposDescriptions
+                                        : unitedFallbackDescriptions.equiposDescriptions
+                                }
+                                materialesDescriptions={
+                                    unitedHasLiveChildren
+                                        ? unitedAggregation.materialesDescriptions
+                                        : unitedFallbackDescriptions.materialesDescriptions
+                                }
+                                recursosCosts={unitedHasLiveChildren ? unitedAggregation.recursos : recursos}
+                                viaticosCosts={unitedHasLiveChildren ? unitedAggregation.viaticos : viaticos}
+                                precioFinalCosts={unitedHasLiveChildren ? unitedAggregation.precioFinal : precioFinal}
+                                nameOnlyEditable
+                            />
+                        </div>
+                    )}
 
                     {isIndependent && (
                         <div className="mb-6 space-y-4">
@@ -209,11 +267,7 @@ export default function EditQuoteModal({
                         <ExcelResizableTables>
 
                         <h1 className="text-2xl font-bold text-slate-500">
-                            {isIndependent
-                                ? form.nombre_cotizacion?.trim()
-                                    ? `Cotización independiente --- ${form.nombre_cotizacion}`
-                                    : "Cotización independiente"
-                                : `Proyecto --- ${form.proyecto_info?.nombre ?? ""}`}
+                            {quoteHeadingLabel(form)}
                         </h1>
 
                         <Product_selected
