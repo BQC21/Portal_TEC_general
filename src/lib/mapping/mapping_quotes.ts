@@ -65,6 +65,15 @@ function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
             estructuras_cantidad_manual:
                 saved.Recursos?.estructuras_cantidad_manual ??
                 defaults.Recursos.estructuras_cantidad_manual,
+            considerar_equipos_principales:
+                saved.Recursos?.considerar_equipos_principales !== false,
+            considerar_estructuras:
+                saved.Recursos?.considerar_estructuras !== false,
+            considerar_consumibles:
+                saved.Recursos?.considerar_consumibles !== false,
+            consumibles_ocultos: Array.isArray(saved.Recursos?.consumibles_ocultos)
+                ? saved.Recursos.consumibles_ocultos.map(String)
+                : [],
             equipos_seleccionados: saved.Recursos?.equipos_seleccionados,
             materiales_seleccionados: saved.Recursos?.materiales_seleccionados,
         },
