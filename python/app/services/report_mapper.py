@@ -12,6 +12,7 @@ from app.schemas.report import (
     EquipoItem,
     MaterialItem,
     PdfLineItem,
+    PuestaEnMarchaItem,
     ReportFormPayload,
     ReportPdfData,
 )
@@ -34,10 +35,10 @@ PUESTA_EN_MARCHA_ITEMS: list[tuple[str, str]] = [
 ]
 
 # Filtro alineado con Eq_Mat_Content
-MATERIAL_TIPOS_VISIBLE = {"PROTECCIÓN", "CABLE", "PROTECCION"}
+MATERIAL_TIPOS_ELECTRICOS = {"PROTECCION", "CABLE"}
+MATERIAL_TIPOS_CANALIZACION = {"CANALIZACION"}
 DEFAULT_PAY_FORMAT = "50% Con la orden de servicio\n50% Al término de instalación"
 PANELES_POR_PALET = 36
-_PALET_RE = re.compile(r"\bpalets?\b", re.IGNORECASE)
 
 
 def _to_float(value: Any, default: float = 0.0) -> float:
@@ -99,105 +100,125 @@ def _is_modulo_fv(tipo: str) -> bool:
     return _normalize_tipo(tipo) in {"MODULO FV", "MODULO"}
 
 
-def _strip_palet(descripcion: str) -> str:
-    text = _PALET_RE.sub("", descripcion)
-    text = re.sub(r"\s{2,}", " ", text)
-    text = re.sub(r"\s+([,;.:])", r"\1", text)
-    return text.strip()
+def _is_palet_unidad(unidad: str, descripcion: str = "") -> bool:
+    normalized = unidad.strip().lower()
+    if normalized in {"palet", "palets", "pallet", "pallets"}:
+        return True
+    return bool(re.search(r"\bpal+ets?\b", descripcion, flags=re.IGNORECASE))
 
 
-def _is_palet_unidad(unidad: str) -> bool:
-    return unidad.strip().lower() == "palet"
+def _resolve_paneles_por_palet(items: list[EquipoItem]) -> int:
+    palet_item = next(
+        (
+            item
+            for item in items
+            if item.equipo_info
+            and _is_palet_unidad(
+                _to_str(item.equipo_info.unidad),
+                _to_str(item.equipo_info.descripcion),
+            )
+        ),
+        None,
+    )
+    if palet_item and palet_item.equipo_info:
+        from_palet = int(_to_float(palet_item.equipo_info.paneles_palet))
+        if from_palet > 0:
+            return from_palet
+    for item in items:
+        value = int(_to_float(item.equipo_info.paneles_palet if item.equipo_info else None))
+        if value > 0:
+            return value
+    return PANELES_POR_PALET
 
 
-def _cantidad_modulo_en_unidades(cantidad: Any, unidad: str) -> int:
+def _cantidad_modulo_en_unidades(
+    cantidad: Any,
+    unidad: str,
+    paneles_palet: Any = None,
+    descripcion: str = "",
+) -> int:
     n = max(0, int(math.ceil(_to_float(cantidad))))
-    return n * PANELES_POR_PALET if _is_palet_unidad(unidad) else n
-
-
-def _modulo_group_key(item: EquipoItem) -> str:
-    info = item.equipo_info
-    marca = _to_str(info.marca if info else "")
-    if marca:
-        return f"marca:{marca.lower()}"
-    descripcion = _strip_palet(_to_str(info.descripcion if info else "")).lower()
-    if descripcion:
-        return f"desc:{descripcion}"
-    return f"id:{id(item)}"
+    if not _is_palet_unidad(unidad, descripcion):
+        return n
+    por_palet = int(_to_float(paneles_palet))
+    if por_palet <= 0:
+        por_palet = PANELES_POR_PALET
+    return n * por_palet
 
 
 def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
     visible_items = [item for item in items if item.visible is not False]
+    modulo_items = [
+        item
+        for item in visible_items
+        if item.equipo_info and _is_modulo_fv(_to_str(item.equipo_info.tipo_de_producto))
+    ]
     lines: list[PdfLineItem] = []
-    emitted_groups: set[str] = set()
     index = 1
+    emitted_modulos = False
 
     for item in visible_items:
         info = item.equipo_info
-        if not info or not _to_str(info.descripcion):
+        if not info:
             continue
 
-        if not _is_modulo_fv(_to_str(info.tipo_de_producto)):
+        is_modulo = _is_modulo_fv(_to_str(info.tipo_de_producto))
+        if not is_modulo and not _to_str(info.descripcion):
+            continue
+
+        if is_modulo:
+            if emitted_modulos:
+                continue
+            emitted_modulos = True
+            if not modulo_items:
+                continue
+            paneles_por_palet = _resolve_paneles_por_palet(modulo_items)
+            cantidad = sum(
+                _cantidad_modulo_en_unidades(
+                    candidate.cantidad,
+                    _to_str(candidate.equipo_info.unidad if candidate.equipo_info else ""),
+                    paneles_por_palet,
+                    _to_str(candidate.equipo_info.descripcion if candidate.equipo_info else ""),
+                )
+                for candidate in modulo_items
+            )
             lines.append(
                 PdfLineItem(
                     index=index,
-                    descripcion=_to_str(info.descripcion),
-                    unidad=_to_str(info.unidad, "UNI"),
-                    cantidad = str(max(0, math.ceil(_to_float(item.cantidad))))
+                    descripcion="Módulo fotovoltaico",
+                    unidad="Unidad",
+                    cantidad=str(cantidad),
                 )
             )
             index += 1
             continue
 
-        key = _modulo_group_key(item)
-        if key in emitted_groups:
-            continue
-        emitted_groups.add(key)
-
-        group = [
-            candidate
-            for candidate in visible_items
-            if candidate.equipo_info
-            and _is_modulo_fv(_to_str(candidate.equipo_info.tipo_de_producto))
-            and _modulo_group_key(candidate) == key
-        ]
-        preferred = next(
-            (
-                candidate
-                for candidate in group
-                if not _is_palet_unidad(_to_str(candidate.equipo_info.unidad if candidate.equipo_info else ""))
-            ),
-            group[0],
-        )
-        preferred_info = preferred.equipo_info
-        cantidad = sum(
-            _cantidad_modulo_en_unidades(
-                candidate.cantidad,
-                _to_str(candidate.equipo_info.unidad if candidate.equipo_info else ""),
-            )
-            for candidate in group
-        )
         lines.append(
             PdfLineItem(
                 index=index,
-                descripcion=_strip_palet(_to_str(preferred_info.descripcion if preferred_info else "")),
-                unidad="Unidad",
-                cantidad=str(cantidad),
+                descripcion=_to_str(info.descripcion),
+                unidad=_to_str(info.unidad, "UNI"),
+                cantidad=str(max(0, math.ceil(_to_float(item.cantidad)))),
             )
         )
         index += 1
     return lines
 
 
-def _map_materiales(items: list[MaterialItem]) -> list[PdfLineItem]:
+def _map_materiales_por_tipo(
+    items: list[MaterialItem],
+    allowed_tipos: set[str],
+) -> list[PdfLineItem]:
     lines: list[PdfLineItem] = []
     index = 1
     for item in items:
+        if item.visible is False:
+            continue
         info = item.material_info
         if not info or not _to_str(info.descripcion):
             continue
-        tipo = _to_str(info.tipo_de_producto).upper()
-        if tipo and tipo not in MATERIAL_TIPOS_VISIBLE:
+        tipo = _normalize_tipo(_to_str(info.tipo_de_producto))
+        if tipo not in allowed_tipos:
             continue
         lines.append(
             PdfLineItem(
@@ -211,7 +232,16 @@ def _map_materiales(items: list[MaterialItem]) -> list[PdfLineItem]:
     return lines
 
 
-def _map_puesta_en_marcha(hidden_ids: list[str]) -> list[str]:
+def _map_puesta_en_marcha(
+    hidden_ids: list[str],
+    items: list[PuestaEnMarchaItem] | None = None,
+) -> list[str]:
+    if items is not None:
+        return [
+            _to_str(item.descripcion)
+            for item in items
+            if item.visible is not False and _to_str(item.descripcion)
+        ]
     hidden = {str(item_id).strip() for item_id in hidden_ids if str(item_id).strip()}
     return [desc for item_id, desc in PUESTA_EN_MARCHA_ITEMS if item_id not in hidden]
 
@@ -311,7 +341,13 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         total=total,
         currency_symbol=currency_symbol,
         equipos=_map_equipos(payload.equipos),
-        materiales=_map_materiales(payload.materiales),
-        puesta_en_marcha=_map_puesta_en_marcha(payload.hidden_mo_ids),
+        materiales=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_ELECTRICOS),
+        canalizacion=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_CANALIZACION),
+        show_electrical_materials=bool(payload.show_electrical_materials),
+        show_canalization_materials=bool(payload.show_canalization_materials),
+        puesta_en_marcha=_map_puesta_en_marcha(
+            payload.hidden_mo_ids,
+            payload.puesta_en_marcha_items,
+        ),
         filename=filename,
     )

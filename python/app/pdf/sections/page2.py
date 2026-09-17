@@ -333,26 +333,49 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             [1 * cm, 11 * cm, 3 * cm, 3 * cm],
         )
     )
-    story.append(Spacer(1, 1 * cm))
+    story.append(Spacer(1, 0.2 * cm))
 
-    material_rows: list[list[str]] = []
-    # for item in data.materiales:
-    #     material_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad or ""])
-    #     idx += 1
-    # if not material_rows:
-    #     material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""])
-    #     idx += 1
-
-    ## NO COLOCAR TANTO DETALLE EN MATERIALES ELÉCTRICOS
-    material_rows.append([str(idx), "Materiales Eléctricos", "GLB", ""]); idx += 1
-    story.append(
-        _items_table(
-            ["#", "DESCRIPCIÓN - MATERIALES", "UNIDAD"],
-            material_rows,
-            [1 * cm, 11 * cm, 3 * cm],
+    if data.show_electrical_materials:
+        electrical_rows = [
+            [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
+            for i, item in enumerate(data.materiales)
+        ]
+        if electrical_rows:
+            idx += len(electrical_rows)
+            story.append(
+                _items_table(
+                    ["#", "DESCRIPCIÓN - MATERIALES ELÉCTRICOS", "UNIDAD", "CANTIDAD"],
+                    electrical_rows,
+                    [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+                )
+            )
+            story.append(Spacer(1, 0.1 * cm))
+    else:
+        story.append(
+            _items_table(
+                ["#", "DESCRIPCIÓN - MATERIALES", "UNIDAD"],
+                [[str(idx), "Materiales Eléctricos", "GLB"]],
+                [1 * cm, 11 * cm, 3 * cm],
+            )
         )
-    )
-    story.append(Spacer(1, 0.1 * cm))
+        idx += 1
+        story.append(Spacer(1, 0.1 * cm))
+
+    if data.show_canalization_materials:
+        canal_rows = [
+            [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
+            for i, item in enumerate(data.canalizacion)
+        ]
+        if canal_rows:
+            idx += len(canal_rows)
+            story.append(
+                _items_table(
+                    ["#", "DESCRIPCIÓN - MATERIALES DE CANALIZACIÓN", "UNIDAD", "CANTIDAD"],
+                    canal_rows,
+                    [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+                )
+            )
+            story.append(Spacer(1, 0.1 * cm))
 
     story.append(
         _section_amount_row(

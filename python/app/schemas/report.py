@@ -23,6 +23,7 @@ class ProductInfo(BaseModel):
     unidad: Optional[str] = None
     tipo_de_producto: Optional[str] = None
     marca: Optional[str] = None
+    paneles_palet: NumberLike = None
 
 
 class EquipoItem(BaseModel):
@@ -41,7 +42,18 @@ class MaterialItem(BaseModel):
     model_config = ConfigDict(extra="ignore")
 
     cantidad: NumberLike = None
+    visible: bool = True
     material_info: Optional[ProductInfo] = None
+
+
+class PuestaEnMarchaItem(BaseModel):
+    """Actividad de puesta en marcha enviada desde el Form."""
+
+    model_config = ConfigDict(extra="ignore")
+
+    id: Optional[str] = None
+    descripcion: str = ""
+    visible: bool = True
 
 
 class ProyectoInfo(BaseModel):
@@ -88,7 +100,10 @@ class ReportFormPayload(BaseModel):
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
     materiales: list[MaterialItem] = Field(default_factory=list)
+    show_electrical_materials: bool = False
+    show_canalization_materials: bool = False
     hidden_mo_ids: list[str] = Field(default_factory=list)
+    puesta_en_marcha_items: Optional[list[PuestaEnMarchaItem]] = None
 
 
 class PdfLineItem(BaseModel):
@@ -140,6 +155,9 @@ class ReportPdfData(BaseModel):
 
     equipos: list[PdfLineItem] = Field(default_factory=list)
     materiales: list[PdfLineItem] = Field(default_factory=list)
+    canalizacion: list[PdfLineItem] = Field(default_factory=list)
+    show_electrical_materials: bool = False
+    show_canalization_materials: bool = False
     puesta_en_marcha: list[str] = Field(default_factory=list)
 
     filename: str = "cotizacion.pdf"
