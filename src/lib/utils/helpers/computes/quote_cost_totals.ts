@@ -8,7 +8,7 @@ import {
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-import { isReusableEpp } from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+import { isReusableEpp } from "@/lib/utils/helpers/templates/quotePrices";
 import { buildSortedConsumibles } from "@/lib/utils/helpers/sorting/consumiblesSort";
 import {
     computeGrossMargin,

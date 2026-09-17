@@ -105,3 +105,34 @@ export type ManualCosts = {
     };
     union?: QuoteUnionInfo;
 };
+
+export type ManualCostArraySection =
+    | "Recursos.consumible"
+    | "Recursos.epp"
+    | "Recursos.tooling"
+    | "Recursos.sctr"
+    | "Recursos.personal"
+    | "Viaticos.courier"
+    | "Viaticos.gastos_viaje";
+    // | "Viaticos.eating";
+
+export type ManualCostItemField =
+    | keyof QuantityPriceItem
+    | keyof PersonalItem
+    | keyof ConsumeItem
+    | keyof EatingItem
+    | keyof MontoItem;
+
+export type ManualCostItemValue =
+    | QuantityPriceItem[keyof QuantityPriceItem]
+    | PersonalItem[keyof PersonalItem]
+    | ConsumeItem[keyof ConsumeItem]
+    | EatingItem[keyof EatingItem]
+    | MontoItem[keyof MontoItem];
+
+export type ManualCostMontoSection =
+    | "Viaticos.hotel"
+    | "Viaticos.traveling"
+    | "Viaticos.mobility";
+
+export type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;

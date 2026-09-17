@@ -4,6 +4,13 @@ import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { INITIAL_BRAND_FORM, INITIAL_SUPPLIER_FORM, INITIAL_TYPE_FORM } from "../../initialValues";
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
+import { SelectFieldOptions, SelectOption } from "@/lib/types/components/General/form_fields";
+
+export function normalizeSelectOptions(options: SelectFieldOptions): SelectOption[] {
+    return options.map((option) =>
+        typeof option === "string" ? { value: option, label: option } : option
+    );
+}
 
 export function buildSupplierForm(product: EquiposFormState | MaterialesFormState): SupplierFormstate {
     if (product.proveedor_info) {

@@ -4,10 +4,13 @@ import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import {
     CableFvColor,
+    CONSUMIBLE_FAMILY_TIPO,
     ConsumibleFamily,
+    ConsumibleRestorableFamily,
     getCableFvColor,
     getCanalizacionSortOrder,
     getConsumibleFamily,
+    RESTORABLE_CONSUMIBLE_FAMILIES,
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -158,5 +161,11 @@ export function buildSortedConsumibles(
 
     return [...catalogRows, ...templateRows].sort((a, b) =>
         compareConsumibleRows(a, b, templateOrder),
+    )
+}
+
+export function restoreFamiliesForGroup(groupKey: ConsumibleGroupKey): ConsumibleRestorableFamily[] {
+    return RESTORABLE_CONSUMIBLE_FAMILIES.filter(
+        (family) => getConsumibleGroup(CONSUMIBLE_FAMILY_TIPO[family]).key === groupKey,
     )
 }

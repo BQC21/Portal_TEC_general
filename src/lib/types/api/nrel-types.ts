@@ -16,6 +16,24 @@ export interface NRELInfo {
 export const NREL_BASE_URL = "https://developer.nlr.gov"; // desde el 29/5/2026
 
 // Parámetros fijos de PVWatts (requeridos por la API)
+export interface NRELRouteResponse {
+    hsp: number;
+    error?: string;
+}
+
+export interface UseConverterNRELOptions {
+    latitude?: string;
+    longitude?: string;
+}
+
+export interface UseConverterNRELResult {
+    ghi_nrel: number | null;
+    hsp: number | null;
+    loading: boolean;
+    error: string | null;
+    refetch: () => void;
+}
+
 export const PVWATTS_DEFAULTS = {
     system_capacity: "1",
     module_type:     "0",

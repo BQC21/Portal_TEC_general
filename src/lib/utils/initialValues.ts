@@ -47,7 +47,7 @@ import { consumible_template,
     Courier_template,
     Personal_template,
     gastosViajes_template,
-} from "@/features/view/sub_components/M3/Tables/quotes/templates/Prices";
+} from "@/lib/utils/helpers/templates/quotePrices";
 import { FinantialFormState } from "../types/supabase/finantial-types";
 
 

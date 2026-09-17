@@ -6,14 +6,16 @@ import { ProjectFormState } from "../../supabase/project-types";
 import { Equipos, EquiposFormState } from "../../supabase/equipos-types";
 import { Materiales, MaterialesFormState } from "../../supabase/materiales-types";
 import { Zone, ZoneFormState } from "../../supabase/zone-types";
-import { QuoteFormState } from "../../supabase/quote-types";
+import { Quote, QuoteFormState } from "../../supabase/quote-types";
 import {
+    ConsumeItem,
+    EatingItem,
+    ManualCostArraySection,
+    ManualCostMontoSection,
     ManualCosts,
     MontoItem,
     PersonalItem,
     QuantityPriceItem,
-    ConsumeItem,
-    EatingItem,
 } from "../Quotes/manual_resources";
 import {
     grossMargin as GrossMarginCompute,
@@ -23,10 +25,6 @@ import {
 } from "../Quotes/finantial_computes";
 import { Project_Equipos } from "../../supabase/project_equipos_join";
 import { Project_Materiales } from "../../supabase/project_materiales_join";
-import {
-    ManualCostArraySection,
-    ManualCostMontoSection,
-} from "@/features/view/hooks/modals/Quotes/useManageLocalCosts";
 import { ReportFormState } from "../../supabase/report-types";
 import { Brand, BrandFormstate } from "../../supabase/brand.types";
 import { Supplier, SupplierFormstate } from "../../supabase/supplier-types";
@@ -169,6 +167,33 @@ export type Selectors_M2Props = {
     handle_click: (label: string, index: string | number, product_type: string) => void;
 }
 
+export type UseSelectionHandlersParams = {
+    equipos: Equipos[];
+    materiales: Materiales[];
+    form: ProjectFormState;
+    computedRequirements: computedRequirements;
+    selectedEquipmentByRow: Record<string, { equipoId: string; description: string }>;
+    selectedMaterialByRow: Record<string, { materialId: string; description: string }>;
+    selectedEquipmentTable: SelectedEquipmentItem[];
+    selectedMaterialTable: SelectedMaterialItem[];
+    invertersToConsider: number;
+    setSelectedEquipmentByRow: (value: Record<string, { equipoId: string; description: string }>
+        | ((prev: Record<string, { equipoId: string; description: string }>) =>
+            Record<string, { equipoId: string; description: string }>)) => void;
+    setSelectedMaterialByRow: (value: Record<string, { materialId: string; description: string }>
+        | ((prev: Record<string, { materialId: string; description: string }>) =>
+            Record<string, { materialId: string; description: string }>)) => void;
+    setSelectedEquipmentTable: (value: SelectedEquipmentItem[]
+        | ((prev: SelectedEquipmentItem[]) => SelectedEquipmentItem[])) => void;
+    setSelectedMaterialTable: (value: SelectedMaterialItem[]
+        | ((prev: SelectedMaterialItem[]) => SelectedMaterialItem[])) => void;
+}
+
+export type SelectionHandlers = {
+    handle_onChange: (value: string, label: string, index: string | number, product_type: string) => void;
+    handle_click: (label: string, index: string | number, product_type: string) => void;
+}
+
 export type General_info_M2Props = {
     // form del proyecto
     form: ProjectFormState;
@@ -215,6 +240,23 @@ export type Data_info_M2Props = {
 // -----
 // M3
 // -----
+
+export type UnitedQuotesPanelProps = {
+    nombre: string;
+    onNombreChange: (value: string) => void;
+    cantidad: number;
+    onCantidadChange: (value: number) => void;
+    selectedIds: string[];
+    onSelectQuote: (index: number, quoteId: string) => void;
+    availableQuotes: Quote[];
+    allQuotes: Quote[];
+    equiposDescriptions: string[];
+    materialesDescriptions: string[];
+    recursosCosts: recursos;
+    viaticosCosts: viaticos;
+    precioFinalCosts: precioFinal;
+    nameOnlyEditable?: boolean;
+};
 
 export type Product_selectedProps = {
     equiposDescriptions: string[];
@@ -357,6 +399,18 @@ export type MO_Content_Props = {
 // -----
 
 export type SelectedSupplierByRow = Record<string, { supplierId: string; description: string }>;
+
+export type UseSupplierSelectionHandlersParams = {
+    supplier: Supplier[];
+    brandCategoria?: string;
+    initialSelected?: SelectedSupplierlItem[];
+};
+
+export type UseBrandSelectionHandlersParams = {
+    brand: Brand[];
+    typeCategoria?: string;
+    initialSelected?: SelectedBrandItem[];
+};
 
 export type General_info_BrandProps = {
     form: BrandFormstate;

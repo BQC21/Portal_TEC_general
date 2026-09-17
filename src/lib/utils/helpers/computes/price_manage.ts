@@ -1,5 +1,22 @@
 import { Product } from "../../../types/supabase/product-types";
-import { toSafeNumber } from "../../normalization";
+import { CurrencyCode } from "../../options";
+import { formatCurrency, toSafeNumber } from "../../normalization";
+
+export const FALLBACK_EXCHANGE_RATE = 3.412;
+
+export function roundMoney(value: number) {
+	return Number((Number.isFinite(value) ? value : 0).toFixed(2));
+}
+
+export function formatOptionalCurrency(value: number | null, currency: CurrencyCode = "USD"): string {
+	if (value === null) return "—";
+	return formatCurrency(value, currency);
+}
+
+export function formatOptionalNumber(value: number | null): string {
+	if (value === null) return "—";
+	return value.toFixed(2);
+}
 
 // -------------------------
 // Funciones para el manejo de precios y monedas

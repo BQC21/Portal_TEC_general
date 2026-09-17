@@ -43,3 +43,8 @@ export type ExcelWorkbookProps = {
     sheets: ExcelWorkbookSheet[];
     defaultSheetId?: string;
 };
+
+export type ExcelResizableTablesProps = {
+    children: ReactNode;
+    className?: string;
+};

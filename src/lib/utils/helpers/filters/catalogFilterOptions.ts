@@ -1,5 +1,5 @@
 import { CascadeFilterValues, FilterableItem } from "@/lib/types/components/Filter/cascadeFilter";
-import { CascadeFilterOptions } from "@/lib/types/components/Filter/filter_tables";
+import { CatalogFilterConfig, CascadeFilterOptions } from "@/lib/types/components/Filter/filter_tables";
 import { ProductCategoryFilter } from "@/lib/types/components/sub_components/module_render";
 import { Brand } from "@/lib/types/supabase/brand.types";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
@@ -7,6 +7,27 @@ import { Type } from "@/lib/types/supabase/type-types";
 import { FilterKey } from "@/lib/utils/options";
 import { matchesProductCategory } from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { getBrandOptions, getSupplierOptions, getTypeOptions } from "./cascadeFilterOptions";
+
+export const CATALOG_FILTERS: CatalogFilterConfig[] = [
+	{
+		id: "supplier",
+		label: "Filtrar por Proveedor",
+		placeholder: "Todos los Proveedores",
+		optionsKey: "suppliers",
+	},
+	{
+		id: "brand",
+		label: "Filtrar por Marca",
+		placeholder: "Todas las Marcas",
+		optionsKey: "brands",
+	},
+	{
+		id: "type",
+		label: "Filtrar por Tipo",
+		placeholder: "Todos los Tipos",
+		optionsKey: "types",
+	},
+];
 
 function uniqueSorted(values: string[]): string[] {
 	return Array.from(new Set(values.filter(Boolean))).sort((a, b) =>

@@ -1,5 +1,11 @@
 import { Quote, SupabaseQuoteRow } from "./quote-types";
 
+export type FormWithQuoteSelection = {
+    cotizacion_id?: string;
+    cotizacion_info?: Quote | undefined;
+    precio_cotizacion?: string;
+};
+
 // estado del formulario
 export type ReportFormState = Omit<Report, "id">;
 export type ReportFormData = Omit<Report, "id">

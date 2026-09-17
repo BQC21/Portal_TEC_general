@@ -38,3 +38,5 @@ export async function bulkDeleteAllRows(tableName: string): Promise<number> {
 
 	return rows.length;
 }
+
+export const CONFIRM_PASSWORD = "LIMPIEZA";

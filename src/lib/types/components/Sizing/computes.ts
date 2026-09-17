@@ -1,5 +1,7 @@
 import { SelectedEquipmentItem } from "../../supabase/product-types";
 
+export type MonthlyValue = number | "";
+
 export type computedRequirements = {
     energia: string;
     potenciaDC: string;

@@ -4,9 +4,19 @@ import {
     FinantialComputeInput,
     FlowRow,
 } from "@/lib/types/components/Quotes/finantial_analysis";
+import { FinantialCambioEquipo, FinantialCambioItem } from "@/lib/types/supabase/finantial-types";
 
 const VAN_HORIZON = 20; // años futuros a considerar para el cálculo del VAN
 const OPEX_RATE = 0.015; // Porcentaje del CAPEX para calcular el OPEX
+export const DEFAULT_MAX_YEAR = 30;
+export const MIN_MAX_YEAR = 20;
+export const computedFieldClass = "bg-rose-100 text-rose-900 border-rose-200";
+export const MAX_CAMBIOS = 5;
+export const CAMBIO_OPTIONS = Array.from({ length: MAX_CAMBIOS + 1 }, (_, count) => ({
+    value: String(count),
+    label: count === 1 ? "1 cambio" : `${count} cambios`,
+}));
+export const CAMBIO_ORDINAL = ["1er", "2do", "3er", "4to", "5to"];
 
 // Construcción de la energía
 export function buildEnergyRows(input: {
@@ -295,4 +305,33 @@ export function getBatteryReplacementCost(
     }>
 ): number {
     return getReplacementCostByType(projectEquipos, "BATERÍA");
+}
+
+export function formatPayback(value: string | null): string {
+    if (!value) return "—";
+    if (value.includes("año") || value.includes("mes")) return value;
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return formatPaybackLabel(numeric);
+    return value;
+}
+
+export function defaultCambioTipo(hasInverter: boolean, hasBattery: boolean): FinantialCambioEquipo {
+    if (hasInverter && !hasBattery) return "INVERSOR";
+    if (!hasInverter && hasBattery) return "BATERÍA";
+    return "";
+}
+
+export function emptyCambio(hasInverter: boolean, hasBattery: boolean): FinantialCambioItem {
+    return { anio: "", tipo: defaultCambioTipo(hasInverter, hasBattery) };
+}
+
+export function resizeCambios(
+    current: FinantialCambioItem[] | undefined,
+    count: number,
+    hasInverter: boolean,
+    hasBattery: boolean,
+): FinantialCambioItem[] {
+    const next = (current ?? []).slice(0, count);
+    while (next.length < count) next.push(emptyCambio(hasInverter, hasBattery));
+    return next;
 }

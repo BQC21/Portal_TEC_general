@@ -1,3 +1,5 @@
+import { MonthlyValue } from "@/lib/types/components/Sizing/computes";
+
 // -------------------------
 // Requerimientos energéticos
 // -------------------------
@@ -61,4 +63,35 @@ export function AH_sistema(demanda: number, autonomía: number,
 
 export function N_baterias(ah_sistema: number, ah_bateria: number){
 	return ah_sistema/ah_bateria
+}
+
+export const MONTH_LABELS = [
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre",
+] as const;
+
+export function toMonthlyNumber(value: unknown): MonthlyValue {
+    const n = typeof value === "number" ? value : Number(value);
+    return Number.isFinite(n) && n > 0 ? n : "";
+}
+
+export function toMonthlyValues(initial?: number[]): MonthlyValue[] {
+    const base = new Array<MonthlyValue>(12).fill("");
+    if (!initial?.length) return base;
+    return base.map((_, i) => toMonthlyNumber(initial[i]));
+}
+
+export function monthsFromFactor(factor: number): number[] {
+    const value = Number.isFinite(factor) && factor > 0 ? factor : 0;
+    return Array.from({ length: 12 }, () => value);
 }

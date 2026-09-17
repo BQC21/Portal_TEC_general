@@ -91,6 +91,10 @@ export type AddProductTextFieldProps = {
     placeholder?: string;
     value: string;
     onChange: (value: string) => void;
+    minLength?: number;
+    maxLength?: number;
+    pattern?: string;
+    title?: string;
     type?: "text" | "password";
     autoComplete?: string;
 };

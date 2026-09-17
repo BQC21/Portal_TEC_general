@@ -9,6 +9,13 @@ export type CascadeFilterOptions = {
 	types: string[];
 };
 
+export type CatalogFilterConfig = {
+	id: FilterKey;
+	label: string;
+	placeholder: string;
+	optionsKey: keyof CascadeFilterOptions;
+};
+
 // Filtrado de materiales
 export type MaterialesFiltersProps = {
     values: MaterialesFilterValues;

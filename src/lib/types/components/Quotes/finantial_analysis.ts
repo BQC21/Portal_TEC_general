@@ -30,6 +30,14 @@ export type FinantialAnalysis = {
     batteryReplacementCost: number;
 };
 
+export type ChartPoint = { x: number; y: number; label?: string };
+
+export type ChartScale = {
+    min: number;
+    max: number;
+    toY: (value: number) => number;
+};
+
 export type FinantialComputeInput = {
     precio_venta: number;
     generacion: number;

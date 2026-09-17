@@ -3,8 +3,8 @@ import { Equipos } from "../../supabase/equipos-types"
 import { Materiales } from "../../supabase/materiales-types"
 import { Project_Equipos } from "../../supabase/project_equipos_join"
 import { Project_Materiales } from "../../supabase/project_materiales_join"
-import { ConsumeItem, EatingItem, ManualCosts, MontoItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
-import { ManualCostMontoSection } from "@/features/view/hooks/modals/Quotes/useManageLocalCosts"
+import { Quote } from "../../supabase/quote-types"
+import { ConsumeItem, EatingItem, ManualCostMontoSection, ManualCosts, MontoItem, PersonalItem, QuantityPriceItem } from "./manual_resources"
 
 // ---------------
 // RECURSOS
@@ -152,3 +152,18 @@ export type GastosViajes_PriceTable_props = {
 //         value: MontoItem[keyof MontoItem]
 //     ) => void
 // }
+
+export type UseQuoteSelectedProductsParams = {
+    proyectoId: string | undefined;
+    existingProjectEquipos: Project_Equipos[];
+    existingProjectMateriales: Project_Materiales[];
+    savedEquipos?: Project_Equipos[];
+    savedMateriales?: Project_Materiales[];
+};
+
+export type UseUnitedQuoteAggregationParams = {
+    quotes: Quote[];
+    selectedIds: string[];
+    existingProjectEquipos: Project_Equipos[];
+    existingProjectMateriales: Project_Materiales[];
+};
