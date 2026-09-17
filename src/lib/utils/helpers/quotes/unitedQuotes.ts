@@ -109,6 +109,16 @@ export function mergeManualCosts(costsList: ManualCosts[]): ManualCosts {
             estructuras_cantidad_manual: costsList.some(
                 (costs) => costs.Recursos.estructuras_cantidad_manual,
             ),
+            considerar_equipos_principales: costsList.every(
+                (costs) => costs.Recursos.considerar_equipos_principales !== false,
+            ),
+            considerar_estructuras: costsList.every(
+                (costs) => costs.Recursos.considerar_estructuras !== false,
+            ),
+            considerar_consumibles: costsList.every(
+                (costs) => costs.Recursos.considerar_consumibles !== false,
+            ),
+            consumibles_ocultos: [],
         },
         Viaticos: {
             gastos_viaje: costsList.flatMap((costs) => withFreshIds(costs.Viaticos.gastos_viaje)),
