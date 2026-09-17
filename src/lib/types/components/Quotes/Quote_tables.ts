@@ -38,6 +38,10 @@ export type Consume_PriceTable_props = {
     onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void
     onUpdateItem: (index: number, field: keyof ConsumeItem, value: ConsumeItem[keyof ConsumeItem]) => void
     onRemoveItem: (index: number) => void
+    showConsiderChecklist?: boolean
+    hiddenConsumeKeys?: string[]
+    onToggleConsumeKey?: (key: string) => void
+    onSetConsumeKeysHidden?: (keys: string[], hidden: boolean) => void
 }
 
 export type EPP_PriceTable_props = {

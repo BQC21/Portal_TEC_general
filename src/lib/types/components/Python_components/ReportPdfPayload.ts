@@ -40,12 +40,14 @@ export type ReportPdfPayload = {
             unidad?: string;
             tipo_de_producto?: string;
             marca?: string;
+            paneles_palet?: number | null;
         };
     }>;
 
-    // materiales eléctricas
+    // materiales eléctricos / canalización
     materiales?: Array<{
         cantidad?: string | number;
+        visible?: boolean;
         material_info?: {
             cod_producto?: string;
             descripcion?: string;
@@ -53,7 +55,14 @@ export type ReportPdfPayload = {
             tipo_de_producto?: string;
         };
     }>;
+    show_electrical_materials?: boolean;
+    show_canalization_materials?: boolean;
 
     // Puesta en marcha a ocultar en el PDF (ids de MO_Content)
     hidden_mo_ids?: string[];
+    puesta_en_marcha_items?: Array<{
+        id?: string;
+        descripcion?: string;
+        visible?: boolean;
+    }>;
 };

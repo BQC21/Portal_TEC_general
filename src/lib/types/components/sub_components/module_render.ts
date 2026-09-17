@@ -290,6 +290,16 @@ export type ResourcesTablesProps = {
     onReplaceMaterial: (id: string | number, material: Materiales) => void;
     onRemoveMaterial: (id: string | number) => void;
     onAddConsumeItem: (item: Omit<ConsumeItem, "id">) => void;
+    showResourceChecklists?: boolean;
+    updateRecursosConsiderFlag?: (
+        field:
+            | "considerar_equipos_principales"
+            | "considerar_estructuras"
+            | "considerar_consumibles",
+        value: boolean,
+    ) => void;
+    toggleConsumibleOculto?: (key: string) => void;
+    setConsumiblesHidden?: (keys: string[], hidden: boolean) => void;
 } & ManualCostHandlers;
 
 export type ViaticosTablesProps = {
@@ -317,14 +327,29 @@ export type Eq_Mat_Content_Props = {
     selectedMateriales: Project_Materiales[];
     hiddenEquipoIds?: string[];
     onToggleEquipoVisibility?: (id: string) => void;
+    hiddenMaterialIds?: string[];
+    onToggleMaterialVisibility?: (id: string) => void;
+    showElectricalMaterialsInPdf?: boolean;
+    onToggleElectricalMaterialsTable?: (visible: boolean) => void;
+    showCanalizationMaterialsInPdf?: boolean;
+    onToggleCanalizationMaterialsTable?: (visible: boolean) => void;
+}
+
+export type MOActivity = {
+    id: string;
+    descripcion: string;
+    visible: boolean;
 }
 
 export type MO_Content_Props = {
     title: string;
     precioFinal: number;
     MO: number;
-    hiddenMOIds?: string[];
-    onToggleMOVisibility?: (id: string) => void;
+    activities: MOActivity[];
+    onToggleActivityVisibility?: (id: string) => void;
+    onAddActivity?: () => void;
+    onUpdateActivity?: (id: string, descripcion: string) => void;
+    onRemoveActivity?: (id: string) => void;
 }
 
 // -----

@@ -27,6 +27,10 @@ export type CollapsibleTableSectionProps = {
     title: string;
     defaultOpen?: boolean;
     children: ReactNode;
+    showCheckbox?: boolean;
+    checked?: boolean;
+    onCheckedChange?: (checked: boolean) => void;
+    checkboxAriaLabel?: string;
 };
 
 export type ExcelWorkbookSheet = {
