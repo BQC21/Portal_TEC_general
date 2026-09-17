@@ -1,8 +1,19 @@
 export type ModuloFVUnidadKind = "palet" | "unidad";
 
+export const DEFAULT_PANELES_POR_PALET = 36;
+
 export function normalizeModuloFVUnidad(unidad?: string | null): ModuloFVUnidadKind | null {
-    const unidadNormalizada = String(unidad ?? "").trim().toLowerCase();
-    if (unidadNormalizada === "palet") return "palet";
+    const unidadNormalizada = String(unidad ?? "").trim().toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    if (
+        unidadNormalizada === "palet"
+        || unidadNormalizada === "palets"
+        || unidadNormalizada === "pallet"
+        || unidadNormalizada === "pallets"
+    ) {
+        return "palet";
+    }
     if (unidadNormalizada === "unidad" || unidadNormalizada === "uni") return "unidad";
     return null;
 }
@@ -23,8 +34,9 @@ type ModuloFVSelection = {
     cantidad?: number;
 };
 
-export function isPaletModuloFV(unidad?: string | null): boolean {
-    return normalizeModuloFVUnidad(unidad) === "palet";
+export function isPaletModuloFV(unidad?: string | null, descripcion?: string | null): boolean {
+    if (normalizeModuloFVUnidad(unidad) === "palet") return true;
+    return /\bpal+ets?\b/i.test(descripcion ?? "");
 }
 
 export function hasSelectedPaletModuloFV(modulos: ModuloFVSelection[]): boolean {
@@ -155,19 +167,38 @@ export function stripPaletFromDescripcion(descripcion?: string | null): string {
         .trim();
 }
 
+export function resolvePanelesPorPalet(
+    items: Array<{
+        unidad?: string | null;
+        paneles_palet?: number | null;
+        descripcion?: string | null;
+    }>,
+): number {
+    const paletItem = items.find((item) => isPaletModuloFV(item.unidad, item.descripcion));
+    const fromPalet = Number(paletItem?.paneles_palet);
+    if (Number.isFinite(fromPalet) && fromPalet > 0) return Math.trunc(fromPalet);
+
+    const fromAny = items
+        .map((item) => Number(item.paneles_palet))
+        .find((value) => Number.isFinite(value) && value > 0);
+    if (fromAny) return Math.trunc(fromAny);
+
+    return DEFAULT_PANELES_POR_PALET;
+}
+
 export function cantidadModuloFVComoUnidades(
     cantidad: unknown,
     unidad?: string | null,
     paneles_palet?: number,
+    descripcion?: string | null,
 ): number {
     const n = Math.max(0, Math.ceil(Number(cantidad) || 0));
+    if (!isPaletModuloFV(unidad, descripcion)) return n;
     const panelesPorPalet = Number(paneles_palet);
-    if (normalizeModuloFVUnidad(unidad) === "palet") {
-        return Number.isFinite(panelesPorPalet) && panelesPorPalet > 0
-            ? n * Math.trunc(panelesPorPalet)
-            : n;
-    }
-    return n;
+    const factor = Number.isFinite(panelesPorPalet) && panelesPorPalet > 0
+        ? Math.trunc(panelesPorPalet)
+        : DEFAULT_PANELES_POR_PALET;
+    return n * factor;
 }
 
 export function cantidadBateriaComoUnidades(
@@ -199,22 +230,57 @@ type EquipoReportSource = {
 };
 
 export function toEquipoReportRows(equipos: EquipoReportSource[]): EquipoReportDisplayRow[] {
-    return equipos.map((item) => {
-        const isModulo = isModuloFV(item.equipo_info?.tipo_de_producto);
-        return {
+    const moduloItems = equipos.filter((item) => isModuloFV(item.equipo_info?.tipo_de_producto));
+    let emittedModulos = false;
+    const rows: EquipoReportDisplayRow[] = [];
+
+    for (const item of equipos) {
+        if (isModuloFV(item.equipo_info?.tipo_de_producto)) {
+            if (emittedModulos) continue;
+            emittedModulos = true;
+
+            const preferred =
+                moduloItems.find((candidate) =>
+                    !isPaletModuloFV(
+                        candidate.equipo_info?.unidad,
+                        candidate.equipo_info?.descripcion,
+                    ),
+                ) ?? moduloItems[0];
+            const panelesPorPalet = resolvePanelesPorPalet(
+                moduloItems.map((candidate) => ({
+                    unidad: candidate.equipo_info?.unidad,
+                    paneles_palet: candidate.equipo_info?.paneles_palet,
+                    descripcion: candidate.equipo_info?.descripcion,
+                })),
+            );
+
+            rows.push({
+                ids: moduloItems.map((candidate) => String(candidate.id)),
+                cod_producto: preferred?.equipo_info?.cod_producto ?? "",
+                descripcion: "Módulo fotovoltaico",
+                unidad: "Unidad",
+                cantidad: moduloItems.reduce(
+                    (sum, candidate) =>
+                        sum + cantidadModuloFVComoUnidades(
+                            candidate.cantidad,
+                            candidate.equipo_info?.unidad,
+                            panelesPorPalet,
+                            candidate.equipo_info?.descripcion,
+                        ),
+                    0,
+                ),
+            });
+            continue;
+        }
+
+        rows.push({
             ids: [String(item.id)],
             cod_producto: item.equipo_info?.cod_producto ?? "",
-            descripcion: isModulo
-                ? stripPaletFromDescripcion(item.equipo_info?.descripcion)
-                : (item.equipo_info?.descripcion ?? ""),
-            unidad: isModulo ? "Unidad" : (item.equipo_info?.unidad ?? ""),
-            cantidad: isModulo
-                ? cantidadModuloFVComoUnidades(
-                    item.cantidad,
-                    item.equipo_info?.unidad,
-                    item.equipo_info?.paneles_palet ?? undefined,
-                )
-                : Math.max(0, Math.ceil(Number(item.cantidad) || 0)),
-        };
-    });
+            descripcion: item.equipo_info?.descripcion ?? "",
+            unidad: item.equipo_info?.unidad ?? "",
+            cantidad: Math.max(0, Math.ceil(Number(item.cantidad) || 0)),
+        });
+    }
+
+    return rows;
 }
