@@ -98,6 +98,10 @@ export function Consume_PriceTable({
         onAddConsumeItem,
         onUpdateItem,
         onRemoveItem,
+        showConsiderChecklist = false,
+        hiddenConsumeKeys = [],
+        onToggleConsumeKey,
+        onSetConsumeKeysHidden,
     }: Consume_PriceTable_props){
 
     // recolectar materiales
@@ -145,6 +149,8 @@ export function Consume_PriceTable({
         })
     }
 
+    const columnCount = showConsiderChecklist ? 14 : 13
+
     return(
         <>
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
@@ -155,6 +161,11 @@ export function Consume_PriceTable({
                             <table className="min-w-full w-max border-separate border-spacing-0">
                             <thead className="sticky top-0 z-10 bg-slate-100">
                                 <tr className="bg-slate-400 text-left">
+                                    {showConsiderChecklist ? (
+                                        <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                            {" "}
+                                        </th>
+                                    ) : null}
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         COD PROD
                                     </th>
@@ -202,12 +213,16 @@ export function Consume_PriceTable({
                                             const collapsed = collapsedGroups.has(meta.key)
                                             const restoreFamilies = restoreFamiliesForGroup(meta.key)
                                                 .filter((family) => canRestoreFamily(family))
+                                            const groupKeys = rows.map((row) => row.key)
+                                            const groupConsidered = groupKeys.every(
+                                                (key) => !hiddenConsumeKeys.includes(key),
+                                            )
 
                                             return (
                                                 <Fragment key={`group-${meta.key}`}>
                                                     <tr key={`group-${meta.key}`} className={meta.headerClass}>
                                                         <td
-                                                            colSpan={13}
+                                                            colSpan={columnCount}
                                                             className="border-b border-slate-200 px-4 py-3"
                                                         >
                                                             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -222,9 +237,9 @@ export function Consume_PriceTable({
                                                                         {meta.label} ({rows.length})
                                                                     </span>
                                                                 </button>
+                                                                <div className="flex flex-wrap items-center gap-2">
                                                                 {restoreFamilies.length > 0 ? (
-                                                                    <div className="flex flex-wrap items-center gap-2">
-                                                                        {restoreFamilies.map((family) => (
+                                                                        restoreFamilies.map((family) => (
                                                                             <button
                                                                                 key={family}
                                                                                 type="button"
@@ -234,17 +249,48 @@ export function Consume_PriceTable({
                                                                                 <PlusIcon />
                                                                                 {CONSUMIBLE_RESTORE_LABEL[family]}
                                                                             </button>
-                                                                        ))}
-                                                                    </div>
+                                                                        ))
                                                                 ) : null}
+                                                                {showConsiderChecklist ? (
+                                                                    <input
+                                                                        type="checkbox"
+                                                                        checked={groupConsidered}
+                                                                        onChange={() =>
+                                                                            onSetConsumeKeysHidden?.(
+                                                                                groupKeys,
+                                                                                groupConsidered,
+                                                                            )
+                                                                        }
+                                                                        aria-label={`Considerar ${meta.label}`}
+                                                                        className="h-5 w-5 accent-orange-500"
+                                                                    />
+                                                                ) : null}
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>
-                                                    {collapsed ? null : rows.map((item) => (
+                                                    {collapsed ? null : rows.map((item) => {
+                                            const rowConsidered = !hiddenConsumeKeys.includes(item.key)
+                                            return (
                                             <tr
                                                 key={item.key}
-                                                className={getConsumibleGroup(item.tipo_de_producto).rowClass}
+                                                className={`${getConsumibleGroup(item.tipo_de_producto).rowClass} ${
+                                                    showConsiderChecklist && !rowConsidered
+                                                        ? "opacity-50"
+                                                        : ""
+                                                }`}
                                             >
+                                                {showConsiderChecklist ? (
+                                                    <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={rowConsidered}
+                                                            onChange={() => onToggleConsumeKey?.(item.key)}
+                                                            aria-label={`Considerar ${item.descripcion || item.cod_producto || "consumible"}`}
+                                                            className="h-5 w-5 accent-orange-500"
+                                                        />
+                                                    </td>
+                                                ) : null}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.cod_producto || "—"}
                                                 </td>
@@ -364,13 +410,14 @@ export function Consume_PriceTable({
                                                     )}
                                                 </td>
                                             </tr>
-                                                    ))}
+                                            );
+                                            })}
                                                 </Fragment>
                                             )
                                         })
                                     ) : (
                                         <tr className="bg-white">
-                                            <td colSpan={13} className="px-4 py-10 text-center text-slate-500">
+                                            <td colSpan={columnCount} className="px-4 py-10 text-center text-slate-500">
                                                 No hay consumibles seleccionados todavía.
                                             </td>
                                         </tr>
