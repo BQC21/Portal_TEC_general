@@ -1,10 +1,12 @@
 import { ReportTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_REPORT } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
-import Button2Edit_report from "../../Buttons/quotes/report/button2Edit";
-import { Button2Trash_report } from "../../Buttons/quotes/report/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import EditReportModal from "../../Modals/quotes/report/EditReportModal";
+import { DeleteReportModal } from "../../Modals/quotes/report/DeleteReportModal";
+import { Report } from "@/lib/types/supabase/report-types";
 import { formatCurrency } from "@/lib/utils/normalization";
-import Button2PDF from "../../Buttons/quotes/report/button2PDF";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 
@@ -43,16 +45,33 @@ export default function ReportTable({report, totalReport,
 
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_report
-                                                    report={report}
-                                                    onUpdateReport={onUpdateReport}
-                                                    project_equipos={projects_equipos}
-                                                    project_materiales={projects_materiales}
-                                                />
-                                                <Button2Trash_report
-                                                    report={report}
-                                                    onDeleteReport={() => onDeleteReport(report.id)}
-                                                />
+                                                <Button2Edit title="Ver reporte" label="Ver Reporte">
+                                                    {(close) => (
+                                                        <EditReportModal
+                                                            existingReport={report}
+                                                            onUpdateReport={async (formData) => {
+                                                                const updatedReport: Report = { ...report, ...formData } as Report;
+                                                                await onUpdateReport(updatedReport);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existing_project_equipos={projects_equipos}
+                                                            existing_project_materiales={projects_materiales}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar reporte">
+                                                    {(close) => (
+                                                        <DeleteReportModal
+                                                            report={report}
+                                                            onDeleteReport={(reportId) => {
+                                                                onDeleteReport(reportId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>

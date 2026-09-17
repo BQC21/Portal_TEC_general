@@ -1,6 +1,8 @@
 import { EQUIPOS_HEADERS } from "@/lib/utils/headers";
-import { Button2Edit } from "../../Buttons/Equipos/Button2Edit";
-import { Button2Trash } from "../../Buttons/Equipos/Button2Trash";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import { EditEquipoModal } from "../../Modals/Equipos/EditEquipoModal";
+import { DeleteEquipoModal } from "../../Modals/Equipos/DeleteEquipoModal";
 import {
     displayApplicableCellValue,
     displayCellValue,
@@ -58,14 +60,30 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                         {/* acciones */}
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
-                                                    equipo={equipo}
-                                                    onUpdateEquipo={onUpdateEquipos}
-                                                />
-                                                <Button2Trash 
-                                                    equipo={equipo}
-                                                    onDeleteEquipo={onDeleteEquipos}
-                                                />
+                                                <Button2Edit title="Editar equipo">
+                                                    {(close) => (
+                                                        <EditEquipoModal
+                                                            equipo={equipo}
+                                                            onUpdateEquipo={(updatedEquipo) => {
+                                                                onUpdateEquipos(updatedEquipo);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar producto">
+                                                    {(close) => (
+                                                        <DeleteEquipoModal
+                                                            equipo={equipo}
+                                                            onDeleteEquipo={(equipoId) => {
+                                                                onDeleteEquipos(equipoId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.created_at)}`}>{formatDate(equipo.created_at)}</td>

@@ -2,9 +2,12 @@ import { QuoteTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_QUOTE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
-import Button2Edit_quote from "../../Buttons/quotes/quote/button2Edit";
-import { Button2Trash_quote } from "../../Buttons/quotes/quote/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
 import { Button2Duplicate } from "../../Buttons/shared/button2Duplicate";
+import EditQuoteModal from "../../Modals/quotes/quote/EditQuoteModal";
+import { DeleteQuoteModal } from "../../Modals/quotes/quote/DeleteQuoteModal";
+import { Quote } from "@/lib/types/supabase/quote-types";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
@@ -35,20 +38,37 @@ export default function QuoteTable({quote, totalQuote,
                                         
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_quote
-                                                    quote={quote}
-                                                    onUpdateQuote={onUpdateQuote}
-                                                    project_equipos={projects_equipos}
-                                                    project_materiales={projects_materiales}
-                                                />
+                                                <Button2Edit title="Ver cotización" label="Ver Cotización">
+                                                    {(close) => (
+                                                        <EditQuoteModal
+                                                            existingQuote={quote}
+                                                            onUpdateQuote={async (formData) => {
+                                                                const updatedQuote: Quote = { ...quote, ...formData } as Quote;
+                                                                await onUpdateQuote(updatedQuote);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existing_project_equipos={projects_equipos}
+                                                            existing_project_materiales={projects_materiales}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
                                                 <Button2Duplicate
                                                     title="Duplicar cotización"
                                                     onDuplicate={() => onDuplicateQuote(quote)}
                                                 />
-                                                <Button2Trash_quote
-                                                    quote={quote}
-                                                    onDeleteQuote={() => onDeleteQuote(quote.id)}
-                                                />
+                                                <Button2Delete title="Eliminar cotización">
+                                                    {(close) => (
+                                                        <DeleteQuoteModal
+                                                            quote={quote}
+                                                            onDeleteQuote={(quoteId) => {
+                                                                onDeleteQuote(quoteId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.created_at)}</td>

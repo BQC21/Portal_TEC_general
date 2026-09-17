@@ -1,7 +1,10 @@
 import { MarcasTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_BRAND } from "@/lib/utils/headers";
-import Button2Edit_Brand from "../../Buttons/Proveedores/marcas/button2Edit";
-import { Button2Trash_Brand } from "../../Buttons/Proveedores/marcas/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import EditBrandModal from "../../Modals/Proveedores/marcas/EditBrandModal";
+import { DeleteBrandModal } from "../../Modals/Proveedores/marcas/DeleteBrandModal";
+import { Brand } from "@/lib/types/supabase/brand.types";
 
 export default function BrandTable({ brand, 
     totalBrand, 
@@ -40,14 +43,31 @@ export default function BrandTable({ brand,
             
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_Brand
-                                                    brand={brand}
-                                                    onUpdateBrand={onUpdateBrand}
-                                                />
-                                                <Button2Trash_Brand
-                                                    brand={brand}
-                                                    onDeleteBrand={() => onDeleteBrand(String(brand.id))}
-                                                />
+                                                <Button2Edit title="Actualizar marca" label="Actualizar Marca">
+                                                    {(close) => (
+                                                        <EditBrandModal
+                                                            existingBrand={brand}
+                                                            onUpdateBrand={async (formData) => {
+                                                                const updatedBrand: Brand = { ...brand, ...formData };
+                                                                await onUpdateBrand(updatedBrand);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar marca">
+                                                    {(close) => (
+                                                        <DeleteBrandModal
+                                                            brand={brand}
+                                                            onDeleteBrand={(brandId) => {
+                                                                onDeleteBrand(brandId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                     </tr>

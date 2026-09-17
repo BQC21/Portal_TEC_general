@@ -1,8 +1,10 @@
 import { MATERIALES_HEADERS } from "@/lib/utils/headers";
 import { displayApplicableCellValue, displayCellValue, getCellTextClass } from "@/lib/utils/helpers/manage_info/cell_manage";
 import { toSafeNumber } from "@/lib/utils/normalization";
-import { Button2Edit } from "../../Buttons/Materiales/Button2Edit";
-import { Button2Trash } from "../../Buttons/Materiales/Button2Trash";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import { EditMaterialModal } from "../../Modals/Materiales/EditMaterialModal";
+import { DeleteMaterialModal } from "../../Modals/Materiales/DeleteMaterialModal";
 import { MaterialesTableProps } from "@/lib/types/components/General/tables";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 
@@ -35,14 +37,30 @@ export function MaterialesTable({ materiales, totalMateriales,
                                             {/* acciones */}
                                             <td className="border border-slate-200 px-4 py-5">
                                                 <div className="flex items-center gap-4 text-slate-500">
-                                                    <Button2Edit
-                                                        material={material}
-                                                        onUpdateMateriales={onUpdateMateriales}
-                                                    />
-                                                    <Button2Trash 
-                                                        material={material}
-                                                        onDeleteMaterial={onDeleteMateriales}
-                                                    />
+                                                    <Button2Edit title="Editar material">
+                                                        {(close) => (
+                                                            <EditMaterialModal
+                                                                material={material}
+                                                                onUpdateMaterial={(updatedMaterial) => {
+                                                                    onUpdateMateriales(updatedMaterial);
+                                                                    close();
+                                                                }}
+                                                                onClose={close}
+                                                            />
+                                                        )}
+                                                    </Button2Edit>
+                                                    <Button2Delete title="Eliminar material">
+                                                        {(close) => (
+                                                            <DeleteMaterialModal
+                                                                material={material}
+                                                                onDeleteMaterial={(materialId) => {
+                                                                    onDeleteMateriales(materialId);
+                                                                    close();
+                                                                }}
+                                                                onClose={close}
+                                                            />
+                                                        )}
+                                                    </Button2Delete>
                                                 </div>
                                             </td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.created_at)}`}>{formatDate(material.created_at)}</td>

@@ -1,8 +1,11 @@
 import { FinantialTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_FINANTIAL } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
-import Button2Edit_finantial from "../../Buttons/quotes/finantial/button2Edit";
-import { Button2Trash_finantial } from "../../Buttons/quotes/finantial/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import EditFinantialModal from "../../Modals/quotes/finantial/EditFinantialModal";
+import { DeleteFinantialModal } from "../../Modals/quotes/finantial/TrashFinantialModal";
+import { Finantial } from "@/lib/types/supabase/finantial-types";
 import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
@@ -33,15 +36,32 @@ export default function FinantialTable({finantial, totalFinantial,
 
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_finantial
-                                                    finantial={finantial}
-                                                    onUpdateFinantial={onUpdateFinantial}
-                                                    project_equipos={projects_equipos}
-                                                />
-                                                <Button2Trash_finantial
-                                                    finantial={finantial}
-                                                    onDeleteFinantial={() => onDeleteFinantial(finantial.id)}
-                                                />
+                                                <Button2Edit title="Ver finanzas" label="Ver Finanzas">
+                                                    {(close) => (
+                                                        <EditFinantialModal
+                                                            existingFinantial={finantial}
+                                                            onUpdateFinantial={async (formData) => {
+                                                                const updatedFinantial: Finantial = { ...finantial, ...formData };
+                                                                await onUpdateFinantial(updatedFinantial);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existing_project_equipos={projects_equipos}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar finanzas">
+                                                    {(close) => (
+                                                        <DeleteFinantialModal
+                                                            finantial={finantial}
+                                                            onDeleteFinantial={(finantialId) => {
+                                                                onDeleteFinantial(finantialId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>

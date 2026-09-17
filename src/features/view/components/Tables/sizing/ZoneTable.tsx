@@ -1,5 +1,8 @@
-import Button2Edit from "@/features/view/components/Buttons/sizing/zone/button2edit";
-import { Button2Trash } from "@/features/view/components/Buttons/sizing/zone/button2trash";
+import Button2Edit from "@/features/view/components/Buttons/shared/button2Edit";
+import { Button2Delete } from "@/features/view/components/Buttons/shared/button2Delete";
+import EditZoneModal from "@/features/view/components/Modals/sizing/zone/EditZoneModal";
+import { DeleteZoneModal } from "@/features/view/components/Modals/sizing/zone/DeleteZoneModal";
+import type { Zone } from "@/lib/types/supabase/zone-types";
 import { ZoneTableProps } from "@/lib/types/components/General/tables";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
@@ -43,14 +46,31 @@ export default function ProjectTable({ zones,
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{formatDate(zone.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
-                                                    zone={zone}
-                                                    onUpdateZone={onUpdateZone}
-                                                />
-                                                <Button2Trash
-                                                    zone={zone}
-                                                    onDeleteZone={() => onDeleteZone(zone.id)}
-                                                />
+                                                <Button2Edit title="Actualizar zona" label="Actualizar Zona">
+                                                    {(close) => (
+                                                        <EditZoneModal
+                                                            existingZone={zone}
+                                                            onUpdateZone={async (formData) => {
+                                                                const updatedZone: Zone = { ...zone, ...formData };
+                                                                await onUpdateZone(updatedZone);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar zona">
+                                                    {(close) => (
+                                                        <DeleteZoneModal
+                                                            zone={zone}
+                                                            onDeleteZone={(zoneId) => {
+                                                                onDeleteZone(zoneId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                     </tr>

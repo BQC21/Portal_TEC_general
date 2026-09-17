@@ -1,7 +1,10 @@
 import { TiposTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_TYPE } from "@/lib/utils/headers";
-import Button2Edit_Type from "../../Buttons/Proveedores/tipo/button2Edit";
-import { Button2Trash_Type } from "../../Buttons/Proveedores/tipo/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import EditTypeModal from "../../Modals/Proveedores/tipo/EditTypeModal";
+import { DeleteTypeModal } from "../../Modals/Proveedores/tipo/DeleteTypeModal";
+import { Type } from "@/lib/types/supabase/type-types";
 
 export default function TypeTable({ type, 
     totalType, 
@@ -40,14 +43,31 @@ export default function TypeTable({ type,
             
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_Type
-                                                    type={type}
-                                                    onUpdateType={onUpdateType}
-                                                />
-                                                <Button2Trash_Type
-                                                    type={type}
-                                                    onDeleteType={() => onDeleteType(String(type.id))}
-                                                />
+                                                <Button2Edit title="Actualizar tipo de producto" label="Actualizar Tipo de producto">
+                                                    {(close) => (
+                                                        <EditTypeModal
+                                                            existingType={type}
+                                                            onUpdateType={async (formData) => {
+                                                                const updatedType: Type = { ...type, ...formData };
+                                                                await onUpdateType(updatedType);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar tipo de producto">
+                                                    {(close) => (
+                                                        <DeleteTypeModal
+                                                            type={type}
+                                                            onDeleteType={(typeId) => {
+                                                                onDeleteType(typeId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                     </tr>

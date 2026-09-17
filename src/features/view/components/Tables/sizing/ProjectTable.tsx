@@ -1,6 +1,9 @@
-import Button2Edit from "@/features/view/components/Buttons/sizing/project/button2edit";
-import { Button2Trash } from "@/features/view/components/Buttons/sizing/project/button2trash";
+import Button2Edit from "@/features/view/components/Buttons/shared/button2Edit";
+import { Button2Delete } from "@/features/view/components/Buttons/shared/button2Delete";
 import { Button2Duplicate } from "@/features/view/components/Buttons/shared/button2Duplicate";
+import EditProjectModal from "@/features/view/components/Modals/sizing/project/EditProjectModal";
+import { DeleteProjectModal } from "@/features/view/components/Modals/sizing/project/DeleteProjectModal";
+import type { Project } from "@/lib/types/supabase/project-types";
 
 import { TABLE_HEADERS_PROJECT } from "@/lib/utils/headers";
 
@@ -51,24 +54,47 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
 
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit
-                                                    project={project}
-                                                    project_equipos={projectEquipos}
-                                                    project_materiales={projectMateriales}
-                                                    onUpdateProject={onUpdateProject}
-                                                />
+                                                <Button2Edit title="Ver proyecto" label="Ver Proyecto">
+                                                    {(close) => (
+                                                        <EditProjectModal
+                                                            existingProject={project}
+                                                            existingProjectEquipos={projectEquipos}
+                                                            existingProjectMateriales={projectMateriales}
+                                                            onUpdateProject={async (formData, selectedEquipos, selectedMateriales) => {
+                                                                const updatedProject: Project = { ...project, ...formData } as Project;
+                                                                await onUpdateProject(updatedProject, selectedEquipos, selectedMateriales);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
                                                 <Button2Duplicate
                                                     title="Duplicar proyecto"
                                                     onDuplicate={() => onDuplicateProject(project)}
                                                 />
-                                                <Button2Trash
-                                                    project={project}
-                                                    project_equipos={projectEquipos}
-                                                    project_materiales={projectMateriales}
-                                                    onDeleteProject={() => onDeleteProject(project.id)}
-                                                    onDeleteProjectEquipos={() => onDeleteProjectEquipos?.(projectEquipos[0]?.id?.toString() ?? "")}
-                                                    onDeleteProjectMateriales={() => onDeleteProjectMateriales?.(projectMateriales[0]?.id?.toString() ?? "")}
-                                                />
+                                                <Button2Delete title="Eliminar proyecto">
+                                                    {(close) => (
+                                                        <DeleteProjectModal
+                                                            project={project}
+                                                            project_equipos={projectEquipos}
+                                                            project_materiales={projectMateriales}
+                                                            onDeleteProject={(projectId) => {
+                                                                onDeleteProject(projectId);
+                                                                close();
+                                                            }}
+                                                            onDeleteProjectEquipos={(projectsEquiposId) => {
+                                                                onDeleteProjectEquipos?.(projectsEquiposId);
+                                                                close();
+                                                            }}
+                                                            onDeleteProjectMateriales={(projectMaterialesId) => {
+                                                                onDeleteProjectMateriales?.(projectMaterialesId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
 
                                             </div>
                                         </td>

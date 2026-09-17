@@ -1,7 +1,10 @@
 import { ProveedoresTableProps } from "@/lib/types/components/General/tables";
 import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
-import Button2Edit_Supplier from "../../Buttons/Proveedores/proveedores/button2Edit";
-import { Button2Trash_Supplier } from "../../Buttons/Proveedores/proveedores/button2Delete";
+import Button2Edit from "../../Buttons/shared/button2Edit";
+import { Button2Delete } from "../../Buttons/shared/button2Delete";
+import EditSupplierModal from "../../Modals/Proveedores/proveedores/EditSupplierModal";
+import { DeleteSupplierModal } from "../../Modals/Proveedores/proveedores/DeleteSupplierModal";
+import { Supplier } from "@/lib/types/supabase/supplier-types";
 
 export default function SupplierTable({ supplier, 
     totalSupplier, 
@@ -38,14 +41,31 @@ export default function SupplierTable({ supplier,
             
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
-                                                <Button2Edit_Supplier
-                                                    supplier={supplier}
-                                                    onUpdateSupplier={onUpdateSupplier}
-                                                />
-                                                <Button2Trash_Supplier
-                                                    supplier={supplier}
-                                                    onDeleteSupplier={() => onDeleteSupplier(String(supplier.id))}
-                                                />
+                                                <Button2Edit title="Actualizar proveedor" label="Actualizar Proveedor">
+                                                    {(close) => (
+                                                        <EditSupplierModal
+                                                            existingSupplier={supplier}
+                                                            onUpdateSupplier={async (formData) => {
+                                                                const updatedSupplier: Supplier = { ...supplier, ...formData };
+                                                                await onUpdateSupplier(updatedSupplier);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Edit>
+                                                <Button2Delete title="Eliminar proveedor">
+                                                    {(close) => (
+                                                        <DeleteSupplierModal
+                                                            supplier={supplier}
+                                                            onDeleteSupplier={(supplierId) => {
+                                                                onDeleteSupplier(supplierId);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Delete>
                                             </div>
                                         </td>
                                     </tr>
