@@ -5,10 +5,8 @@ import { useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
-import { bulkDeleteAllRows } from "@/lib/utils/helpers/massive/massiveClean";
+import { bulkDeleteAllRows, CONFIRM_PASSWORD } from "@/lib/utils/helpers/massive/massiveClean";
 import { MassiveCleanModalProps } from "@/lib/types/components/General/modals";
-
-export const CONFIRM_PASSWORD = "LIMPIEZA";
 
 export function MassiveCleanModal({ currentCount, onClose, onSuccess }: MassiveCleanModalProps) {
 

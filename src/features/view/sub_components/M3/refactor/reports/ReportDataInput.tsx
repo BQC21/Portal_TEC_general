@@ -12,7 +12,7 @@ import { Quote_selectedProps } from "@/lib/types/components/sub_components/modul
 import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
 import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
-export const GERENTE_FIRMA_PASSWORD = "2409Adry$Tere";
+import { GERENTE_FIRMA_PASSWORD } from "@/lib/utils/helpers/computes/report_computes";
 
 export function ReportDataInput({
     form, 

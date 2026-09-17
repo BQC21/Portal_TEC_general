@@ -1,50 +1,8 @@
 "use client";
 
+import { ChartPoint } from "@/lib/types/components/Quotes/finantial_analysis";
+import { buildAxisTicks, buildScale } from "@/lib/utils/helpers/computes/finantial_charts";
 import { formatCurrency } from "@/lib/utils/normalization";
-
-// punteros
-type Point = { x: number; y: number; label?: string };
-
-// escalamiento
-function buildScale(
-    values: number[],
-    height: number,
-    paddingTop: number,
-    paddingBottom: number
-) {
-    const min = Math.min(...values, 0);
-    const max = Math.max(...values, 0);
-    const span = max - min || 1;
-    const usable = height - paddingTop - paddingBottom;
-    
-    return {
-        min,
-        max,
-        toY: (value: number) =>
-            paddingTop + ((max - value) / span) * usable,
-    };
-}
-
-/** Marcas "redondas" para el eje Y (p. ej. -20000, 0, 20000, …). */
-function buildAxisTicks(min: number, max: number, targetCount = 8): number[] {
-    const span = max - min || 1;
-    const roughStep = span / Math.max(targetCount - 1, 1);
-    const magnitude = Math.pow(10, Math.floor(Math.log10(Math.abs(roughStep) || 1)));
-    const niceStep =
-        [1, 2, 2.5, 5, 10]
-            .map((factor) => factor * magnitude)
-            .find((candidate) => candidate >= roughStep) ?? roughStep;
-
-    const start = Math.floor(min / niceStep) * niceStep;
-    const end = Math.ceil(max / niceStep) * niceStep;
-    const ticks: number[] = [];
-
-    for (let value = start; value <= end + niceStep * 1e-9; value += niceStep) {
-        ticks.push(Number(value.toFixed(10)));
-    }
-
-    return ticks;
-}
 
 export function EnergyLineChart({
     years,
@@ -72,7 +30,7 @@ export function EnergyLineChart({
             ? (width - paddingX * 2) / (values.length - 1)
             : 0;
 
-    const points: Point[] = values.map((value, index) => ({
+    const points: ChartPoint[] = values.map((value, index) => ({
         x: paddingX + index * step,
         y: scale.toY(value),
         label: String(years[index]),

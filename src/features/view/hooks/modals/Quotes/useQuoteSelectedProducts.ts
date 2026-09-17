@@ -8,14 +8,7 @@ import {
     resolveQuoteEquipos,
     resolveQuoteMateriales,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
-
-type UseQuoteSelectedProductsParams = {
-    proyectoId: string | undefined;
-    existingProjectEquipos: Project_Equipos[];
-    existingProjectMateriales: Project_Materiales[];
-    savedEquipos?: Project_Equipos[];
-    savedMateriales?: Project_Materiales[];
-};
+import { UseQuoteSelectedProductsParams } from "@/lib/types/components/Quotes/Quote_tables";
 
 export function useQuoteSelectedProducts({
     proyectoId,

@@ -3,24 +3,8 @@
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { toEquipoReportRows } from "@/lib/utils/helpers/computes/PanelNumber";
+import { isCanalizationMaterial, isElectricalMaterial } from "@/lib/utils/helpers/computes/report_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
-
-function normalizeMaterialTipo(tipo?: string | null) {
-    return (tipo ?? "")
-        .trim()
-        .toUpperCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-}
-
-function isElectricalMaterial(item: Project_Materiales) {
-    const tipo = normalizeMaterialTipo(item.material_info?.tipo_de_producto);
-    return tipo === "PROTECCION" || tipo === "CABLE";
-}
-
-function isCanalizationMaterial(item: Project_Materiales) {
-    return normalizeMaterialTipo(item.material_info?.tipo_de_producto) === "CANALIZACION";
-}
 
 function MaterialVisibilityCheckbox({
     item,

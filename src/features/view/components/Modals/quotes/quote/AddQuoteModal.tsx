@@ -28,16 +28,13 @@ import { UnitedQuotesPanel } from "@/features/view/sub_components/M3/refactor/Un
 import { useUnitedQuoteAggregation } from "@/features/view/hooks/modals/Quotes/useUnitedQuoteAggregation";
 import {
     eligibleQuotesForUnion,
+    emptySelectedIds,
     MAX_UNITED_QUOTES,
     MIN_UNITED_QUOTES,
     withUnionInfo,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
 import { quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { QuoteMode } from "@/lib/utils/options";
-
-function emptySelectedIds(count: number) {
-    return Array.from({ length: count }, () => "");
-}
 
 export default function AddQuoteModal({
     onAddQuote,

@@ -1,23 +1,11 @@
 "use client";
 
-import { useState, useEffect } from "react"; 
-interface NRELRouteResponse {
-    hsp: number;
-    error?: string;
-}
-
-interface UseConverterNRELOptions {
-    latitude?: string;
-    longitude?: string;
-}
-
-interface UseConverterNRELResult {
-    ghi_nrel:     number | null;   // kWh/m²/año
-    hsp:     number | null;   // kWh/m²/día
-    loading: boolean;
-    error:   string | null;
-    refetch: () => void;
-}
+import { useState, useEffect } from "react";
+import {
+    NRELRouteResponse,
+    UseConverterNRELOptions,
+    UseConverterNRELResult,
+} from "@/lib/types/api/nrel-types";
 
 export function useConverterNREL(options: UseConverterNRELOptions = {}): UseConverterNRELResult{
     const { latitude, longitude } = options;

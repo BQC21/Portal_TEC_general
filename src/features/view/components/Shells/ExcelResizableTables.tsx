@@ -1,12 +1,8 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { ExcelResizableTablesProps } from "@/lib/types/components/General/Shell";
 import { enableExcelTableResize } from "@/lib/utils/helpers/project_modals/excelTableResize";
-
-type ExcelResizableTablesProps = {
-    children: ReactNode;
-    className?: string;
-};
 
 /** Contenedor que permite redimensionar columnas y filas de las tablas hijas como en Excel. */
 export function ExcelResizableTables({ children, className }: ExcelResizableTablesProps) {

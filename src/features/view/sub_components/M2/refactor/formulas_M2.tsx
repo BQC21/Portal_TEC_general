@@ -1,6 +1,5 @@
 "use client";
 
-import katex from "katex";
 import "katex/dist/katex.min.css";
 import { FormulaItem } from "@/lib/types/components/General/formulas";
 import {
@@ -8,32 +7,8 @@ import {
     ENERGY_FORMULAS,
     PROTECTION_FORMULAS,
 } from "@/lib/utils/helpers/formulas/formulaContent";
+import { renderLatex, renderMixedText } from "@/lib/utils/helpers/formulas/formulaRender";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
-
-function renderLatex(tex: string, displayMode: boolean) {
-    return katex.renderToString(tex, {
-        displayMode,
-        throwOnError: false,
-        output: "html",
-        strict: "ignore",
-    });
-}
-
-function renderMixedText(text: string) {
-    return text
-        .split(/(\$[^$]+\$)/g)
-        .map((part) => {
-            if (part.startsWith("$") && part.endsWith("$") && part.length > 2) {
-                return renderLatex(part.slice(1, -1), false);
-            }
-
-            return part
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;");
-        })
-        .join("");
-}
 
 function PaperEquation({ tex, number }: { tex: string; number: number }) {
     const html = renderLatex(`${tex} \\tag{${number}}`, true);

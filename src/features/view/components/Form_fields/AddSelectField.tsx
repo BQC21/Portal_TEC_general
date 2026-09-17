@@ -1,11 +1,6 @@
-import { AddProductSelectFieldProps, SelectOption } from "@/lib/types/components/General/form_fields";
+import { AddProductSelectFieldProps } from "@/lib/types/components/General/form_fields";
+import { normalizeSelectOptions } from "@/lib/utils/helpers/buildForm/buildForm_functions";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-function normalizeOptions(options: AddProductSelectFieldProps["options"]): SelectOption[] {
-    return options.map((option) =>
-        typeof option === "string" ? { value: option, label: option } : option
-    );
-}
 
 export function AddProductSelectField({
     label,
@@ -16,7 +11,7 @@ export function AddProductSelectField({
     onChange,
     customClass = "", // Default to empty string
 }: AddProductSelectFieldProps) {
-    const normalizedOptions = normalizeOptions(options);
+    const normalizedOptions = normalizeSelectOptions(options);
 
     return (
         <div>

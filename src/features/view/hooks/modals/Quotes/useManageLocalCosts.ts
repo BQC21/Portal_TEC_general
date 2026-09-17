@@ -6,42 +6,16 @@ import {
     EMPTY_MONTO_ITEM,
     EMPTY_PERSONAL_ITEM,
     EMPTY_QUANTITY_PRICE_ITEM,
+    ManualCostArraySection,
+    ManualCostItemField,
+    ManualCostItemValue,
+    ManualCostMontoSection,
     ManualCosts,
     MontoItem,
     PersonalItem,
     QuantityPriceItem,
 } from "@/lib/types/components/Quotes/manual_resources";
 import { SetStateAction } from "react";
-
-type ManualCostArraySection =
-    | "Recursos.consumible"
-    | "Recursos.epp"
-    | "Recursos.tooling"
-    | "Recursos.sctr"
-    | "Recursos.personal"
-    | "Viaticos.courier"
-    | "Viaticos.gastos_viaje";
-    // | "Viaticos.eating";
-
-type ManualCostItemField =
-    | keyof QuantityPriceItem
-    | keyof PersonalItem
-    | keyof ConsumeItem
-    | keyof EatingItem
-    | keyof MontoItem;
-type ManualCostItemValue =
-    | QuantityPriceItem[keyof QuantityPriceItem]
-    | PersonalItem[keyof PersonalItem]
-    | ConsumeItem[keyof ConsumeItem]
-    | EatingItem[keyof EatingItem]
-    | MontoItem[keyof MontoItem];
-
-type ManualCostMontoSection =
-    | "Viaticos.hotel"
-    | "Viaticos.traveling"
-    | "Viaticos.mobility";
-
-type QuantityPriceSection = ManualCostArraySection | ManualCostMontoSection;
 
 export function ManageLocalCosts(
     setManualResourceCosts: (value: SetStateAction<ManualCosts>) => void,
@@ -387,5 +361,3 @@ export function ManageLocalCosts(
         setConsumiblesHidden,
     };
 }
-
-export type { ManualCostArraySection, ManualCostMontoSection, QuantityPriceSection };

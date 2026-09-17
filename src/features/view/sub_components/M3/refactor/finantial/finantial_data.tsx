@@ -5,45 +5,15 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { Finantial_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { FinantialCambioEquipo, FinantialCambioItem } from "@/lib/types/supabase/finantial-types";
-import { formatPaybackLabel } from "@/lib/utils/helpers/computes/finantial_computes";
+import {
+    CAMBIO_OPTIONS,
+    CAMBIO_ORDINAL,
+    computedFieldClass,
+    emptyCambio,
+    formatPayback,
+    resizeCambios,
+} from "@/lib/utils/helpers/computes/finantial_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
-
-const computedFieldClass = "bg-rose-100 text-rose-900 border-rose-200";
-const MAX_CAMBIOS = 5;
-const CAMBIO_OPTIONS = Array.from({ length: MAX_CAMBIOS + 1 }, (_, count) => ({
-    value: String(count),
-    label: count === 1 ? "1 cambio" : `${count} cambios`,
-}));
-const CAMBIO_ORDINAL = ["1er", "2do", "3er", "4to", "5to"];
-
-function formatPayback(value: string | null): string {
-    if (!value) return "—";
-    if (value.includes("año") || value.includes("mes")) return value;
-    const numeric = Number(value);
-    if (Number.isFinite(numeric)) return formatPaybackLabel(numeric);
-    return value;
-}
-
-function defaultTipo(hasInverter: boolean, hasBattery: boolean): FinantialCambioEquipo {
-    if (hasInverter && !hasBattery) return "INVERSOR";
-    if (!hasInverter && hasBattery) return "BATERÍA";
-    return "";
-}
-
-function emptyCambio(hasInverter: boolean, hasBattery: boolean): FinantialCambioItem {
-    return { anio: "", tipo: defaultTipo(hasInverter, hasBattery) };
-}
-
-function resizeCambios(
-    current: FinantialCambioItem[] | undefined,
-    count: number,
-    hasInverter: boolean,
-    hasBattery: boolean,
-): FinantialCambioItem[] {
-    const next = (current ?? []).slice(0, count);
-    while (next.length < count) next.push(emptyCambio(hasInverter, hasBattery));
-    return next;
-}
 
 export function FinantialData({ form, updateField, analysis }: Finantial_selectedProps) {
     const cambioCount = Number(form.cantidad_cambios) || 0;

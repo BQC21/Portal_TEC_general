@@ -4,7 +4,7 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 import { formatCurrency } from "@/lib/utils/normalization";
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
-import { isReusableEpp } from "../../templates/Prices";
+import { isReusableEpp } from "@/lib/utils/helpers/templates/quotePrices";
 import { EPP_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables";
 
 export function EPP_PriceTable({ items, considerarEppReutilizable, onUpdateItem, onAddItem, onRemoveItem }: 

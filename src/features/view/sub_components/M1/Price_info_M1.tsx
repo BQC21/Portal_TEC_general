@@ -5,14 +5,9 @@ import { AddProductSelectField } from "../../components/Form_fields/AddSelectFie
 import { AddProductRadioField } from "../../components/Form_fields/AddRadioField";
 import { CurrencyCode, PRICE_CURRENCY_OPTIONS } from "@/lib/utils/options";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
-import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency } from "@/lib/utils/helpers/computes/price_manage";
+import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, FALLBACK_EXCHANGE_RATE, formatReadonlyCurrency, roundMoney } from "@/lib/utils/helpers/computes/price_manage";
 import { useConverterSunat } from "../../hooks/api/useConverterSunat";
 import { useEffect, useMemo } from "react";
-
-const FALLBACK_EXCHANGE_RATE = 3.412;
-function roundMoney(value: number) {
-    return Number((Number.isFinite(value) ? value : 0).toFixed(2));
-}
 
 export function Price_info_M1({
     form,

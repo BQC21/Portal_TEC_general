@@ -22,9 +22,7 @@ import {
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
 import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
 import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
-
-const matrixCellStyles = "border border-black px-1 py-[3px] text-center text-[10px] font-bold leading-tight whitespace-nowrap";
-const matrixHeaderStyles = "border border-black bg-white px-1 py-[3px] text-center text-[10px] font-bold leading-tight text-slate-900 whitespace-nowrap";
+import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
     form, updateField, computedRequirements, equipos, materiales, selectedEquipmentByRow, selectedMaterialByRow, 

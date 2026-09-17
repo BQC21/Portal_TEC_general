@@ -1,41 +1,10 @@
-// /home/brakine/Desktop/Portal_TEC/Portal_TEC_general/src/features/view/hooks/modals/useSelectionHandlers.ts
-
 import { useCallback } from "react";
-import { computedRequirements } from "@/lib/types/components/Sizing/computes";
-import { Equipos } from "@/lib/types/supabase/equipos-types";
-import { Materiales } from "@/lib/types/supabase/materiales-types";
-import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { canAddModuloFV, cantidadModuloFVEnTabla } from "@/lib/utils/helpers/computes/PanelNumber";
-
-// INPUTS
-interface UseSelectionHandlersParams {
-    equipos: Equipos[];
-    materiales: Materiales[];
-    form: ProjectFormState;
-    computedRequirements: computedRequirements;
-    selectedEquipmentByRow: Record<string, { equipoId: string; description: string }>;
-    selectedMaterialByRow: Record<string, { materialId: string; description: string }>;
-    selectedEquipmentTable: SelectedEquipmentItem[];
-    selectedMaterialTable: SelectedMaterialItem[];
-    invertersToConsider: number;
-    setSelectedEquipmentByRow: (value: Record<string, { equipoId: string; description: string }> 
-        | ((prev: Record<string, { equipoId: string; description: string }>) => 
-            Record<string, { equipoId: string; description: string }>)) => void;
-    setSelectedMaterialByRow: (value: Record<string, { materialId: string; description: string }> 
-        | ((prev: Record<string, { materialId: string; description: string }>) => 
-            Record<string, { materialId: string; description: string }>)) => void;
-    setSelectedEquipmentTable: (value: SelectedEquipmentItem[] 
-        | ((prev: SelectedEquipmentItem[]) => SelectedEquipmentItem[])) => void;
-    setSelectedMaterialTable: (value: SelectedMaterialItem[] 
-        | ((prev: SelectedMaterialItem[]) => SelectedMaterialItem[])) => void;
-}
-
-//OUTPUTS
-interface SelectionHandlers {
-    handle_onChange: (value: string, label: string, index: string | number, product_type: string) => void;
-    handle_click: (label: string, index: string | number, product_type: string) => void;
-}
+import {
+    SelectionHandlers,
+    UseSelectionHandlersParams,
+} from "@/lib/types/components/sub_components/module_render";
+import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 
 export function useSelectionHandlers({
     equipos,

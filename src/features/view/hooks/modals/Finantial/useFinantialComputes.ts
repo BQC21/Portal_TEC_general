@@ -5,13 +5,11 @@ import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import {
     computeFinantialAnalysis,
+    DEFAULT_MAX_YEAR,
     getBatteryReplacementCost,
     getInverterReplacementCost,
+    MIN_MAX_YEAR,
 } from "@/lib/utils/helpers/computes/finantial_computes";
-
-// Rango de años para las gráficas
-const DEFAULT_MAX_YEAR = 30;
-const MIN_MAX_YEAR = 20;
 
 export function useFinantialComputes(
     form: FinantialFormState,

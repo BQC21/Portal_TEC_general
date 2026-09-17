@@ -1,13 +1,8 @@
 import { Quote, QuoteFormState } from "@/lib/types/supabase/quote-types";
+import { FormWithQuoteSelection } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { SetStateAction } from "react";
-
-type FormWithQuoteSelection = {
-    cotizacion_id?: string;
-    cotizacion_info?: Quote | undefined;
-    precio_cotizacion?: string;
-};
 
 export function QuoteSelection<T extends FormWithQuoteSelection>(
     value: string,

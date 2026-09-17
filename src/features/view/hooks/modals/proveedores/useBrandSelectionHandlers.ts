@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { SelectedBrandItem } from "@/lib/types/supabase/product-types";
 import { Brand } from "@/lib/types/supabase/brand.types";
-import { SelectedBrandByRow } from "@/lib/types/components/sub_components/module_render";
+import {
+    SelectedBrandByRow,
+    UseBrandSelectionHandlersParams,
+} from "@/lib/types/components/sub_components/module_render";
 import {
     BRAND_ROW_KEY,
     getBrandSelectOptions,
     toSelectedBrandItem,
 } from "@/lib/utils/helpers/project_modals/brandOptions";
-
-interface UseBrandSelectionHandlersParams {
-    brand: Brand[];
-    typeCategoria?: string;
-    initialSelected?: SelectedBrandItem[];
-}
 
 export function useBrandSelectionHandlers({
     brand,

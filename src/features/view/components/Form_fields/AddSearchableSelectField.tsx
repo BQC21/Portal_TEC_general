@@ -2,14 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AddProductSearchableSelectFieldProps, SelectOption } from "@/lib/types/components/General/form_fields";
+import { normalizeSelectOptions } from "@/lib/utils/helpers/buildForm/buildForm_functions";
 import { AddProductFieldLabel } from "./AddFieldLabel";
 import { SearchIcon } from "@/features/view/components/Icons/SearchIcon";
-
-function normalizeOptions(options: AddProductSearchableSelectFieldProps["options"]): SelectOption[] {
-    return options.map((option) =>
-        typeof option === "string" ? { value: option, label: option } : option
-    );
-}
 
 export function AddProductSearchableSelectField({
     label,
@@ -26,7 +21,7 @@ export function AddProductSearchableSelectField({
     const [search, setSearch] = useState("");
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const normalizedOptions = normalizeOptions(options);
+    const normalizedOptions = normalizeSelectOptions(options);
     const selectedOption = normalizedOptions.find((option) => option.value === value);
     const query = search.trim().toLowerCase();
     const filteredOptions = query

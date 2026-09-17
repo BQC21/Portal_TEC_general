@@ -1,37 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
-
-export const MONTH_LABELS = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-] as const;
-
-type MonthlyValue = number | "";
-
-function toMonthlyNumber(value: unknown): MonthlyValue {
-    const n = typeof value === "number" ? value : Number(value);
-    return Number.isFinite(n) && n > 0 ? n : "";
-}
-
-function toMonthlyValues(initial?: number[]): MonthlyValue[] {
-    const base = new Array<MonthlyValue>(12).fill("");
-    if (!initial?.length) return base;
-    return base.map((_, i) => toMonthlyNumber(initial[i]));
-}
-
-export function monthsFromFactor(factor: number): number[] {
-    const value = Number.isFinite(factor) && factor > 0 ? factor : 0;
-    return Array.from({ length: 12 }, () => value);
-}
+import { MonthlyValue } from "@/lib/types/components/Sizing/computes";
+import { toMonthlyValues } from "@/lib/utils/helpers/computes/energy_requirements";
 
 export function useMonthlyDemand(
     onAnnualChange: (value: string) => void,

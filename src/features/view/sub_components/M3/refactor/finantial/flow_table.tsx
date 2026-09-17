@@ -1,21 +1,9 @@
 "use client";
 
 import { FlowTableProps } from "@/lib/types/components/sub_components/module_render";
+import { formatOptionalCurrency, formatOptionalNumber } from "@/lib/utils/helpers/computes/price_manage";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { FlowComboChart, FlowComponentsChart } from "./FinantialCharts";
-
-// -----------
-// FORMATEOS
-// -----------
-
-function formatOptionalCurrency(value: number | null): string {
-    if (value === null) return "—";
-    return formatCurrency(value, "USD");
-}
-function formatOptionalNumber(value: number | null): string {
-    if (value === null) return "—";
-    return value.toFixed(2);
-}
 
 export function FlowTable({ flowRows }: FlowTableProps) {
     const years = flowRows.map((row) => row.year);

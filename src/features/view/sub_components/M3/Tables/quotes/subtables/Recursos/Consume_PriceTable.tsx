@@ -6,34 +6,24 @@ import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
 import { formatCurrency } from "@/lib/utils/normalization"
+import { ConsumibleDisplayRow } from "@/lib/types/components/Quotes/consumible_tableRow"
+import { useConsumeRowSelection } from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
+import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
+import {
+    CONSUMIBLE_EXTRA_ADD_LABEL,
+    CONSUMIBLE_FAMILY_LABEL,
+    CONSUMIBLE_RESTORE_LABEL,
+    isSelectableConsumibleFamily,
+    isAddableConsumibleFamily,
+    isFixedConsumibleFamily,
+} from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import {
     buildSortedConsumibles,
     ConsumibleGroupKey,
     getConsumibleGroup,
     groupConsumibleRows,
+    restoreFamiliesForGroup,
 } from "@/lib/utils/helpers/sorting/consumiblesSort"
-import {
-    ConsumibleDisplayRow,
-    useConsumeRowSelection,
-} from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
-import {
-    CONSUMIBLE_EXTRA_ADD_LABEL,
-    CONSUMIBLE_FAMILY_LABEL,
-    CONSUMIBLE_FAMILY_TIPO,
-    CONSUMIBLE_RESTORE_LABEL,
-    ConsumibleRestorableFamily,
-    isSelectableConsumibleFamily,
-    isAddableConsumibleFamily,
-    isFixedConsumibleFamily,
-    RESTORABLE_CONSUMIBLE_FAMILIES,
-} from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
-import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
-
-function restoreFamiliesForGroup(groupKey: ConsumibleGroupKey): ConsumibleRestorableFamily[] {
-    return RESTORABLE_CONSUMIBLE_FAMILIES.filter(
-        (family) => getConsumibleGroup(CONSUMIBLE_FAMILY_TIPO[family]).key === groupKey,
-    )
-}
 
 function GroupChevron({ collapsed }: { collapsed: boolean }) {
     return (

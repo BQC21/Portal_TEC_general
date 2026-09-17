@@ -1,18 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { SelectedSupplierlItem } from "@/lib/types/supabase/product-types";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
-import { SelectedSupplierByRow } from "@/lib/types/components/sub_components/module_render";
+import {
+    SelectedSupplierByRow,
+    UseSupplierSelectionHandlersParams,
+} from "@/lib/types/components/sub_components/module_render";
 import {
     getSupplierSelectOptions,
     SUPPLIER_ROW_KEY,
     toSelectedSupplierItem,
 } from "@/lib/utils/helpers/project_modals/supplierOptions";
-
-interface UseSupplierSelectionHandlersParams {
-    supplier: Supplier[];
-    brandCategoria?: string;
-    initialSelected?: SelectedSupplierlItem[];
-}
 
 export function useSupplierSelectionHandlers({
     supplier,

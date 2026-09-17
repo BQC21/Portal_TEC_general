@@ -2,32 +2,12 @@ import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
 import { FilterKey } from "@/lib/utils/options";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { MaterialesFiltersProps } from "@/lib/types/components/Filter/filter_tables";
-
-const FILTERS = [
-    {
-        id: "supplier",
-        label: "Filtrar por Proveedor",
-        placeholder: "Todos los Proveedores",
-        optionsKey: "suppliers" as const,
-    },
-    {
-        id: "brand",
-        label: "Filtrar por Marca",
-        placeholder: "Todas las Marcas",
-        optionsKey: "brands" as const,
-    },
-    {
-        id: "type",
-        label: "Filtrar por Tipo",
-        placeholder: "Todos los Tipos",
-        optionsKey: "types" as const,
-    },
-];
+import { CATALOG_FILTERS } from "@/lib/utils/helpers/filters/catalogFilterOptions";
 
 export function MaterialesFilters({ values, filterOptions, onFilterChange }: MaterialesFiltersProps) {
     return (
         <div className="grid gap-4 lg:grid-cols-3">
-        {FILTERS.map((filter) => (
+        {CATALOG_FILTERS.map((filter) => (
             <label key={filter.id} className="space-y-2">
                 <span className="block text-center text-lg font-semibold text-slate-600">{filter.label}</span>
                 <div className="relative">

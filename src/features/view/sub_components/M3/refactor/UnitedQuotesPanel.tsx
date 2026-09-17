@@ -1,7 +1,5 @@
 "use client";
 
-import { Quote } from "@/lib/types/supabase/quote-types";
-import { recursos, viaticos, precioFinal } from "@/lib/types/components/Quotes/finantial_computes";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField";
@@ -14,23 +12,7 @@ import {
     MIN_UNITED_QUOTES,
     SELECT_QUOTE_PLACEHOLDER,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
-
-type UnitedQuotesPanelProps = {
-    nombre: string;
-    onNombreChange: (value: string) => void;
-    cantidad: number;
-    onCantidadChange: (value: number) => void;
-    selectedIds: string[];
-    onSelectQuote: (index: number, quoteId: string) => void;
-    availableQuotes: Quote[];
-    allQuotes: Quote[];
-    equiposDescriptions: string[];
-    materialesDescriptions: string[];
-    recursosCosts: recursos;
-    viaticosCosts: viaticos;
-    precioFinalCosts: precioFinal;
-    nameOnlyEditable?: boolean;
-};
+import { UnitedQuotesPanelProps } from "@/lib/types/components/sub_components/module_render";
 
 export function UnitedQuotesPanel({
     nombre,

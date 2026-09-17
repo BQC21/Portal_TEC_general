@@ -17,13 +17,7 @@ import {
     productDescriptions,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
 import { EMPTY_GROSS_MARGIN, EMPTY_PRECIO_FINAL, EMPTY_RECURSOS, EMPTY_VIATICOS } from "@/lib/utils/empty";
-
-type UseUnitedQuoteAggregationParams = {
-    quotes: Quote[];
-    selectedIds: string[];
-    existingProjectEquipos: Project_Equipos[];
-    existingProjectMateriales: Project_Materiales[];
-};
+import { UseUnitedQuoteAggregationParams } from "@/lib/types/components/Quotes/Quote_tables";
 
 export function useUnitedQuoteAggregation({
     quotes,

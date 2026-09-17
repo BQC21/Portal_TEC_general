@@ -4,30 +4,6 @@ import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
 import { MOActivity, MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
 
-export const MO_TEMPLATE_ROWS: Array<Pick<MOActivity, "id" | "descripcion">> = [
-    {id: "1", descripcion: "Acarreo de materiales para instalación"},
-    {id: "2", descripcion: "Realizar trazos y medidas"},
-    {id: "3", descripcion: "Montaje de estructura metálica"},
-    {id: "4", descripcion: "Instalación de paneles (Estructura)"},
-    {id: "5", descripcion: "Instalación de paneles (Conexionado)"},
-    {id: "6", descripcion: "Armado de tablero DC / AC"},
-    {id: "7", descripcion: "Instalación de tablero FV"},
-    {id: "8", descripcion: "Instalación de inversor"},
-    {id: "9", descripcion: "Canalización de acometida DC"},
-    {id: "10", descripcion: "Canalización de acometida AC"},
-    {id: "11", descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
-    {id: "12", descripcion: "Conexión, programación, control y puesta en marcha"},
-    {id: "13", descripcion: "Viáticos"},
-];
-
-export function createInitialMOActivities(): MOActivity[] {
-    return MO_TEMPLATE_ROWS.map((item) => ({
-        id: item.id,
-        descripcion: item.descripcion,
-        visible: true,
-    }));
-}
-
 export function MO_Content({
     title, precioFinal, MO,
     activities,

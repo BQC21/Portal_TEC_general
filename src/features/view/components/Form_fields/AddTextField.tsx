@@ -1,18 +1,5 @@
+import { AddProductTextFieldProps } from "@/lib/types/components/General/form_fields";
 import { AddProductFieldLabel } from "./AddFieldLabel";
-
-type AddProductTextFieldProps = {
-  label: string;
-  required?: boolean;
-  placeholder?: string;
-  value: string;
-  onChange: (value: string) => void;
-  minLength?: number;
-  maxLength?: number;
-  pattern?: string;
-  title?: string;
-  type?: "text" | "password";
-  autoComplete?: string;
-};
 
 export function AddProductTextField({
   label,

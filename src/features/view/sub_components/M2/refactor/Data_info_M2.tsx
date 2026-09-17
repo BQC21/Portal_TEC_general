@@ -6,9 +6,9 @@ import { AddProductNumberField } from "../../../components/Form_fields/AddNumber
 import { AddProductRadioField } from "../../../components/Form_fields/AddRadioField";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
-import { MONTH_LABELS, monthsFromFactor, useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
+import { useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
-import { compute_cobertura } from "@/lib/utils/helpers/computes/energy_requirements";
+import { compute_cobertura, MONTH_LABELS, monthsFromFactor } from "@/lib/utils/helpers/computes/energy_requirements";
 import {
     cantidadesPaletYUnidad,
     optionalInputMax,
