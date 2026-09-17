@@ -314,8 +314,14 @@ export const INITIAL_MANUAL_RESOURCE_COSTS: ManualCosts = {
             cantidad: item.cantidad,
             precio_unitario: item.precio_unitario,
         })),
+        // booleanos
         considerar_epp_reutilizable: true,
         estructuras_cantidad_manual: false,
+        considerar_equipos_principales: true,
+        considerar_estructuras: true,
+        considerar_consumibles: true,
+        // array de consumibles ocultos
+        consumibles_ocultos: [],
     },
     
     Viaticos: {
