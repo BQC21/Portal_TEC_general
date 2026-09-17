@@ -42,6 +42,7 @@ export function computeQuoteCostTotals(params: {
     tasa_cambio: number;
     depre_tool: number;
     materialesCatalog: Materiales[];
+    applyResourceChecklists?: boolean;
 }): QuoteCostTotals {
     const {
         projectEquipos,
@@ -53,52 +54,73 @@ export function computeQuoteCostTotals(params: {
         tasa_cambio,
         depre_tool,
         materialesCatalog,
+        applyResourceChecklists = false,
     } = params;
 
     // -----------
     // Recursos total
     // -----------
 
-    const equiposPrincipalesTotal = projectEquipos
-        .filter((item) => item.equipo_info?.tipo_de_producto !== "ESTRUCTURA")
-        .reduce(
-            (sum, item) =>
-                sum + Number(item.equipo_info?.precio_soles) * Number(item.cantidad),
-            0,
-        );
-    const equiposPrincipalesTotalIgv = projectEquipos
-        .filter((item) => item.equipo_info?.tipo_de_producto !== "ESTRUCTURA")
-        .reduce(
-            (sum, item) =>
-                sum + Number(item.equipo_info?.precio_soles_igv) * Number(item.cantidad),
-            0,
-        );
+    const considerarEquiposPrincipales =
+        !applyResourceChecklists || manualCosts.Recursos.considerar_equipos_principales !== false;
+    const equiposPrincipalesTotal = considerarEquiposPrincipales
+        ? projectEquipos
+            .filter((item) => item.equipo_info?.tipo_de_producto !== "ESTRUCTURA")
+            .reduce(
+                (sum, item) =>
+                    sum + Number(item.equipo_info?.precio_soles) * Number(item.cantidad),
+                0,
+            )
+        : 0;
+    const equiposPrincipalesTotalIgv = considerarEquiposPrincipales
+        ? projectEquipos
+            .filter((item) => item.equipo_info?.tipo_de_producto !== "ESTRUCTURA")
+            .reduce(
+                (sum, item) =>
+                    sum + Number(item.equipo_info?.precio_soles_igv) * Number(item.cantidad),
+                0,
+            )
+        : 0;
 
-    const estructurasTotal = projectEquipos
-        .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
-        .reduce(
-            (sum, item) =>
-                sum + Number(item.equipo_info?.precio_soles) * Number(item.cantidad),
-            0,
-        );
-    const estructurasTotalIgv = projectEquipos
-        .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
-        .reduce(
-            (sum, item) =>
-                sum + Number(item.equipo_info?.precio_soles_igv) * Number(item.cantidad),
-            0,
-        );
+    const considerarEstructuras =
+        !applyResourceChecklists || manualCosts.Recursos.considerar_estructuras !== false;
+    const estructurasTotal = considerarEstructuras
+        ? projectEquipos
+            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
+            .reduce(
+                (sum, item) =>
+                    sum + Number(item.equipo_info?.precio_soles) * Number(item.cantidad),
+                0,
+            )
+        : 0;
+    const estructurasTotalIgv = considerarEstructuras
+        ? projectEquipos
+            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
+            .reduce(
+                (sum, item) =>
+                    sum + Number(item.equipo_info?.precio_soles_igv) * Number(item.cantidad),
+                0,
+            )
+        : 0;
 
+    const considerarConsumibles =
+        !applyResourceChecklists || manualCosts.Recursos.considerar_consumibles !== false;
+    const hiddenConsumeKeys = new Set(
+        applyResourceChecklists ? (manualCosts.Recursos.consumibles_ocultos ?? []) : [],
+    );
     const consumibleRows = buildSortedConsumibles(
         projectMateriales,
         manualCosts.Recursos.consumible,
         materialesCatalog,
     );
-    const consumiblesTotal = consumibleRows.reduce(
+    const visibleConsumibleRows = considerarConsumibles
+        ? consumibleRows.filter((item) => !hiddenConsumeKeys.has(item.key))
+        : [];
+    const consumiblesTotal = visibleConsumibleRows.reduce(
         (sum, item) => sum + Number(item.precio_soles) * Number(item.cantidad),
         0,
     );
-    const consumiblesTotalIgv = consumibleRows.reduce(
+    const consumiblesTotalIgv = visibleConsumibleRows.reduce(
         (sum, item) => sum + Number(item.precio_soles_igv) * Number(item.cantidad),
         0,
     );
