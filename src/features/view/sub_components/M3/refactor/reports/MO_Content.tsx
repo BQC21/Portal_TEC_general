@@ -1,27 +1,61 @@
-import { MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
+import { useState } from "react";
+import { EditIcon } from "@/features/view/components/Icons/EditIcon";
+import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
+import { MOActivity, MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
+
+export const MO_TEMPLATE_ROWS: Array<Pick<MOActivity, "id" | "descripcion">> = [
+    {id: "1", descripcion: "Acarreo de materiales para instalación"},
+    {id: "2", descripcion: "Realizar trazos y medidas"},
+    {id: "3", descripcion: "Montaje de estructura metálica"},
+    {id: "4", descripcion: "Instalación de paneles (Estructura)"},
+    {id: "5", descripcion: "Instalación de paneles (Conexionado)"},
+    {id: "6", descripcion: "Armado de tablero DC / AC"},
+    {id: "7", descripcion: "Instalación de tablero FV"},
+    {id: "8", descripcion: "Instalación de inversor"},
+    {id: "9", descripcion: "Canalización de acometida DC"},
+    {id: "10", descripcion: "Canalización de acometida AC"},
+    {id: "11", descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
+    {id: "12", descripcion: "Conexión, programación, control y puesta en marcha"},
+    {id: "13", descripcion: "Viáticos"},
+];
+
+export function createInitialMOActivities(): MOActivity[] {
+    return MO_TEMPLATE_ROWS.map((item) => ({
+        id: item.id,
+        descripcion: item.descripcion,
+        visible: true,
+    }));
+}
 
 export function MO_Content({
     title, precioFinal, MO,
-    hiddenMOIds = [],
-    onToggleMOVisibility,
+    activities,
+    onToggleActivityVisibility,
+    onAddActivity,
+    onUpdateActivity,
+    onRemoveActivity,
 }: MO_Content_Props){
+    const [editingId, setEditingId] = useState<string | null>(null);
+    const [draft, setDraft] = useState("");
 
-    const MORows = [
-        {ids: ["1"], descripcion: "Acarreo de materiales para instalación"},
-        {ids: ["2"], descripcion: "Realizar trazos y medidas"},
-        {ids: ["3"], descripcion: "Montaje de estructura metálica"},
-        {ids: ["4"], descripcion: "Instalación de paneles (Estructura)"},
-        {ids: ["5"], descripcion: "Instalación de paneles (Conexionado)"},
-        {ids: ["6"], descripcion: "Armado de tablero DC / AC"},
-        {ids: ["7"], descripcion: "Instalación de tablero FV"},
-        {ids: ["8"], descripcion: "Instalación de inversor"},
-        {ids: ["9"], descripcion: "Canalización de acometida DC"},
-        {ids: ["10"], descripcion: "Canalización de acometida AC"},
-        {ids: ["11"], descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
-        {ids: ["12"], descripcion: "Conexión, programación, control y puesta en marcha"},
-        {ids: ["13"], descripcion: "Viáticos"},
-    ];
+    function startEdit(item: MOActivity) {
+        setEditingId(item.id);
+        setDraft(item.descripcion);
+    }
+
+    function commitEdit() {
+        if (!editingId) return;
+        const next = draft.trim();
+        if (next) onUpdateActivity?.(editingId, next);
+        setEditingId(null);
+        setDraft("");
+    }
+
+    function cancelEdit() {
+        setEditingId(null);
+        setDraft("");
+    }
 
     return(
         <>
@@ -31,7 +65,14 @@ export function MO_Content({
                         {title}
                     </h2>
 
-                    <div className="flex items-center gap-24 text-2xl font-bold">
+                    <div className="flex items-center gap-6 text-2xl font-bold">
+                        <button
+                            type="button"
+                            onClick={onAddActivity}
+                            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-lg font-semibold text-white transition hover:bg-blue-700"
+                        >
+                            + Actividad
+                        </button>
                         <span>{formatCurrency(precioFinal * MO / 100, "USD")}</span>
                     </div>
                 </div>
@@ -43,45 +84,82 @@ export function MO_Content({
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Descripción - PUESTA EN MARCHA
                                     </th>
-                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                    <th className="border-b border-slate-200 px-4 py-4 text-center text-[1.02rem] font-bold text-slate-900">
                                         MOSTRAR EN PDF
+                                    </th>
+                                    <th className="border-b border-slate-200 px-4 py-4 text-center text-[1.02rem] font-bold text-slate-900">
+                                        Acciones
                                     </th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {MORows.length > 0 ? (
-                                    MORows.map((item) => {
-                                        const visibleInPdf = item.ids.every((id) => !hiddenMOIds.includes(id));
+                                {activities.length > 0 ? (
+                                    activities.map((item) => {
+                                        const isEditing = editingId === item.id;
                                         return (
                                             <tr
-                                                key={item.ids.join("-")}
-                                                className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                                key={item.id}
+                                                className={item.visible ? "bg-white" : "bg-slate-50 text-slate-400"}
                                             >
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.descripcion}
+                                                    {isEditing ? (
+                                                        <input
+                                                            autoFocus
+                                                            value={draft}
+                                                            onChange={(event) => setDraft(event.target.value)}
+                                                            onBlur={commitEdit}
+                                                            onKeyDown={(event) => {
+                                                                if (event.key === "Enter") {
+                                                                    event.preventDefault();
+                                                                    commitEdit();
+                                                                }
+                                                                if (event.key === "Escape") {
+                                                                    event.preventDefault();
+                                                                    cancelEdit();
+                                                                }
+                                                            }}
+                                                            className="w-full rounded-xl border border-slate-300 px-3 py-2 text-base text-slate-900"
+                                                            aria-label="Editar actividad"
+                                                        />
+                                                    ) : (
+                                                        item.descripcion
+                                                    )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
                                                     <input
                                                         type="checkbox"
-                                                        checked={visibleInPdf}
-                                                        onChange={() =>
-                                                            item.ids.forEach((id) => {
-                                                                const currentlyVisible = !hiddenMOIds.includes(id);
-                                                                if (currentlyVisible === visibleInPdf) {
-                                                                    onToggleMOVisibility?.(id);
-                                                                }
-                                                            })
-                                                        }
+                                                        checked={item.visible}
+                                                        onChange={() => onToggleActivityVisibility?.(item.id)}
                                                         aria-label={`Mostrar ${item.descripcion || "Puesta en marcha"} en el PDF`}
                                                         className="h-5 w-5 accent-orange-500"
                                                     />
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5">
+                                                    <div className="flex items-center justify-center gap-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => startEdit(item)}
+                                                            className="table-icon-button text-blue-600"
+                                                            aria-label={`Editar ${item.descripcion}`}
+                                                        >
+                                                            <EditIcon />
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => onRemoveActivity?.(item.id)}
+                                                            className="table-icon-button text-red-600"
+                                                            aria-label={`Eliminar ${item.descripcion}`}
+                                                        >
+                                                            <TrashIcon />
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         );
                                     })
                                 ) : (
                                     <tr className="bg-white">
-                                        <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
+                                        <td colSpan={3} className="px-4 py-10 text-center text-slate-500">
                                             No hay Puesta en marcha a mostrarse todavía.
                                         </td>
                                     </tr>
@@ -92,4 +170,4 @@ export function MO_Content({
             </section>
         </>
     )
-} 
+}

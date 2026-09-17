@@ -77,6 +77,7 @@ export function useUnitedQuoteAggregation({
                     tasa_cambio: Number(quote.tasa_cambio),
                     depre_tool: Number(quote.depre_tool),
                     materialesCatalog: materiales,
+                    applyResourceChecklists: !isQuoteLinkedToProject(quote),
                 }),
             };
         });

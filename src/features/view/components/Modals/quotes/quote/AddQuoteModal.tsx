@@ -241,6 +241,9 @@ export default function AddQuoteModal({
         updateConsiderarEppReutilizable,
         updateEstructurasCantidadManual,
         addConsumeItem,
+        updateRecursosConsiderFlag,
+        toggleConsumibleOculto,
+        setConsumiblesHidden,
     } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
@@ -251,6 +254,7 @@ export default function AddQuoteModal({
         projectEquipos, projectMateriales, manualResourceCosts,
         Number(form.gm_general), Number(form.markup), Number(form.gm_viaticos), Number(form.tasa_cambio),
         Number(form.depre_tool),
+        isIndependent,
     );
 
     // ----------
@@ -405,6 +409,10 @@ export default function AddQuoteModal({
                             onReplaceMaterial={onReplaceMaterial}
                             onRemoveMaterial={onRemoveMaterial}
                             onAddConsumeItem={addConsumeItem}
+                            showResourceChecklists={isIndependent}
+                            updateRecursosConsiderFlag={updateRecursosConsiderFlag}
+                            toggleConsumibleOculto={toggleConsumibleOculto}
+                            setConsumiblesHidden={setConsumiblesHidden}
                         />
 
                         <ViaticosTables

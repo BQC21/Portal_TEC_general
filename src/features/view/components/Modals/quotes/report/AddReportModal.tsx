@@ -12,7 +12,7 @@ import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSel
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
-import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
+import { createInitialMOActivities, MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
@@ -44,7 +44,10 @@ export default function AddReportModal({onAddReport, onClose,
     const [form, setForm] = useState<ReportFormState>(INITIAL_REPORT_FORM);
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
-    const [hiddenMOIds, setHiddenMOIds] = useState<string[]>([]);
+    const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
+    const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
+    const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
+    const [moActivities, setMoActivities] = useState(createInitialMOActivities);
 
     const MO_percent = percentMO(Number(form.porcentaje_eqmt))
 
@@ -72,19 +75,51 @@ export default function AddReportModal({onAddReport, onClose,
 
     useEffect(() => {
         setHiddenEquipoIds([]);
-        setHiddenMOIds([]);
+        setHiddenMaterialIds([]);
+        setShowElectricalMaterialsInPdf(false);
+        setShowCanalizationMaterialsInPdf(false);
+        setMoActivities(createInitialMOActivities());
     }, [form.cotizacion_id]);
 
+    function toggleId(current: string[], id: string) {
+        return current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+    }
+
     function toggleEquipoVisibility(id: string) {
-        setHiddenEquipoIds((current) =>
-            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
-        );
+        setHiddenEquipoIds((current) => toggleId(current, id));
+    }
+
+    function toggleMaterialVisibility(id: string) {
+        setHiddenMaterialIds((current) => toggleId(current, id));
     }
 
     function toggleMOVisibility(id: string) {
-        setHiddenMOIds((current) =>
-            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+        setMoActivities((current) =>
+            current.map((item) =>
+                item.id === id ? { ...item, visible: !item.visible } : item,
+            ),
         );
+    }
+
+    function addMOActivity() {
+        setMoActivities((current) => [
+            ...current,
+            {
+                id: crypto.randomUUID(),
+                descripcion: "Nueva actividad",
+                visible: true,
+            },
+        ]);
+    }
+
+    function updateMOActivity(id: string, descripcion: string) {
+        setMoActivities((current) =>
+            current.map((item) => (item.id === id ? { ...item, descripcion } : item)),
+        );
+    }
+
+    function removeMOActivity(id: string) {
+        setMoActivities((current) => current.filter((item) => item.id !== id));
     }
 
     // ----------------------------------------
@@ -188,14 +223,23 @@ export default function AddReportModal({onAddReport, onClose,
                                         selectedMateriales={projectMateriales}
                                         hiddenEquipoIds={hiddenEquipoIds}
                                         onToggleEquipoVisibility={toggleEquipoVisibility}
+                                        hiddenMaterialIds={hiddenMaterialIds}
+                                        onToggleMaterialVisibility={toggleMaterialVisibility}
+                                        showElectricalMaterialsInPdf={showElectricalMaterialsInPdf}
+                                        onToggleElectricalMaterialsTable={setShowElectricalMaterialsInPdf}
+                                        showCanalizationMaterialsInPdf={showCanalizationMaterialsInPdf}
+                                        onToggleCanalizationMaterialsTable={setShowCanalizationMaterialsInPdf}
                                     />
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={precioUsd}
                                         MO={MO_percent}
-                                        hiddenMOIds={hiddenMOIds}
-                                        onToggleMOVisibility={toggleMOVisibility}
+                                        activities={moActivities}
+                                        onToggleActivityVisibility={toggleMOVisibility}
+                                        onAddActivity={addMOActivity}
+                                        onUpdateActivity={updateMOActivity}
+                                        onRemoveActivity={removeMOActivity}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable
@@ -227,7 +271,10 @@ export default function AddReportModal({onAddReport, onClose,
                                     equipos: projectEquipos,
                                     materiales: projectMateriales,
                                     hiddenEquipoIds,
-                                    hiddenMOIds,
+                                    hiddenMaterialIds,
+                                    showElectricalMaterialsInPdf,
+                                    showCanalizationMaterialsInPdf,
+                                    moActivities,
                                 })
                             }
                         />

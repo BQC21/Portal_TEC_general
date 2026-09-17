@@ -14,6 +14,7 @@ export function useCostComputes(
     gm_viaticos: number,
     tasa_cambio: number,
     depre_tool: number,
+    applyResourceChecklists = false,
 ) {
     const { materiales } = useMateriales();
 
@@ -28,6 +29,7 @@ export function useCostComputes(
             tasa_cambio,
             depre_tool,
             materialesCatalog: materiales,
+            applyResourceChecklists,
         }),
         [
             projectEquipos,
@@ -39,6 +41,7 @@ export function useCostComputes(
             tasa_cambio,
             depre_tool,
             materiales,
+            applyResourceChecklists,
         ],
     );
 }

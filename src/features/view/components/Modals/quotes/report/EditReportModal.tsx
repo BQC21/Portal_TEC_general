@@ -10,7 +10,7 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
-import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
+import { createInitialMOActivities, MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
@@ -39,9 +39,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
 
     // Equipos a no mostrarse en el PDF
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
-
-    // Puesta en marcha a ocultarse en el PDF
-    const [hiddenMOIds, setHiddenMOIds] = useState<string[]>([]);
+    const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
+    const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
+    const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
+    const [moActivities, setMoActivities] = useState(createInitialMOActivities);
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -69,23 +70,51 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
     useEffect(() => {
         setHiddenEquipoIds([]);
+        setHiddenMaterialIds([]);
+        setShowElectricalMaterialsInPdf(false);
+        setShowCanalizationMaterialsInPdf(false);
+        setMoActivities(createInitialMOActivities());
     }, [form.cotizacion_id]);
 
+    function toggleId(current: string[], id: string) {
+        return current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+    }
+
     function toggleEquipoVisibility(id: string) {
-        setHiddenEquipoIds((current) =>
-            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+        setHiddenEquipoIds((current) => toggleId(current, id));
+    }
+
+    function toggleMaterialVisibility(id: string) {
+        setHiddenMaterialIds((current) => toggleId(current, id));
+    }
+
+    function toggleMOVisibility(id: string) {
+        setMoActivities((current) =>
+            current.map((item) =>
+                item.id === id ? { ...item, visible: !item.visible } : item,
+            ),
         );
     }
 
-    // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
-    useEffect(() => {
-        setHiddenMOIds([]);
-    }, [form.cotizacion_id]);
+    function addMOActivity() {
+        setMoActivities((current) => [
+            ...current,
+            {
+                id: crypto.randomUUID(),
+                descripcion: "Nueva actividad",
+                visible: true,
+            },
+        ]);
+    }
 
-    function toggleMOVisibility(id: string) {
-        setHiddenMOIds((current) =>
-            current.includes(id) ? current.filter((item) => item !== id) : [...current, id],
+    function updateMOActivity(id: string, descripcion: string) {
+        setMoActivities((current) =>
+            current.map((item) => (item.id === id ? { ...item, descripcion } : item)),
         );
+    }
+
+    function removeMOActivity(id: string) {
+        setMoActivities((current) => current.filter((item) => item.id !== id));
     }
 
     // ----------------------------------------
@@ -207,14 +236,23 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         selectedMateriales={projectMateriales}
                                         hiddenEquipoIds={hiddenEquipoIds}
                                         onToggleEquipoVisibility={toggleEquipoVisibility}
+                                        hiddenMaterialIds={hiddenMaterialIds}
+                                        onToggleMaterialVisibility={toggleMaterialVisibility}
+                                        showElectricalMaterialsInPdf={showElectricalMaterialsInPdf}
+                                        onToggleElectricalMaterialsTable={setShowElectricalMaterialsInPdf}
+                                        showCanalizationMaterialsInPdf={showCanalizationMaterialsInPdf}
+                                        onToggleCanalizationMaterialsTable={setShowCanalizationMaterialsInPdf}
                                     />
                                     {/* Contenido de Mano de Obra */}
                                     <MO_Content
                                         title={"PUESTA EN MARCHA"}
                                         precioFinal={precioUsd}
                                         MO={MO_percent}
-                                        hiddenMOIds={hiddenMOIds}
-                                        onToggleMOVisibility={toggleMOVisibility}
+                                        activities={moActivities}
+                                        onToggleActivityVisibility={toggleMOVisibility}
+                                        onAddActivity={addMOActivity}
+                                        onUpdateActivity={updateMOActivity}
+                                        onRemoveActivity={removeMOActivity}
                                     />
                                     {/* Quote Report Table */}
                                     <QuoteReportTable
@@ -247,7 +285,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     equipos: projectEquipos,
                                     materiales: projectMateriales,
                                     hiddenEquipoIds,
-                                    hiddenMOIds,
+                                    hiddenMaterialIds,
+                                    showElectricalMaterialsInPdf,
+                                    showCanalizationMaterialsInPdf,
+                                    moActivities,
                                 })
                             }
                         />

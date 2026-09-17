@@ -326,6 +326,54 @@ export function ManageLocalCosts(
         }));
     }
 
+    function updateRecursosConsiderFlag(
+        field:
+            | "considerar_equipos_principales"
+            | "considerar_estructuras"
+            | "considerar_consumibles",
+        value: boolean,
+    ) {
+        setManualResourceCosts((current) => ({
+            ...current,
+            Recursos: {
+                ...current.Recursos,
+                [field]: value,
+            },
+        }));
+    }
+
+    function toggleConsumibleOculto(key: string) {
+        setManualResourceCosts((current) => {
+            const hidden = new Set(current.Recursos.consumibles_ocultos ?? []);
+            if (hidden.has(key)) hidden.delete(key);
+            else hidden.add(key);
+            return {
+                ...current,
+                Recursos: {
+                    ...current.Recursos,
+                    consumibles_ocultos: [...hidden],
+                },
+            };
+        });
+    }
+
+    function setConsumiblesHidden(keys: string[], hidden: boolean) {
+        setManualResourceCosts((current) => {
+            const next = new Set(current.Recursos.consumibles_ocultos ?? []);
+            keys.forEach((key) => {
+                if (hidden) next.add(key);
+                else next.delete(key);
+            });
+            return {
+                ...current,
+                Recursos: {
+                    ...current.Recursos,
+                    consumibles_ocultos: [...next],
+                },
+            };
+        });
+    }
+
     return {
         updateManualCostItem,
         updateManualCostMonto,
@@ -334,6 +382,9 @@ export function ManageLocalCosts(
         updateConsiderarEppReutilizable,
         updateEstructurasCantidadManual,
         addConsumeItem,
+        updateRecursosConsiderFlag,
+        toggleConsumibleOculto,
+        setConsumiblesHidden,
     };
 }
 

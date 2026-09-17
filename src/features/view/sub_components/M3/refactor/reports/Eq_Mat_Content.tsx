@@ -1,26 +1,95 @@
 "use client";
 
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
+import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { toEquipoReportRows } from "@/lib/utils/helpers/computes/PanelNumber";
 import { formatCurrency } from "@/lib/utils/normalization";
+
+function normalizeMaterialTipo(tipo?: string | null) {
+    return (tipo ?? "")
+        .trim()
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
+
+function isElectricalMaterial(item: Project_Materiales) {
+    const tipo = normalizeMaterialTipo(item.material_info?.tipo_de_producto);
+    return tipo === "PROTECCION" || tipo === "CABLE";
+}
+
+function isCanalizationMaterial(item: Project_Materiales) {
+    return normalizeMaterialTipo(item.material_info?.tipo_de_producto) === "CANALIZACION";
+}
+
+function MaterialVisibilityCheckbox({
+    item,
+    hiddenMaterialIds,
+    onToggleMaterialVisibility,
+}: {
+    item: Project_Materiales;
+    hiddenMaterialIds: string[];
+    onToggleMaterialVisibility?: (id: string) => void;
+}) {
+    const visibleInPdf = !hiddenMaterialIds.includes(String(item.id));
+    return (
+        <input
+            type="checkbox"
+            checked={visibleInPdf}
+            onChange={() => onToggleMaterialVisibility?.(String(item.id))}
+            aria-label={`Mostrar ${item.material_info?.descripcion || "material"} en el PDF`}
+            className="h-5 w-5 accent-orange-500"
+        />
+    );
+}
 
 export function Eq_Mat_Content({
     title, precioFinal, Eq_Mt,
     selectedEquipos, selectedMateriales,
     hiddenEquipoIds = [],
     onToggleEquipoVisibility,
+    hiddenMaterialIds = [],
+    onToggleMaterialVisibility,
+    showElectricalMaterialsInPdf = false,
+    onToggleElectricalMaterialsTable,
+    showCanalizationMaterialsInPdf = false,
+    onToggleCanalizationMaterialsTable,
 }: Eq_Mat_Content_Props){
     const equipoRows = toEquipoReportRows(selectedEquipos);
+    const electricalMaterials = selectedMateriales.filter(isElectricalMaterial);
+    const canalizationMaterials = selectedMateriales.filter(isCanalizationMaterial);
 
     return(
         <>
         <section className="space-y-4">
-            <div className="flex items-center justify-between border-b pb-2">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b pb-2">
                 <h2 className="text-2xl font-bold uppercase">
                     {title}
                 </h2>
 
-                <div className="flex items-center gap-24 text-2xl font-bold">
+                <div className="flex flex-wrap items-center gap-6 text-2xl font-bold">
+                    <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                        <span>Mostrar Materiales eléctricos en PDF</span>
+                        <input
+                            type="checkbox"
+                            checked={showElectricalMaterialsInPdf}
+                            onChange={(event) =>
+                                onToggleElectricalMaterialsTable?.(event.target.checked)
+                            }
+                            className="h-5 w-5 accent-orange-500"
+                        />
+                    </label>
+                    <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                        <span>Mostrar Materiales de canalización en PDF</span>
+                        <input
+                            type="checkbox"
+                            checked={showCanalizationMaterialsInPdf}
+                            onChange={(event) =>
+                                onToggleCanalizationMaterialsTable?.(event.target.checked)
+                            }
+                            className="h-5 w-5 accent-orange-500"
+                        />
+                    </label>
                     <span>{formatCurrency(precioFinal * Eq_Mt / 100, "USD")}</span>
                 </div>
             </div>
@@ -112,33 +181,45 @@ export function Eq_Mat_Content({
                                 <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                     Cantidad
                                 </th>
+                                <th className="border-b border-slate-200 px-4 py-4 text-center text-[1.02rem] font-bold text-slate-900">
+                                    Mostrar en PDF
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedMateriales.length > 0 ? (
-                                selectedMateriales.map((item) => (
-                                    <tr key={`${item.id}`} className="bg-white">
-                                        {(item.material_info?.tipo_de_producto === "PROTECCIÓN" ||
-                                        item.material_info?.tipo_de_producto === "CABLE") && (
-                                            <>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.cod_producto}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.descripcion}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.unidad}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.cantidad}
-                                                </td>
-                                            </>
-                                        )}        
-                                    </tr>
-                                ))) : (
+                            {electricalMaterials.length > 0 ? (
+                                electricalMaterials.map((item) => {
+                                    const visibleInPdf = !hiddenMaterialIds.includes(String(item.id));
+                                    return (
+                                        <tr
+                                            key={`${item.id}`}
+                                            className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                        >
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.cod_producto}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.descripcion}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.unidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.cantidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
+                                                <MaterialVisibilityCheckbox
+                                                    item={item}
+                                                    hiddenMaterialIds={hiddenMaterialIds}
+                                                    onToggleMaterialVisibility={onToggleMaterialVisibility}
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
                                 <tr className="bg-white">
-                                    <td colSpan={4} className="px-4 py-10 text-center text-slate-500">
+                                    <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
                                         No hay materiales seleccionados todavía.
                                     </td>
                                 </tr>
@@ -162,32 +243,45 @@ export function Eq_Mat_Content({
                                 <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                     Cantidad
                                 </th>
+                                <th className="border-b border-slate-200 px-4 py-4 text-center text-[1.02rem] font-bold text-slate-900">
+                                    Mostrar en PDF
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
-                            {selectedMateriales.length > 0 ? (
-                                selectedMateriales.map((item) => (
-                                    <tr key={`${item.id}`} className="bg-white">
-                                        {item.material_info?.tipo_de_producto === "CANALIZACIÓN" && (
-                                            <>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.cod_producto}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.descripcion}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.material_info?.unidad}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.cantidad}
-                                                </td>
-                                            </>
-                                        )}        
-                                    </tr>
-                                ))) : (
+                            {canalizationMaterials.length > 0 ? (
+                                canalizationMaterials.map((item) => {
+                                    const visibleInPdf = !hiddenMaterialIds.includes(String(item.id));
+                                    return (
+                                        <tr
+                                            key={`${item.id}`}
+                                            className={visibleInPdf ? "bg-white" : "bg-slate-50 text-slate-400"}
+                                        >
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.cod_producto}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.descripcion}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.material_info?.unidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                {item.cantidad}
+                                            </td>
+                                            <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
+                                                <MaterialVisibilityCheckbox
+                                                    item={item}
+                                                    hiddenMaterialIds={hiddenMaterialIds}
+                                                    onToggleMaterialVisibility={onToggleMaterialVisibility}
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
                                 <tr className="bg-white">
-                                    <td colSpan={4} className="px-4 py-10 text-center text-slate-500">
+                                    <td colSpan={5} className="px-4 py-10 text-center text-slate-500">
                                         No hay materiales seleccionados todavía.
                                     </td>
                                 </tr>
