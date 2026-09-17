@@ -1,6 +1,4 @@
-import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
-
-type SupplierCodeInfo = { RUC: string; supplierCode: string };
+import { SupplierCodeInfo, SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 
 const EMPTY_SUPPLIER_INFO: SupplierCodeInfo = { RUC: "", supplierCode: "" };
 

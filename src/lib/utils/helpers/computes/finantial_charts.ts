@@ -1,4 +1,4 @@
-import { ChartPoint, ChartScale } from "@/lib/types/components/Quotes/finantial_analysis";
+import { ChartScale } from "@/lib/types/components/Quotes/finantial_analysis";
 
 export function buildScale(
     values: number[],
@@ -38,5 +38,3 @@ export function buildAxisTicks(min: number, max: number, targetCount = 8): numbe
 
     return ticks;
 }
-
-export type { ChartPoint };

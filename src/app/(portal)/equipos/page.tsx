@@ -11,7 +11,7 @@ import { useEquipoMutations, useEquipos } from "@/features/view/hooks/services/u
 
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
-import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 

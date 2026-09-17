@@ -1,4 +1,5 @@
-import {CurrencyCode, PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
+import {CurrencyCode} from "@/lib/types/components/General/options"
+import {PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
 import { EMPTY_VENTA } from "./empty";
 
 // -------------------------

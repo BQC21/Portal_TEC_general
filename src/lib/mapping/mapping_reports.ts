@@ -3,7 +3,8 @@ import { Report, ReportFormData, ReportFormState, SupabaseReportRow } from "../t
 import { parseNullableDate } from "../utils/helpers/manage_info/date_manage"
 import { parseNumber } from "../utils/normalization"
 import { mapSupabaseRowtoQuote } from "./mapping_quotes"
-import { DEFAULT_PAY_FORMAT, DSCTO_type_value, FIRMOptions } from "../utils/options"
+import { FIRMOptions } from "../types/components/General/options"
+import { DEFAULT_PAY_FORMAT, DSCTO_type_value } from "../utils/options"
 
 function normalizeOpcionFirma(value?: string): FIRMOptions {
     if (value === "CON FIRMA" || value === "Con firma") return "CON FIRMA";

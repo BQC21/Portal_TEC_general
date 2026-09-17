@@ -6,7 +6,7 @@ import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
 import { formatCurrency } from "@/lib/utils/normalization"
-import { ConsumibleDisplayRow } from "@/lib/types/components/Quotes/consumible_tableRow"
+import { ConsumibleDisplayRow, ConsumibleGroupKey } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { useConsumeRowSelection } from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
 import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import {
@@ -19,7 +19,6 @@ import {
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import {
     buildSortedConsumibles,
-    ConsumibleGroupKey,
     getConsumibleGroup,
     groupConsumibleRows,
     restoreFamiliesForGroup,

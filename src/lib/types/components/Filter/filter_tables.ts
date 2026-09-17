@@ -1,4 +1,4 @@
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "../General/options";
 import { ProductFilterValues } from "../../supabase/product-types";
 import { MaterialesFilterValues } from "../../supabase/materiales-types";
 import { EquiposFilterValues } from "../../supabase/equipos-types";

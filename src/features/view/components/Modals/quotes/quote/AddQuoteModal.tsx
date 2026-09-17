@@ -34,7 +34,7 @@ import {
     withUnionInfo,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
 import { quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
-import { QuoteMode } from "@/lib/utils/options";
+import { QuoteMode } from "@/lib/types/components/General/options";
 
 export default function AddQuoteModal({
     onAddQuote,

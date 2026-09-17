@@ -48,3 +48,8 @@ export type ExcelResizableTablesProps = {
     children: ReactNode;
     className?: string;
 };
+
+export type TableResizeState = {
+    colWidths: number[];
+    rowHeights: Map<number, number>;
+};

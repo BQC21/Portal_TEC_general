@@ -1,4 +1,4 @@
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "../components/General/options";
 import { SupabaseTypeRow, Type } from "./type-types";
 import { Brand, SupabaseBrandRow } from "./brand.types";
 import { SupabaseSupplierRow, Supplier } from "./supplier-types";

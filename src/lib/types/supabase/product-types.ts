@@ -1,4 +1,4 @@
-import { CurrencyCode, FilterKey } from "@/lib/utils/options";
+import { CurrencyCode, FilterKey } from "../components/General/options";
 
 // Estado del formulario de productos
 export type ProductFormState = Omit<Product, "id">; // DB productos visto desde el componente ProductTable

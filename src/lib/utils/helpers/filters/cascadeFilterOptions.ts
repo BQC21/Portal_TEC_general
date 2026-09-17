@@ -1,6 +1,6 @@
 import { CASCADE_SELECT_PLACEHOLDER, CascadeFilterValues, FilterableItem, 
 	FORM_FIELD_TO_FILTER_KEY, FormCascadeField, FormCascadeValues } from "@/lib/types/components/Filter/cascadeFilter";
-import type { FilterKey } from "@/lib/utils/options";
+import type { FilterKey } from "@/lib/types/components/General/options";
 
 // Distintos valores
 function getDistinctValues<T extends FilterableItem>(

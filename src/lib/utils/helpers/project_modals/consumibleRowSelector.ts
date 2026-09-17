@@ -1,54 +1,30 @@
 import { SelectOption } from "@/lib/types/components/General/form_fields"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
+import {
+    CableFvColor,
+    ConsumibleAddableFamily,
+    ConsumibleExtraFamily,
+    ConsumibleFamily,
+    ConsumibleLinkedFamily,
+    ConsumibleRestorableFamily,
+    ConsumibleSelectableFamily,
+    FixedConsumibleFamily,
+} from "@/lib/types/components/Quotes/consumible_tableRow"
 
 //-------------------------
 // Tipado de la familia
 //-------------------------
 
-// seleccionables
-export type ConsumibleSelectableFamily =
-    | "itm_ac"
-    | "spd"
-    | "itm_dc"
-    | "conduit_flexible"
-    | "conduit"
-    | "cable_ac"
-    | "cable_fv"
-    | "cable_tierra"
-    | "tablero"
-    | "canaleta"
-    | "terminal_pin_100"
-    | "terminal_ojal_100"
-    | "terminal_ojal"
-    | "terminal_pin"
-    | "precintos"
-    | "tornillos_autorroscantes_100"
-    | "tornillo_spack"
-    | "mc4"
-    | "fusible"
-// enlazar dimensiones
-export type ConsumibleLinkedFamily = 
-    | "abrazadera" 
-    | "prensaestopa" 
-    | "curva" 
-    | "union" 
-    | "conector"
-
-export type ConsumibleFamily = 
-    | ConsumibleSelectableFamily 
-    | ConsumibleLinkedFamily 
-
-// opciones extra
-export const EXTRA_CONSUMIBLE_FAMILIES = ["itm_ac", 
-    "cable_tierra", 
-    "tablero", 
-    "canaleta", 
-    "fusible"] as const
-export type ConsumibleExtraFamily = (typeof EXTRA_CONSUMIBLE_FAMILIES)[number]
-// opciones add-on evidentes
-export const RESTORABLE_CONSUMIBLE_FAMILIES = [
-    "fusible"] as const
-export type ConsumibleRestorableFamily = (typeof RESTORABLE_CONSUMIBLE_FAMILIES)[number]
+export const EXTRA_CONSUMIBLE_FAMILIES: ConsumibleExtraFamily[] = [
+    "itm_ac",
+    "cable_tierra",
+    "tablero",
+    "canaleta",
+    "fusible",
+]
+export const RESTORABLE_CONSUMIBLE_FAMILIES: ConsumibleRestorableFamily[] = [
+    "fusible",
+]
 
 //-------------------------
 // Contenido de la familia
@@ -159,9 +135,6 @@ export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
     negro: "MELSI00002",
 }
 
-export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
-export type CableFvColor = "rojo" | "negro"
-
 // Asociaciones con el consumible extra
 export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
     itm_ac: "Agregar otra protección ITM AC",
@@ -179,8 +152,7 @@ export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string
 }
 
 // Familias que siempre deben mostrarse y no pueden eliminarse
-export const FIXED_CONSUMIBLE_FAMILIES = ["mc4"] as const
-export type FixedConsumibleFamily = (typeof FIXED_CONSUMIBLE_FAMILIES)[number]
+export const FIXED_CONSUMIBLE_FAMILIES: FixedConsumibleFamily[] = ["mc4"]
 
 // Familias que requerirán inserción por default
 const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([

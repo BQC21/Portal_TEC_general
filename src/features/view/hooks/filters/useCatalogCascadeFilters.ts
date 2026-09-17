@@ -6,7 +6,7 @@ import { useProveedores } from "@/features/view/hooks/services/useRealtimeProvee
 import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
 import { CascadeFilterValues, FilterableItem } from "@/lib/types/components/Filter/cascadeFilter";
 import { ProductCategoryFilter } from "@/lib/types/components/sub_components/module_render";
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "@/lib/types/components/General/options";
 import {
 	getCatalogFilterOptions,
 	resolveCatalogCascadeFilters,

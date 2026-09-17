@@ -1,8 +1,4 @@
-export type CableRange = {
-    label: string;
-    min: number;
-    max: number;
-};
+import { CableRange } from "@/lib/types/components/Sizing/computes";
 
 //////// COLUMNA 3
 

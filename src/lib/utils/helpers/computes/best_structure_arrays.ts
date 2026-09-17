@@ -1,10 +1,4 @@
-export type StructureOption = {
-    id: string
-    capacity: number
-    unitCost: number
-}
-
-export type StructureCombinationMode = "at-most" | "at-least"
+import { StructureCombinationMode, StructureOption } from "@/lib/types/components/Sizing/computes"
 
 /**
  * Reparte unidades entre varias estructuras al menor costo.

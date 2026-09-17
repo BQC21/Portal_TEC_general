@@ -1,7 +1,60 @@
-import { CableFvColor, ConsumibleFamily } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
+
+export type ConsumibleSelectableFamily =
+    | "itm_ac"
+    | "spd"
+    | "itm_dc"
+    | "conduit_flexible"
+    | "conduit"
+    | "cable_ac"
+    | "cable_fv"
+    | "cable_tierra"
+    | "tablero"
+    | "canaleta"
+    | "terminal_pin_100"
+    | "terminal_ojal_100"
+    | "terminal_ojal"
+    | "terminal_pin"
+    | "precintos"
+    | "tornillos_autorroscantes_100"
+    | "tornillo_spack"
+    | "mc4"
+    | "fusible"
+
+export type ConsumibleLinkedFamily =
+    | "abrazadera"
+    | "prensaestopa"
+    | "curva"
+    | "union"
+    | "conector"
+
+export type ConsumibleFamily =
+    | ConsumibleSelectableFamily
+    | ConsumibleLinkedFamily
+
+export type ConsumibleExtraFamily =
+    | "itm_ac"
+    | "cable_tierra"
+    | "tablero"
+    | "canaleta"
+    | "fusible"
+
+export type ConsumibleRestorableFamily = "fusible"
+export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
+export type CableFvColor = "rojo" | "negro"
+export type FixedConsumibleFamily = "mc4"
+
+export type ConsumibleGroupKey = "proteccion" | "canalizacion" | "consumible"
+
+export type ConsumibleGroupMeta = {
+    key: ConsumibleGroupKey
+    label: string
+    order: number
+    rowClass: string
+    headerClass: string
+}
 
 export type ConsumibleTableRow = {
     key: string

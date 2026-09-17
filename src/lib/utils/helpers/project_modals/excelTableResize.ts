@@ -1,10 +1,7 @@
+import { TableResizeState } from "@/lib/types/components/General/Shell";
+
 const MIN_COL_WIDTH = 56;
 const MIN_ROW_HEIGHT = 36;
-
-type TableResizeState = {
-    colWidths: number[];
-    rowHeights: Map<number, number>;
-};
 
 const tableStates = new WeakMap<HTMLTableElement, TableResizeState>();
 

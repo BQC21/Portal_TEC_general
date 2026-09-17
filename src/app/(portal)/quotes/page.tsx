@@ -31,13 +31,11 @@ import {
 } from "@/lib/utils/helpers/massive/massiveUpload";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
+import { FinantialExportRow, QuoteExportRow, ReportExportRow } from "@/lib/types/components/Massive/download";
 import {
 	FINANTIAL_EXPORT_COLUMNS,
 	QUOTE_EXPORT_COLUMNS,
 	REPORT_EXPORT_COLUMNS,
-	type FinantialExportRow,
-	type QuoteExportRow,
-	type ReportExportRow,
 } from "@/lib/utils/helpers/templates/massiveDownload";
 import {
 	FINANTIAL_UPLOAD_COLUMNS,

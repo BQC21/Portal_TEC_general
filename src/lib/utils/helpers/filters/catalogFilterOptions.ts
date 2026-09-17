@@ -4,7 +4,7 @@ import { ProductCategoryFilter } from "@/lib/types/components/sub_components/mod
 import { Brand } from "@/lib/types/supabase/brand.types";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
 import { Type } from "@/lib/types/supabase/type-types";
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "@/lib/types/components/General/options";
 import { matchesProductCategory } from "@/lib/utils/helpers/project_modals/catalogCascade";
 import { getBrandOptions, getSupplierOptions, getTypeOptions } from "./cascadeFilterOptions";
 

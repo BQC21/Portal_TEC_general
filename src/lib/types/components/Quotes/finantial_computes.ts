@@ -91,3 +91,10 @@ export type grossMargin = {
 
 export type recursosItems = Omit<recursos, 'resumen'>;
 export type viaticosItems = Omit<viaticos, 'resumen'>;
+
+export type QuoteCostTotals = {
+    recursos: recursos;
+    viaticos: viaticos;
+    precioFinal: precioFinal;
+    grossMargin: { gm: grossMargin };
+};

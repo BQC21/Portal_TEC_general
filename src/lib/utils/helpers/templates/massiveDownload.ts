@@ -1,10 +1,16 @@
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
-
-export type ExportColumn<T> = {
-	key: keyof T;
-	label: string;
-};
+import {
+	BrandExportRow,
+	ExportColumn,
+	FinantialExportRow,
+	ProjectExportRow,
+	QuoteExportRow,
+	ReportExportRow,
+	SupplierExportRow,
+	TypeExportRow,
+	ZoneExportRow,
+} from "@/lib/types/components/Massive/download";
 
 // -------------------
 // ----- M1 ----------
@@ -51,27 +57,6 @@ export const MATERIALES_EXPORT_COLUMNS: ExportColumn<Materiales>[] = [
 	{ key: "precio_dolares_igv", label: "PRECIO + IGV $" },
 ];
 
-export type SupplierExportRow = {
-	nombre: string;
-	codigo: string;
-	ruc: string;
-	contacto: string;
-	telefono: string;
-	categoria: string;
-};
-
-export type BrandExportRow = {
-	nombre: string;
-	categoria: string;
-	proveedores: string;
-};
-
-export type TypeExportRow = {
-	nombre: string;
-	categoria: string;
-	marcas: string;
-};
-
 export const SUPPLIER_EXPORT_COLUMNS: ExportColumn<SupplierExportRow>[] = [
 	{ key: "nombre", label: "Nombre del proveedor" },
 	{ key: "codigo", label: "Código del proveedor" },
@@ -96,33 +81,6 @@ export const TYPE_EXPORT_COLUMNS: ExportColumn<TypeExportRow>[] = [
 // -------------------
 // ----- M2 ----------
 // -------------------
-
-export type ZoneExportRow = {
-	zona: string;
-	latitude: string;
-	longitude: string;
-	gti_respaldo: string;
-	gti_respaldo_diario: string;
-	ghi_respaldo: string;
-	ghi_respaldo_diario: string;
-	hsp_peor_mes: string;
-};
-
-export type ProjectExportRow = {
-	nombre: string;
-	zona: string;
-	angulo: string;
-	tipo_instalacion: string;
-	configuracion: string;
-	demanda_mensual: number[];
-	demanda_electrica: number;
-	equipos: string;
-	materiales: string;
-	enlace: string;
-	created_at: string;
-	updated_at: string;
-	estado_proyecto: string;
-};
 
 export const ZONE_EXPORT_COLUMNS: ExportColumn<ZoneExportRow>[] = [
 	{ key: "zona", label: "Nombre de la zona" },
@@ -151,54 +109,9 @@ export const PROJECT_EXPORT_COLUMNS: ExportColumn<ProjectExportRow>[] = [
 	{ key: "estado_proyecto", label: "Estado del proyecto" },
 ];
 
-
-
-
 // -------------------
 // ----- M3 ----------
 // -------------------
-
-export type QuoteExportRow = {
-	cod_cotizacion: string;
-	proyecto: string;
-	igv: string;
-	tasa_cambio: string;
-	precio_dolares: string;
-	gm: number;
-	depre_tool: number;
-	created_at: string;
-	updated_at: string;
-};
-
-export type ReportExportRow = {
-	cotizacion: string;
-	proyecto: string;
-	cliente: string;
-	ruc_dni: string;
-	lugar: string;
-	atencion: string;
-	porcentaje_eqmt: string;
-	porcentaje_inst: string;
-	precio_cotizacion: string;
-	created_at: string;
-	updated_at: string;
-};
-
-export type FinantialExportRow = {
-	cotizacion: string;
-	proyecto: string;
-	planta: number;
-	generacion: number;
-	tarifa_red: number;
-	degra_1er: number;
-	degra_2do: number;
-	tarifa_crecimiento: number;
-	tasa_descuento: number;
-	tiempo_retorno: string;
-	lcoe: string;
-	created_at: string;
-	updated_at: string;
-};
 
 export const QUOTE_EXPORT_COLUMNS: ExportColumn<QuoteExportRow>[] = [
 	{ key: "cod_cotizacion", label: "Código de cotización" },

@@ -40,10 +40,10 @@ import {
 	transformProjectRows,
 	transformZoneRows,
 } from "@/lib/utils/helpers/massive/massiveUpload";
+import { ProjectExportRow } from "@/lib/types/components/Massive/download";
 import {
 	PROJECT_EXPORT_COLUMNS,
 	ZONE_EXPORT_COLUMNS,
-	type ProjectExportRow,
 } from "@/lib/utils/helpers/templates/massiveDownload";
 import {
 	PROJECT_UPLOAD_COLUMNS,

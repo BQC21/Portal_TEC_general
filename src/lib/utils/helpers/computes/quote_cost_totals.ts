@@ -1,10 +1,5 @@
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
-import {
-    grossMargin as GrossMarginShape,
-    precioFinal,
-    recursos,
-    viaticos,
-} from "@/lib/types/components/Quotes/finantial_computes";
+import { QuoteCostTotals, precioFinal, recursos, viaticos } from "@/lib/types/components/Quotes/finantial_computes";
 import { Materiales } from "@/lib/types/supabase/materiales-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
@@ -24,13 +19,6 @@ import {
 } from "@/lib/utils/helpers/computes/quote_computes";
 import { EMPTY_GROSS_MARGIN, EMPTY_PRECIO_FINAL, EMPTY_RECURSOS, EMPTY_VIATICOS } from "../../empty";
 import { addPair, addSoles, addVenta } from "../../normalization";
-
-export type QuoteCostTotals = {
-    recursos: recursos;
-    viaticos: viaticos;
-    precioFinal: precioFinal;
-    grossMargin: { gm: GrossMarginShape };
-};
 
 export function computeQuoteCostTotals(params: {
     projectEquipos: Project_Equipos[];

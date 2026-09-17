@@ -1,6 +1,15 @@
 import { useMemo } from "react"
 import { consumible_template } from "@/lib/utils/helpers/templates/quotePrices"
-import { ConsumibleDisplayRow, UseConsumeRowSelectionArgs } from "@/lib/types/components/Quotes/consumible_tableRow"
+import {
+    CableFvColor,
+    ConsumibleAddableFamily,
+    ConsumibleDisplayRow,
+    ConsumibleExtraFamily,
+    ConsumibleFamily,
+    ConsumibleLinkedFamily,
+    ConsumibleSelectableFamily,
+    UseConsumeRowSelectionArgs,
+} from "@/lib/types/components/Quotes/consumible_tableRow"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { compareConsumibleRows } from "@/lib/utils/helpers/sorting/consumiblesSort"
 import {
@@ -11,14 +20,8 @@ import {
 } from "@/lib/utils/helpers/project_modals/consumeRowSelection"
 import {
     buildConsumibleFamilyOptions,
-    CableFvColor,
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_FAMILY_TIPO,
-    ConsumibleAddableFamily,
-    ConsumibleExtraFamily,
-    ConsumibleFamily,
-    ConsumibleLinkedFamily,
-    ConsumibleSelectableFamily,
     extractCableFvDimension,
     extractInchSize,
     filterMaterialsByFamily,

@@ -1,16 +1,7 @@
 import * as XLSX from "xlsx-js-style";
+import { DownloadFormat, ExportCellValue, ExportColumn } from "@/lib/types/components/Massive/download";
 
-type ExportCellValue = string | number | null;
-
-export type ExportColumn<T> = {
-	key: keyof T;
-	label: string;
-};
-
-
-
-export const DOWNLOAD_FORMAT_OPTIONS = ["xlsx", "csv"] as const;
-export type DownloadFormat = (typeof DOWNLOAD_FORMAT_OPTIONS)[number];
+export const DOWNLOAD_FORMAT_OPTIONS: DownloadFormat[] = ["xlsx", "csv"];
 
 export function addExtension(name: string, fmt: string) {
 	const normalized = fmt.toLowerCase();

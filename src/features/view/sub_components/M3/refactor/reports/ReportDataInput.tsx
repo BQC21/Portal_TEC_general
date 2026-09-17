@@ -9,7 +9,8 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductTextAreaField } from "@/features/view/components/Form_fields/AddTextAreaField";
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
-import { DEFAULT_PAY_FORMAT, DSCTO_type_value, DSCTOOptions, FIRMOptions } from "@/lib/utils/options";
+import { DSCTOOptions, FIRMOptions } from "@/lib/types/components/General/options";
+import { DEFAULT_PAY_FORMAT, DSCTO_type_value } from "@/lib/utils/options";
 import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { GERENTE_FIRMA_PASSWORD } from "@/lib/utils/helpers/computes/report_computes";

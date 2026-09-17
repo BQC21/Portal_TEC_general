@@ -1,6 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
-
-type RowWithId = { id: string | number };
+import { RowWithId } from "@/lib/types/components/Massive/download";
 
 // dividir un array en partes más pequeñas
 function chunkArray<T>(values: T[], chunkSize: number) {

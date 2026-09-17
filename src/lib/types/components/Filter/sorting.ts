@@ -1,4 +1,4 @@
-import { ProductSortingOrder } from "@/lib/utils/options";
+import { ProductSortingOrder } from "../General/options";
 
 export type ProductSortingProps = {
     value: ProductSortingOrder;

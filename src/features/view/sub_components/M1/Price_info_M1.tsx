@@ -3,7 +3,8 @@ import { AddProductSectionTitle } from "../../components/Form_fields/AddSectionT
 import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
 import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
 import { AddProductRadioField } from "../../components/Form_fields/AddRadioField";
-import { CurrencyCode, PRICE_CURRENCY_OPTIONS } from "@/lib/utils/options";
+import { CurrencyCode } from "@/lib/types/components/General/options";
+import { PRICE_CURRENCY_OPTIONS } from "@/lib/utils/options";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
 import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, FALLBACK_EXCHANGE_RATE, formatReadonlyCurrency, roundMoney } from "@/lib/utils/helpers/computes/price_manage";
 import { useConverterSunat } from "../../hooks/api/useConverterSunat";

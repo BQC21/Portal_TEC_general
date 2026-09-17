@@ -1,6 +1,7 @@
 import { createJoinProjectEquipos, deleteJoinProjectEquipos, updateJoinProjectEquipos } from "@/features/controller/services/projectEquiposQueries"
 import { createJoinProjectMateriales, deleteJoinProjectMateriales, updateJoinProjectMateriales } from "@/features/controller/services/projectMaterialesQueries"
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources"
+import { QuoteResourceSource } from "@/lib/types/supabase/quote-types"
 import { Equipos } from "@/lib/types/supabase/equipos-types"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
@@ -138,11 +139,6 @@ export function resolveQuoteMateriales(
         projectMateriales.length > 0,
     )
 }
-
-type QuoteResourceSource = {
-    proyecto_id?: string | null
-    costos_manuales?: ManualCosts | null
-} | null | undefined
 
 export function resolveQuoteDisplayResources(params: {
     hasSelectedQuote?: boolean

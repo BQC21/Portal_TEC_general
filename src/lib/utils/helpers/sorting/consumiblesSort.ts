@@ -1,28 +1,23 @@
-import { ConsumibleSortableRow, ConsumibleTableRow } from "@/lib/types/components/Quotes/consumible_tableRow"
+import {
+    CableFvColor,
+    ConsumibleFamily,
+    ConsumibleGroupKey,
+    ConsumibleGroupMeta,
+    ConsumibleRestorableFamily,
+    ConsumibleSortableRow,
+    ConsumibleTableRow,
+} from "@/lib/types/components/Quotes/consumible_tableRow"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
 import {
-    CableFvColor,
     CONSUMIBLE_FAMILY_TIPO,
-    ConsumibleFamily,
-    ConsumibleRestorableFamily,
     getCableFvColor,
     getCanalizacionSortOrder,
     getConsumibleFamily,
     RESTORABLE_CONSUMIBLE_FAMILIES,
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
-
-export type ConsumibleGroupKey = "proteccion" | "canalizacion" | "consumible"
-
-export type ConsumibleGroupMeta = {
-    key: ConsumibleGroupKey
-    label: string
-    order: number
-    rowClass: string
-    headerClass: string
-}
 
 // Colorear grupo de material
 export function getConsumibleGroup(tipo?: string): ConsumibleGroupMeta {

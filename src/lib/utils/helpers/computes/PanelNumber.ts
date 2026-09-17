@@ -1,4 +1,4 @@
-export type ModuloFVUnidadKind = "palet" | "unidad";
+import { EquipoReportDisplayRow, EquipoReportSource, ModuloFVSelection, ModuloFVUnidadKind } from "@/lib/types/components/Sizing/computes";
 
 export const DEFAULT_PANELES_POR_PALET = 36;
 
@@ -26,13 +26,6 @@ export function panelesPorPaletDeModulo(
     const n = Number(paneles_palet);
     return Number.isFinite(n) && n > 0 ? Math.trunc(n) : 0;
 }
-
-type ModuloFVSelection = {
-    id?: string;
-    unidad?: string | null;
-    paneles_palet?: number | null;
-    cantidad?: number;
-};
 
 export function isPaletModuloFV(unidad?: string | null, descripcion?: string | null): boolean {
     if (normalizeModuloFVUnidad(unidad) === "palet") return true;
@@ -207,27 +200,6 @@ export function cantidadBateriaComoUnidades(
     const n = Math.max(0, Math.ceil(Number(cantidad) || 0));
     return n;
 }
-
-export type EquipoReportDisplayRow = {
-    ids: string[];
-    cod_producto: string;
-    descripcion: string;
-    unidad: string;
-    cantidad: number;
-};
-
-type EquipoReportSource = {
-    id: string | number;
-    cantidad?: unknown;
-    equipo_info?: {
-        tipo_de_producto?: string | null;
-        descripcion?: string | null;
-        unidad?: string | null;
-        marca?: string | null;
-        cod_producto?: string | null;
-        paneles_palet?: number | null;
-    } | null;
-};
 
 export function toEquipoReportRows(equipos: EquipoReportSource[]): EquipoReportDisplayRow[] {
     const moduloItems = equipos.filter((item) => isModuloFV(item.equipo_info?.tipo_de_producto));

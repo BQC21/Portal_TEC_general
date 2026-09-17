@@ -3,6 +3,8 @@
 export type SupplierFormstate = Omit<Supplier, "id">; 
 export type SupplierFormData = Omit<Supplier, "id">; 
 
+export type SupplierCodeInfo = { RUC: string; supplierCode: string }; 
+
 // Filas correspondientes a la tabla de Supabase
 export type SupabaseSupplierRow = {
     // propiedades generales

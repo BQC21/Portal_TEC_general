@@ -1,5 +1,5 @@
 import { FilterIcon } from "@/features/view/components/Icons/FilterIcon";
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "@/lib/types/components/General/options";
 import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { MaterialesFiltersProps } from "@/lib/types/components/Filter/filter_tables";
 import { CATALOG_FILTERS } from "@/lib/utils/helpers/filters/catalogFilterOptions";

@@ -1,4 +1,4 @@
-import { FilterKey } from "@/lib/utils/options";
+import { FilterKey } from "../General/options";
 
 export type FilterableItem = {
 	proveedor: string;

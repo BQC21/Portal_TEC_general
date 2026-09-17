@@ -1,13 +1,13 @@
 import {
+    CableFvColor,
     ConsumibleDisplayRow,
+    ConsumibleFamily,
     UseConsumeRowSelectionArgs,
 } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join"
 import {
-    CableFvColor,
     CONSUMIBLE_FAMILY_TIPO,
-    ConsumibleFamily,
     getConsumibleFamily,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 

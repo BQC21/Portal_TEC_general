@@ -11,7 +11,7 @@ import { useMateriales, useMaterialMutations } from "@/features/view/hooks/servi
 
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
-import type { ProductSortingOrder } from "@/lib/utils/options"; // Tipados
+import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
 

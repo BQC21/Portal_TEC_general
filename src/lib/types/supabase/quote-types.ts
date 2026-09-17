@@ -32,6 +32,11 @@ export type SupabaseQuoteRow = {
     version?: string | null;
 }
 
+export type QuoteResourceSource = {
+    proyecto_id?: string | null
+    costos_manuales?: ManualCosts | null
+} | null | undefined
+
 // visualización de la tabla
 export type Quote = {
     id: string;

@@ -1,5 +1,5 @@
 import { Product } from "../../../types/supabase/product-types";
-import { CurrencyCode } from "../../options";
+import { CurrencyCode } from "../../../types/components/General/options";
 import { formatCurrency, toSafeNumber } from "../../normalization";
 
 export const FALLBACK_EXCHANGE_RATE = 3.412;
