@@ -18,10 +18,18 @@ import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatal
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
 
-import Button2MassiveUpload from "@/features/view/components/Buttons/Equipos/Button2MassiveUpload";
-import Button2MassiveDownload from "@/features/view/components/Buttons/Equipos/Button2MassiveDownload";
-import Button2MassiveClean from "@/features/view/components/Buttons/Equipos/Button2MassiveClean";
-import Button2Modal from "@/features/view/components/Buttons/Equipos/Button2Add";
+import Button2Add from "@/features/view/components/Buttons/shared/button2Add";
+import Button2MassiveClean from "@/features/view/components/Buttons/shared/button2MassiveClean";
+import Button2MassiveDownload from "@/features/view/components/Buttons/shared/button2MassiveDownload";
+import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
+import { AddEquipoModal } from "@/features/view/components/Modals/Equipos/AddEquipoModal";
+import { transformEquiposRows } from "@/lib/utils/helpers/massive/massiveUpload";
+import { EQUIPOS_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	EQUIPOS_UPLOAD_COLUMNS,
+	EQUIPOS_UPLOAD_HEADERS,
+} from "@/lib/utils/helpers/templates/massiveUpload";
+import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();
@@ -103,10 +111,42 @@ export default function EquiposPage() {
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-							<Button2MassiveUpload onSuccess={refetch} />
-							<Button2MassiveDownload equipos={equipos} />
-							<Button2MassiveClean currentCount={equipos.length} onSuccess={refetch} />
-							<Button2Modal existingEquipos={equipos} onAddEquipos={handleAddEquipos} />
+							<Button2MassiveUpload
+								title="Subida masiva de equipos"
+								description="Selecciona un archivo XLSX con la estructura de la hoja de equipos principales."
+								tableName={EQUIPOS_TABLE}
+								expectedHeaders={EQUIPOS_UPLOAD_HEADERS}
+								columns={EQUIPOS_UPLOAD_COLUMNS}
+								transformRows={transformEquiposRows}
+								onSuccess={refetch}
+							/>
+							<Button2MassiveDownload
+								title="Descarga masiva de equipos"
+								description="Exporta el catálogo de equipos principales en XLSX o CSV."
+								items={equipos}
+								columns={EQUIPOS_EXPORT_COLUMNS}
+								defaultFileName="equipos"
+							/>
+							<Button2MassiveClean
+								currentCount={equipos.length}
+								onSuccess={refetch}
+								tableName={EQUIPOS_TABLE}
+								title="Limpieza masiva de equipos"
+								description="Esta acción elimina todas las filas de equipos principales."
+								entityLabel="equipos principales"
+							/>
+							<Button2Add label="Añadir Equipo">
+								{(close) => (
+									<AddEquipoModal
+										existingEquipos={equipos}
+										onAddEquipos={async (equipo) => {
+											await handleAddEquipos(equipo);
+											close();
+										}}
+										onClose={close}
+									/>
+								)}
+							</Button2Add>
                         </div>
                     </div>
                 </section>

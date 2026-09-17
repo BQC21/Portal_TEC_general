@@ -1,22 +1,17 @@
 "use client"
 
-import Button2Modal_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2Add";
-import Button2MassiveClean_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveClean";
-import Button2MassiveDownload_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveDownload";
-import Button2MassiveUpload_brand from "@/features/view/components/Buttons/Proveedores/marcas/button2MassiveUpload";
-import Button2Modal_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2Add";
-import Button2MassiveClean_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveClean";
-import Button2MassiveDownload_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveDownload";
-import Button2MassiveUpload_supplier from "@/features/view/components/Buttons/Proveedores/proveedores/button2MassiveUpload";
-import Button2Modal_type from "@/features/view/components/Buttons/Proveedores/tipo/button2Add";
-import Button2MassiveClean_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveClean";
-import Button2MassiveDownload_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveDownload";
-import Button2MassiveUpload_type from "@/features/view/components/Buttons/Proveedores/tipo/button2MassiveUpload";
+import Button2Add from "@/features/view/components/Buttons/shared/button2Add";
+import Button2MassiveClean from "@/features/view/components/Buttons/shared/button2MassiveClean";
+import Button2MassiveDownload from "@/features/view/components/Buttons/shared/button2MassiveDownload";
+import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import BrandTable from "@/features/view/components/Tables/Proveedores/BrandTable";
 import SupplierTable from "@/features/view/components/Tables/Proveedores/SupplierTable";
 import TypeTable from "@/features/view/components/Tables/Proveedores/TypeTable";
+import AddBrandModal from "@/features/view/components/Modals/Proveedores/marcas/AddBrandModal";
+import AddSupplierModal from "@/features/view/components/Modals/Proveedores/proveedores/AddSupplierModal";
+import AddTypeModal from "@/features/view/components/Modals/Proveedores/tipo/AddTypeModal";
 import { useBrands, useBrandsMutations } from "@/features/view/hooks/services/useRealtimeMarcas";
 import { useProveedores, useProveedoresMutations } from "@/features/view/hooks/services/useRealtimeProveedores";
 import { useTypes, useTypesMutations } from "@/features/view/hooks/services/useRealtimeTipos";
@@ -25,6 +20,25 @@ import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types"
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
+import {
+	transformBrandRows,
+	transformSupplierRows,
+	transformTypeRows,
+} from "@/lib/utils/helpers/massive/massiveUpload";
+import {
+	BRAND_EXPORT_COLUMNS,
+	SUPPLIER_EXPORT_COLUMNS,
+	TYPE_EXPORT_COLUMNS,
+} from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	BRAND_UPLOAD_COLUMNS,
+	BRAND_UPLOAD_HEADERS,
+	SUPPLIER_UPLOAD_COLUMNS,
+	SUPPLIER_UPLOAD_HEADERS,
+	TYPE_UPLOAD_COLUMNS,
+	TYPE_UPLOAD_HEADERS,
+} from "@/lib/utils/helpers/templates/massiveUpload";
+import { BRAND_TABLE, SUPPLIER_TABLE, TYPE_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function ProveedoresPage() {
 	const { supplier, refetch: refetchSupplier } = useProveedores();
@@ -137,10 +151,48 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_supplier onSuccess={refetchSupplier} />
-                                                <Button2MassiveDownload_supplier supplier={supplier} />
-                                                <Button2MassiveClean_supplier currentCount={supplier.length} onSuccess={refetchSupplier} />
-                                                <Button2Modal_supplier onAddSupplier={handleAddSupplier} />
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de proveedores"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de proveedores."
+                                                    tableName={SUPPLIER_TABLE}
+                                                    expectedHeaders={SUPPLIER_UPLOAD_HEADERS}
+                                                    columns={SUPPLIER_UPLOAD_COLUMNS}
+                                                    transformRows={transformSupplierRows}
+                                                    onSuccess={refetchSupplier}
+                                                />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de proveedores"
+                                                    description="Exporta la lista de proveedores en XLSX o CSV."
+                                                    items={supplier.map((item) => ({
+                                                        nombre: item.nombre ?? "",
+                                                        codigo: item.codigo ?? "",
+                                                        ruc: item.ruc ?? "",
+                                                        contacto: item.contacto ?? "",
+                                                        telefono: item.telefono ?? "",
+                                                        categoria: item.categoria ?? "",
+                                                    }))}
+                                                    columns={SUPPLIER_EXPORT_COLUMNS}
+                                                    defaultFileName="proveedores"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={supplier.length}
+                                                    onSuccess={refetchSupplier}
+                                                    tableName={SUPPLIER_TABLE}
+                                                    title="Limpieza masiva de proveedores"
+                                                    description="Esta acción elimina todas las filas de proveedores."
+                                                    entityLabel="proveedores"
+                                                />
+                                                <Button2Add label="Añadir Proveedor">
+                                                    {(close) => (
+                                                        <AddSupplierModal
+                                                            onAddSupplier={async (newSupplier: SupplierFormData) => {
+                                                                await handleAddSupplier(newSupplier);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <SupplierTable
@@ -166,10 +218,48 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_brand onSuccess={refetchBrand} />
-                                                <Button2MassiveDownload_brand brand={brand} />
-                                                <Button2MassiveClean_brand currentCount={brand.length} onSuccess={refetchBrand} />
-                                                <Button2Modal_brand onAddBrand={handleAddBrand} />
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de marcas"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de marcas."
+                                                    tableName={BRAND_TABLE}
+                                                    expectedHeaders={BRAND_UPLOAD_HEADERS}
+                                                    columns={BRAND_UPLOAD_COLUMNS}
+                                                    transformRows={transformBrandRows}
+                                                    onSuccess={refetchBrand}
+                                                />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de marcas"
+                                                    description="Exporta la lista de marcas en XLSX o CSV."
+                                                    items={brand.map((item) => ({
+                                                        nombre: item.nombre ?? "",
+                                                        categoria: item.categoria ?? "",
+                                                        proveedores: (item.proveedores_info ?? [])
+                                                            .map((supplierItem) => supplierItem.nombre)
+                                                            .filter(Boolean)
+                                                            .join(", "),
+                                                    }))}
+                                                    columns={BRAND_EXPORT_COLUMNS}
+                                                    defaultFileName="marcas"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={brand.length}
+                                                    onSuccess={refetchBrand}
+                                                    tableName={BRAND_TABLE}
+                                                    title="Limpieza masiva de marcas"
+                                                    description="Esta acción elimina todas las filas de marcas."
+                                                    entityLabel="marcas"
+                                                />
+                                                <Button2Add label="Añadir Marca">
+                                                    {(close) => (
+                                                        <AddBrandModal
+                                                            onAddBrand={async (newBrand: BrandFormData) => {
+                                                                await handleAddBrand(newBrand);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <BrandTable
@@ -195,10 +285,48 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_type onSuccess={refetchType} />
-                                                <Button2MassiveDownload_type type={type} />
-                                                <Button2MassiveClean_type currentCount={type.length} onSuccess={refetchType} />
-                                                <Button2Modal_type onAddType={handleAddType} />
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de tipos de producto"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de tipos de producto."
+                                                    tableName={TYPE_TABLE}
+                                                    expectedHeaders={TYPE_UPLOAD_HEADERS}
+                                                    columns={TYPE_UPLOAD_COLUMNS}
+                                                    transformRows={transformTypeRows}
+                                                    onSuccess={refetchType}
+                                                />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de tipos de producto"
+                                                    description="Exporta la lista de tipos de producto en XLSX o CSV."
+                                                    items={type.map((item) => ({
+                                                        nombre: item.nombre ?? "",
+                                                        categoria: item.categoria ?? "",
+                                                        marcas: (item.marcas_info ?? [])
+                                                            .map((marca) => marca.nombre)
+                                                            .filter(Boolean)
+                                                            .join(", "),
+                                                    }))}
+                                                    columns={TYPE_EXPORT_COLUMNS}
+                                                    defaultFileName="tipos-de-producto"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={type.length}
+                                                    onSuccess={refetchType}
+                                                    tableName={TYPE_TABLE}
+                                                    title="Limpieza masiva de tipos de producto"
+                                                    description="Esta acción elimina todas las filas de tipos de producto."
+                                                    entityLabel="tipos de producto"
+                                                />
+                                                <Button2Add label="Añadir Tipo de producto">
+                                                    {(close) => (
+                                                        <AddTypeModal
+                                                            onAddType={async (newType: TypeFormData) => {
+                                                                await handleAddType(newType);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <TypeTable

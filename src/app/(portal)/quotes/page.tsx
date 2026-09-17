@@ -1,22 +1,17 @@
 "use client";
 
-import Button2Add_finantial from "@/features/view/components/Buttons/quotes/finantial/button2Add";
-import Button2MassiveClean_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveClean";
-import Button2MassiveDownload_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveDownload";
-import Button2MassiveUpload_finantial from "@/features/view/components/Buttons/quotes/finantial/button2MassiveUpload";
-import Button2Add_quote from "@/features/view/components/Buttons/quotes/quote/button2Add";
-import Button2MassiveClean_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveClean";
-import Button2MassiveDownload_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveDownload";
-import Button2MassiveUpload_quote from "@/features/view/components/Buttons/quotes/quote/button2MassiveUpload";
-import Button2Add_report from "@/features/view/components/Buttons/quotes/report/button2Add";
-import Button2MassiveClean_report from "@/features/view/components/Buttons/quotes/report/button2MassiveClean";
-import Button2MassiveDownload_report from "@/features/view/components/Buttons/quotes/report/button2MassiveDownload";
-import Button2MassiveUpload_report from "@/features/view/components/Buttons/quotes/report/button2MassiveUpload";
+import Button2Add from "@/features/view/components/Buttons/shared/button2Add";
+import Button2MassiveClean from "@/features/view/components/Buttons/shared/button2MassiveClean";
+import Button2MassiveDownload from "@/features/view/components/Buttons/shared/button2MassiveDownload";
+import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import FinantialTable from "@/features/view/components/Tables/quotes/FinantialTable";
 import QuoteTable from "@/features/view/components/Tables/quotes/QuoteTable";
 import ReportTable from "@/features/view/components/Tables/quotes/ReportTable";
+import AddFinantialModal from "@/features/view/components/Modals/quotes/finantial/AddFinantialModal";
+import AddQuoteModal from "@/features/view/components/Modals/quotes/quote/AddQuoteModal";
+import AddReportModal from "@/features/view/components/Modals/quotes/report/AddReportModal";
 import { useProjectEquipos } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
 import { useQuoteMutations, useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
@@ -29,6 +24,31 @@ import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
 import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import {
+	transformFinantialRows,
+	transformQuoteRows,
+	transformReportRows,
+} from "@/lib/utils/helpers/massive/massiveUpload";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
+import {
+	FINANTIAL_EXPORT_COLUMNS,
+	QUOTE_EXPORT_COLUMNS,
+	REPORT_EXPORT_COLUMNS,
+	type FinantialExportRow,
+	type QuoteExportRow,
+	type ReportExportRow,
+} from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	FINANTIAL_UPLOAD_COLUMNS,
+	FINANTIAL_UPLOAD_HEADERS,
+	QUOTE_UPLOAD_COLUMNS,
+	QUOTE_UPLOAD_HEADERS,
+	REPORT_UPLOAD_COLUMNS,
+	REPORT_UPLOAD_HEADERS,
+} from "@/lib/utils/helpers/templates/massiveUpload";
+import { FINANTIAL_TABLE, QUOTE_TABLE, REPORT_TABLE } from "@/lib/utils/namingTolerance";
+import { formatCurrency } from "@/lib/utils/normalization";
 
 
 export default function QuotesPage(){
@@ -226,15 +246,54 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_quote onSuccess={refetch_quote} />
-                                                <Button2MassiveDownload_quote quotes={quotes} />
-                                                <Button2MassiveClean_quote currentCount={quotes.length} onSuccess={refetch_quote} />
-                                                <Button2Add_quote
-                                                    onAddQuote={handleAddQuote}
-                                                    existingQuotes={quotes}
-                                                    project_equipos={project_equipos}
-                                                    project_materiales={project_materiales}
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de cotizaciones"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de cotizaciones."
+                                                    tableName={QUOTE_TABLE}
+                                                    expectedHeaders={QUOTE_UPLOAD_HEADERS}
+                                                    columns={QUOTE_UPLOAD_COLUMNS}
+                                                    transformRows={transformQuoteRows}
+                                                    onSuccess={refetch_quote}
                                                 />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de cotizaciones"
+                                                    description="Exporta la lista de cotizaciones en XLSX o CSV."
+                                                    items={quotes.map((quote): QuoteExportRow => ({
+                                                        cod_cotizacion: quote.cod_cotizacion ?? "",
+                                                        proyecto: quoteAssociatedLabel(quote),
+                                                        igv: quote.igv ?? "",
+                                                        tasa_cambio: quote.tasa_cambio ?? "",
+                                                        precio_dolares: formatCurrency(Number(quote.precio_dolares), "USD"),
+                                                        gm: Number(quote.gm) || 0,
+                                                        depre_tool: Number(quote.depre_tool) || 0,
+                                                        created_at: formatDate(quote.created_at),
+                                                        updated_at: formatDate(quote.updated_at),
+                                                    }))}
+                                                    columns={QUOTE_EXPORT_COLUMNS}
+                                                    defaultFileName="cotizaciones"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={quotes.length}
+                                                    onSuccess={refetch_quote}
+                                                    tableName={QUOTE_TABLE}
+                                                    title="Limpieza masiva de cotizaciones"
+                                                    description="Esta acción elimina todas las filas de cotizaciones."
+                                                    entityLabel="cotizaciones"
+                                                />
+                                                <Button2Add label="Añadir Cotización">
+                                                    {(close) => (
+                                                        <AddQuoteModal
+                                                            onAddQuote={async (quote) => {
+                                                                await handleAddQuote(quote);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existingQuotes={quotes}
+                                                            existing_project_equipos={project_equipos}
+                                                            existing_project_materiales={project_materiales}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <QuoteTable
@@ -263,14 +322,55 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_report onSuccess={refetch_report} />
-                                                <Button2MassiveDownload_report reports={reports} />
-                                                <Button2MassiveClean_report currentCount={reports.length} onSuccess={refetch_report} />
-                                                <Button2Add_report
-                                                    onAddReport={handleAddReport}
-                                                    project_equipos={project_equipos}
-                                                    project_materiales={project_materiales}
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de reportes"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de reportes."
+                                                    tableName={REPORT_TABLE}
+                                                    expectedHeaders={REPORT_UPLOAD_HEADERS}
+                                                    columns={REPORT_UPLOAD_COLUMNS}
+                                                    transformRows={transformReportRows}
+                                                    onSuccess={refetch_report}
                                                 />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de reportes"
+                                                    description="Exporta la lista de reportes en XLSX o CSV."
+                                                    items={reports.map((report): ReportExportRow => ({
+                                                        cotizacion: report.cotizacion_info?.cod_cotizacion ?? "",
+                                                        proyecto: quoteAssociatedLabel(report.cotizacion_info),
+                                                        cliente: report.cliente ?? "",
+                                                        ruc_dni: report.ruc_dni ?? "",
+                                                        lugar: report.lugar ?? "",
+                                                        atencion: report.atencion ?? "",
+                                                        porcentaje_eqmt: report.porcentaje_eqmt ?? "",
+                                                        porcentaje_inst: report.porcentaje_inst ?? "",
+                                                        precio_cotizacion: formatCurrency(Number(report.cotizacion_info?.precio_dolares), "USD"),
+                                                        created_at: formatDate(report.created_at),
+                                                        updated_at: formatDate(report.updated_at),
+                                                    }))}
+                                                    columns={REPORT_EXPORT_COLUMNS}
+                                                    defaultFileName="reportes"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={reports.length}
+                                                    onSuccess={refetch_report}
+                                                    tableName={REPORT_TABLE}
+                                                    title="Limpieza masiva de reportes"
+                                                    description="Esta acción elimina todas las filas de reportes."
+                                                    entityLabel="reportes"
+                                                />
+                                                <Button2Add label="Añadir Reporte">
+                                                    {(close) => (
+                                                        <AddReportModal
+                                                            onAddReport={async (report) => {
+                                                                await handleAddReport(report);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existing_project_equipos={project_equipos}
+                                                            existing_project_materiales={project_materiales}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <ReportTable
@@ -298,13 +398,56 @@ export default function QuotesPage(){
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
-                                                <Button2MassiveUpload_finantial onSuccess={refetch_finantial} />
-                                                <Button2MassiveDownload_finantial finantials={finantials} />
-                                                <Button2MassiveClean_finantial currentCount={finantials.length} onSuccess={refetch_finantial} />
-                                                <Button2Add_finantial
-                                                    onAddFinantial={handleAddFinantial}
-                                                    project_equipos={project_equipos}
+                                                <Button2MassiveUpload
+                                                    title="Subida masiva de finanzas"
+                                                    description="Selecciona un archivo XLSX con la estructura de la hoja de análisis financieros."
+                                                    tableName={FINANTIAL_TABLE}
+                                                    expectedHeaders={FINANTIAL_UPLOAD_HEADERS}
+                                                    columns={FINANTIAL_UPLOAD_COLUMNS}
+                                                    transformRows={transformFinantialRows}
+                                                    onSuccess={refetch_finantial}
                                                 />
+                                                <Button2MassiveDownload
+                                                    title="Descarga masiva de finanzas"
+                                                    description="Exporta la lista de análisis financieros en XLSX o CSV."
+                                                    items={finantials.map((finantial): FinantialExportRow => ({
+                                                        cotizacion: finantial.cotizacion_info?.cod_cotizacion ?? "",
+                                                        proyecto: quoteAssociatedLabel(finantial.cotizacion_info),
+                                                        planta: Number(finantial.planta) || 0,
+                                                        generacion: Number(finantial.generacion) || 0,
+                                                        tarifa_red: Number(finantial.tarifa_red) || 0,
+                                                        degra_1er: Number(finantial.degra_1er) || 0,
+                                                        degra_2do: Number(finantial.degra_2do) || 0,
+                                                        tarifa_crecimiento: Number(finantial.tarifa_crecimiento) || 0,
+                                                        tasa_descuento: Number(finantial.tasa_descuento) || 0,
+                                                        tiempo_retorno: displayPayback(finantial.tiempo_retorno),
+                                                        lcoe: finantial.lcoe ? `${finantial.lcoe} USD/MWh` : "",
+                                                        created_at: formatDate(finantial.created_at),
+                                                        updated_at: formatDate(finantial.updated_at),
+                                                    }))}
+                                                    columns={FINANTIAL_EXPORT_COLUMNS}
+                                                    defaultFileName="finanzas"
+                                                />
+                                                <Button2MassiveClean
+                                                    currentCount={finantials.length}
+                                                    onSuccess={refetch_finantial}
+                                                    tableName={FINANTIAL_TABLE}
+                                                    title="Limpieza masiva de finanzas"
+                                                    description="Esta acción elimina todas las filas de análisis financieros."
+                                                    entityLabel="análisis financieros"
+                                                />
+                                                <Button2Add label="Añadir Finanzas">
+                                                    {(close) => (
+                                                        <AddFinantialModal
+                                                            onAddFinantial={async (finantial) => {
+                                                                await handleAddFinantial(finantial);
+                                                                close();
+                                                            }}
+                                                            onClose={close}
+                                                            existing_project_equipos={project_equipos}
+                                                        />
+                                                    )}
+                                                </Button2Add>
                                             </div>
                                         </section>
                                         <FinantialTable

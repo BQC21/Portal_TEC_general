@@ -18,10 +18,18 @@ import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatal
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
 
-import Button2MassiveUpload from "@/features/view/components/Buttons/Materiales/Button2MassiveUpload";
-import Button2MassiveDownload from "@/features/view/components/Buttons/Materiales/Button2MassiveDownload";
-import Button2MassiveClean from "@/features/view/components/Buttons/Materiales/Button2MassiveClean";
-import Button2Modal from "@/features/view/components/Buttons/Materiales/Button2Add";
+import Button2Add from "@/features/view/components/Buttons/shared/button2Add";
+import Button2MassiveClean from "@/features/view/components/Buttons/shared/button2MassiveClean";
+import Button2MassiveDownload from "@/features/view/components/Buttons/shared/button2MassiveDownload";
+import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
+import { AddMaterialModal } from "@/features/view/components/Modals/Materiales/AddMaterialModal";
+import { transformMaterialesRows } from "@/lib/utils/helpers/massive/massiveUpload";
+import { MATERIALES_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import {
+	MATERIALES_UPLOAD_COLUMNS,
+	MATERIALES_UPLOAD_HEADERS,
+} from "@/lib/utils/helpers/templates/massiveUpload";
+import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();
@@ -105,10 +113,42 @@ export default function MaterialesPage() {
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-							<Button2MassiveUpload onSuccess={refetch} />
-							<Button2MassiveDownload materiales={materiales} />
-							<Button2MassiveClean currentCount={materiales.length} onSuccess={refetch} />
-							<Button2Modal existingMateriales={materiales} onAddMateriales={handleAddMateriales} />
+							<Button2MassiveUpload
+								title="Subida masiva de materiales"
+								description="Selecciona un archivo XLSX con la estructura de la hoja de materiales eléctricos."
+								tableName={MATERIALES_TABLE}
+								expectedHeaders={MATERIALES_UPLOAD_HEADERS}
+								columns={MATERIALES_UPLOAD_COLUMNS}
+								transformRows={transformMaterialesRows}
+								onSuccess={refetch}
+							/>
+							<Button2MassiveDownload
+								title="Descarga masiva de materiales"
+								description="Exporta el catálogo de materiales eléctricos en XLSX o CSV."
+								items={materiales}
+								columns={MATERIALES_EXPORT_COLUMNS}
+								defaultFileName="materiales"
+							/>
+							<Button2MassiveClean
+								currentCount={materiales.length}
+								onSuccess={refetch}
+								tableName={MATERIALES_TABLE}
+								title="Limpieza masiva de materiales"
+								description="Esta acción elimina todas las filas de materiales eléctricos."
+								entityLabel="materiales eléctricos"
+							/>
+							<Button2Add label="Añadir Material">
+								{(close) => (
+									<AddMaterialModal
+										existingMateriales={materiales}
+										onAddMateriales={async (material) => {
+											await handleAddMateriales(material);
+											close();
+										}}
+										onClose={close}
+									/>
+								)}
+							</Button2Add>
                         </div>
                     </div>
                 </section>
