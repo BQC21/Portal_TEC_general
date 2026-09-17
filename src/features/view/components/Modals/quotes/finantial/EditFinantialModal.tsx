@@ -7,7 +7,8 @@ import { EditFinantialModalProps } from "@/lib/types/components/General/modals";
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { createFinantialFormStateFromFinantial } from "@/lib/mapping/mapping_finantial";
-import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
+import Button2PDF from "../../../Buttons/shared/button2PDF";
+import { buildFinantialPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { FinantialData } from "@/features/view/sub_components/M3/refactor/finantial/finantial_data";
 import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/finantial/finantial_details";
 import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
@@ -170,7 +171,10 @@ export default function EditFinantialModal({
                         >
                             Cancelar
                         </button>
-                        <Button2PDF_FINANTIAL form={form} analysis={analysis} />
+                        <Button2PDF
+                            disabled={!form.cotizacion_id}
+                            getPayload={() => buildFinantialPdfPayload({ form, analysis })}
+                        />
                         <button
                             type="submit"
                             className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"

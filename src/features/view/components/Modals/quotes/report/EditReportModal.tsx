@@ -11,7 +11,8 @@ import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/repo
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
-import Button2PDF from "../../../Buttons/quotes/report/button2PDF";
+import Button2PDF from "../../../Buttons/shared/button2PDF";
+import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
 import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
@@ -239,11 +240,16 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                         </button>
                         {/* Añadir botón para generar PDF*/}
                         <Button2PDF
-                            form={form}
-                            equipos={projectEquipos}
-                            materiales={projectMateriales}
-                            hiddenEquipoIds={hiddenEquipoIds}
-                            hiddenMOIds={hiddenMOIds}
+                            disabled={!form.cotizacion_id}
+                            getPayload={() =>
+                                buildReportPdfPayload({
+                                    form,
+                                    equipos: projectEquipos,
+                                    materiales: projectMateriales,
+                                    hiddenEquipoIds,
+                                    hiddenMOIds,
+                                })
+                            }
                         />
                         <button
                             type="submit"

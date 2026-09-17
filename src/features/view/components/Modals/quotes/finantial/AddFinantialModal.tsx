@@ -15,7 +15,8 @@ import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantia
 import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/view/hooks/modals/Finantial/useFinantialComputes";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
-import Button2PDF_FINANTIAL from "../../../Buttons/quotes/finantial/button2PDF";
+import Button2PDF from "../../../Buttons/shared/button2PDF";
+import { buildFinantialPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { isQuoteLinkedToProject, quoteHeadingLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
@@ -151,7 +152,10 @@ export default function AddFinantialModal({
                         >
                             Cancelar
                         </button>
-                        <Button2PDF_FINANTIAL form={form} analysis={analysis} />
+                        <Button2PDF
+                            disabled={!form.cotizacion_id}
+                            getPayload={() => buildFinantialPdfPayload({ form, analysis })}
+                        />
                         <button
                             type="submit"
                             className="rounded-xl bg-brand-500 px-6 py-3 text-lg font-semibold text-white transition hover:bg-brand-600"
