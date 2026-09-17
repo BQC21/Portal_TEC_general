@@ -11,7 +11,7 @@ import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_
 import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"
 import { bestStructureCombination, StructureOption } from "@/lib/utils/helpers/computes/best_structure_arrays"
 import { cantidadEstructurasParaUnidades, dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
-import { cantidadModuloFVComoUnidades } from "@/lib/utils/helpers/computes/PanelNumber"
+import { cantidadModuloFVComoUnidades, resolvePanelesPorPalet } from "@/lib/utils/helpers/computes/PanelNumber"
 
 export function Structure_PriceTable({
         selected_equipos,
@@ -38,17 +38,28 @@ export function Structure_PriceTable({
     // ---------------
 
     const panelCount = useMemo(
-        () => selected_equipos
-            .filter((item) => item.equipo_info?.tipo_de_producto === "MÓDULO FV")
-            .reduce(
+        () => {
+            const modules = selected_equipos.filter((item) =>
+                item.equipo_info?.tipo_de_producto === "MÓDULO FV",
+            )
+            const panelesPorPalet = resolvePanelesPorPalet(
+                modules.map((item) => ({
+                    unidad: item.equipo_info?.unidad,
+                    paneles_palet: item.equipo_info?.paneles_palet,
+                    descripcion: item.equipo_info?.descripcion,
+                })),
+            )
+            return modules.reduce(
                 (sum, item) =>
                     sum + cantidadModuloFVComoUnidades(
                         item.cantidad,
                         item.equipo_info?.unidad,
-                        item.equipo_info?.paneles_palet ?? undefined,
+                        panelesPorPalet,
+                        item.equipo_info?.descripcion,
                     ),
                 0,
-            ),
+            )
+        },
         [selected_equipos],
     )
 
