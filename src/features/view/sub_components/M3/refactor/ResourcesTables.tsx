@@ -31,6 +31,10 @@ export function ResourcesTables({
     onReplaceMaterial,
     onRemoveMaterial,
     onAddConsumeItem,
+    showResourceChecklists = false,
+    updateRecursosConsiderFlag,
+    toggleConsumibleOculto,
+    setConsumiblesHidden,
 }: ResourcesTablesProps) {
     return(
         <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
@@ -40,7 +44,15 @@ export function ResourcesTables({
                 />
             </div>
             <div className="overflow-hidden rounded-2xl border border-slate-200">
-                <CollapsibleTableSection title="Equipos Principales">
+                <CollapsibleTableSection
+                    title="Equipos Principales"
+                    showCheckbox={showResourceChecklists}
+                    checked={manualResourceCosts.Recursos.considerar_equipos_principales !== false}
+                    onCheckedChange={(checked) =>
+                        updateRecursosConsiderFlag?.("considerar_equipos_principales", checked)
+                    }
+                    checkboxAriaLabel="Considerar equipos principales"
+                >
                     <EP_PriceTable
                         selected_equipos={projectEquipos}
                         onUpdateCantidad={onUpdateEquipoCantidad}
@@ -48,7 +60,15 @@ export function ResourcesTables({
                         onRemoveEquipo={onRemoveEquipo}
                     />
                 </CollapsibleTableSection>
-                <CollapsibleTableSection title="Estructuras">
+                <CollapsibleTableSection
+                    title="Estructuras"
+                    showCheckbox={showResourceChecklists}
+                    checked={manualResourceCosts.Recursos.considerar_estructuras !== false}
+                    onCheckedChange={(checked) =>
+                        updateRecursosConsiderFlag?.("considerar_estructuras", checked)
+                    }
+                    checkboxAriaLabel="Considerar estructuras"
+                >
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
                         projectAngle={
@@ -63,7 +83,15 @@ export function ResourcesTables({
                         onRemoveEquipo={onRemoveEquipo}
                     />
                 </CollapsibleTableSection>
-                <CollapsibleTableSection title="Consumibles">
+                <CollapsibleTableSection
+                    title="Consumibles"
+                    showCheckbox={showResourceChecklists}
+                    checked={manualResourceCosts.Recursos.considerar_consumibles !== false}
+                    onCheckedChange={(checked) =>
+                        updateRecursosConsiderFlag?.("considerar_consumibles", checked)
+                    }
+                    checkboxAriaLabel="Considerar consumibles"
+                >
                     <Consume_PriceTable
                         items={manualResourceCosts.Recursos.consumible}
                         selected_materiales={projectMateriales}
@@ -77,6 +105,10 @@ export function ResourcesTables({
                             updateManualCostItem("Recursos.consumible", index, field, value)
                         }
                         onRemoveItem={(index) => removeManualCostItem("Recursos.consumible", index)}
+                        showConsiderChecklist={showResourceChecklists}
+                        hiddenConsumeKeys={manualResourceCosts.Recursos.consumibles_ocultos ?? []}
+                        onToggleConsumeKey={toggleConsumibleOculto}
+                        onSetConsumeKeysHidden={setConsumiblesHidden}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="EPPs">
