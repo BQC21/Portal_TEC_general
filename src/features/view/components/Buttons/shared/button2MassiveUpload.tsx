@@ -5,14 +5,17 @@ import { useState } from "react";
 import { MassiveUploadIcon } from "@/features/view/components/Icons/MassiveUploadIcon";
 import { MassiveUploadModal } from "@/features/view/components/Modals/Massive/MassiveUpload";
 import { Button2MassiveUploadProps } from "@/lib/types/components/General/buttons";
-import { BRAND_TABLE } from "@/lib/utils/namingTolerance";
-import {
-	BRAND_UPLOAD_COLUMNS,
-	BRAND_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
-import { transformBrandRows } from "@/lib/utils/helpers/massive/massiveUpload";
 
-export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUploadProps) {
+export default function Button2MassiveUpload({
+	title,
+	description,
+	tableName,
+	expectedHeaders,
+	columns,
+	transformRows,
+	relatedInserts,
+	onSuccess,
+}: Button2MassiveUploadProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -29,12 +32,13 @@ export default function Button2MassiveUpload({ onSuccess }: Button2MassiveUpload
 
 			{open && (
 				<MassiveUploadModal
-					title="Subida masiva de marcas"
-					description="Selecciona un archivo XLSX con la estructura de la hoja de marcas."
-					tableName={BRAND_TABLE}
-					expectedHeaders={BRAND_UPLOAD_HEADERS}
-					columns={BRAND_UPLOAD_COLUMNS}
-					transformRows={transformBrandRows}
+					title={title}
+					description={description}
+					tableName={tableName}
+					expectedHeaders={expectedHeaders}
+					columns={columns}
+					transformRows={transformRows}
+					relatedInserts={relatedInserts}
 					onClose={() => setOpen(false)}
 					onSuccess={onSuccess}
 				/>

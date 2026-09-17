@@ -5,9 +5,16 @@ import { useState } from "react";
 import { MassiveCleanIcon } from "@/features/view/components/Icons/MassiveCleanIcon";
 import { MassiveCleanModal } from "@/features/view/components/Modals/Massive/MassiveCleanModal";
 import { Button2MassiveCleanProps } from "@/lib/types/components/General/buttons";
-import { QUOTE_TABLE } from "@/lib/utils/namingTolerance";
 
-export default function Button2MassiveClean({ currentCount, onSuccess }: Button2MassiveCleanProps) {
+export default function Button2MassiveClean({
+	currentCount,
+	onSuccess,
+	tableName,
+	relatedTableNames,
+	title,
+	description,
+	entityLabel,
+}: Button2MassiveCleanProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -27,10 +34,11 @@ export default function Button2MassiveClean({ currentCount, onSuccess }: Button2
 					currentCount={currentCount}
 					onClose={() => setOpen(false)}
 					onSuccess={onSuccess}
-					tableName={QUOTE_TABLE}
-					title="Limpieza masiva de cotizaciones"
-					description="Esta acción elimina todas las filas de cotizaciones."
-					entityLabel="cotizaciones"
+					tableName={tableName}
+					relatedTableNames={relatedTableNames}
+					title={title}
+					description={description}
+					entityLabel={entityLabel}
 				/>
 			)}
 		</>
