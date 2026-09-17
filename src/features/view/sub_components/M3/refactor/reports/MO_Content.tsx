@@ -12,14 +12,15 @@ export function MO_Content({
         {ids: ["2"], descripcion: "Realizar trazos y medidas"},
         {ids: ["3"], descripcion: "Montaje de estructura metálica"},
         {ids: ["4"], descripcion: "Instalación de paneles (Estructura)"},
-        {ids: ["5"], descripcion: "Instalación de panele (Conexionado)"},
-        {ids: ["6"], descripcion: "Instalación de tablero FV"},
-        {ids: ["7"], descripcion: "Instalación de inversor"},
-        {ids: ["8"], descripcion: "Canalización de acometida DC"},
-        {ids: ["9"], descripcion: "Canalización de acometida AC"},
-        {ids: ["10"], descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
-        {ids: ["11"], descripcion: "Conexión, programación, control y puesta en marcha"},
-        {ids: ["12"], descripcion: "Viáticos"},
+        {ids: ["5"], descripcion: "Instalación de paneles (Conexionado)"},
+        {ids: ["6"], descripcion: "Armado de tablero DC / AC"},
+        {ids: ["7"], descripcion: "Instalación de tablero FV"},
+        {ids: ["8"], descripcion: "Instalación de inversor"},
+        {ids: ["9"], descripcion: "Canalización de acometida DC"},
+        {ids: ["10"], descripcion: "Canalización de acometida AC"},
+        {ids: ["11"], descripcion: "Mediciones, pruebas eléctricas, ajustes y optimización"},
+        {ids: ["12"], descripcion: "Conexión, programación, control y puesta en marcha"},
+        {ids: ["13"], descripcion: "Viáticos"},
     ];
 
     return(
