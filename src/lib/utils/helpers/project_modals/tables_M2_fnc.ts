@@ -1,8 +1,8 @@
 import { computedRequirements } from "@/lib/types/components/Sizing/computes";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
+import { equipmentRows, materialRows } from "@/lib/utils/consts/rows";
 import { optionalInputMax } from "../computes/PanelNumber";
-import { equipmentRows, materialRows } from "./rows";
 
 export function structureQuantityMax(
     item: SelectedEquipmentItem,
@@ -35,9 +35,6 @@ export function isVisibleMaterial(item: SelectedMaterialItem): boolean {
     if (item.row === "CABLE") return item.description.includes("AC");
     return true;
 }
-
-export const matrixCellStyles = "border border-black px-1 py-[3px] text-center text-[10px] font-bold leading-tight whitespace-nowrap";
-export const matrixHeaderStyles = "border border-black bg-white px-1 py-[3px] text-center text-[10px] font-bold leading-tight text-slate-900 whitespace-nowrap";
 
 // --------------------------------------
 // Funciones para la cantidad de materiales

@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { consumible_template } from "@/lib/utils/helpers/templates/quotePrices"
+import { consumible_template } from "@/lib/utils/consts/quotePrices"
 import {
     CableFvColor,
     ConsumibleAddableFamily,
@@ -19,9 +19,12 @@ import {
     rowFromMaterial,
 } from "@/lib/utils/helpers/project_modals/consumeRowSelection"
 import {
-    buildConsumibleFamilyOptions,
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_FAMILY_TIPO,
+    SELECTABLE_CONSUMIBLE_FAMILIES,
+} from "@/lib/utils/consts/consumibles"
+import {
+    buildConsumibleFamilyOptions,
     extractCableFvDimension,
     extractInchSize,
     filterMaterialsByFamily,
@@ -37,7 +40,6 @@ import {
     isRestorableConsumibleFamily,
     isSelectableConsumibleFamily,
     matchesFamilySize,
-    SELECTABLE_CONSUMIBLE_FAMILIES,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
 export function useConsumeRowSelection({

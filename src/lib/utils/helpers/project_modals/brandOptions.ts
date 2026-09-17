@@ -2,10 +2,8 @@ import { SelectOption } from "@/lib/types/components/General/form_fields";
 import { Brand } from "@/lib/types/supabase/brand.types";
 import { SelectedBrandItem } from "@/lib/types/supabase/product-types";
 import { Type, TypeFormstate } from "@/lib/types/supabase/type-types";
+import { BRAND_ROW_LABEL } from "@/lib/utils/consts/brandOptions";
 import { defaultSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
-
-export const BRAND_ROW_LABEL = "MARCA";
-export const BRAND_ROW_KEY = `${BRAND_ROW_LABEL}-0`;
 
 export function matchesTypeCategory(typeCategoria?: string, brandCategoria?: string) {
     if (!typeCategoria || typeCategoria === "Ambas") return true;

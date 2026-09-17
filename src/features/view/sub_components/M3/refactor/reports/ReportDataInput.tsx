@@ -11,9 +11,9 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 import { Quote_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { DSCTOOptions, FIRMOptions } from "@/lib/types/components/General/options";
 import { DEFAULT_PAY_FORMAT, DSCTO_type_value } from "@/lib/utils/options";
-import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
+import { getFieldValueLightClass } from "@/lib/utils/helpers/render/fieldValueState";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
-import { GERENTE_FIRMA_PASSWORD } from "@/lib/utils/helpers/computes/report_computes";
+import { GERENTE_FIRMA_PASSWORD } from "@/lib/utils/consts/report";
 
 export function ReportDataInput({
     form, 

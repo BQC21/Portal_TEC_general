@@ -44,13 +44,13 @@ import { ProjectExportRow } from "@/lib/types/components/Massive/download";
 import {
 	PROJECT_EXPORT_COLUMNS,
 	ZONE_EXPORT_COLUMNS,
-} from "@/lib/utils/helpers/templates/massiveDownload";
+} from "@/lib/utils/consts/massiveDownload";
 import {
 	PROJECT_UPLOAD_COLUMNS,
 	PROJECT_UPLOAD_HEADERS,
 	ZONE_UPLOAD_COLUMNS,
 	ZONE_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
+} from "@/lib/utils/consts/massiveUpload";
 import {
 	PROJECTS_EQUIPOS_TABLE,
 	PROJECTS_MATERIALES_TABLE,

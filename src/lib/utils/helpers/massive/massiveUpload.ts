@@ -4,9 +4,7 @@ import { createClient } from "@/lib/supabase/client";
 import { emptyToNull, toSafeNumber } from "@/lib/utils/normalization";
 import { SpreadsheetArrayRow, SpreadsheetObjectRow, UploadColumn, UploadColumnKind } from "@/lib/types/components/Massive/upload";
 import { BRAND_TABLE, EQUIPOS_TABLE, MATERIALES_TABLE, PROJECTS_EQUIPOS_TABLE, PROJECTS_MATERIALES_TABLE, PROJECTS_TABLE, QUOTE_TABLE, SUPPLIER_TABLE, ZONE_TABLE } from "../../namingTolerance";
-
-export const MAX_SAFE_UPLOAD_NUMBER = 1_000_000_000;
-export const MASSIVE_UPLOAD_CHUNK_SIZE = 500;
+import { MASSIVE_UPLOAD_CHUNK_SIZE, MAX_SAFE_UPLOAD_NUMBER } from "@/lib/utils/consts/massive";
 
 function requireLookup(
 	map: Map<string, string>,

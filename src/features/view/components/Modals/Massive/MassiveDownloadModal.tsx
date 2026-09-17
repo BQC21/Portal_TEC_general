@@ -7,10 +7,8 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { MassiveDownloadModalProps } from "@/lib/types/components/General/modals";
 import { DownloadFormat } from "@/lib/types/components/Massive/download";
-import {
-	DOWNLOAD_FORMAT_OPTIONS,
-	prepareAndDownloadFile,
-} from "@/lib/utils/helpers/massive/massiveDownload";
+import { DOWNLOAD_FORMAT_OPTIONS } from "@/lib/utils/consts/massive";
+import { prepareAndDownloadFile } from "@/lib/utils/helpers/massive/massiveDownload";
 
 export function MassiveDownloadModal<T>({
 	title,

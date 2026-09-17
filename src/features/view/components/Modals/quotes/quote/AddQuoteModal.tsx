@@ -29,10 +29,9 @@ import { useUnitedQuoteAggregation } from "@/features/view/hooks/modals/Quotes/u
 import {
     eligibleQuotesForUnion,
     emptySelectedIds,
-    MAX_UNITED_QUOTES,
-    MIN_UNITED_QUOTES,
     withUnionInfo,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
+import { MAX_UNITED_QUOTES, MIN_UNITED_QUOTES } from "@/lib/utils/consts/unitedQuotes";
 import { quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { QuoteMode } from "@/lib/types/components/General/options";
 

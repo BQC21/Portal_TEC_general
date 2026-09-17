@@ -11,7 +11,7 @@ import {
     MAX_UNITED_QUOTES,
     MIN_UNITED_QUOTES,
     SELECT_QUOTE_PLACEHOLDER,
-} from "@/lib/utils/helpers/quotes/unitedQuotes";
+} from "@/lib/utils/consts/unitedQuotes";
 import { UnitedQuotesPanelProps } from "@/lib/types/components/sub_components/module_render";
 
 export function UnitedQuotesPanel({

@@ -28,9 +28,9 @@ import {
     eligibleQuotesForUnion,
     getUnitedQuoteInfo,
     isUnitedQuote,
-    MIN_UNITED_QUOTES,
     productDescriptions,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
+import { MIN_UNITED_QUOTES } from "@/lib/utils/consts/unitedQuotes";
 
 export default function EditQuoteModal({
     existingQuote, onUpdateQuote, onClose, 

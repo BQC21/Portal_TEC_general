@@ -1,7 +1,8 @@
-import {
-	headersFromColumns,
-} from "@/lib/utils/helpers/massive/massiveUpload";
 import { UploadColumn } from "@/lib/types/components/Massive/upload";
+
+function headersFromColumns(columns: readonly UploadColumn[]) {
+	return columns.map((column) => column.label);
+}
 
 // ---- TEMPLATES
 

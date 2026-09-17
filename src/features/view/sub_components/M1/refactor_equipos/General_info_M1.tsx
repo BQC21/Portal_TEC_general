@@ -3,7 +3,7 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { AddProductSectionTitle } from "@/features/view/components/Form_fields/AddSectionTitle";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { General_info_M1_props_EQ } from "@/lib/types/components/sub_components/module_render";
-import { getFieldValueLightClass } from "@/lib/utils/helpers/fieldValueState";
+import { getFieldValueLightClass } from "@/lib/utils/helpers/render/fieldValueState";
 import {
     shouldRenderBatteryProp,
     shouldRenderConnectionTypeAccesories,

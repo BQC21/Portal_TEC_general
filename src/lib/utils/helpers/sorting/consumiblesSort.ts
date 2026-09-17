@@ -10,12 +10,11 @@ import {
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
+import { CONSUMIBLE_FAMILY_TIPO, RESTORABLE_CONSUMIBLE_FAMILIES } from "@/lib/utils/consts/consumibles"
 import {
-    CONSUMIBLE_FAMILY_TIPO,
     getCableFvColor,
     getCanalizacionSortOrder,
     getConsumibleFamily,
-    RESTORABLE_CONSUMIBLE_FAMILIES,
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 

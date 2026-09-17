@@ -1,0 +1,1 @@
+export const FALLBACK_EXCHANGE_RATE = 3.412;

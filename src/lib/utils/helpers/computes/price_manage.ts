@@ -2,8 +2,6 @@ import { Product } from "../../../types/supabase/product-types";
 import { CurrencyCode } from "../../../types/components/General/options";
 import { formatCurrency, toSafeNumber } from "../../normalization";
 
-export const FALLBACK_EXCHANGE_RATE = 3.412;
-
 export function roundMoney(value: number) {
 	return Number((Number.isFinite(value) ? value : 0).toFixed(2));
 }

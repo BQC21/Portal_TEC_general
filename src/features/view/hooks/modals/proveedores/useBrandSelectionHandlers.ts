@@ -5,8 +5,8 @@ import {
     SelectedBrandByRow,
     UseBrandSelectionHandlersParams,
 } from "@/lib/types/components/sub_components/module_render";
+import { BRAND_ROW_KEY } from "@/lib/utils/consts/brandOptions";
 import {
-    BRAND_ROW_KEY,
     getBrandSelectOptions,
     toSelectedBrandItem,
 } from "@/lib/utils/helpers/project_modals/brandOptions";

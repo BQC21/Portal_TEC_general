@@ -29,7 +29,7 @@ import {
 	BRAND_EXPORT_COLUMNS,
 	SUPPLIER_EXPORT_COLUMNS,
 	TYPE_EXPORT_COLUMNS,
-} from "@/lib/utils/helpers/templates/massiveDownload";
+} from "@/lib/utils/consts/massiveDownload";
 import {
 	BRAND_UPLOAD_COLUMNS,
 	BRAND_UPLOAD_HEADERS,
@@ -37,7 +37,7 @@ import {
 	SUPPLIER_UPLOAD_HEADERS,
 	TYPE_UPLOAD_COLUMNS,
 	TYPE_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
+} from "@/lib/utils/consts/massiveUpload";
 import { BRAND_TABLE, SUPPLIER_TABLE, TYPE_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function ProveedoresPage() {

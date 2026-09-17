@@ -1,7 +1,5 @@
 import { TableResizeState } from "@/lib/types/components/General/Shell";
-
-const MIN_COL_WIDTH = 56;
-const MIN_ROW_HEIGHT = 36;
+import { MIN_COL_WIDTH, MIN_ROW_HEIGHT } from "@/lib/utils/consts/excelTableResize";
 
 const tableStates = new WeakMap<HTMLTableElement, TableResizeState>();
 

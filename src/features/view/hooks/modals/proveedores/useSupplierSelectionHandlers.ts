@@ -5,9 +5,9 @@ import {
     SelectedSupplierByRow,
     UseSupplierSelectionHandlersParams,
 } from "@/lib/types/components/sub_components/module_render";
+import { SUPPLIER_ROW_KEY } from "@/lib/utils/consts/supplierOptions";
 import {
     getSupplierSelectOptions,
-    SUPPLIER_ROW_KEY,
     toSelectedSupplierItem,
 } from "@/lib/utils/helpers/project_modals/supplierOptions";
 

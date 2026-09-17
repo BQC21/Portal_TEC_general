@@ -1,6 +1,5 @@
 import { EquipoReportDisplayRow, EquipoReportSource, ModuloFVSelection, ModuloFVUnidadKind } from "@/lib/types/components/Sizing/computes";
-
-export const DEFAULT_PANELES_POR_PALET = 36;
+import { DEFAULT_PANELES_POR_PALET } from "@/lib/utils/consts/panelNumber";
 
 export function normalizeModuloFVUnidad(unidad?: string | null): ModuloFVUnidadKind | null {
     const unidadNormalizada = String(unidad ?? "").trim().toLowerCase()

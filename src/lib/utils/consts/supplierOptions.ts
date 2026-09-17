@@ -1,0 +1,2 @@
+export const SUPPLIER_ROW_LABEL = "PROVEEDOR";
+export const SUPPLIER_ROW_KEY = `${SUPPLIER_ROW_LABEL}-0`;

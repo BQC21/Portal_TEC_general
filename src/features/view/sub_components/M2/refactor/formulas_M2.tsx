@@ -6,7 +6,7 @@ import {
     ARRAY_FORMULAS,
     ENERGY_FORMULAS,
     PROTECTION_FORMULAS,
-} from "@/lib/utils/helpers/formulas/formulaContent";
+} from "@/lib/utils/consts/formulas";
 import { renderLatex, renderMixedText } from "@/lib/utils/helpers/formulas/formulaRender";
 import { CollapsibleTableSection } from "@/features/view/components/Shells/CollapsibleTableSection";
 

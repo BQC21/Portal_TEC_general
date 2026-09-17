@@ -13,6 +13,8 @@ import {
     CONSUMIBLE_EXTRA_ADD_LABEL,
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_RESTORE_LABEL,
+} from "@/lib/utils/consts/consumibles"
+import {
     isSelectableConsumibleFamily,
     isAddableConsumibleFamily,
     isFixedConsumibleFamily,

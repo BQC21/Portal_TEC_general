@@ -1,0 +1,1 @@
+export const DEFAULT_PANELES_POR_PALET = 36;

@@ -1,4 +1,4 @@
-export const DEFAULT_VERSION = "1";
+import { DEFAULT_VERSION } from "@/lib/utils/consts/version";
 
 export function getVersionValue(version: string | undefined | null) {
     const trimmed = version?.trim();

@@ -5,10 +5,8 @@ import { AddProductReadonlyField } from "@/features/view/components/Form_fields/
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { Finantial_selectedProps } from "@/lib/types/components/sub_components/module_render";
 import { FinantialCambioEquipo, FinantialCambioItem } from "@/lib/types/supabase/finantial-types";
+import { CAMBIO_OPTIONS, CAMBIO_ORDINAL, computedFieldClass } from "@/lib/utils/consts/finantial";
 import {
-    CAMBIO_OPTIONS,
-    CAMBIO_ORDINAL,
-    computedFieldClass,
     emptyCambio,
     formatPayback,
     resizeCambios,

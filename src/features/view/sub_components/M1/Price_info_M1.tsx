@@ -6,7 +6,8 @@ import { AddProductRadioField } from "../../components/Form_fields/AddRadioField
 import { CurrencyCode } from "@/lib/types/components/General/options";
 import { PRICE_CURRENCY_OPTIONS } from "@/lib/utils/options";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
-import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, FALLBACK_EXCHANGE_RATE, formatReadonlyCurrency, roundMoney } from "@/lib/utils/helpers/computes/price_manage";
+import { FALLBACK_EXCHANGE_RATE } from "@/lib/utils/consts/price_manage";
+import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency, roundMoney } from "@/lib/utils/helpers/computes/price_manage";
 import { useConverterSunat } from "../../hooks/api/useConverterSunat";
 import { useEffect, useMemo } from "react";
 

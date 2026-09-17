@@ -8,7 +8,8 @@ import { AddProductReadonlyField } from "../../../components/Form_fields/AddRead
 import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
 import { useMonthlyDemand } from "../../../hooks/modals/Sizing/useMonthlyDemand";
 import { Data_info_M2Props } from "@/lib/types/components/sub_components/module_render";
-import { compute_cobertura, MONTH_LABELS, monthsFromFactor } from "@/lib/utils/helpers/computes/energy_requirements";
+import { compute_cobertura, monthsFromFactor } from "@/lib/utils/helpers/computes/energy_requirements";
+import { MONTH_LABELS } from "@/lib/utils/consts/energy";
 import {
     cantidadesPaletYUnidad,
     optionalInputMax,

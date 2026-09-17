@@ -24,11 +24,11 @@ import Button2MassiveDownload from "@/features/view/components/Buttons/shared/bu
 import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
 import { AddMaterialModal } from "@/features/view/components/Modals/Materiales/AddMaterialModal";
 import { transformMaterialesRows } from "@/lib/utils/helpers/massive/massiveUpload";
-import { MATERIALES_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import { MATERIALES_EXPORT_COLUMNS } from "@/lib/utils/consts/massiveDownload";
 import {
 	MATERIALES_UPLOAD_COLUMNS,
 	MATERIALES_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
+} from "@/lib/utils/consts/massiveUpload";
 import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function MaterialesPage() {

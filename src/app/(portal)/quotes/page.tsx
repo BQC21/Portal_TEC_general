@@ -36,7 +36,7 @@ import {
 	FINANTIAL_EXPORT_COLUMNS,
 	QUOTE_EXPORT_COLUMNS,
 	REPORT_EXPORT_COLUMNS,
-} from "@/lib/utils/helpers/templates/massiveDownload";
+} from "@/lib/utils/consts/massiveDownload";
 import {
 	FINANTIAL_UPLOAD_COLUMNS,
 	FINANTIAL_UPLOAD_HEADERS,
@@ -44,7 +44,7 @@ import {
 	QUOTE_UPLOAD_HEADERS,
 	REPORT_UPLOAD_COLUMNS,
 	REPORT_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
+} from "@/lib/utils/consts/massiveUpload";
 import { FINANTIAL_TABLE, QUOTE_TABLE, REPORT_TABLE } from "@/lib/utils/namingTolerance";
 import { formatCurrency } from "@/lib/utils/normalization";
 

@@ -13,6 +13,8 @@ import {
     AWG_TO_MM2,
     CURRENT_RANGES,
     DISTANCE_RANGES,
+} from "@/lib/utils/consts/cableMatrix";
+import {
     awgTextColor,
     findCurrentRangeIndex,
     findDistanceRangeIndex,
@@ -22,7 +24,7 @@ import {
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
 import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
 import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
-import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
+import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/consts/tables_M2";
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
     form, updateField, computedRequirements, equipos, materiales, selectedEquipmentByRow, selectedMaterialByRow, 

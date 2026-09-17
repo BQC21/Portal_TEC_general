@@ -4,10 +4,6 @@ import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { INITIAL_MANUAL_RESOURCE_COSTS } from "@/lib/utils/initialValues";
 
-export const MIN_UNITED_QUOTES = 2;
-export const MAX_UNITED_QUOTES = 15;
-export const SELECT_QUOTE_PLACEHOLDER = "Seleccione cotización";
-
 export function emptySelectedIds(count: number) {
     return Array.from({ length: count }, () => "");
 }

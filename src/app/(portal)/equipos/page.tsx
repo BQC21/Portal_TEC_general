@@ -24,11 +24,11 @@ import Button2MassiveDownload from "@/features/view/components/Buttons/shared/bu
 import Button2MassiveUpload from "@/features/view/components/Buttons/shared/button2MassiveUpload";
 import { AddEquipoModal } from "@/features/view/components/Modals/Equipos/AddEquipoModal";
 import { transformEquiposRows } from "@/lib/utils/helpers/massive/massiveUpload";
-import { EQUIPOS_EXPORT_COLUMNS } from "@/lib/utils/helpers/templates/massiveDownload";
+import { EQUIPOS_EXPORT_COLUMNS } from "@/lib/utils/consts/massiveDownload";
 import {
 	EQUIPOS_UPLOAD_COLUMNS,
 	EQUIPOS_UPLOAD_HEADERS,
-} from "@/lib/utils/helpers/templates/massiveUpload";
+} from "@/lib/utils/consts/massiveUpload";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 
 export default function EquiposPage() {

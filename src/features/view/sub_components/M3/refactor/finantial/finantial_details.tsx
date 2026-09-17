@@ -2,7 +2,7 @@
 
 import { AddProductReadonlyField } from "@/features/view/components/Form_fields/AddReadonlyField";
 import { FinantialDetailsProps } from "@/lib/types/components/sub_components/module_render";
-import { computedFieldClass } from "@/lib/utils/helpers/computes/finantial_computes";
+import { computedFieldClass } from "@/lib/utils/consts/finantial";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function FinantialDetails({ analysis }: FinantialDetailsProps) {

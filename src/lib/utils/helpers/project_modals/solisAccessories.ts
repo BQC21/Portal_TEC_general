@@ -1,17 +1,10 @@
 import { Equipos } from "@/lib/types/supabase/equipos-types";
 import { SelectedEquipmentItem } from "@/lib/types/supabase/product-types";
-
-// -----------------------------------------------
-// -------- Valores predeterminados --------------
-// -----------------------------------------------
-
-export const DATALOGGER_ONGRID_DESC = "Datalogger OnGrid";
-export const SMART_METER_TRIFASICO_DESC = "Smart Meter Trifásico + 3 CT";
-
-const MANAGED_SOLIS_ACCESSORIES = [
+import {
     DATALOGGER_ONGRID_DESC,
+    MANAGED_SOLIS_ACCESSORIES,
     SMART_METER_TRIFASICO_DESC,
-] as const;
+} from "@/lib/utils/consts/solisAccessories";
 
 // ------------------------------------
 // -------- Condiciones ---------------

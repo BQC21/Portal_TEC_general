@@ -2,10 +2,8 @@ import { SelectOption } from "@/lib/types/components/General/form_fields";
 import { Brand, BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SelectedSupplierlItem } from "@/lib/types/supabase/product-types";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
+import { SUPPLIER_ROW_LABEL } from "@/lib/utils/consts/supplierOptions";
 import { defaultSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
-
-export const SUPPLIER_ROW_LABEL = "PROVEEDOR";
-export const SUPPLIER_ROW_KEY = `${SUPPLIER_ROW_LABEL}-0`;
 
 export function matchesBrandCategory(brandCategoria?: string, supplierCategoria?: string) {
     if (!brandCategoria || brandCategoria === "Ambas") return true;

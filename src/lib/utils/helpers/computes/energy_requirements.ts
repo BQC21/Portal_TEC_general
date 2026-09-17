@@ -65,21 +65,6 @@ export function N_baterias(ah_sistema: number, ah_bateria: number){
 	return ah_sistema/ah_bateria
 }
 
-export const MONTH_LABELS = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-] as const;
-
 export function toMonthlyNumber(value: unknown): MonthlyValue {
     const n = typeof value === "number" ? value : Number(value);
     return Number.isFinite(n) && n > 0 ? n : "";
