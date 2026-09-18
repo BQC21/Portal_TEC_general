@@ -80,8 +80,8 @@ export function computeSubtotalViaticos(costs: viaticosItems) {
     }
 
     return {
-        soles,
-        igv: soles * 1.18,
+        soles: soles/1.18,
+        igv: soles,
     };
 }
 

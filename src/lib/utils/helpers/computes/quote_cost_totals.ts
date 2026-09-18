@@ -161,7 +161,7 @@ export function computeQuoteCostTotals(params: {
         0,
     );
 
-    // --- ASOCICIÓN
+    // --- ASOCIACIÓN
 
     const recursosCosts = {
         equiposPrincipales: { total: equiposPrincipalesTotal, igv: equiposPrincipalesTotalIgv },
