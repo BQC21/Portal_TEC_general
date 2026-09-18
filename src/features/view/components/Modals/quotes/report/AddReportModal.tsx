@@ -2,13 +2,13 @@
 
 import { AddReportModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
-import { useReports } from "@/features/view/hooks/services/useRealtimeReports";
+import { useQuotes } from "@/features/application/hooks/services/useRealtimeQuotes";
+import { useReports } from "@/features/application/hooks/services/useRealtimeReports";
 import { useEffect, useMemo, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
 import { INITIAL_QUOTE_FORM, INITIAL_REPORT_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { QuoteSelection } from "@/features/view/hooks/modals/Reports/useQuoteSelection";
+import { QuoteSelection } from "@/features/application/hooks/modals/Reports/useQuoteSelection";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";

@@ -5,10 +5,10 @@ import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 
 import { useProjects,
     useProjectMutations
-} from "@/features/view/hooks/services/useRealtimeProjects";
+} from "@/features/application/hooks/services/useRealtimeProjects";
 import { useZone,
     useZoneMutations
-} from "@/features/view/hooks/services/useRealtimeZonas";
+} from "@/features/application/hooks/services/useRealtimeZonas";
 
 import type { Project,
     ProjectFormData,
@@ -28,8 +28,8 @@ import Button2MassiveUpload from "@/features/view/components/Buttons/shared/butt
 import AddProjectModal from "@/features/view/components/Modals/sizing/project/AddProjectModal";
 import AddZoneModal from "@/features/view/components/Modals/sizing/zone/AddZoneModal";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
-import { useProjectEquipos, useProjectEquiposMutations } from "@/features/view/hooks/services/useRealtimeProjectsEquipos";
-import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/view/hooks/services/useRealtimeProjectsMateriales";
+import { useProjectEquipos, useProjectEquiposMutations } from "@/features/application/hooks/services/useRealtimeProjectsEquipos";
+import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/application/hooks/services/useRealtimeProjectsMateriales";
 import { useMemo, useState } from "react";
 import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";

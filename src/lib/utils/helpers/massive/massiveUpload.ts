@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { emptyToNull, toSafeNumber } from "@/lib/utils/normalization";
 import { SpreadsheetArrayRow, SpreadsheetObjectRow, UploadColumn, UploadColumnKind } from "@/lib/types/components/Massive/upload";
 import { BRAND_TABLE, EQUIPOS_TABLE, MATERIALES_TABLE, PROJECTS_EQUIPOS_TABLE, PROJECTS_MATERIALES_TABLE, PROJECTS_TABLE, QUOTE_TABLE, SUPPLIER_TABLE, ZONE_TABLE } from "../../namingTolerance";

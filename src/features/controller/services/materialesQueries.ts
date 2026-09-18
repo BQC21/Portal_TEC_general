@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { Materiales, MaterialesFormData } from "@/lib/types/supabase/materiales-types";
-import { mapSupabaseRowToMateriales } from "../../../lib/mapping/mapping_materiales";
+import { mapSupabaseRowToMateriales } from "@/features/application/mapping/mapping_materiales";
 import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 import { toNullableInteger } from "@/lib/utils/normalization";
 

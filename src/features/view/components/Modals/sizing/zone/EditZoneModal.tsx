@@ -12,7 +12,7 @@ import { AddProductTextField } from "@/features/view/components/Form_fields/AddT
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 
-import { createZoneFormStateFromZone } from "@/lib/mapping/zone_mapping"; 
+import { createZoneFormStateFromZone } from "@/features/application/mapping/zone_mapping"; 
 import { EditZoneModalProps } from "@/lib/types/components/General/modals";
 
 export default function EditZoneModal({ existingZone, onUpdateZone, onClose }: EditZoneModalProps) {

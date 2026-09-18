@@ -4,13 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 
 import { MaterialesFormState } from "@/lib/types/supabase/materiales-types";
-import { createMaterialesFormStateFromMateriales } from "@/lib/mapping/mapping_materiales";
+import { createMaterialesFormStateFromMateriales } from "@/features/application/mapping/mapping_materiales";
 import { EditMaterialModalProps } from "@/lib/types/components/General/modals";
-import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales";
 import { getCatalogCascadeOptions } from "@/lib/utils/helpers/project_modals/catalogCascade";
-import { useTypes } from "@/features/view/hooks/services/useRealtimeTipos";
-import { useBrands } from "@/features/view/hooks/services/useRealtimeMarcas";
-import { useProveedores } from "@/features/view/hooks/services/useRealtimeProveedores";
+import { useTypes } from "@/features/application/hooks/services/useRealtimeTipos";
+import { useBrands } from "@/features/application/hooks/services/useRealtimeMarcas";
+import { useProveedores } from "@/features/application/hooks/services/useRealtimeProveedores";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
@@ -20,9 +20,9 @@ import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_
 import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
 import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
 import { INITIAL_BRAND_FORM, INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
-import { useSuplierSelection } from "@/features/view/hooks/modals/materiales/useSupplierSelection";
-import { useBrandSelection } from "@/features/view/hooks/modals/materiales/useBrandSelection";
-import { useTypeSelection } from "@/features/view/hooks/modals/materiales/useTypeSelection";
+import { useSuplierSelection } from "@/features/application/hooks/modals/materiales/useSupplierSelection";
+import { useBrandSelection } from "@/features/application/hooks/modals/materiales/useBrandSelection";
+import { useTypeSelection } from "@/features/application/hooks/modals/materiales/useTypeSelection";
 
 export function EditMaterialModal({ material, onUpdateMaterial, onClose }: EditMaterialModalProps) {
     // ----------------------------

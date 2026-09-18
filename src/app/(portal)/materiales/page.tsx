@@ -7,13 +7,13 @@ import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { MaterialesFilters } from "@/features/view/components/Tables/Materiales/MaterialesFilters";
 import { MaterialesTable } from "@/features/view/components/Tables/Materiales/MaterialesTable";
 
-import { useMateriales, useMaterialMutations } from "@/features/view/hooks/services/useRealtimeMateriales";
+import { useMateriales, useMaterialMutations } from "@/features/application/hooks/services/useRealtimeMateriales";
 
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
 import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
-import { useCatalogCascadeFilters } from "@/features/view/hooks/filters/useCatalogCascadeFilters";
+import { useCatalogCascadeFilters } from "@/features/application/hooks/filters/useCatalogCascadeFilters";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";

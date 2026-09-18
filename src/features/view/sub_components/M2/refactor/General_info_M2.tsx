@@ -5,7 +5,7 @@ import { AddProductUrlField } from "../../../components/Form_fields/AddUrlField"
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 import { INSTALL_TYPE_OPTIONS } from "@/lib/utils/options";
 import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
-import { ZoneSelection } from "../../../hooks/modals/Sizing/useZoneSelection";
+import { ZoneSelection } from "@/features/application/hooks/modals/Sizing/useZoneSelection";
 import { General_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 
 export function General_info_M2({ form, updateField, form_zone, zones, setForm_zone, setForm, 

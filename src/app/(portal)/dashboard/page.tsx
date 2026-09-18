@@ -1,14 +1,14 @@
 "use client";
 
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
-// import { useProducts } from "@/features/view/hooks/services/useRealtimeProducts";
-import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos";
-import { useFinantials } from "@/features/view/hooks/services/useRealtimeFinantial";
-import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales";
-import { useProjects } from "@/features/view/hooks/services/useRealtimeProjects";
-import { useQuotes } from "@/features/view/hooks/services/useRealtimeQuotes";
-import { useReports } from "@/features/view/hooks/services/useRealtimeReports";
-import { useZone } from "@/features/view/hooks/services/useRealtimeZonas";
+// import { useProducts } from "@/features/application/hooks/services/useRealtimeProducts";
+import { useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos";
+import { useFinantials } from "@/features/application/hooks/services/useRealtimeFinantial";
+import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales";
+import { useProjects } from "@/features/application/hooks/services/useRealtimeProjects";
+import { useQuotes } from "@/features/application/hooks/services/useRealtimeQuotes";
+import { useReports } from "@/features/application/hooks/services/useRealtimeReports";
+import { useZone } from "@/features/application/hooks/services/useRealtimeZonas";
 
 export default function DashboardPage() {
 

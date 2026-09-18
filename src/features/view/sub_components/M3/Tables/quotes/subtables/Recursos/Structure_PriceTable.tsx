@@ -5,7 +5,7 @@ import { AddProductSelectField } from "@/features/view/components/Form_fields/Ad
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
-import { useEquipos } from "@/features/view/hooks/services/useRealtimeEquipos"
+import { useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"

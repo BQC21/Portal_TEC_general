@@ -4,10 +4,10 @@ import { Fragment, useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
-import { useMateriales } from "@/features/view/hooks/services/useRealtimeMateriales"
+import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { ConsumibleDisplayRow, ConsumibleGroupKey } from "@/lib/types/components/Quotes/consumible_tableRow"
-import { useConsumeRowSelection } from "@/features/view/hooks/modals/Quotes/useConsumeRowSelection"
+import { useConsumeRowSelection } from "@/features/application/hooks/modals/Quotes/useConsumeRowSelection"
 import { Consume_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import {
     CONSUMIBLE_EXTRA_ADD_LABEL,

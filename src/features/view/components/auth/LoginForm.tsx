@@ -4,7 +4,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { EyeIcon } from "../Form_fields/EyeIcon";
 import { EyeSlashIcon } from "../Form_fields/EyeSlashIcon";
 

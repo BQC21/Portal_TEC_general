@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { RowWithId } from "@/lib/types/components/Massive/download";
 
 // dividir un array en partes más pequeñas

@@ -1,6 +1,6 @@
 import { updateQuoteNombreCotizacion } from "@/features/controller/services/QuoteQueries";
-import { mapFinantialToSupabaseRow, mapSupabaseRowtoFinantial } from "@/lib/mapping/mapping_finantial";
-import { createClient } from "@/lib/supabase/client";
+import { mapFinantialToSupabaseRow, mapSupabaseRowtoFinantial } from "@/features/application/mapping/mapping_finantial";
+import { createClient } from "@/features/application/supabase/client";
 import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-types";
 import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { FINANTIAL_TABLE } from "@/lib/utils/namingTolerance";

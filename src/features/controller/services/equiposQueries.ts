@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
-import { mapSupabaseRowToEquipos } from "../../../lib/mapping/mapping_equipos";
+import { mapSupabaseRowToEquipos } from "@/features/application/mapping/mapping_equipos";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 import { emptyToNull, toNullableInteger } from "@/lib/utils/normalization";
 

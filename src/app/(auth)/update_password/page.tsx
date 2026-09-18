@@ -5,7 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/features/application/supabase/client";
 import { EyeIcon } from "@/features/view/components/Form_fields/EyeIcon";
 import { EyeSlashIcon } from "@/features/view/components/Form_fields/EyeSlashIcon";
 

@@ -8,7 +8,7 @@ import { PRICE_CURRENCY_OPTIONS } from "@/lib/utils/options";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
 import { FALLBACK_EXCHANGE_RATE } from "@/lib/utils/consts/price_manage";
 import { computePricesWithIgv, convertPenToUsd, convertUsdToPen, formatReadonlyCurrency, roundMoney } from "@/lib/utils/helpers/computes/price_manage";
-import { useConverterSunat } from "../../hooks/api/useConverterSunat";
+import { useConverterSunat } from "@/features/application/hooks/api/useConverterSunat";
 import { useEffect, useMemo } from "react";
 
 export function Price_info_M1({

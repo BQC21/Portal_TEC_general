@@ -4,7 +4,7 @@ import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { EditReportModalProps } from "@/lib/types/components/General/modals";
 import { useEffect, useState } from "react";
 import { ReportFormState } from "@/lib/types/supabase/report-types";
-import { createReportFormStateFromReport } from "@/lib/mapping/mapping_reports";
+import { createReportFormStateFromReport } from "@/features/application/mapping/mapping_reports";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";

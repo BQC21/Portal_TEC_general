@@ -10,7 +10,6 @@ export function isEmptyFieldValue(value: string | number | null | undefined): bo
         value === 0
     );
 }
-
 // colorear campo a un color oscuro
 export function getFieldValueDarkClass(value: string | number | null | undefined): string {
     return isEmptyFieldValue(value) ? "field-value-dark--invalid" : "field-value-dark";

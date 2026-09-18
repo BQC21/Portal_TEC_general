@@ -1,6 +1,6 @@
-import { hydrateBrandSuppliers, mapBrandToSupabaseRow, mapSupabaseRowToBrand } from "@/lib/mapping/mapping_marcas";
-import { mapSupabaseRowToSupplier } from "@/lib/mapping/mapping_proveedores";
-import { createClient } from "@/lib/supabase/client";
+import { hydrateBrandSuppliers, mapBrandToSupabaseRow, mapSupabaseRowToBrand } from "@/features/application/mapping/mapping_marcas";
+import { mapSupabaseRowToSupplier } from "@/features/application/mapping/mapping_proveedores";
+import { createClient } from "@/features/application/supabase/client";
 import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";
 import { BRAND_TABLE, SUPPLIER_TABLE } from "@/lib/utils/namingTolerance";
 
