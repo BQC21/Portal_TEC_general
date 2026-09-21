@@ -1,7 +1,9 @@
 import { MOActivity } from "@/lib/types/components/sub_components/module_render";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { MO_TEMPLATE_ROWS } from "@/lib/utils/consts/report";
+import { normalizeMaterialTipo } from "../../normalization";
 
+// Crear valores iniciales de Puesta en Marcha
 export function createInitialMOActivities(): MOActivity[] {
     return MO_TEMPLATE_ROWS.map((item) => ({
         id: item.id,
@@ -10,23 +12,18 @@ export function createInitialMOActivities(): MOActivity[] {
     }));
 }
 
-export function normalizeMaterialTipo(tipo?: string | null) {
-    return (tipo ?? "")
-        .trim()
-        .toUpperCase()
-        .normalize("NFD")
-        .replace(/[\u0300-\u036f]/g, "");
-}
-
+// Identifica si es un material eléctrico
 export function isElectricalMaterial(item: Project_Materiales) {
     const tipo = normalizeMaterialTipo(item.material_info?.tipo_de_producto);
     return tipo === "PROTECCION" || tipo === "CABLE";
 }
 
+// Identifica si es un material de canalización
 export function isCanalizationMaterial(item: Project_Materiales) {
     return normalizeMaterialTipo(item.material_info?.tipo_de_producto) === "CANALIZACION";
 }
 
+// Calculo el subtotal del reporte considerando descuentos
 export function computeReportSubtotal(
     precioFinal: number,
     opcionDscto: string | undefined,
@@ -66,6 +63,7 @@ export function computeReportSubtotal(
     };
 }
 
+// Cálculo automático del porcentaje de mano de obra
 export function percentMO(porcentaje_eqmt: number){
     return 100 - porcentaje_eqmt
 }

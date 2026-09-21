@@ -165,3 +165,15 @@ export function addVenta(
         ventaDolaresIgv: a.ventaDolaresIgv + b.ventaDolaresIgv,
     };
 }
+
+// ----------------
+// Contenido de modals
+// ----------------
+
+export function normalizeMaterialTipo(tipo?: string | null) {
+    return (tipo ?? "")
+        .trim()
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+}
