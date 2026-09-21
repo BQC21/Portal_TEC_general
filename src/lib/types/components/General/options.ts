@@ -4,5 +4,7 @@ export type DemandOptions = "MENSUAL" | "FACTOR";
 export type DSCTOOptions = "CON DSCTO" | "SIN DSCTO";
 export type FIRMOptions = "CON FIRMA" | "SIN FIRMA";
 export type ProductSortingOrder = "asc" | "desc" | "codigo" | null;
+export type DateSortOrder = "asc" | "desc" | "";
+export type DateSortField = "created_at" | "updated_at";
 export type FilterKey = "type" | "brand" | "supplier";
 export type QuoteMode = "project" | "independent" | "united";
