@@ -338,15 +338,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             )
         )
         story.append(Spacer(1, 0.2 * cm))
-    else:
-        story.append(
-            _items_table(
-                ["#", "DESCRIPCIÓN - EQUIPOS", "UNIDAD"],
-                [[str(idx), "Equipos", "GLB"]],
-                [1 * cm, 11 * cm, 3 * cm],
-            )
-        )
-        idx += 1    
+    else:  
         story.append(Spacer(1, 0.2 * cm))
 
     # Condicionar el display de materiales eléctricos
@@ -366,14 +358,6 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             )
             story.append(Spacer(1, 0.1 * cm))
     else:
-        story.append(
-            _items_table(
-                ["#", "DESCRIPCIÓN - MATERIALES", "UNIDAD"],
-                [[str(idx), "Materiales Eléctricos", "GLB"]],
-                [1 * cm, 11 * cm, 3 * cm],
-            )
-        )
-        idx += 1
         story.append(Spacer(1, 0.1 * cm))
 
     # Condicionar el display de materiales de canalización
@@ -413,14 +397,6 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
         story.append(Spacer(1, 0.1 * cm))
     else:
-        story.append(
-            _items_table(
-                ["#", "DESCRIPCIÓN - PUESTA EN MARCHA"],
-                [[str(idx), "Puesta en Marcha", "GLB"]],
-                [1.5 * cm, 16.5 * cm],
-            )
-        )
-        idx += 1
         story.append(Spacer(1, 0.1 * cm))   
     
     story.append(_totals_table(data, styles))
