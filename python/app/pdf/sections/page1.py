@@ -282,7 +282,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
 
     # Inclusión de firma
     if data.incluir_firma:
-        story.append(Spacer(1, 2.6 * cm))
+        story.append(Spacer(1, 1.6 * cm))
         story.append(Paragraph("Atentamente:", atentamente))
         story.append(Spacer(1, 0.2 * cm))
         
