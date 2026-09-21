@@ -99,3 +99,14 @@ export type AddProductTextFieldProps = {
     autoComplete?: string;
 };
 
+export type VisibilityId = string | number;
+
+export type VisibilityCheckboxProps = {
+    label?: string;
+    fallbackLabel?: string;
+    ids: VisibilityId | VisibilityId[];
+    hiddenIds?: string[];
+    checked?: boolean;
+    onToggleVisibility?: (id: string) => void;
+};
+
