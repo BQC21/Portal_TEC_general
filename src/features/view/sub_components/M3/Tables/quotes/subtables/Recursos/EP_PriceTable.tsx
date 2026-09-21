@@ -8,6 +8,7 @@ import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { EP_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
+import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 
 export function EP_PriceTable({
     selected_equipos,
@@ -28,17 +29,19 @@ export function EP_PriceTable({
             selected_equipos.map((item) => String(item.equipo_id)),
         )
 
+        const selectableEquipos = equipos
+            .filter((equipo) =>
+                equipo.tipo_de_producto !== "ESTRUCTURA"
+                && !selectedIds.has(String(equipo.id)),
+            )
+            .map((equipo) => ({
+                value: String(equipo.id),
+                label: `${equipo.cod_producto} — ${equipo.descripcion}`,
+            }))
+
         return [
-            { value: "", label: "Seleccione un equipo" },
-            ...equipos
-                .filter((equipo) =>
-                    equipo.tipo_de_producto !== "ESTRUCTURA"
-                    && !selectedIds.has(String(equipo.id)),
-                )
-                .map((equipo) => ({
-                    value: String(equipo.id),
-                    label: `${equipo.cod_producto} — ${equipo.descripcion}`,
-                })),
+            { value: "", label: `Seleccione un equipo (${selectableEquipos.length})` },
+            ...selectableEquipos,
         ]
     }, [equipos, selected_equipos])
 
@@ -176,7 +179,7 @@ export function EP_PriceTable({
                         <div className="flex flex-col gap-3 px-4 py-4 sm:flex-row sm:items-end">
                             <div className="min-w-0 flex-1">
                                 <AddProductSearchableSelectField
-                                    label="Agregar equipo"
+                                    label={withSelectableCount("Agregar equipo", availableEquipoOptions)}
                                     value={equipoToAdd}
                                     options={availableEquipoOptions}
                                     searchPlaceholder="Buscar equipo..."

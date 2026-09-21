@@ -13,6 +13,7 @@ import { StructureOption } from "@/lib/types/components/Sizing/computes"
 import { bestStructureCombination } from "@/lib/utils/helpers/computes/best_structure_arrays"
 import { cantidadEstructurasParaUnidades, dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
 import { cantidadModuloFVComoUnidades, resolvePanelesPorPalet } from "@/lib/utils/helpers/computes/PanelNumber"
+import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 
 export function Structure_PriceTable({
         selected_equipos,
@@ -206,9 +207,7 @@ export function Structure_PriceTable({
             selected_equipos.map((item) => String(item.equipo_id)),
         )
 
-        return [
-            { value: "", label: "Seleccione una estructura" },
-            ...equipos
+        const selectableEquipos = equipos
                 .filter((equipo) =>
                     equipo.tipo_de_producto === "ESTRUCTURA"
                     && !isDados(equipo.descripcion)
@@ -218,7 +217,11 @@ export function Structure_PriceTable({
                 .map((equipo) => ({
                     value: String(equipo.id),
                     label: `${equipo.cod_producto} — ${equipo.descripcion}`,
-                })),
+                }))
+
+        return [
+            { value: "", label: `Seleccione una estructura (${selectableEquipos.length})` },
+            ...selectableEquipos,
         ]
     }, [equipos, selected_equipos, projectAngle])
 
@@ -452,7 +455,7 @@ export function Structure_PriceTable({
                             <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
                                 <div className="min-w-0 flex-1">
                                     <AddProductSelectField
-                                        label="Agregar estructura"
+                                        label={withSelectableCount("Agregar estructura", availableEquipoOptions)}
                                         value={equipoToAdd}
                                         options={availableEquipoOptions}
                                         onChange={setEquipoToAdd}
