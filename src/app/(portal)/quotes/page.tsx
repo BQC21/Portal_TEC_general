@@ -22,6 +22,12 @@ import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
+import { useDateSorting } from "@/features/application/hooks/filters/useDateSorting";
+import { QuoteFilters } from "@/features/view/components/Tables/quotes/QuoteFilters";
+import { ReportFilters } from "@/features/view/components/Tables/quotes/ReportFilters";
+import { FinantialFilters } from "@/features/view/components/Tables/quotes/FinantialFilters";
+import { QuoteFilterValues, ReportFilterValues } from "@/lib/types/components/Filter/filter_tables";
+import { matchesPriceFilter } from "@/lib/utils/helpers/filters/tableFilterOptions";
 import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import {
@@ -86,14 +92,21 @@ export default function QuotesPage(){
 	const [searchQuote, setSearchQuote] = useState<string>("");
 	const [searchReport, setSearchReport] = useState<string>("");
 	const [searchFinantial, setSearchFinantial] = useState<string>("");
+    const [quoteFilters, setQuoteFilters] = useState<QuoteFilterValues>({
+        precio_dolares: "",
+    });
+    const [reportFilters, setReportFilters] = useState<ReportFilterValues>({
+        precio_cotizacion: "",
+    });
 
     const filteredQuotes = quotes.filter((quote) => {
 		const matchesDescription = !searchQuote ||
             quoteAssociatedLabel(quote)
                 .toLowerCase()
                 .includes(searchQuote.toLowerCase());
+        const matchesPrice = matchesPriceFilter(quote.precio_dolares, quoteFilters.precio_dolares);
 
-		return matchesDescription;
+		return matchesDescription && matchesPrice;
 	});
 
     const filteredReports = reports.filter((report) => {
@@ -101,8 +114,12 @@ export default function QuotesPage(){
             quoteAssociatedLabel(report.cotizacion_info)
                 .toLowerCase()
                 .includes(searchReport.toLowerCase());
+        const matchesPrice = matchesPriceFilter(
+            report.cotizacion_info?.precio_dolares,
+            reportFilters.precio_cotizacion,
+        );
 
-		return matchesDescription;
+		return matchesDescription && matchesPrice;
 	});
 
     const filteredFinantial = finantials.filter((finantial) => {
@@ -113,6 +130,10 @@ export default function QuotesPage(){
 
 		return matchesDescription;
 	});
+
+    const quoteDateSort = useDateSorting(filteredQuotes);
+    const reportDateSort = useDateSorting(filteredReports);
+    const finantialDateSort = useDateSorting(filteredFinantial);
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -294,9 +315,24 @@ export default function QuotesPage(){
                                                 </Button2Add>
                                             </div>
                                         </section>
+                                        <section className="panel mb-4 p-4">
+                                            <div className="space-y-6">
+                                                <QuoteFilters
+                                                    quotes={quotes}
+                                                    values={quoteFilters}
+                                                    onFilterChange={(key, value) => {
+                                                        setQuoteFilters((current) => ({ ...current, [key]: value }));
+                                                    }}
+                                                    createdOrder={quoteDateSort.createdOrder}
+                                                    updatedOrder={quoteDateSort.updatedOrder}
+                                                    onCreatedOrderChange={quoteDateSort.setCreatedOrder}
+                                                    onUpdatedOrderChange={quoteDateSort.setUpdatedOrder}
+                                                />
+                                            </div>
+                                        </section>
                                         <QuoteTable
-                                            quote={filteredQuotes}
-                                            totalQuote={filteredQuotes.length}
+                                            quote={quoteDateSort.sortedRows}
+                                            totalQuote={quoteDateSort.sortedRows.length}
                                             onUpdateQuote={handleEditQuote}
                                             onDeleteQuote={handleDeleteQuote}
                                             onDuplicateQuote={handleDuplicateQuote}
@@ -371,9 +407,24 @@ export default function QuotesPage(){
                                                 </Button2Add>
                                             </div>
                                         </section>
+                                        <section className="panel mb-4 p-4">
+                                            <div className="space-y-6">
+                                                <ReportFilters
+                                                    reports={reports}
+                                                    values={reportFilters}
+                                                    onFilterChange={(key, value) => {
+                                                        setReportFilters((current) => ({ ...current, [key]: value }));
+                                                    }}
+                                                    createdOrder={reportDateSort.createdOrder}
+                                                    updatedOrder={reportDateSort.updatedOrder}
+                                                    onCreatedOrderChange={reportDateSort.setCreatedOrder}
+                                                    onUpdatedOrderChange={reportDateSort.setUpdatedOrder}
+                                                />
+                                            </div>
+                                        </section>
                                         <ReportTable
-                                            report={filteredReports}
-                                            totalReport={filteredReports.length}
+                                            report={reportDateSort.sortedRows}
+                                            totalReport={reportDateSort.sortedRows.length}
                                             onUpdateReport={handleEditReport}
                                             onDeleteReport={handleDeleteReport}
                                             projects_equipos={project_equipos}
@@ -448,9 +499,19 @@ export default function QuotesPage(){
                                                 </Button2Add>
                                             </div>
                                         </section>
+                                        <section className="panel mb-4 p-4">
+                                            <div className="space-y-6">
+                                                <FinantialFilters
+                                                    createdOrder={finantialDateSort.createdOrder}
+                                                    updatedOrder={finantialDateSort.updatedOrder}
+                                                    onCreatedOrderChange={finantialDateSort.setCreatedOrder}
+                                                    onUpdatedOrderChange={finantialDateSort.setUpdatedOrder}
+                                                />
+                                            </div>
+                                        </section>
                                         <FinantialTable
-                                            finantial={filteredFinantial}
-                                            totalFinantial={filteredFinantial.length}
+                                            finantial={finantialDateSort.sortedRows}
+                                            totalFinantial={finantialDateSort.sortedRows.length}
                                             onUpdateFinantial={handleEditFinantial}
                                             onDeleteFinantial={handleDeleteFinantial}
                                             projects_equipos={project_equipos}

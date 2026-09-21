@@ -14,6 +14,7 @@ import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/mater
 import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/application/hooks/filters/useCatalogCascadeFilters";
+import { useDateSorting } from "@/features/application/hooks/filters/useDateSorting";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
@@ -64,13 +65,20 @@ export default function MaterialesPage() {
 
     const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
 
-    const sortedMateriales = useMemo(() => {
+    const sortedByPriceMateriales = useMemo(() => {
         const materialesToSort = [...sortedByCodeMateriales]; // procura si la tabla ha sido filtrada o no
         return sorting === "codigo" ? materialesToSort : 
             sorting === "asc" ? sortGroupedByPrice(materialesToSort, "asc") :
                 sorting === "desc" ? sortGroupedByPrice(materialesToSort, "desc") : []
     }, [sortedByCodeMateriales, sorting]); // lógica para asignar el tipo de ordenamiento de productos
-    console.log("equipos ordenados", sortedMateriales)
+
+    const {
+        sortedRows: sortedMateriales,
+        createdOrder,
+        updatedOrder,
+        setCreatedOrder,
+        setUpdatedOrder,
+    } = useDateSorting(sortedByPriceMateriales);
 	
 	// ---------------------------------
 	// ---- Lista de eventos -----------
@@ -153,12 +161,16 @@ export default function MaterialesPage() {
                     </div>
                 </section>
 
-					<section className="panel">
+					<section className="panel p-4">
 						<div className="space-y-6">
 							<MaterialesFilters
 								values={filters}
 								filterOptions={filterOptions}
 								onFilterChange={handleFilterChange}
+								createdOrder={createdOrder}
+								updatedOrder={updatedOrder}
+								onCreatedOrderChange={setCreatedOrder}
+								onUpdatedOrderChange={setUpdatedOrder}
 							/>
 						</div>
 					</section>

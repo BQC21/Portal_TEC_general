@@ -20,6 +20,8 @@ import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types"
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
+import { useDateSorting } from "@/features/application/hooks/filters/useDateSorting";
+import { SortingByDate } from "@/features/view/components/sorter/SortingByDate";
 import {
 	transformBrandRows,
 	transformSupplierRows,
@@ -77,6 +79,10 @@ export default function ProveedoresPage() {
 
 		return matchesDescription;
 	});
+
+    const supplierDateSort = useDateSorting(filteredSupplier);
+    const brandDateSort = useDateSorting(filteredBrand);
+    const typeDateSort = useDateSorting(filteredType);
 
     // ---------------------------------
     // ---- Lista de eventos -----------
@@ -151,6 +157,16 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <SortingByDate
+                                                    field="created_at"
+                                                    value={supplierDateSort.createdOrder}
+                                                    onSortingChange={supplierDateSort.setCreatedOrder}
+                                                />
+                                                <SortingByDate
+                                                    field="updated_at"
+                                                    value={supplierDateSort.updatedOrder}
+                                                    onSortingChange={supplierDateSort.setUpdatedOrder}
+                                                />
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de proveedores"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de proveedores."
@@ -196,8 +212,8 @@ export default function ProveedoresPage() {
                                             </div>
                                         </section>
                                         <SupplierTable
-                                            supplier={filteredSupplier}
-                                            totalSupplier={filteredSupplier.length}
+                                            supplier={supplierDateSort.sortedRows}
+                                            totalSupplier={supplierDateSort.sortedRows.length}
                                             onUpdateSupplier={handleUpdateSupplier}
                                             onDeleteSupplier={handleDeleteSupplier}
                                         />
@@ -218,6 +234,16 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <SortingByDate
+                                                    field="created_at"
+                                                    value={brandDateSort.createdOrder}
+                                                    onSortingChange={brandDateSort.setCreatedOrder}
+                                                />
+                                                <SortingByDate
+                                                    field="updated_at"
+                                                    value={brandDateSort.updatedOrder}
+                                                    onSortingChange={brandDateSort.setUpdatedOrder}
+                                                />
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de marcas"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de marcas."
@@ -263,8 +289,8 @@ export default function ProveedoresPage() {
                                             </div>
                                         </section>
                                         <BrandTable
-                                            brand={filteredBrand}
-                                            totalBrand={filteredBrand.length}
+                                            brand={brandDateSort.sortedRows}
+                                            totalBrand={brandDateSort.sortedRows.length}
                                             onUpdateBrand={handleUpdateBrand}
                                             onDeleteBrand={handleDeleteBrand}
                                         />
@@ -285,6 +311,16 @@ export default function ProveedoresPage() {
                                                 />
                                             </div>
                                             <div className="flex flex-wrap items-center gap-3">
+                                                <SortingByDate
+                                                    field="created_at"
+                                                    value={typeDateSort.createdOrder}
+                                                    onSortingChange={typeDateSort.setCreatedOrder}
+                                                />
+                                                <SortingByDate
+                                                    field="updated_at"
+                                                    value={typeDateSort.updatedOrder}
+                                                    onSortingChange={typeDateSort.setUpdatedOrder}
+                                                />
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de tipos de producto"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de tipos de producto."
@@ -330,8 +366,8 @@ export default function ProveedoresPage() {
                                             </div>
                                         </section>
                                         <TypeTable
-                                            type={filteredType}
-                                            totalType={filteredType.length}
+                                            type={typeDateSort.sortedRows}
+                                            totalType={typeDateSort.sortedRows.length}
                                             onUpdateType={handleUpdateType}
                                             onDeleteType={handleDeleteType}
                                         />

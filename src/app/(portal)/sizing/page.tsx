@@ -35,6 +35,10 @@ import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { useDateSorting } from "@/features/application/hooks/filters/useDateSorting";
+import { ProjectFilters } from "@/features/view/components/Tables/sizing/ProjectFilters";
+import { ZoneFilters } from "@/features/view/components/Tables/sizing/ZoneFilters";
+import { ProjectFilterValues } from "@/lib/types/components/Filter/filter_tables";
 import {
 	insertProjectJoins,
 	transformProjectRows,
@@ -94,12 +98,22 @@ export default function ProjectsPage() {
     // ---------------------------------
 	const [searchProject, setSearchProject] = useState<string>("");
 	const [searchZone, setSearchZone] = useState<string>("");
+    const [projectFilters, setProjectFilters] = useState<ProjectFilterValues>({
+        angulo: "",
+        tipo_instalacion: "",
+        estado_proyecto: "",
+        configuracion: "",
+    });
 
     const filteredProjects = projects.filter((project) => {
 		const matchesDescription = !searchProject || 
                 project.nombre.toLowerCase().includes(searchProject.toLowerCase());
+        const matchesOrientation = !projectFilters.angulo || project.angulo === projectFilters.angulo;
+        const matchesInstallType = !projectFilters.tipo_instalacion || project.tipo_instalacion === projectFilters.tipo_instalacion;
+        const matchesStatus = !projectFilters.estado_proyecto || project.estado_proyecto === projectFilters.estado_proyecto;
+        const matchesConfiguration = !projectFilters.configuracion || project.configuracion === projectFilters.configuracion;
 
-		return matchesDescription;
+		return matchesDescription && matchesOrientation && matchesInstallType && matchesStatus && matchesConfiguration;
 	});
 
     // ---------------------------------
@@ -116,6 +130,9 @@ export default function ProjectsPage() {
 
 		return matchesDescription;
 	});
+
+    const projectDateSort = useDateSorting(filteredProjects);
+    const zoneDateSort = useDateSorting(filteredZones);
 
     // ---------------------------------
     // ---- Lista de eventos ----
@@ -373,11 +390,26 @@ export default function ProjectsPage() {
                                             </Button2Add>
                                         </div>
                                     </section>
+                                    <section className="panel mb-4 p-4">
+                                        <div className="space-y-6">
+                                            <ProjectFilters
+                                                projects={projects}
+                                                values={projectFilters}
+                                                onFilterChange={(key, value) => {
+                                                    setProjectFilters((current) => ({ ...current, [key]: value }));
+                                                }}
+                                                createdOrder={projectDateSort.createdOrder}
+                                                updatedOrder={projectDateSort.updatedOrder}
+                                                onCreatedOrderChange={projectDateSort.setCreatedOrder}
+                                                onUpdatedOrderChange={projectDateSort.setUpdatedOrder}
+                                            />
+                                        </div>
+                                    </section>
                                     <ProjectTable
-                                        projects={filteredProjects}
+                                        projects={projectDateSort.sortedRows}
                                         projects_equipos={project_equipos}
                                         projects_materiales={project_materiales}
-                                        totalProjects={filteredProjects.length}
+                                        totalProjects={projectDateSort.sortedRows.length}
                                         onUpdateProject={handleUpdateProject}
                                         onDeleteProject={handleDeleteProject}
                                         onDeleteProjectEquipos={handleDeleteProjectEquipos}
@@ -447,9 +479,19 @@ export default function ProjectsPage() {
                                             </Button2Add>
                                         </div>
                                     </section>
+                                    <section className="panel mb-4 p-4">
+                                        <div className="space-y-6">
+                                            <ZoneFilters
+                                                createdOrder={zoneDateSort.createdOrder}
+                                                updatedOrder={zoneDateSort.updatedOrder}
+                                                onCreatedOrderChange={zoneDateSort.setCreatedOrder}
+                                                onUpdatedOrderChange={zoneDateSort.setUpdatedOrder}
+                                            />
+                                        </div>
+                                    </section>
                                     <ZoneTable
-                                        zones={filteredZones}
-                                        totalZones={filteredZones.length}
+                                        zones={zoneDateSort.sortedRows}
+                                        totalZones={zoneDateSort.sortedRows.length}
                                         onUpdateZone={handleUpdateZone}
                                         onDeleteZone={handleDeleteZone}
                                     />
