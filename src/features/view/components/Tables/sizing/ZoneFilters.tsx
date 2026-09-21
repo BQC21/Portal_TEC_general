@@ -1,5 +1,5 @@
 import { ZoneFiltersProps } from "@/lib/types/components/Filter/filter_tables";
-import { TableFilterSelect } from "../shared/TableFilterSelect";
+import { TableFilterSelect } from "../../Filters/TableFilterSelect";
 import { DATE_SORT_PLACEHOLDER, DATE_SORT_SELECT_OPTIONS } from "@/lib/utils/options";
 import { DateSortOrder } from "@/lib/types/components/General/options";
 
