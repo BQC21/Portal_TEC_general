@@ -230,6 +230,9 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             italic_style,
         )
     )
+
+    story.append(Spacer(1, 0.35 * cm))
+
     story.append(
         Paragraph(
             "En <b>TEC Energy Solutions</b> impulsamos la transición hacia un modelo energético más" 
@@ -241,6 +244,9 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             justify,
         )
     )
+
+    story.append(Spacer(1, 0.35 * cm))
+
     story.append(
         Paragraph(
             "Nuestra experiencia en el sector comercial e industrial, junto con nuestra participación" 
@@ -249,6 +255,9 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             justify,
         )
     )
+
+    story.append(Spacer(1, 0.35 * cm))
+    
     story.append(
         Paragraph(
             "Será un honor atender su proyecto y demostrar el valor de nuestras soluciones.",
@@ -261,6 +270,9 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             justify,
         )
     )
+
+    story.append(Spacer(1, 0.35 * cm))
+    
     story.append(
         Paragraph(
             "Atentamente, <b>TEC Soluciones Renovables SAC</b> al servicio de su empresa.",
