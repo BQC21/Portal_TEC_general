@@ -22,7 +22,7 @@ import {
     getMm2ForAwg,
 } from "@/lib/utils/helpers/project_modals/cableMatrix";
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
-import { defaultSelectOption, toProductSelectOption } from "@/lib/utils/helpers/project_modals/productOptions";
+import { defaultSelectOption, toProductSelectOption, withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions";
 import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/consts/tables_M2";
 
@@ -136,7 +136,9 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                 return (
                                     <div key={`equipment-${label}-${index}`} className="flex flex-col gap-2">
                                         <SelectionRow
-                                            label={label}
+                                            label={label === "ACCESORIO"
+                                                ? withSelectableCount(label, equipment_filteredOptions)
+                                                : label}
                                             buttonLabel="Agregar"
                                             value={selectedEquipmentByRow[`${label}-${index}`]?.equipoId || ""}
                                             options={equipment_filteredOptions}
