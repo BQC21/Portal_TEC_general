@@ -10,7 +10,7 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
-import { createInitialMOActivities } from "@/lib/utils/helpers/computes/report_computes";
+import { normalizePdfVisibility } from "@/lib/utils/helpers/computes/report_computes";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
@@ -39,16 +39,17 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // Porcentaje de mano de obra calculado automáticamente
     const MO_percent = percentMO(Number(form.porcentaje_eqmt))
 
-    // Equipos a no mostrarse en el PDF
-    const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
-    const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
+    const savedVisibility = normalizePdfVisibility(existingReport.visibilidad_pdf);
 
-    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(false);
-    const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
-    const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
-    const [showMOInPdf, setShowMOInPdf] = useState(false);
+    const [hiddenEquipoIds, setHiddenEquipoIds] = useState(savedVisibility.hiddenEquipoIds);
+    const [hiddenMaterialIds, setHiddenMaterialIds] = useState(savedVisibility.hiddenMaterialIds);
 
-    const [moActivities, setMoActivities] = useState(createInitialMOActivities);
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(savedVisibility.showEquipmentsInPdf);
+    const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(savedVisibility.showElectricalMaterialsInPdf);
+    const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(savedVisibility.showCanalizationMaterialsInPdf);
+    const [showMOInPdf, setShowMOInPdf] = useState(savedVisibility.showMOInPdf);
+
+    const [moActivities, setMoActivities] = useState(savedVisibility.moActivities);
 
     // ----------------------------------------
     // ------- INFORMACIÓN SELECTA ------------
@@ -72,21 +73,6 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         existingEquipos: existing_project_equipos,
         existingMateriales: existing_project_materiales,
     });
-
-    // -----------------------------------
-    // Sincronizar setters de visibilidad
-    // -----------------------------------
-
-    // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
-    useEffect(() => {
-        setHiddenEquipoIds([]);
-        setHiddenMaterialIds([]);
-        setShowEquipmentsInPdf(false);
-        setShowElectricalMaterialsInPdf(false);
-        setShowCanalizationMaterialsInPdf(false);
-        setShowMOInPdf(false);
-        setMoActivities(createInitialMOActivities());
-    }, [form.cotizacion_id]);
 
     // --------------------
     // ---- Togglers ------
@@ -175,6 +161,15 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                 : form.cotizacion_info,
             precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
             porcentaje_inst: String(MO_percent),
+            visibilidad_pdf: normalizePdfVisibility({
+                hiddenEquipoIds,
+                hiddenMaterialIds,
+                showEquipmentsInPdf,
+                showElectricalMaterialsInPdf,
+                showCanalizationMaterialsInPdf,
+                showMOInPdf,
+                moActivities,
+            }),
             updated_at: new Date(),
         });
     }

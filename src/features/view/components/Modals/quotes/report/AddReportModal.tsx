@@ -12,7 +12,7 @@ import { QuoteSelection } from "@/features/application/hooks/modals/Reports/useQ
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
-import { createInitialMOActivities } from "@/lib/utils/helpers/computes/report_computes";
+import { createInitialMOActivities, createInitialPdfVisibility, normalizePdfVisibility } from "@/lib/utils/helpers/computes/report_computes";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
@@ -85,13 +85,14 @@ export default function AddReportModal({onAddReport, onClose,
     // -----------------------------------
 
     useEffect(() => {
-        setHiddenEquipoIds([]);
-        setHiddenMaterialIds([]);
-        setShowEquipmentsInPdf(false);
-        setShowElectricalMaterialsInPdf(false);
-        setShowCanalizationMaterialsInPdf(false);
-        setShowMOInPdf(false);
-        setMoActivities(createInitialMOActivities());
+        const next = createInitialPdfVisibility(); // Persiste la visibilidad
+        setHiddenEquipoIds(next.hiddenEquipoIds);
+        setHiddenMaterialIds(next.hiddenMaterialIds);
+        setShowEquipmentsInPdf(next.showEquipmentsInPdf);
+        setShowElectricalMaterialsInPdf(next.showElectricalMaterialsInPdf);
+        setShowCanalizationMaterialsInPdf(next.showCanalizationMaterialsInPdf);
+        setShowMOInPdf(next.showMOInPdf);
+        setMoActivities(next.moActivities);
     }, [form.cotizacion_id]);
 
     // --------------------
@@ -175,6 +176,16 @@ export default function AddReportModal({onAddReport, onClose,
             ...form,
             precio_cotizacion: form.precio_cotizacion || String(precioUsd.toFixed(2)),
             porcentaje_inst: String(MO_percent),
+            // Considera la visibilidad a persistirse
+            visibilidad_pdf: normalizePdfVisibility({
+                hiddenEquipoIds,
+                hiddenMaterialIds,
+                showEquipmentsInPdf,
+                showElectricalMaterialsInPdf,
+                showCanalizationMaterialsInPdf,
+                showMOInPdf,
+                moActivities,
+            }),
         })
     }
 
