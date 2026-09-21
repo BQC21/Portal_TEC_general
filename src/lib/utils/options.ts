@@ -13,6 +13,13 @@ export const SORTING_OPTIONS = {
     desc: "Descendente",
 } as const;
 
+export const DATE_SORT_PLACEHOLDER = "Todos los ordenamientos";
+
+export const DATE_SORT_SELECT_OPTIONS = [
+    { value: "asc", label: SORTING_OPTIONS.asc },
+    { value: "desc", label: SORTING_OPTIONS.desc },
+] as const;
+
 export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material
 export const Unidad_Consumible = ["Unidad", "Metros", "Cientos"] // Unidad si el producto es un CONSUMIBLE
 export const Category = ["Equipos", "Materiales", "Ambas"]; // Categoría del proveedor, marca o tipo de producto
