@@ -1,6 +1,9 @@
 import {CurrencyCode} from "@/lib/types/components/General/options"
 import {PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
 import { EMPTY_VENTA } from "./empty";
+import { MOActivity } from "../types/components/sub_components/module_render";
+import { createInitialMOActivities, createInitialPdfVisibility } from "./helpers/computes/report_computes";
+import { ReportPdfVisibility } from "../types/supabase/report-types";
 
 // -------------------------
 // Funciones para Normalización y Formateo de Datos
@@ -176,4 +179,48 @@ export function normalizeMaterialTipo(tipo?: string | null) {
         .toUpperCase()
         .normalize("NFD")
         .replace(/[\u0300-\u036f]/g, "");
+}
+
+// --------------------
+// Visibilidad de PDFs
+// --------------------
+
+export function asStringList(value: unknown): string[] {
+    if (!Array.isArray(value)) return [];
+    return value.map((item) => String(item)).filter(Boolean);
+}
+
+export function asMoActivities(value: unknown): MOActivity[] {
+    if (!Array.isArray(value) || value.length === 0) {
+        return createInitialMOActivities();
+    }
+    return value
+        .map((item) => {
+            if (!item || typeof item !== "object") return null;
+            const raw = item as Partial<MOActivity>;
+            const id = raw.id == null ? "" : String(raw.id);
+            const descripcion = raw.descripcion == null ? "" : String(raw.descripcion);
+            if (!id) return null;
+            return {
+                id,
+                descripcion,
+                visible: raw.visible !== false,
+            };
+        })
+        .filter((item): item is MOActivity => item !== null);
+}
+
+export function normalizePdfVisibility(value: unknown): ReportPdfVisibility {
+    const defaults = createInitialPdfVisibility();
+    if (!value || typeof value !== "object") return defaults;
+    const raw = value as Partial<ReportPdfVisibility>;
+    return {
+        hiddenEquipoIds: asStringList(raw.hiddenEquipoIds),
+        hiddenMaterialIds: asStringList(raw.hiddenMaterialIds),
+        showEquipmentsInPdf: Boolean(raw.showEquipmentsInPdf),
+        showElectricalMaterialsInPdf: Boolean(raw.showElectricalMaterialsInPdf),
+        showCanalizationMaterialsInPdf: Boolean(raw.showCanalizationMaterialsInPdf),
+        showMOInPdf: Boolean(raw.showMOInPdf),
+        moActivities: asMoActivities(raw.moActivities),
+    };
 }

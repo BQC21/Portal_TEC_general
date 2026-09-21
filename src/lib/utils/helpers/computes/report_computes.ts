@@ -1,5 +1,6 @@
 import { MOActivity } from "@/lib/types/components/sub_components/module_render";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
+import { ReportPdfVisibility } from "@/lib/types/supabase/report-types";
 import { MO_TEMPLATE_ROWS } from "@/lib/utils/consts/report";
 import { normalizeMaterialTipo } from "../../normalization";
 
@@ -10,6 +11,18 @@ export function createInitialMOActivities(): MOActivity[] {
         descripcion: item.descripcion,
         visible: true,
     }));
+}
+
+export function createInitialPdfVisibility(): ReportPdfVisibility {
+    return {
+        hiddenEquipoIds: [],
+        hiddenMaterialIds: [],
+        showEquipmentsInPdf: false,
+        showElectricalMaterialsInPdf: false,
+        showCanalizationMaterialsInPdf: false,
+        showMOInPdf: false,
+        moActivities: createInitialMOActivities(),
+    };
 }
 
 // Identifica si es un material eléctrico
