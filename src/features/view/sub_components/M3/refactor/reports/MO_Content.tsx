@@ -7,6 +7,8 @@ import { formatCurrency } from "@/lib/utils/normalization";
 export function MO_Content({
     title, precioFinal, MO,
     activities,
+    showMOInPdf,
+    onToggleMOTable,
     onToggleActivityVisibility,
     onAddActivity,
     onUpdateActivity,
@@ -42,6 +44,17 @@ export function MO_Content({
                     </h2>
 
                     <div className="flex items-center gap-6 text-2xl font-bold">
+                        <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                            <span>Mostrar Puesta en marcha en PDF</span>
+                            <input
+                                type="checkbox"
+                                checked={showMOInPdf}
+                                onChange={(event) =>
+                                    onToggleMOTable?.(event.target.checked)
+                                }
+                                className="h-5 w-5 accent-orange-500"
+                            />
+                        </label>
                         <button
                             type="button"
                             onClick={onAddActivity}

@@ -36,13 +36,18 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         } : INITIAL_QUOTE_FORM
     );
 
+    // Porcentaje de mano de obra calculado automáticamente
     const MO_percent = percentMO(Number(form.porcentaje_eqmt))
 
     // Equipos a no mostrarse en el PDF
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
+    
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(false);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
+    const [showMOInPdf, setShowMOInPdf] = useState(false);
+
     const [moActivities, setMoActivities] = useState(createInitialMOActivities);
 
     // ----------------------------------------
@@ -68,14 +73,24 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
         existingMateriales: existing_project_materiales,
     });
 
+    // -----------------------------------
+    // Sincronizar setters de visibilidad
+    // -----------------------------------
+
     // Sincronizar el ocultamiento de equipos a no mostrarse en PDF
     useEffect(() => {
         setHiddenEquipoIds([]);
         setHiddenMaterialIds([]);
+        setShowEquipmentsInPdf(false);
         setShowElectricalMaterialsInPdf(false);
         setShowCanalizationMaterialsInPdf(false);
+        setShowMOInPdf(false);
         setMoActivities(createInitialMOActivities());
     }, [form.cotizacion_id]);
+
+    // --------------------
+    // ---- Togglers ------
+    // --------------------
 
     function toggleId(current: string[], id: string) {
         return current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
@@ -96,6 +111,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
             ),
         );
     }
+
+    // -------------------
+    // --- CRUD MO -------
+    // -------------------
 
     function addMOActivity() {
         setMoActivities((current) => [
@@ -239,6 +258,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         onToggleEquipoVisibility={toggleEquipoVisibility}
                                         hiddenMaterialIds={hiddenMaterialIds}
                                         onToggleMaterialVisibility={toggleMaterialVisibility}
+                                        showEquipmentsInPdf={showEquipmentsInPdf}
+                                        onToggleEquipmentsTable={setShowEquipmentsInPdf}
                                         showElectricalMaterialsInPdf={showElectricalMaterialsInPdf}
                                         onToggleElectricalMaterialsTable={setShowElectricalMaterialsInPdf}
                                         showCanalizationMaterialsInPdf={showCanalizationMaterialsInPdf}
@@ -250,6 +271,8 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                         precioFinal={precioUsd}
                                         MO={MO_percent}
                                         activities={moActivities}
+                                        showMOInPdf={showMOInPdf}
+                                        onToggleMOTable={setShowMOInPdf}
                                         onToggleActivityVisibility={toggleMOVisibility}
                                         onAddActivity={addMOActivity}
                                         onUpdateActivity={updateMOActivity}

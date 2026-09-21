@@ -44,12 +44,18 @@ export default function AddReportModal({onAddReport, onClose,
     // valores iniciales
     const [form, setForm] = useState<ReportFormState>(INITIAL_REPORT_FORM);
     const [form_quotes, setForm_quote] = useState<QuoteFormState>(INITIAL_QUOTE_FORM);
+
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
+    
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(false);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
+    const [showMOInPdf, setShowMOInPdf] = useState(false);
+    
     const [moActivities, setMoActivities] = useState(createInitialMOActivities);
 
+    // Porcentaje de mano de obra calculado automáticamente
     const MO_percent = percentMO(Number(form.porcentaje_eqmt))
 
     // ----------------------------------------
@@ -74,13 +80,23 @@ export default function AddReportModal({onAddReport, onClose,
         existingMateriales: existing_project_materiales,
     });
 
+    // -----------------------------------
+    // Sincronizar setters de visibilidad
+    // -----------------------------------
+
     useEffect(() => {
         setHiddenEquipoIds([]);
         setHiddenMaterialIds([]);
+        setShowEquipmentsInPdf(false);
         setShowElectricalMaterialsInPdf(false);
         setShowCanalizationMaterialsInPdf(false);
+        setShowMOInPdf(false);
         setMoActivities(createInitialMOActivities());
     }, [form.cotizacion_id]);
+
+    // --------------------
+    // ---- Togglers ------
+    // --------------------
 
     function toggleId(current: string[], id: string) {
         return current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
@@ -101,6 +117,10 @@ export default function AddReportModal({onAddReport, onClose,
             ),
         );
     }
+
+    // -------------------
+    // --- CRUD MO -------
+    // -------------------
 
     function addMOActivity() {
         setMoActivities((current) => [
@@ -195,9 +215,9 @@ export default function AddReportModal({onAddReport, onClose,
                             <div className="mt-6 grid gap-6 grid-cols-[0.5fr_1fr]">
 
                                 <div className="grid gap-6">
-                                <h1 className="text-2xl font-bold text-slate-500">
-                                    {quoteHeadingLabel(form_quotes)}
-                                </h1>
+                                    <h1 className="text-2xl font-bold text-slate-500">
+                                        {quoteHeadingLabel(form_quotes)}
+                                    </h1>
 
                                     {/* Inputación de datos */}
                                     <ReportDataInput
@@ -226,6 +246,8 @@ export default function AddReportModal({onAddReport, onClose,
                                         onToggleEquipoVisibility={toggleEquipoVisibility}
                                         hiddenMaterialIds={hiddenMaterialIds}
                                         onToggleMaterialVisibility={toggleMaterialVisibility}
+                                        showEquipmentsInPdf={showEquipmentsInPdf}
+                                        onToggleEquipmentsTable={setShowEquipmentsInPdf}
                                         showElectricalMaterialsInPdf={showElectricalMaterialsInPdf}
                                         onToggleElectricalMaterialsTable={setShowElectricalMaterialsInPdf}
                                         showCanalizationMaterialsInPdf={showCanalizationMaterialsInPdf}
@@ -237,6 +259,8 @@ export default function AddReportModal({onAddReport, onClose,
                                         precioFinal={precioUsd}
                                         MO={MO_percent}
                                         activities={moActivities}
+                                        showMOInPdf={showMOInPdf}
+                                        onToggleMOTable={setShowMOInPdf}
                                         onToggleActivityVisibility={toggleMOVisibility}
                                         onAddActivity={addMOActivity}
                                         onUpdateActivity={updateMOActivity}

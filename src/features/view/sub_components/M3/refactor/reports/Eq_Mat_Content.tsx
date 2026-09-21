@@ -13,6 +13,8 @@ export function Eq_Mat_Content({
     onToggleEquipoVisibility,
     hiddenMaterialIds = [],
     onToggleMaterialVisibility,
+    showEquipmentsInPdf = false,
+    onToggleEquipmentsTable,
     showElectricalMaterialsInPdf = false,
     onToggleElectricalMaterialsTable,
     showCanalizationMaterialsInPdf = false,
@@ -32,6 +34,17 @@ export function Eq_Mat_Content({
 
                 <div className="flex flex-wrap items-center gap-6 text-2xl font-bold">
                     <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
+                        <span>Mostrar Equipos Principales en PDF</span>
+                        <input
+                            type="checkbox"
+                            checked={showEquipmentsInPdf}
+                            onChange={(event) =>
+                                onToggleEquipmentsTable?.(event.target.checked)
+                            }
+                            className="h-5 w-5 accent-orange-500"
+                        />
+                    </label>
+                    <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
                         <span>Mostrar Materiales eléctricos en PDF</span>
                         <input
                             type="checkbox"
@@ -43,7 +56,7 @@ export function Eq_Mat_Content({
                         />
                     </label>
                     <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
-                        <span>Mostrar Materiales de canalización en PDF</span>
+                        <span>Mostrar Canalización en PDF</span>
                         <input
                             type="checkbox"
                             checked={showCanalizationMaterialsInPdf}
