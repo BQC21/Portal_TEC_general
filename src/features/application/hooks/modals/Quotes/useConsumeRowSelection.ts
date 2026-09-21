@@ -67,7 +67,7 @@ export function useConsumeRowSelection({
                 family,
                 cableColor,
                 tipo_de_producto: family ? CONSUMIBLE_FAMILY_TIPO[family] : row.tipo_de_producto,
-                selectable: isSelectableConsumibleFamily(family),
+                selectable: isSelectableConsumibleFamily(family) && row.source !== "catalog-extra",
             }
         })
 
@@ -207,19 +207,9 @@ export function useConsumeRowSelection({
     function getRowOptions(row: ConsumibleDisplayRow) {
         if (!isSelectableConsumibleFamily(row.family)) return []
 
-        const currentMaterialId = getCurrentMaterialId(row)
-        const selectedIds = new Set(
-            displayRows
-                .filter((item) => item.key !== row.key)
-                .map(getAssignedMaterialId)
-                .filter(Boolean),
-        )
-
         return buildConsumibleFamilyOptions(
             row.family,
             materiales,
-            selectedIds,
-            currentMaterialId,
             row.family === "cable_fv" ? row.cableColor : null,
         )
     }
@@ -235,6 +225,26 @@ export function useConsumeRowSelection({
             const templateIndex = items.findIndex((item) => item.cod_producto === row.cod_producto)
             if (templateIndex >= 0) {
                 applyTemplateMaterial(onUpdateItem, templateIndex, material)
+            }
+            return
+        }
+
+        if (row.source === "catalog-extra") {
+            const existingIndex = items.findIndex((item) => item.cod_producto === row.cod_producto)
+            if (existingIndex >= 0) {
+                applyTemplateMaterial(onUpdateItem, existingIndex, material)
+                return
+            }
+            if (onAddConsumeItem) {
+                const family = row.family ?? getConsumibleFamily(material.descripcion)
+                onAddConsumeItem({
+                    cod_producto: material.cod_producto,
+                    descripcion: material.descripcion,
+                    tipo_de_producto: family
+                        ? CONSUMIBLE_FAMILY_TIPO[family]
+                        : material.tipo_de_producto,
+                    cantidad: row.cantidad || 1,
+                })
             }
             return
         }
