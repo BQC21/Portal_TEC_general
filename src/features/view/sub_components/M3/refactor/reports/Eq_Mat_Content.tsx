@@ -3,7 +3,7 @@
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { toEquipoReportRows } from "@/lib/utils/helpers/computes/PanelNumber";
 import { isCanalizationMaterial, isElectricalMaterial } from "@/lib/utils/helpers/computes/report_computes";
-import { MaterialVisibilityCheckbox } from "@/lib/utils/helpers/render/CheckboxVisibility";
+import { VisibilityCheckbox } from "@/features/view/components/Form_fields/CheckboxVisibility";
 import { formatCurrency } from "@/lib/utils/normalization";
 
 export function Eq_Mat_Content({
@@ -113,19 +113,12 @@ export function Eq_Mat_Content({
                                                 {String(item.cantidad)}
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={visibleInPdf}
-                                                    onChange={() =>
-                                                        item.ids.forEach((id) => {
-                                                            const currentlyVisible = !hiddenEquipoIds.includes(id);
-                                                            if (currentlyVisible === visibleInPdf) {
-                                                                onToggleEquipoVisibility?.(id);
-                                                            }
-                                                        })
-                                                    }
-                                                    aria-label={`Mostrar ${item.descripcion || "equipo"} en el PDF`}
-                                                    className="h-5 w-5 accent-orange-500"
+                                                <VisibilityCheckbox
+                                                    label={item.descripcion}
+                                                    fallbackLabel="equipo"
+                                                    ids={item.ids}
+                                                    hiddenIds={hiddenEquipoIds}
+                                                    onToggleVisibility={onToggleEquipoVisibility}
                                                 />
                                             </td>
                                         </tr>
@@ -184,10 +177,12 @@ export function Eq_Mat_Content({
                                                 {item.cantidad}
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
-                                                <MaterialVisibilityCheckbox
-                                                    item={item}
-                                                    hiddenMaterialIds={hiddenMaterialIds}
-                                                    onToggleMaterialVisibility={onToggleMaterialVisibility}
+                                                <VisibilityCheckbox
+                                                    label={item.material_info?.descripcion}
+                                                    fallbackLabel="material"
+                                                    ids={item.id}
+                                                    hiddenIds={hiddenMaterialIds}
+                                                    onToggleVisibility={onToggleMaterialVisibility}
                                                 />
                                             </td>
                                         </tr>
@@ -246,10 +241,12 @@ export function Eq_Mat_Content({
                                                 {item.cantidad}
                                             </td>
                                             <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
-                                                <MaterialVisibilityCheckbox
-                                                    item={item}
-                                                    hiddenMaterialIds={hiddenMaterialIds}
-                                                    onToggleMaterialVisibility={onToggleMaterialVisibility}
+                                                <VisibilityCheckbox
+                                                    label={item.material_info?.descripcion}
+                                                    fallbackLabel="material"
+                                                    ids={item.id}
+                                                    hiddenIds={hiddenMaterialIds}
+                                                    onToggleVisibility={onToggleMaterialVisibility}
                                                 />
                                             </td>
                                         </tr>

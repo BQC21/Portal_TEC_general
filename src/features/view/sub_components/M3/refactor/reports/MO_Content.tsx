@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EditIcon } from "@/features/view/components/Icons/EditIcon";
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon";
+import { VisibilityCheckbox } from "@/features/view/components/Form_fields/CheckboxVisibility";
 import { MOActivity, MO_Content_Props } from "@/lib/types/components/sub_components/module_render";
 import { formatCurrency } from "@/lib/utils/normalization";
 
@@ -115,12 +116,12 @@ export function MO_Content({
                                                     )}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 text-center font-medium">
-                                                    <input
-                                                        type="checkbox"
+                                                    <VisibilityCheckbox
+                                                        label={item.descripcion}
+                                                        fallbackLabel="Puesta en marcha"
+                                                        ids={item.id}
                                                         checked={item.visible}
-                                                        onChange={() => onToggleActivityVisibility?.(item.id)}
-                                                        aria-label={`Mostrar ${item.descripcion || "Puesta en marcha"} en el PDF`}
-                                                        className="h-5 w-5 accent-orange-500"
+                                                        onToggleVisibility={onToggleActivityVisibility}
                                                     />
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5">
