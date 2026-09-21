@@ -1,6 +1,7 @@
 import { SupabaseQuoteRow } from "@/lib/types/supabase/quote-types"
 import { Report, ReportFormData, ReportFormState, SupabaseReportRow } from "@/lib/types/supabase/report-types"
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage"
+import { normalizePdfVisibility } from "@/lib/utils/helpers/computes/report_computes"
 import { parseNumber } from "@/lib/utils/normalization"
 import { mapSupabaseRowtoQuote } from "./mapping_quotes"
 import { FIRMOptions } from "@/lib/types/components/General/options"
@@ -34,6 +35,7 @@ export function createReportFormStateFromReport(report: Report): ReportFormState
         formato_dscto: report.formato_dscto || DSCTO_type_value[0],
         payFormat: report.payFormat || DEFAULT_PAY_FORMAT,
         opcion_firma: normalizeOpcionFirma(report.opcion_firma),
+        visibilidad_pdf: normalizePdfVisibility(report.visibilidad_pdf),
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
@@ -70,6 +72,7 @@ export function mapSupabaseRowtoReport(row: SupabaseReportRow): Report{
         formato_dscto: row.formato_dscto?.toString() || DSCTO_type_value[0],
         payFormat: row.payFormat?.toString() || DEFAULT_PAY_FORMAT,
         opcion_firma: normalizeOpcionFirma(row.opcion_firma),
+        visibilidad_pdf: normalizePdfVisibility(row.visibilidad_pdf),
         // fechas
         created_at: parseNullableDate(row.created_at) ?? new Date(),
         updated_at: parseNullableDate(row.updated_at) ?? new Date(),
@@ -98,6 +101,7 @@ export function mapReportToSupabaseRow(report: ReportFormData): SupabaseReportRo
         formato_dscto: report.formato_dscto,
         payFormat: report.payFormat,
         opcion_firma: report.opcion_firma,
+        visibilidad_pdf: normalizePdfVisibility(report.visibilidad_pdf),
         // fechas
         created_at:report.created_at,
         updated_at: report.updated_at
