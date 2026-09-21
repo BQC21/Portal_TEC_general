@@ -216,33 +216,59 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     story.append(Paragraph(f"<b>{data.cliente or 'Cliente'}</b>", greeting))
     story.append(Spacer(1, 0.35 * cm))
 
+    # Cursiva
+    italic_style = ParagraphStyle(
+        "LetterBodyItalic",
+        parent=justify,
+        fontName="Helvetica-Oblique",
+    )
+
     story.append(
         Paragraph(
-            "TEC Soluciones Renovables SAC es una empresa de energías renovables en Perú, "
-            "cuya misión es proporcionar soluciones de energía limpia y sostenible que sean "
-            "rentables y asequibles para nuestros clientes.",
+            "Somos TEC: Tecnología, Eficiencia y Compromiso… Soluciones solares empresariales" 
+            "que iluminan el futuro de un Perú sostenible.",
+            italic_style,
+        )
+    )
+    story.append(
+        Paragraph(
+            "En <b>TEC Energy Solutions</b> impulsamos la transición hacia un modelo energético más" 
+            "competitivo y responsable, ofreciendo proyectos de <b>Generación de Energía Fotovoltaica</b>" 
+            "diseñados para maximizar el <b>ahorro en energía y reducir la huella ambiental</b> de las empresas." 
+            "Nuestro equipo de especialistas acompaña a cada cliente en todo el proceso, desde la ingeniería"
+            "y la instalación hasta el mantenimiento y el monitoreo de nuestros sistemas, asegurando" 
+            "soluciones confiables y sostenibles.",
             justify,
         )
     )
     story.append(
         Paragraph(
-            "Contamos con un equipo de especialistas comprometidos con la promoción de "
-            "tecnologías fotovoltaicas. Ofrecemos desarrollo, instalación y mantenimiento de "
-            "sistemas solares, soluciones para edificaciones sostenibles y consultoría en "
-            "políticas de energía con responsabilidad ambiental.",
+            "Nuestra experiencia en el sector comercial e industrial, junto con nuestra participación" 
+            "en foros internacionales, nos respalda como un socio estratégico para organizaciones" 
+            "que buscan eficiencia energética y liderazgo en sostenibilidad.",
             justify,
         )
     )
     story.append(
         Paragraph(
-            "Esperamos tener la oportunidad de trabajar con ustedes y demostrar el valor de "
-            "nuestras soluciones de energía renovable. Si tienen alguna consulta o desean más "
-            "información, no duden en ponerse en contacto con nosotros. Quedamos a la espera "
-            "de su respuesta para atenderles de manera rápida y eficiente.",
+            "Será un honor atender su proyecto y demostrar el valor de nuestras soluciones.",
+            justify,
+        )
+    )
+    story.append(
+        Paragraph(
+            "Quedamos atentos a su respuesta para brindarles una atención rápida y eficiente.",
+            justify,
+        )
+    )
+    story.append(
+        Paragraph(
+            "Atentamente, <b>TEC Soluciones Renovables SAC</b> al servicio de su empresa.",
             justify,
         )
     )
 
+    # Inclusión de firma
     if data.incluir_firma:
         story.append(Spacer(1, 2.6 * cm))
         story.append(Paragraph("Atentamente:", atentamente))
