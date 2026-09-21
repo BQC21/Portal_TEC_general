@@ -6,8 +6,8 @@ import unicodedata
 from datetime import datetime
 from typing import Any
 
-from python.app.schemas.report import EquipoItem
-from python.utils.default_items import PANELES_POR_PALET
+from app.schemas.report import EquipoItem
+from utils.default_items import PANELES_POR_PALET
 
 def _to_float(value: Any, default: float = 0.0) -> float:
     if value is None or value == "":

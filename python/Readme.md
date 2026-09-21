@@ -43,9 +43,9 @@ pip install -r requirements.txt
 #### 4. Run Python server
 ```bash
 # Desde la carpeta python/ (con el venv activo)
-python main.py
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
 # o:
-uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+python -m app.main
 ```
 
 El servidor queda en `http://127.0.0.1:8000`.
@@ -72,7 +72,7 @@ Railway hospeda este microservicio de forma independiente al frontend (Vercel). 
 3. **Start Command** (o dejar que Nixpacks detecte; si no, forzar):
 
 ```bash
-uvicorn main:app --host 0.0.0.0 --port $PORT
+uvicorn app.main:app --host 0.0.0.0 --port $PORT
 ```
 
 > Importante: usar `0.0.0.0` y `$PORT`. Si dejas `127.0.0.1` o el puerto `8000` fijo, Railway no podrá enrutar tráfico externo.

@@ -13,12 +13,12 @@ from app.schemas.report import (
     ReportPdfData,
 )
 
-from python.utils.default_items import DEFAULT_PAY_FORMAT, MATERIAL_TIPOS_CANALIZACION
-from python.utils.default_items import MATERIAL_TIPOS_ELECTRICOS, PUESTA_EN_MARCHA_ITEMS
+from utils.default_items import DEFAULT_PAY_FORMAT, MATERIAL_TIPOS_CANALIZACION
+from utils.default_items import MATERIAL_TIPOS_ELECTRICOS, PUESTA_EN_MARCHA_ITEMS
 
-from python.utils.mapper_fnc import _to_str, _is_modulo_fv, _is_palet_unidad, _safe_filename
-from python.utils.mapper_fnc import _resolve_paneles_por_palet, _cantidad_modulo_en_unidades
-from python.utils.mapper_fnc import _format_fecha, _normalize_tipo, _to_float
+from utils.mapper_fnc import _to_str, _is_modulo_fv, _is_palet_unidad, _safe_filename
+from utils.mapper_fnc import _resolve_paneles_por_palet, _cantidad_modulo_en_unidades
+from utils.mapper_fnc import _format_fecha, _normalize_tipo, _to_float
 
 def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
     visible_items = [item for item in items if item.visible is not False]
