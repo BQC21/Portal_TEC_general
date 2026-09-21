@@ -82,7 +82,7 @@ export function ReportDataInput({
                 required
                 value={Number(form.porcentaje_eqmt) > 0 ? Number(form.porcentaje_eqmt) : ""}
                 onChange={(value) => updateField("porcentaje_eqmt", String(value))}
-                step={0.0001} min={1} max={100}
+                step={0.0001} min={0} max={100}
             />
             <AddProductReadonlyField
                 label = "Porcentaje de distribución por puesta en marcha"
