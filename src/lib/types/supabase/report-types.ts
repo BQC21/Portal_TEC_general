@@ -23,7 +23,7 @@ export type ReportPdfVisibility = {
 
 // estado del formulario
 export type ReportFormState = Omit<Report, "id">;
-export type ReportFormData = Omit<Report, "id">
+export type ReportFormData = Omit<Report, "id">;
 
 // correspondencia con Supabase
 export type SupabaseReportRow = {

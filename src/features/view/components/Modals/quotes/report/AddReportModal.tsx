@@ -12,7 +12,8 @@ import { QuoteSelection } from "@/features/application/hooks/modals/Reports/useQ
 import { ReportDataInput } from "@/features/view/sub_components/M3/refactor/reports/ReportDataInput";
 import { QuoteReportTable } from "@/features/view/sub_components/M3/Tables/reports/QuoteReportTable";
 import { Eq_Mat_Content } from "@/features/view/sub_components/M3/refactor/reports/Eq_Mat_Content";
-import { createInitialMOActivities, createInitialPdfVisibility, normalizePdfVisibility } from "@/lib/utils/helpers/computes/report_computes";
+import { createInitialMOActivities, createInitialPdfVisibility } from "@/lib/utils/helpers/computes/report_computes";
+import { normalizePdfVisibility } from "@/lib/utils/normalization";
 import { MO_Content } from "@/features/view/sub_components/M3/refactor/reports/MO_Content";
 import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
