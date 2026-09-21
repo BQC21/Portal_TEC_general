@@ -231,7 +231,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.35 * cm))
+    story.append(Spacer(1, 0.25 * cm))
 
     story.append(
         Paragraph(
@@ -245,7 +245,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.35 * cm))
+    story.append(Spacer(1, 0.25 * cm))
 
     story.append(
         Paragraph(
@@ -256,7 +256,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.35 * cm))
+    story.append(Spacer(1, 0.25 * cm))
     
     story.append(
         Paragraph(
@@ -271,7 +271,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.35 * cm))
+    story.append(Spacer(1, 0.25 * cm))
     
     story.append(
         Paragraph(
