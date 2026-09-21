@@ -6,6 +6,20 @@ export type FormWithQuoteSelection = {
     precio_cotizacion?: string;
 };
 
+export type ReportPdfVisibility = {
+    hiddenEquipoIds: string[];
+    hiddenMaterialIds: string[];
+    showEquipmentsInPdf: boolean;
+    showElectricalMaterialsInPdf: boolean;
+    showCanalizationMaterialsInPdf: boolean;
+    showMOInPdf: boolean;
+    moActivities: Array<{
+        id: string;
+        descripcion: string;
+        visible: boolean;
+    }>;
+};
+
 // estado del formulario
 export type ReportFormState = Omit<Report, "id">;
 export type ReportFormData = Omit<Report, "id">
@@ -35,6 +49,7 @@ export type SupabaseReportRow = {
     formato_dscto?: string;
     payFormat?: string;
     opcion_firma?: string;
+    visibilidad_pdf?: ReportPdfVisibility | null;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -63,6 +78,7 @@ export type Report = {
     formato_dscto: string;
     payFormat: string;
     opcion_firma:string;
+    visibilidad_pdf: ReportPdfVisibility;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
