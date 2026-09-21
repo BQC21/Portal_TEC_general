@@ -18,11 +18,14 @@ import {
     CONSUMIBLE_FAMILY_LABEL,
     CONSUMIBLE_FAMILY_TIPO,
     DEFAULT_INSERTED_FAMILIES,
+    GROUPED_CONSUMIBLE_FAMILIES,
+    CONSUMIBLE_FAMILIES_WITH_CODE_LABEL,
     PRECINTOS_MM,
     SPACK_SIZES,
     TERMINAL_OJAL_MM2,
     TERMINAL_PIN_MM2,
 } from "@/lib/utils/consts/consumibles"
+import { formatProductOptionLabel } from "@/lib/utils/helpers/project_modals/productOptions"
 
 // -------------------
 // Funciones
@@ -122,6 +125,8 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     }
 
     if (description.includes("tablero")) return "tablero"
+    if (description.includes("bornera") && description.includes("linea")) return "bornera_linea"
+    if (description.includes("tirafon") || description.includes("tiraforn")) return "tirafon"
 
     const hundredPack = isHundredPack(description)
     const isPinTerminal = description.includes("terminal") && description.includes("pin")
@@ -138,6 +143,7 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
     if (hundredPack && description.includes("autorroscant")) {
         return "tornillos_autorroscantes_100"
     }
+    if (description.includes("autorroscant")) return "tornillo_autorroscante"
 
     if (description.includes("tornillo") && description.includes("spack")) {
         return "tornillo_spack"
@@ -298,20 +304,41 @@ export function getDefaultMaterialForFamily(
 export function buildConsumibleFamilyOptions(
     family: ConsumibleSelectableFamily,
     materiales: Materiales[],
-    selectedIds: Set<string>,
-    currentMaterialId?: string,
     color?: CableFvColor | null,
 ): SelectOption[] {
     return filterMaterialsByFamily(materiales, family, color)
-        .filter((material) => {
-            const materialId = String(material.id)
-            if (family === "itm_ac" && !isItmAcDescription(material.descripcion)) return false
-            if (materialId === currentMaterialId) return true
-            if (selectedIds.has(materialId)) return false
-            return matchesFamilySize(family, material.descripcion)
-        })
+        .filter((material) => family !== "itm_ac" || isItmAcDescription(material.descripcion))
         .map((material) => ({
             value: String(material.id),
-            label: material.descripcion,
+            label: CONSUMIBLE_FAMILIES_WITH_CODE_LABEL.has(family)
+                ? formatProductOptionLabel(material.cod_producto, material.descripcion)
+                : material.descripcion,
         }))
+}
+
+export function isQuoteConsumibleMaterial(material: Pick<Materiales, "descripcion" | "tipo_de_producto">): boolean {
+    if (getConsumibleFamily(material.descripcion)) return true
+    const tipo = (material.tipo_de_producto ?? "").toUpperCase()
+    return tipo === "CONSUMIBLE"
+        || tipo === "PROTECCIÓN"
+        || tipo === "PROTECCION"
+        || tipo === "CANALIZACIÓN"
+        || tipo === "CANALIZACION"
+        || tipo === "MC4"
+        || tipo === "CABLE"
+}
+
+export function usesGroupedConsumibleSelector(family: ConsumibleFamily | null): boolean {
+    return family != null && GROUPED_CONSUMIBLE_FAMILIES.has(family)
+}
+
+export function getExtraCatalogConsumibles(
+    materiales: Materiales[],
+    usedCodes: Set<string>,
+): Materiales[] {
+    return materiales.filter((material) => {
+        if (!material.cod_producto || usedCodes.has(material.cod_producto)) return false
+        if (!isQuoteConsumibleMaterial(material)) return false
+        return !usesGroupedConsumibleSelector(getConsumibleFamily(material.descripcion))
+    })
 }

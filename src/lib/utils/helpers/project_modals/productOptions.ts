@@ -35,3 +35,11 @@ export function defaultSelectOption(label: string): SelectOption {
         label: `Seleccionar - ${label}`,
     };
 }
+
+export function selectableOptionCount(options: SelectOption[]): number {
+    return options.filter((option) => option.value !== "").length;
+}
+
+export function withSelectableCount(label: string, options: SelectOption[]): string {
+    return `${label} (${selectableOptionCount(options)})`;
+}
