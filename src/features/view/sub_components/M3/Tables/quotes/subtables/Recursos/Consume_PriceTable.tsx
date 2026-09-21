@@ -19,6 +19,7 @@ import {
     isAddableConsumibleFamily,
     isFixedConsumibleFamily,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
+import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 import {
     buildSortedConsumibles,
     getConsumibleGroup,
@@ -61,20 +62,24 @@ function ConsumibleFamilySelect({
     const resolvedValue = options.some((option) => option.value === value)
         ? value
         : (options[0]?.value ?? "")
+    const selectorLabel = withSelectableCount(`${familyLabel}${colorSuffix}`, options)
 
     return (
-        <select
-            aria-label={`Seleccionar ${familyLabel}${colorSuffix}`}
-            value={resolvedValue}
-            onChange={(event) => onChange(event.target.value)}
-            className="input-focus w-full min-w-[16rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 transition"
-        >
-            {options.map((option) => (
-                <option key={option.value || option.label} value={option.value}>
-                    {option.label}
-                </option>
-            ))}
-        </select>
+        <div>
+            <span className="mb-1 block text-sm font-semibold text-slate-600">{selectorLabel}</span>
+            <select
+                aria-label={selectorLabel}
+                value={resolvedValue}
+                onChange={(event) => onChange(event.target.value)}
+                className="input-focus w-full min-w-[16rem] rounded-xl border border-slate-300 bg-white px-3 py-2 text-base text-slate-900 transition"
+            >
+                {options.map((option) => (
+                    <option key={option.value || option.label} value={option.value}>
+                        {option.label}
+                    </option>
+                ))}
+            </select>
+        </div>
     )
 }
 
@@ -128,7 +133,12 @@ export function Consume_PriceTable({
     })
 
     // almacenar grupos consumibles
-    const groupedRows = useMemo(() => groupConsumibleRows(displayRows), [displayRows])
+    const [dismissedKeys, setDismissedKeys] = useState<Set<string>>(new Set())
+    const visibleDisplayRows = useMemo(
+        () => displayRows.filter((row) => !dismissedKeys.has(row.key)),
+        [displayRows, dismissedKeys],
+    )
+    const groupedRows = useMemo(() => groupConsumibleRows(visibleDisplayRows), [visibleDisplayRows])
 
     // Manejador de colapsos (despliegue de tablas)
     function toggleGroup(key: ConsumibleGroupKey) {
@@ -141,6 +151,26 @@ export function Consume_PriceTable({
     }
 
     const columnCount = showConsiderChecklist ? 14 : 13
+
+    function handleRemoveRow(item: ConsumibleDisplayRow) {
+        setDismissedKeys((current) => {
+            const next = new Set(current)
+            next.add(item.key)
+            return next
+        })
+        if (item.source === "catalog" && item.catalogId != null) {
+            onRemoveMaterial(item.catalogId)
+            return
+        }
+        if (item.templateIndex != null) {
+            onRemoveItem(item.templateIndex)
+            return
+        }
+        if (item.source === "catalog-extra") {
+            const existingIndex = items.findIndex((entry) => entry.cod_producto === item.cod_producto)
+            if (existingIndex >= 0) onRemoveItem(existingIndex)
+        }
+    }
 
     return(
         <>
@@ -157,6 +187,9 @@ export function Consume_PriceTable({
                                             {" "}
                                         </th>
                                     ) : null}
+                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                        Acciones
+                                    </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         COD PROD
                                     </th>
@@ -192,9 +225,6 @@ export function Consume_PriceTable({
                                     </th>
                                     <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
                                         Precio Total ($) + IGV
-                                    </th>
-                                    <th className="border-b border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
-                                        Acciones
                                     </th>
                                 </tr>
                             </thead>
@@ -283,6 +313,16 @@ export function Consume_PriceTable({
                                                     </td>
                                                 ) : null}
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => handleRemoveRow(item)}
+                                                        className="table-icon-button"
+                                                        aria-label="Eliminar ítem"
+                                                    >
+                                                        <TrashIcon />
+                                                    </button>
+                                                </td>
+                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {item.cod_producto || "—"}
                                                 </td>
                                                 <td className="border-b border-slate-200 px-5 py-5 font-medium">
@@ -343,6 +383,22 @@ export function Consume_PriceTable({
                                                                     onUpdateItem(item.templateIndex, "cantidad", nextCantidad)
                                                                     return
                                                                 }
+                                                                if (item.source === "catalog-extra") {
+                                                                    const existingIndex = items.findIndex(
+                                                                        (entry) => entry.cod_producto === item.cod_producto,
+                                                                    )
+                                                                    if (existingIndex >= 0) {
+                                                                        onUpdateItem(existingIndex, "cantidad", nextCantidad)
+                                                                        return
+                                                                    }
+                                                                    onAddConsumeItem({
+                                                                        cod_producto: item.cod_producto,
+                                                                        descripcion: item.descripcion,
+                                                                        tipo_de_producto: item.tipo_de_producto ?? "CONSUMIBLE",
+                                                                        cantidad: nextCantidad,
+                                                                    })
+                                                                    return
+                                                                }
                                                                 if (item.isPlaceholder) {
                                                                     const materialId = getCurrentMaterialId(item)
                                                                     const material = materiales.find(
@@ -379,26 +435,6 @@ export function Consume_PriceTable({
                                                 </td>
                                                 <td className="border-b border-slate-200 px-4 py-5 font-medium">
                                                     {formatCurrency(Number(item.precio_dolares_igv)*Number(item.cantidad), "USD")}
-                                                </td>
-                                                <td className="border-b border-slate-200 px-4 py-5 font-medium">
-                                                    {item.isPlaceholder || isFixedConsumibleFamily(item.family) ? null : (
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => {
-                                                                if (item.source === "catalog" && item.catalogId != null) {
-                                                                    onRemoveMaterial(item.catalogId)
-                                                                    return
-                                                                }
-                                                                if (item.templateIndex != null) {
-                                                                    onRemoveItem(item.templateIndex)
-                                                                }
-                                                            }}
-                                                            className="table-icon-button"
-                                                            aria-label="Eliminar ítem"
-                                                        >
-                                                            <TrashIcon />
-                                                        </button>
-                                                    )}
                                                 </td>
                                             </tr>
                                             );
