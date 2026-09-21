@@ -297,8 +297,10 @@ export default function AddReportModal({onAddReport, onClose,
                                     materiales: projectMateriales,
                                     hiddenEquipoIds,
                                     hiddenMaterialIds,
+                                    showEquipmentsInPdf,
                                     showElectricalMaterialsInPdf,
                                     showCanalizationMaterialsInPdf,
+                                    showMOInPdf,
                                     moActivities,
                                 })
                             }

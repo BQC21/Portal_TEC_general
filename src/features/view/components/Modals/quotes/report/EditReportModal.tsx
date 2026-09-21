@@ -42,7 +42,7 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     // Equipos a no mostrarse en el PDF
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
-    
+
     const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(false);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
@@ -310,8 +310,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                     materiales: projectMateriales,
                                     hiddenEquipoIds,
                                     hiddenMaterialIds,
+                                    showEquipmentsInPdf,
                                     showElectricalMaterialsInPdf,
                                     showCanalizationMaterialsInPdf,
+                                    showMOInPdf,
                                     moActivities,
                                 })
                             }

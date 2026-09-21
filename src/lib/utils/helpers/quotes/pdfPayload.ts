@@ -14,8 +14,10 @@ export function buildReportPdfPayload({
 	materiales,
 	hiddenEquipoIds = [],
 	hiddenMaterialIds = [],
+	showEquipmentsInPdf = false,
 	showElectricalMaterialsInPdf = false,
 	showCanalizationMaterialsInPdf = false,
+	showMOInPdf = false,
 	moActivities = [],
 }: {
 	form: ReportFormState;
@@ -23,8 +25,10 @@ export function buildReportPdfPayload({
 	materiales: Project_Materiales[];
 	hiddenEquipoIds?: string[];
 	hiddenMaterialIds?: string[];
+	showEquipmentsInPdf?: boolean;
 	showElectricalMaterialsInPdf?: boolean;
 	showCanalizationMaterialsInPdf?: boolean;
+	showMOInPdf?: boolean;
 	moActivities?: Array<{ id: string; descripcion: string; visible: boolean }>;
 }): ReportPdfPayload {
 	return {
@@ -78,8 +82,10 @@ export function buildReportPdfPayload({
 				tipo_de_producto: m.material_info?.tipo_de_producto,
 			},
 		})),
+		show_equipments: showEquipmentsInPdf,
 		show_electrical_materials: showElectricalMaterialsInPdf,
 		show_canalization_materials: showCanalizationMaterialsInPdf,
+		show_mo: showMOInPdf,
 		hidden_mo_ids: moActivities.filter((item) => !item.visible).map((item) => item.id),
 		puesta_en_marcha_items: moActivities.map((item) => ({
 			id: item.id,

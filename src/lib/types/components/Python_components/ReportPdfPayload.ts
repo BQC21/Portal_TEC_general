@@ -55,8 +55,10 @@ export type ReportPdfPayload = {
             tipo_de_producto?: string;
         };
     }>;
+    show_equipments?: boolean;
     show_electrical_materials?: boolean;
     show_canalization_materials?: boolean;
+    show_mo?: boolean;
 
     // Puesta en marcha a ocultar en el PDF (ids de MO_Content)
     hidden_mo_ids?: string[];
