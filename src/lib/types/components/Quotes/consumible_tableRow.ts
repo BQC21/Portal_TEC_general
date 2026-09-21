@@ -13,12 +13,15 @@ export type ConsumibleSelectableFamily =
     | "cable_tierra"
     | "tablero"
     | "canaleta"
+    | "bornera_linea"
     | "terminal_pin_100"
     | "terminal_ojal_100"
     | "terminal_ojal"
     | "terminal_pin"
+    | "tirafon"
     | "precintos"
     | "tornillos_autorroscantes_100"
+    | "tornillo_autorroscante"
     | "tornillo_spack"
     | "mc4"
     | "fusible"
@@ -58,7 +61,7 @@ export type ConsumibleGroupMeta = {
 
 export type ConsumibleTableRow = {
     key: string
-    source: "catalog" | "template" 
+    source: "catalog" | "template" | "catalog-extra" 
     catalogId?: string | number
     templateIndex?: number
     cod_producto: string
