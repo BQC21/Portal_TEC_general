@@ -371,6 +371,8 @@ export type Eq_Mat_Content_Props = {
     onToggleEquipoVisibility?: (id: string) => void;
     hiddenMaterialIds?: string[];
     onToggleMaterialVisibility?: (id: string) => void;
+    showEquipmentsInPdf?: boolean;
+    onToggleEquipmentsTable?: (visible: boolean) => void;
     showElectricalMaterialsInPdf?: boolean;
     onToggleElectricalMaterialsTable?: (visible: boolean) => void;
     showCanalizationMaterialsInPdf?: boolean;
@@ -388,6 +390,8 @@ export type MO_Content_Props = {
     precioFinal: number;
     MO: number;
     activities: MOActivity[];
+    showMOInPdf?: boolean;
+    onToggleMOTable?: (visible: boolean) => void;
     onToggleActivityVisibility?: (id: string) => void;
     onAddActivity?: () => void;
     onUpdateActivity?: (id: string, descripcion: string) => void;
