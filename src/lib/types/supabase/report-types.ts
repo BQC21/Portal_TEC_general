@@ -6,6 +6,7 @@ export type FormWithQuoteSelection = {
     precio_cotizacion?: string;
 };
 
+// Arreglo de propiedades a la visibilidad del PDF
 export type ReportPdfVisibility = {
     hiddenEquipoIds: string[];
     hiddenMaterialIds: string[];
