@@ -38,6 +38,7 @@ import { TypeFormstate } from "../types/supabase/type-types";
 import { QuoteFormState } from "../types/supabase/quote-types";
 import { ReportFormState } from "../types/supabase/report-types";
 import { ManualCosts } from "../types/components/Quotes/manual_resources";
+import { createInitialPdfVisibility } from "@/lib/utils/helpers/computes/report_computes";
 
 // Listas
 import { consumible_template, 
@@ -275,6 +276,7 @@ export const INITIAL_REPORT_FORM: ReportFormState = {
     formato_dscto: DSCTO_type_value[0],
     payFormat: DEFAULT_PAY_FORMAT,
     opcion_firma: FIRM_OPTION[0],
+    visibilidad_pdf: createInitialPdfVisibility(),
 }
 
 // ----------------------------------------------------------
