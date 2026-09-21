@@ -1,31 +1,10 @@
 "use client";
 
 import { Eq_Mat_Content_Props } from "@/lib/types/components/sub_components/module_render";
-import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
 import { toEquipoReportRows } from "@/lib/utils/helpers/computes/PanelNumber";
 import { isCanalizationMaterial, isElectricalMaterial } from "@/lib/utils/helpers/computes/report_computes";
+import { MaterialVisibilityCheckbox } from "@/lib/utils/helpers/render/CheckboxVisibility";
 import { formatCurrency } from "@/lib/utils/normalization";
-
-function MaterialVisibilityCheckbox({
-    item,
-    hiddenMaterialIds,
-    onToggleMaterialVisibility,
-}: {
-    item: Project_Materiales;
-    hiddenMaterialIds: string[];
-    onToggleMaterialVisibility?: (id: string) => void;
-}) {
-    const visibleInPdf = !hiddenMaterialIds.includes(String(item.id));
-    return (
-        <input
-            type="checkbox"
-            checked={visibleInPdf}
-            onChange={() => onToggleMaterialVisibility?.(String(item.id))}
-            aria-label={`Mostrar ${item.material_info?.descripcion || "material"} en el PDF`}
-            className="h-5 w-5 accent-orange-500"
-        />
-    );
-}
 
 export function Eq_Mat_Content({
     title, precioFinal, Eq_Mt,
