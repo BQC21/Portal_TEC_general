@@ -7,6 +7,7 @@ import { ZoneTableProps } from "@/lib/types/components/General/tables";
 
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function ProjectTable({ zones, 
     totalZones, 
@@ -23,7 +24,7 @@ export default function ProjectTable({ zones,
                                 {TABLE_HEADERS_ZONE.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -42,8 +43,6 @@ export default function ProjectTable({ zones,
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.ghi_respaldo}</td>
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.ghi_respaldo_diario}</td>
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.hsp_peor_mes}</td>
-                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{formatDate(zone.created_at)}</td>
-                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{formatDate(zone.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Actualizar zona" label="Actualizar Zona">
@@ -73,6 +72,8 @@ export default function ProjectTable({ zones,
                                                 </Button2Delete>
                                             </div>
                                         </td>
+                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(zone.created_at)}</td>
+                                        <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(zone.updated_at)}</td>
                                     </tr>
                                 ))
                             ) : (

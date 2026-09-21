@@ -6,6 +6,7 @@ import EditSupplierModal from "../../Modals/Proveedores/proveedores/EditSupplier
 import { DeleteSupplierModal } from "../../Modals/Proveedores/proveedores/DeleteSupplierModal";
 import { Supplier } from "@/lib/types/supabase/supplier-types";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function SupplierTable({ supplier, 
     totalSupplier, 
@@ -22,7 +23,7 @@ export default function SupplierTable({ supplier,
                                 {TABLE_HEADERS_SUPPLIER.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -39,8 +40,8 @@ export default function SupplierTable({ supplier,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{supplier.contacto}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{supplier.telefono}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{supplier.categoria}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(supplier.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(supplier.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(supplier.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(supplier.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Actualizar proveedor" label="Actualizar Proveedor">

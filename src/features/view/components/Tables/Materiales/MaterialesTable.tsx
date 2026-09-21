@@ -7,6 +7,7 @@ import { EditMaterialModal } from "../../Modals/Materiales/EditMaterialModal";
 import { DeleteMaterialModal } from "../../Modals/Materiales/DeleteMaterialModal";
 import { MaterialesTableProps } from "@/lib/types/components/General/tables";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export function MaterialesTable({ materiales, totalMateriales, 
     onUpdateMateriales, onDeleteMateriales}: MaterialesTableProps) {
@@ -18,7 +19,7 @@ export function MaterialesTable({ materiales, totalMateriales,
                         <thead className="sticky top-0 z-10 bg-slate-100">
                             <tr className="bg-slate-100 text-left">
                                 {MATERIALES_HEADERS.map((header) => (
-                                    <th key={header} className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                    <th key={header} className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}>
                                         {header}
                                     </th>
                                 ))}
@@ -63,8 +64,8 @@ export function MaterialesTable({ materiales, totalMateriales,
                                                     </Button2Delete>
                                                 </div>
                                             </td>
-                                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.created_at)}`}>{formatDate(material.created_at)}</td>
-                                            <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.updated_at)}`}>{formatDate(material.updated_at)}</td>
+                                            <td className={`border border-slate-200 px-4 py-5 ${DATE_CELL_CLASS} ${getCellTextClass(material.created_at)}`}>{formatDate(material.created_at)}</td>
+                                            <td className={`border border-slate-200 px-4 py-5 ${DATE_CELL_CLASS} ${getCellTextClass(material.updated_at)}`}>{formatDate(material.updated_at)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(material.cod_prov)}`}>{displayCellValue(material.cod_prov)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.proveedor)}`}>{displayCellValue(material.proveedor)}</td>
                                             <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(material.cod_producto)}`}>{displayCellValue(material.cod_producto)}</td>

@@ -8,6 +8,7 @@ import { DeleteReportModal } from "../../Modals/quotes/report/DeleteReportModal"
 import { Report } from "@/lib/types/supabase/report-types";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 
 export default function ReportTable({report, totalReport, 
@@ -23,7 +24,7 @@ export default function ReportTable({report, totalReport,
                                 {TABLE_HEADERS_REPORT.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -74,8 +75,8 @@ export default function ReportTable({report, totalReport,
                                                 </Button2Delete>
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(report.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(report.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(report.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cotizacion_info?.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(report.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{report.cliente}</td>

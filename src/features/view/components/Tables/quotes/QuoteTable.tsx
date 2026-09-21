@@ -10,6 +10,7 @@ import { DeleteQuoteModal } from "../../Modals/quotes/quote/DeleteQuoteModal";
 import { Quote } from "@/lib/types/supabase/quote-types";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function QuoteTable({quote, totalQuote, 
     onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales}: QuoteTableProps){
@@ -23,7 +24,7 @@ export default function QuoteTable({quote, totalQuote,
                                 {TABLE_HEADERS_QUOTE.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -71,8 +72,8 @@ export default function QuoteTable({quote, totalQuote,
                                                 </Button2Delete>
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(quote.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(quote.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(quote.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(quote)}</td>

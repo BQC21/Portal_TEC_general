@@ -13,6 +13,7 @@ import{
 import { ProjectTableProps } from "@/lib/types/components/General/tables";
 import { formatDemandaMensual } from "@/lib/utils/normalization";
 import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
     onUpdateProject, onDeleteProject,
@@ -30,7 +31,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                 {TABLE_HEADERS_PROJECT.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -98,8 +99,8 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
 
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(project.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(project.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(project.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}

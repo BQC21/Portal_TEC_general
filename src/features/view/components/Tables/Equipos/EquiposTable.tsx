@@ -17,6 +17,7 @@ import {
     shouldRenderModuloProp,
 } from "@/lib/utils/helpers/render/render_modals";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteEquipos }: EquiposTableProps) {
     return (
@@ -27,7 +28,7 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                         <thead className="sticky top-0 z-10 bg-slate-100">
                             <tr className="bg-slate-100 text-left">
                                 {EQUIPOS_HEADERS.map((header) => (
-                                    <th key={header} className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900">
+                                    <th key={header} className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}>
                                         {header}
                                     </th>
                                 ))}
@@ -86,8 +87,8 @@ export function EquiposTable({ equipos, totalEquipos, onUpdateEquipos, onDeleteE
                                                 </Button2Delete>
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.created_at)}`}>{formatDate(equipo.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.updated_at)}`}>{formatDate(equipo.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${DATE_CELL_CLASS} ${getCellTextClass(equipo.created_at)}`}>{formatDate(equipo.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 ${DATE_CELL_CLASS} ${getCellTextClass(equipo.updated_at)}`}>{formatDate(equipo.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${getCellTextClass(equipo.cod_prov)}`}>{displayCellValue(equipo.cod_prov)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.proveedor)}`}>{displayCellValue(equipo.proveedor)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 ${getCellTextClass(equipo.cod_producto)}`}>{displayCellValue(equipo.cod_producto)}</td>

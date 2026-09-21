@@ -8,6 +8,7 @@ import { DeleteFinantialModal } from "../../Modals/quotes/finantial/TrashFinanti
 import { Finantial } from "@/lib/types/supabase/finantial-types";
 import { displayPayback } from "@/lib/utils/helpers/render/table_display_values";
 import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function FinantialTable({finantial, totalFinantial, 
     onUpdateFinantial, onDeleteFinantial, projects_equipos}: FinantialTableProps){
@@ -21,7 +22,7 @@ export default function FinantialTable({finantial, totalFinantial,
                                 {TABLE_HEADERS_FINANTIAL.map((header) => (
                                 <th
                                     key={header}
-                                    className="border border-slate-200 px-4 py-4 text-[1.02rem] font-bold text-slate-900"
+                                    className={`border border-slate-200 px-4 py-4 text-[1.02rem] font-bold ${getDateHeaderClass(header)}`}
                                 >
                                     {header}
                                 </th>
@@ -64,8 +65,8 @@ export default function FinantialTable({finantial, totalFinantial,
                                                 </Button2Delete>
                                             </div>
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.created_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(finantial.updated_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(finantial.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(finantial.updated_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.cotizacion_info?.cod_cotizacion}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(finantial.cotizacion_info)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{finantial.planta} MWh</td>
