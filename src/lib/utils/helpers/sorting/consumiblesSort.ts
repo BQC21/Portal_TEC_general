@@ -15,6 +15,7 @@ import {
     getCableFvColor,
     getCanalizacionSortOrder,
     getConsumibleFamily,
+    getExtraCatalogConsumibles,
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -153,7 +154,25 @@ export function buildSortedConsumibles(
         }]
     })
 
-    return [...catalogRows, ...templateRows].sort((a, b) =>
+    const usedCodes = new Set([
+        ...selectedCodes,
+        ...templateRows.map((row) => row.cod_producto).filter(Boolean),
+    ])
+    const extraRows: ConsumibleTableRow[] = getExtraCatalogConsumibles(materiales, usedCodes).map((material) => ({
+        key: `catalog-extra-${material.id}`,
+        source: "catalog-extra" as const,
+        cod_producto: material.cod_producto,
+        descripcion: material.descripcion,
+        tipo_de_producto: resolveConsumibleTipo(material.descripcion, material.tipo_de_producto),
+        unidad: material.unidad ?? "",
+        cantidad: 1,
+        precio_soles: Number(material.precio_soles),
+        precio_soles_igv: Number(material.precio_soles_igv),
+        precio_dolares: Number(material.precio_dolares),
+        precio_dolares_igv: Number(material.precio_dolares_igv),
+    }))
+
+    return [...catalogRows, ...templateRows, ...extraRows].sort((a, b) =>
         compareConsumibleRows(a, b, templateOrder),
     )
 }
