@@ -100,8 +100,10 @@ class ReportFormPayload(BaseModel):
     cotizacion_info: Optional[CotizacionInfo] = None
     equipos: list[EquipoItem] = Field(default_factory=list)
     materiales: list[MaterialItem] = Field(default_factory=list)
+    show_equipments: bool = False
     show_electrical_materials: bool = False
     show_canalization_materials: bool = False
+    show_mo: bool = False
     hidden_mo_ids: list[str] = Field(default_factory=list)
     puesta_en_marcha_items: Optional[list[PuestaEnMarchaItem]] = None
 
@@ -156,8 +158,10 @@ class ReportPdfData(BaseModel):
     equipos: list[PdfLineItem] = Field(default_factory=list)
     materiales: list[PdfLineItem] = Field(default_factory=list)
     canalizacion: list[PdfLineItem] = Field(default_factory=list)
+    show_equipments: bool = False
     show_electrical_materials: bool = False
     show_canalization_materials: bool = False
+    show_mo: bool = False
     puesta_en_marcha: list[str] = Field(default_factory=list)
 
     filename: str = "cotizacion.pdf"

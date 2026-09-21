@@ -322,19 +322,34 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
     )
 
     idx = 1
-    equipo_rows: list[list[str]] = []
-    for item in data.equipos:
-        equipo_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad])
-        idx += 1
-    story.append(
-        _items_table(
-            ["#", "DESCRIPCIÓN - EQUIPOS", "UNIDAD", "CANTIDAD"],
-            equipo_rows,
-            [1 * cm, 11 * cm, 3 * cm, 3 * cm],
-        )
-    )
-    story.append(Spacer(1, 0.2 * cm))
 
+    # Condicionar el display de equipos principales
+    if data.show_equipments:
+
+        equipo_rows: list[list[str]] = []
+        for item in data.equipos:
+            equipo_rows.append([str(idx), item.descripcion, item.unidad, item.cantidad])
+            idx += 1
+        story.append(
+            _items_table(
+                ["#", "DESCRIPCIÓN - EQUIPOS", "UNIDAD", "CANTIDAD"],
+                equipo_rows,
+                [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+            )
+        )
+        story.append(Spacer(1, 0.2 * cm))
+    else:
+        story.append(
+            _items_table(
+                ["#", "DESCRIPCIÓN - EQUIPOS", "UNIDAD"],
+                [[str(idx), "Equipos", "GLB"]],
+                [1 * cm, 11 * cm, 3 * cm],
+            )
+        )
+        idx += 1    
+        story.append(Spacer(1, 0.2 * cm))
+
+    # Condicionar el display de materiales eléctricos
     if data.show_electrical_materials:
         electrical_rows = [
             [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
@@ -361,6 +376,7 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         idx += 1
         story.append(Spacer(1, 0.1 * cm))
 
+    # Condicionar el display de materiales de canalización
     if data.show_canalization_materials:
         canal_rows = [
             [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
@@ -377,22 +393,36 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
             )
             story.append(Spacer(1, 0.1 * cm))
 
+
+    # Condicionar el display de puesta en marcha
     story.append(
-        _section_amount_row(
-            "PUESTA EN MARCHA",
-            _money(data.monto_inst, data.currency_symbol),
-            styles,
+            _section_amount_row(
+                "PUESTA EN MARCHA",
+                _money(data.monto_inst, data.currency_symbol),
+                styles,
+            )
         )
-    )
-    mo_rows = [[str(idx + i), desc] for i, desc in enumerate(data.puesta_en_marcha)]
-    story.append(
-        _items_table(
-            ["#", "DESCRIPCIÓN - PUESTA EN MARCHA"],
-            mo_rows,
-            [1.5 * cm, 16.5 * cm],
+    if data.show_mo:
+        mo_rows = [[str(idx + i), desc] for i, desc in enumerate(data.puesta_en_marcha)]
+        story.append(
+            _items_table(
+                ["#", "DESCRIPCIÓN - PUESTA EN MARCHA"],
+                mo_rows,
+                [1.5 * cm, 16.5 * cm],
+            )
         )
-    )
-    story.append(Spacer(1, 0.1 * cm))
+        story.append(Spacer(1, 0.1 * cm))
+    else:
+        story.append(
+            _items_table(
+                ["#", "DESCRIPCIÓN - PUESTA EN MARCHA"],
+                [[str(idx), "Puesta en Marcha", "GLB"]],
+                [1.5 * cm, 16.5 * cm],
+            )
+        )
+        idx += 1
+        story.append(Spacer(1, 0.1 * cm))   
+    
     story.append(_totals_table(data, styles))
     story.append(Spacer(1, 0.1 * cm))
     story.append(_conditions_table(data, styles))
