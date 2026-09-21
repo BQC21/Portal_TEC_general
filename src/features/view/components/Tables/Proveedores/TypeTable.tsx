@@ -5,6 +5,7 @@ import { Button2Delete } from "../../Buttons/shared/button2Delete";
 import EditTypeModal from "../../Modals/Proveedores/tipo/EditTypeModal";
 import { DeleteTypeModal } from "../../Modals/Proveedores/tipo/DeleteTypeModal";
 import { Type } from "@/lib/types/supabase/type-types";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export default function TypeTable({ type, 
     totalType, 
@@ -40,7 +41,8 @@ export default function TypeTable({ type,
                                                 .filter(Boolean)
                                                 .join(", ")}
                                         </td>
-            
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(type.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(type.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Actualizar tipo de producto" label="Actualizar Tipo de producto">

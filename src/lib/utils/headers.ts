@@ -71,6 +71,9 @@ export const TABLE_HEADERS_SUPPLIER = [
     "Nombre del contacto",
     "Teléfono",
     "Categoría",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     "Acciones",
 ]
 
@@ -78,6 +81,9 @@ export const TABLE_HEADERS_BRAND = [
     "Nombre de la marca",
     "Categoría",
     "Proveedores asociados",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     "Acciones",
 ]
 
@@ -85,6 +91,9 @@ export const TABLE_HEADERS_TYPE = [
     "Nombre del tipo de producto",
     "Categoría",
     "Marcas asociadas",
+    // eventos
+    "Fecha creada",
+    "Fecha actualizada",
     "Acciones",
 ]
 

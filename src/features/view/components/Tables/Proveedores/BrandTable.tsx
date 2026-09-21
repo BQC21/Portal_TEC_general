@@ -5,6 +5,7 @@ import { Button2Delete } from "../../Buttons/shared/button2Delete";
 import EditBrandModal from "../../Modals/Proveedores/marcas/EditBrandModal";
 import { DeleteBrandModal } from "../../Modals/Proveedores/marcas/DeleteBrandModal";
 import { Brand } from "@/lib/types/supabase/brand.types";
+import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 
 export default function BrandTable({ brand, 
     totalBrand, 
@@ -40,7 +41,8 @@ export default function BrandTable({ brand,
                                                 .filter(Boolean)
                                                 .join(", ")}
                                         </td>
-            
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(brand.created_at)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatDate(brand.updated_at)}</td>
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Actualizar marca" label="Actualizar Marca">
