@@ -24,6 +24,7 @@ import {
     SPACK_SIZES,
     TERMINAL_OJAL_MM2,
     TERMINAL_PIN_MM2,
+    CONSUMIBLE_EXTRA_ADD_LABEL,
 } from "@/lib/utils/consts/consumibles"
 import { formatProductOptionLabel } from "@/lib/utils/helpers/project_modals/productOptions"
 
@@ -44,8 +45,7 @@ export function isExtraConsumibleFamily(
 export function isAddableConsumibleFamily(
     family: ConsumibleFamily | null,
 ): family is ConsumibleAddableFamily {
-    if (isFixedConsumibleFamily(family)) return false
-    return family === "itm_ac" || isExtraConsumibleFamily(family)
+    return family !== null && family in CONSUMIBLE_EXTRA_ADD_LABEL
 }
 
 export function isFixedConsumibleFamily(

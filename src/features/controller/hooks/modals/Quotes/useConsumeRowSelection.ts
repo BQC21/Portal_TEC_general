@@ -365,7 +365,7 @@ export function useConsumeRowSelection({
         return visibleCount === 0 && hasUnusedExtraFamilyItems(family)
     }
 
-    function onAddExtraFamily(family: ConsumibleAddableFamily) {
+    function onAddExtraFamily(family: ConsumibleAddableFamily, color?: CableFvColor | null) {
         const usedCodes = new Set(
             displayRows
                 .filter((row) => row.family === family && row.cod_producto)
@@ -381,7 +381,7 @@ export function useConsumeRowSelection({
             }
         }
 
-        const nextMaterial = getDefaultMaterialForFamily(materiales, family, null, usedCodes)
+        const nextMaterial = getDefaultMaterialForFamily(materiales, family, color, usedCodes)
         if (nextMaterial) {
             onAddMaterial(nextMaterial)
             return

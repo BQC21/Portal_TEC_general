@@ -45,7 +45,7 @@ export type ConsumibleExtraFamily =
     | "fusible"
 
 export type ConsumibleRestorableFamily = "fusible"
-export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
+export type ConsumibleAddableFamily = Exclude<ConsumibleSelectableFamily, "mc4">
 export type CableFvColor = "rojo" | "negro" | "verde"
 export type FixedConsumibleFamily = "mc4"
 

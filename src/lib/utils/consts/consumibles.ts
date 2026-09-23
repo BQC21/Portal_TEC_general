@@ -131,9 +131,25 @@ export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
 
 export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
     itm_ac: "Agregar otra protección ITM AC",
+    spd: "Agregar otro voltaje SPD",
+    itm_dc: "Agregar otra protección ITM DC",
+    conduit_flexible: "Agregar otro conduit flexible",
+    conduit: "Agregar otro conduit",
+    cable_ac: "Agregar otro cable AC",
+    cable_fv: "Agregar otro cable FV",
     cable_tierra: "Agregar otro cable de tierra",
     tablero: "Agregar otro tablero",
     canaleta: "Agregar otra canaleta",
+    bornera_linea: "Agregar otra bornera para línea",
+    terminal_pin_100: "Agregar otro terminal tipo pin 100to",
+    terminal_ojal_100: "Agregar otro terminal tipo ojal 100to",
+    terminal_ojal: "Agregar otro terminal tipo ojal",
+    terminal_pin: "Agregar otro terminal tipo pin",
+    tirafon: "Agregar otro tirafon",
+    precintos: "Agregar otro precinto",
+    tornillos_autorroscantes_100: "Agregar otro tornillo autorroscante 100to",
+    tornillo_autorroscante: "Agregar otro tornillo autorroscante",
+    tornillo_spack: "Agregar otro tornillo Spack",
     fusible: "Agregar otro fusible + portafusible",
 }
 
