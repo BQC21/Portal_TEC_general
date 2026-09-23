@@ -195,6 +195,16 @@ export const GROUPED_CONSUMIBLE_FAMILIES = new Set<ConsumibleFamily>([
     "canaleta",
     "fusible",
     "mc4",
+    "bornera_linea",
+    "terminal_pin_100",
+    "terminal_ojal_100",
+    "terminal_ojal",
+    "terminal_pin",
+    "tirafon",
+    "precintos",
+    "tornillos_autorroscantes_100",
+    "tornillo_autorroscante",
+    "tornillo_spack",
 ])
 
 export const CONSUMIBLE_FAMILIES_WITH_CODE_LABEL = new Set<ConsumibleSelectableFamily>([

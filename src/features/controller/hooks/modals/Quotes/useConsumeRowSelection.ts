@@ -59,16 +59,19 @@ export function useConsumeRowSelection({
     )
 
     const displayRows = useMemo<ConsumibleDisplayRow[]>(() => {
-        const existingRows: ConsumibleDisplayRow[] = sortedMateriales.map((row) => {
+        const existingRows: ConsumibleDisplayRow[] = sortedMateriales.flatMap((row) => {
             const family = getConsumibleFamily(row.descripcion)
+            if (row.source === "catalog-extra" && isSelectableConsumibleFamily(family)) {
+                return []
+            }
             const cableColor = family === "cable_fv" ? getCableFvColor(row.descripcion) : null
-            return {
+            return [{
                 ...row,
                 family,
                 cableColor,
                 tipo_de_producto: family ? CONSUMIBLE_FAMILY_TIPO[family] : row.tipo_de_producto,
                 selectable: isSelectableConsumibleFamily(family) && row.source !== "catalog-extra",
-            }
+            }]
         })
 
         const presentFamilies = new Set(

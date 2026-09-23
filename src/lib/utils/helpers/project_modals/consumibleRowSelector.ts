@@ -340,6 +340,10 @@ export function getExtraCatalogConsumibles(
     return materiales.filter((material) => {
         if (!material.cod_producto || usedCodes.has(material.cod_producto)) return false
         if (!isQuoteConsumibleMaterial(material)) return false
-        return !usesGroupedConsumibleSelector(getConsumibleFamily(material.descripcion))
+        const family = getConsumibleFamily(material.descripcion)
+        if (isSelectableConsumibleFamily(family) || usesGroupedConsumibleSelector(family)) {
+            return false
+        }
+        return true
     })
 }
