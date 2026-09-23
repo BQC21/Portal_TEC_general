@@ -19,6 +19,7 @@ export const consumible_template = [
     { id: 15, cod_producto: "MPROJ00001", descripcion: "Cable AC 3x10 mm2", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
     { id: 16, cod_producto: "MELSI00001", descripcion: "Cable FV 4 mm2 Rojo", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
     { id: 17, cod_producto: "MELSI00002", descripcion: "Cable FV 4 mm2 Negro", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
+    { id: 17, cod_producto: "MAUTO00008", descripcion: "Cable FV 35 mm2 Verde", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
     { id: 18, cod_producto: "MCAVA00022", descripcion: "Cable de tierra 4 mm2", tipo_de_producto: "CANALIZACIÓN", cantidad: 1 },
     // CONSUMIBLE (verde)
     { id: 19, cod_producto: "MPROJ00010", descripcion: "Riel DIN x 2 m", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },

@@ -46,7 +46,7 @@ export type ConsumibleExtraFamily =
 
 export type ConsumibleRestorableFamily = "fusible"
 export type ConsumibleAddableFamily = ConsumibleExtraFamily | "itm_ac"
-export type CableFvColor = "rojo" | "negro"
+export type CableFvColor = "rojo" | "negro" | "verde"
 export type FixedConsumibleFamily = "mc4"
 
 export type ConsumibleGroupKey = "proteccion" | "canalizacion" | "consumible"

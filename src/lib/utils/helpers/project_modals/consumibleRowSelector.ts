@@ -176,6 +176,7 @@ export function getCableFvColor(descripcion: string): CableFvColor | null {
     const description = normalizeConsumibleText(descripcion)
     if (description.includes("rojo")) return "rojo"
     if (description.includes("negro")) return "negro"
+    if (description.includes("verde")) return "verde"
     return null
 }
 

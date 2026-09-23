@@ -139,6 +139,7 @@ export function useConsumeRowSelection({
             if (family === "cable_fv") {
                 if (!hasCableFvColor("rojo")) pushPlaceholder(family, "rojo")
                 if (!hasCableFvColor("negro")) pushPlaceholder(family, "negro")
+                if (!hasCableFvColor("verde")) pushPlaceholder(family, "verde")
                 continue
             }
 
@@ -274,7 +275,7 @@ export function useConsumeRowSelection({
     }
 
     function syncCableFvDimension(dimension: string) {
-        ;(["rojo", "negro"] as const).forEach((color) => {
+        ;(["rojo", "negro", "verde"] as const).forEach((color) => {
             const linkedMaterial = findCableFvMaterial(materiales, dimension, color)
             if (!linkedMaterial) return
             applyToFamilyRows("cable_fv", linkedMaterial, color)

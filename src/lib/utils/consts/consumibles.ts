@@ -126,6 +126,7 @@ export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectable
 export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
     rojo: "MELSI00001",
     negro: "MELSI00002",
+    verde: "MAUTO00008",
 }
 
 export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string> = {
