@@ -9,6 +9,9 @@ import { useProjects } from "@/features/application/hooks/services/useRealtimePr
 import { useQuotes } from "@/features/application/hooks/services/useRealtimeQuotes";
 import { useReports } from "@/features/application/hooks/services/useRealtimeReports";
 import { useZone } from "@/features/application/hooks/services/useRealtimeZonas";
+import { useProveedores } from "@/features/application/hooks/services/useRealtimeProveedores";
+import { useBrands } from "@/features/application/hooks/services/useRealtimeMarcas";
+import { useTypes } from "@/features/application/hooks/services/useRealtimeTipos";
 
 export default function DashboardPage() {
 
@@ -17,6 +20,9 @@ export default function DashboardPage() {
     // ------
 
     // const { products } = useProducts();
+    const { supplier } = useProveedores();
+    const { brand } = useBrands();
+    const { type } = useTypes();
     const { equipos } = useEquipos();
     const { materiales } = useMateriales();
     const { projects } = useProjects();
@@ -36,21 +42,47 @@ export default function DashboardPage() {
         //     accent: "bg-blue-50 text-blue-700",
         //     icon: "▣",
         // },
+
+        // COLUMNA 1
         {
-            title: "Equipos eléctricos Activos",
+            title: "Proveedores enlistados",
+            value: supplier.length,
+            accent: "bg-orange-50 text-orange-700",
+            icon: "+",
+            bg_color: "#FC6A3C"
+        },
+        {
+            title: "Marcas enlistados",
+            value: brand.length,
+            accent: "bg-orange-50 text-orange-700",
+            icon: "+",
+            bg_color: "#FC6A3C"
+        },
+        {
+            title: "Tipos de producto enlistados",
+            value: type.length,
+            accent: "bg-orange-50 text-orange-700",
+            icon: "+",
+            bg_color: "#FC6A3C"
+        },
+
+        // COLUMNA 2
+        {
+            title: "Equipos eléctricos enlistados",
             value: equipos.length,
             accent: "bg-blue-50 text-blue-700",
             icon: "▣",
             bg_color: "#58C2FE"
         },
         {
-            title: "Materiales eléctricos Activos",
+            title: "Materiales eléctricos enlistados",
             value: materiales.length,
             accent: "bg-blue-50 text-blue-700",
             icon: "▣",
             bg_color: "#58C2FE"
         },
 
+        // COLUMNA 3
         {
             title: "Dimensionamientos enlistados",
             value: projects.length,
@@ -65,6 +97,8 @@ export default function DashboardPage() {
             icon: "◈",
             bg_color: "#74FF88"
         },
+
+        // COLUMNA 4
         {
             title: "Cotizaciones enlistadas",
             value: quotes.length,
@@ -107,7 +141,7 @@ export default function DashboardPage() {
             subtitle="Bienvenido al portal corporativo de TEC Energy Solutions"
             activePath="/dashboard"
         >
-            <section className="grid gap-6 lg:grid-cols-3">
+            <section className="grid gap-6 lg:grid-cols-4">
                 {metricColumns.map((column) => (
                     <div key={column.icon} className="flex flex-col gap-6">
                         {column.metrics.map((metric) => (
