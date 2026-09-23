@@ -121,6 +121,7 @@ export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectable
     tablero: "MCOIN00003",
     canaleta: "MPROJ00006",
     mc4: "MTISO00005",
+    tirafon: "MCHOQ00008",
 }
 
 export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
@@ -169,6 +170,11 @@ export const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
     "tablero",
     "canaleta",
     "mc4",
+    "tirafon",
+])
+
+export const SINGLE_DEFAULT_SELECTOR_FAMILIES = new Set<ConsumibleSelectableFamily>([
+    "tirafon",
 ])
 
 export const TERMINAL_PIN_MM2 = new Set(["10", "16", "25", "35"])

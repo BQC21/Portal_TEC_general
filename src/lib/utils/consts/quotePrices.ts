@@ -38,10 +38,8 @@ export const consumible_template = [
     { id: 32, cod_producto: "MCHOQ00004", descripcion: "Tarugo 3/8\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 33, cod_producto: "MCHOQ00005", descripcion: "Tarugo 1/2\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 34, cod_producto: "MCHOQ00006", descripcion: "Tarugo 5/8\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
+    // Un solo tirafón inicial; el resto se elige en el selector o con +.
     { id: 35, cod_producto: "MCHOQ00008", descripcion: "Tirafon 5/16\" x2\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 36, cod_producto: "MCHOQ00009", descripcion: "Tirafon 3/8\" x2\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 37, cod_producto: "MCHOQ00010", descripcion: "Tirafon 1/4\" x3\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 38, cod_producto: "MCHOQ00011", descripcion: "Tirafon 1/4\" x4\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 39, cod_producto: "MCHOQ00012", descripcion: "100to Precintos 100 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 40, cod_producto: "MPROJ00012", descripcion: "Sujeta Precintos", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 41, cod_producto: "MCHOQ00016", descripcion: "Tornillo Spack 4x30", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },

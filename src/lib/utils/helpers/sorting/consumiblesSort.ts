@@ -4,13 +4,19 @@ import {
     ConsumibleGroupKey,
     ConsumibleGroupMeta,
     ConsumibleRestorableFamily,
+    ConsumibleSelectableFamily,
     ConsumibleSortableRow,
     ConsumibleTableRow,
 } from "@/lib/types/components/Quotes/consumible_tableRow"
 import { ConsumeItem } from "@/lib/types/components/Quotes/manual_resources"
 import { Materiales } from "@/lib/types/supabase/materiales-types"
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join"
-import { CONSUMIBLE_FAMILY_TIPO, RESTORABLE_CONSUMIBLE_FAMILIES } from "@/lib/utils/consts/consumibles"
+import {
+    CONSUMIBLE_FAMILY_DEFAULT_CODE,
+    CONSUMIBLE_FAMILY_TIPO,
+    RESTORABLE_CONSUMIBLE_FAMILIES,
+    SINGLE_DEFAULT_SELECTOR_FAMILIES,
+} from "@/lib/utils/consts/consumibles"
 import {
     getCableFvColor,
     getCanalizacionSortOrder,
@@ -130,7 +136,7 @@ export function buildSortedConsumibles(
         precio_dolares_igv: Number(item.material_info?.precio_dolares_igv),
     }))
 
-    const templateRows: ConsumibleTableRow[] = items.flatMap((item, index) => {
+    const templateRows: ConsumibleTableRow[] = keepSingleDefaultSelectorRows(items.flatMap((item, index) => {
         if (selectedCodes.has(item.cod_producto)) return []
 
         const catalogMaterial = materialesByCode.get(item.cod_producto)
@@ -152,7 +158,7 @@ export function buildSortedConsumibles(
             precio_dolares: Number(catalogMaterial?.precio_dolares ?? 0),
             precio_dolares_igv: Number(catalogMaterial?.precio_dolares_igv ?? 0),
         }]
-    })
+    }))
 
     const usedCodes = new Set([
         ...selectedCodes,
@@ -175,6 +181,37 @@ export function buildSortedConsumibles(
     return [...catalogRows, ...templateRows, ...extraRows].sort((a, b) =>
         compareConsumibleRows(a, b, templateOrder),
     )
+}
+
+function isSingleDefaultSelectorFamily(
+    family: ConsumibleFamily | null,
+): family is ConsumibleSelectableFamily {
+    return family != null && SINGLE_DEFAULT_SELECTOR_FAMILIES.has(family as ConsumibleSelectableFamily)
+}
+
+function keepSingleDefaultSelectorRows(rows: ConsumibleTableRow[]): ConsumibleTableRow[] {
+    const keptByFamily = new Map<string, ConsumibleTableRow>()
+    const rest: ConsumibleTableRow[] = []
+
+    for (const row of rows) {
+        const family = getConsumibleFamily(row.descripcion)
+        if (!isSingleDefaultSelectorFamily(family)) {
+            rest.push(row)
+            continue
+        }
+
+        const current = keptByFamily.get(family)
+        const defaultCode = CONSUMIBLE_FAMILY_DEFAULT_CODE[family]
+        if (!current) {
+            keptByFamily.set(family, row)
+            continue
+        }
+        if (defaultCode && row.cod_producto === defaultCode && current.cod_producto !== defaultCode) {
+            keptByFamily.set(family, row)
+        }
+    }
+
+    return [...rest, ...keptByFamily.values()]
 }
 
 export function restoreFamiliesForGroup(groupKey: ConsumibleGroupKey): ConsumibleRestorableFamily[] {
