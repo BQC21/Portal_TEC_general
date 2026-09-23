@@ -1,10 +1,10 @@
-import { AddProductSelectField } from "../../../components/Form_fields/AddSelectField";
-import { AddProductSearchableSelectField } from "../../../components/Form_fields/AddSearchableSelectField";
-import { AddProductTextField } from "../../../components/Form_fields/AddTextField";
-import { AddProductUrlField } from "../../../components/Form_fields/AddUrlField";
+import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
+import { AddProductSearchableSelectField } from "../../components/Form_fields/AddSearchableSelectField";
+import { AddProductTextField } from "../../components/Form_fields/AddTextField";
+import { AddProductUrlField } from "../../components/Form_fields/AddUrlField";
 import { STATUS_PROJECT_OPTIONS } from "@/lib/utils/options";
 import { INSTALL_TYPE_OPTIONS } from "@/lib/utils/options";
-import { AddProductReadonlyField } from "../../../components/Form_fields/AddReadonlyField";
+import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
 import { ZoneSelection } from "@/features/application/hooks/modals/Sizing/useZoneSelection";
 import { General_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 

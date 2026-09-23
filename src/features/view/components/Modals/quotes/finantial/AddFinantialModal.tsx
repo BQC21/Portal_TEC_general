@@ -9,10 +9,10 @@ import { QuoteSelection } from "@/features/application/hooks/modals/Reports/useQ
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
 import { useQuotes } from "@/features/application/hooks/services/useRealtimeQuotes";
 import { useFinantials } from "@/features/application/hooks/services/useRealtimeFinantial";
-import { FinantialData } from "@/features/view/sub_components/M3/refactor/finantial/finantial_data";
-import { FinantialDetails } from "@/features/view/sub_components/M3/refactor/finantial/finantial_details";
-import { EnergyTable } from "@/features/view/sub_components/M3/refactor/finantial/energy_table";
-import { FlowTable } from "@/features/view/sub_components/M3/refactor/finantial/flow_table";
+import { FinantialData } from "@/features/view/refactor/M3/refactor/finantial/finantial_data";
+import { FinantialDetails } from "@/features/view/refactor/M3/refactor/finantial/finantial_details";
+import { EnergyTable } from "@/features/view/refactor/M3/refactor/finantial/energy_table";
+import { FlowTable } from "@/features/view/refactor/M3/refactor/finantial/flow_table";
 import { useFinantialComputes } from "@/features/application/hooks/modals/Finantial/useFinantialComputes";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import Button2PDF from "../../../Buttons/shared/button2PDF";

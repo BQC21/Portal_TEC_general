@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AddProductNumberField } from "../../../components/Form_fields/AddNumberField";
+import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
 import { cantidadModuloFVEnTabla, unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";

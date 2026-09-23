@@ -11,9 +11,9 @@ import {
     applySelectedBrandsToType,
     selectedBrandsFromType,
 } from "@/lib/utils/helpers/project_modals/brandOptions";
-import { General_info_Type } from "@/features/view/sub_components/M1/refactor_proveedores/General_info_Type";
-import { Selectors_Type } from "@/features/view/sub_components/M1/refactor_proveedores/Selectors_Type";
-import { Tables_Type } from "@/features/view/sub_components/M1/refactor_proveedores/Tables_Type";
+import { General_info_Type } from "@/features/view/refactor/M1/refactor_proveedores/General_info_Type";
+import { Selectors_Type } from "@/features/view/refactor/M1/refactor_proveedores/Selectors_Type";
+import { Tables_Type } from "@/features/view/refactor/M1/refactor_proveedores/Tables_Type";
 
 export default function EditTypeModal({ existingType, onUpdateType, onClose }: EditTypeModalProps) {
     const { brand } = useBrands();

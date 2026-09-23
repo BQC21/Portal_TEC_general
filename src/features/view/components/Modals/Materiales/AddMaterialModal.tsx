@@ -20,9 +20,9 @@ import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { useSuplierSelection } from "@/features/application/hooks/modals/materiales/useSupplierSelection";
 import { useBrandSelection } from "@/features/application/hooks/modals/materiales/useBrandSelection";
 import { useTypeSelection } from "@/features/application/hooks/modals/materiales/useTypeSelection";
-import { Data_info_M1 } from "@/features/view/sub_components/M1/Data_info_M1";
-import { General_info_M1_MAT } from "@/features/view/sub_components/M1/refactor_materiales/General_info_M1";
-import { Price_info_M1 } from "@/features/view/sub_components/M1/Price_info_M1";
+import { Data_info_M1 } from "@/features/view/refactor/M1/Data_info_M1";
+import { General_info_M1_MAT } from "@/features/view/refactor/M1/refactor_materiales/General_info_M1";
+import { Price_info_M1 } from "@/features/view/refactor/M1/Price_info_M1";
 import { getCatalogCascadeOptions } from "@/lib/utils/helpers/project_modals/catalogCascade";
 
 export function AddMaterialModal({

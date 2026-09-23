@@ -8,14 +8,14 @@ import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
 import { ProjectSelection } from "@/features/application/hooks/modals/Quotes/useProjectSelection";
-import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
+import { SummaryCostTable } from "@/features/view/refactor/M3/Tables/quotes/tables/SummaryCostTable";
 import { useCostComputes } from "@/features/application/hooks/modals/Quotes/useCostComputes";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { ManageLocalCosts } from "@/features/application/hooks/modals/Quotes/useManageLocalCosts";
-import { Product_selected } from "@/features/view/sub_components/M3/refactor/Product_selected";
-import { ResourcesTables } from "@/features/view/sub_components/M3/refactor/ResourcesTables";
-import { ViaticosTables } from "@/features/view/sub_components/M3/refactor/ViaticosTables";
+import { Product_selected } from "@/features/view/refactor/M3/refactor/quotes/Product_selected";
+import { ResourcesTables } from "@/features/view/refactor/M3/refactor/quotes/ResourcesTables";
+import { ViaticosTables } from "@/features/view/refactor/M3/refactor/quotes/ViaticosTables";
 import { useQuoteSelectedProducts } from "@/features/application/hooks/modals/Quotes/useQuoteSelectedProducts";
 import { ExcelResizableTables } from "@/features/view/components/Shells/ExcelResizableTables";
 import {
@@ -24,7 +24,7 @@ import {
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
-import { UnitedQuotesPanel } from "@/features/view/sub_components/M3/refactor/UnitedQuotesPanel";
+import { UnitedQuotesPanel } from "@/features/view/refactor/M3/refactor/quotes/UnitedQuotesPanel";
 import { useUnitedQuoteAggregation } from "@/features/application/hooks/modals/Quotes/useUnitedQuoteAggregation";
 import {
     eligibleQuotesForUnion,

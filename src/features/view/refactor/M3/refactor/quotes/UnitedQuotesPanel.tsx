@@ -3,9 +3,9 @@
 import { AddProductTextField } from "@/features/view/components/Form_fields/AddTextField";
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField";
 import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField";
-import { SummaryCostTable } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable";
-import { SummaryCostTable1 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable1";
-import { SummaryCostTable2 } from "@/features/view/sub_components/M3/Tables/quotes/tables/SummaryCostTable2";
+import { SummaryCostTable } from "@/features/view/refactor/M3/Tables/quotes/tables/SummaryCostTable";
+import { SummaryCostTable1 } from "@/features/view/refactor/M3/Tables/quotes/tables/SummaryCostTable1";
+import { SummaryCostTable2 } from "@/features/view/refactor/M3/Tables/quotes/tables/SummaryCostTable2";
 import { quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import {
     MAX_UNITED_QUOTES,

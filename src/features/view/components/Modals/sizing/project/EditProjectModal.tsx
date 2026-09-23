@@ -31,11 +31,11 @@ import { useSyncQuantities } from "@/features/application/hooks/modals/Sizing/us
 import { useSelectionHandlers } from "@/features/application/hooks/modals/Sizing/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/render/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/consts/rows";
-import { General_info_M2 } from "@/features/view/sub_components/M2/refactor/General_info_M2";
-import { Tables_M2 } from "@/features/view/sub_components/M2/refactor/Tables_M2";
-import { Data_info_M2 } from "@/features/view/sub_components/M2/refactor/Data_info_M2";
-import { Selectors_M2 } from "@/features/view/sub_components/M2/refactor/Selectors_M2";
-import { Formulas_M2 } from "@/features/view/sub_components/M2/refactor/formulas_M2";
+import { General_info_M2 } from "@/features/view/refactor/M2/General_info_M2";
+import { Tables_M2 } from "@/features/view/refactor/M2/Tables_M2";
+import { Data_info_M2 } from "@/features/view/refactor/M2/Data_info_M2";
+import { Selectors_M2 } from "@/features/view/refactor/M2/Selectors_M2";
+import { Formulas_M2 } from "@/features/view/refactor/M2/formulas_M2";
 
 export default function EditProjectModal({
     existingProject,

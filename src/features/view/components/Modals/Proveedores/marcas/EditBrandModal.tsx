@@ -11,9 +11,9 @@ import {
     applySelectedSuppliersToBrand,
     selectedSuppliersFromBrand,
 } from "@/lib/utils/helpers/project_modals/supplierOptions";
-import { General_info_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/General_info_Brand";
-import { Selectors_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Selectors_Brand";
-import { Tables_Brand } from "@/features/view/sub_components/M1/refactor_proveedores/Tables_Brand";
+import { General_info_Brand } from "@/features/view/refactor/M1/refactor_proveedores/General_info_Brand";
+import { Selectors_Brand } from "@/features/view/refactor/M1/refactor_proveedores/Selectors_Brand";
+import { Tables_Brand } from "@/features/view/refactor/M1/refactor_proveedores/Tables_Brand";
 
 export default function EditBrandModal({ existingBrand, onUpdateBrand, onClose }: EditBrandModalProps) {
     const { supplier } = useProveedores();
