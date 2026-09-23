@@ -7,14 +7,14 @@ import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
 import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
 
-import { useEquipoMutations, useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos";
+import { useEquipoMutations, useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos";
 
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
 import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
-import { useCatalogCascadeFilters } from "@/features/application/hooks/filters/useCatalogCascadeFilters";
-import { useDateSorting } from "@/features/application/hooks/filters/useDateSorting";
+import { useCatalogCascadeFilters } from "@/features/controller/hooks/filters/useCatalogCascadeFilters";
+import { useDateSorting } from "@/features/controller/hooks/filters/useDateSorting";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";

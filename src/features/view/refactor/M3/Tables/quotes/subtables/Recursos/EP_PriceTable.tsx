@@ -5,7 +5,7 @@ import { AddProductNumberField } from "@/features/view/components/Form_fields/Ad
 import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
-import { useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos"
+import { useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos"
 import { formatCurrency } from "@/lib/utils/normalization"
 import { EP_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"

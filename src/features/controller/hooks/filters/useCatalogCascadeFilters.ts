@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { useBrands } from "@/features/application/hooks/services/useRealtimeMarcas";
-import { useProveedores } from "@/features/application/hooks/services/useRealtimeProveedores";
-import { useTypes } from "@/features/application/hooks/services/useRealtimeTipos";
+import { useBrands } from "@/features/controller/hooks/services/useRealtimeMarcas";
+import { useProveedores } from "@/features/controller/hooks/services/useRealtimeProveedores";
+import { useTypes } from "@/features/controller/hooks/services/useRealtimeTipos";
 import { CascadeFilterValues, FilterableItem } from "@/lib/types/components/Filter/cascadeFilter";
 import { ProductCategoryFilter } from "@/lib/types/components/sub_components/module_render";
 import { FilterKey } from "@/lib/types/components/General/options";

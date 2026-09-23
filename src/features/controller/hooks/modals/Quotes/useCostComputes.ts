@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales";
+import { useMateriales } from "@/features/controller/hooks/services/useRealtimeMateriales";
 import { computeQuoteCostTotals } from "@/lib/utils/helpers/computes/quote_cost_totals";
 
 export function useCostComputes(

@@ -2,8 +2,8 @@
 // ---- Operaciones CRUD ----
 // --------------------------
 
-import { mapQuoteToSupabaseRow, mapSupabaseRowtoQuote } from "@/features/application/mapping/mapping_quotes";
-import { createClient } from "@/features/application/supabase/client";
+import { mapQuoteToSupabaseRow, mapSupabaseRowtoQuote } from "@/features/controller/mapping/mapping_quotes";
+import { createClient } from "@/features/controller/supabase/client";
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { getQuoteCode } from "@/lib/utils/helpers/manage_info/getQuoteCode";
 import { QUOTE_TABLE } from "@/lib/utils/namingTolerance";

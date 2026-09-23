@@ -18,7 +18,7 @@ import type {
 	UseEquiposResult,
 } from "@/lib/types/supabase/equipos-types";
 
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { getProveedorById } from "@/features/controller/services/proveedoresQueries";
 
 const supabase = createClient();

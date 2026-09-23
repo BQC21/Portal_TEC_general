@@ -1,6 +1,6 @@
 import { updateQuoteNombreCotizacion } from "@/features/controller/services/QuoteQueries";
-import { mapReportToSupabaseRow, mapSupabaseRowtoReport } from "@/features/application/mapping/mapping_reports";
-import { createClient } from "@/features/application/supabase/client";
+import { mapReportToSupabaseRow, mapSupabaseRowtoReport } from "@/features/controller/mapping/mapping_reports";
+import { createClient } from "@/features/controller/supabase/client";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { REPORT_TABLE } from "@/lib/utils/namingTolerance";

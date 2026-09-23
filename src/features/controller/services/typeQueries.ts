@@ -1,6 +1,6 @@
-import { mapSupabaseRowToBrand } from "@/features/application/mapping/mapping_marcas";
-import { hydrateTypeBrands, mapSupabaseRowToType, mapTypeToSupabaseRow } from "@/features/application/mapping/mapping_type";
-import { createClient } from "@/features/application/supabase/client";
+import { mapSupabaseRowToBrand } from "@/features/controller/mapping/mapping_marcas";
+import { hydrateTypeBrands, mapSupabaseRowToType, mapTypeToSupabaseRow } from "@/features/controller/mapping/mapping_type";
+import { createClient } from "@/features/controller/supabase/client";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { BRAND_TABLE, TYPE_TABLE } from "@/lib/utils/namingTolerance";
 

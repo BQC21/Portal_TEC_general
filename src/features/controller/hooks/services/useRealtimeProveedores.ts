@@ -1,7 +1,7 @@
 "use client";
 
 import { createProveedor, deleteProveedor, getProveedor, getProveedorById, updateProveedor } from "@/features/controller/services/proveedoresQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Supplier, SupplierFormData, UseSupplierMutationsResult, UseSupplierResult } from "@/lib/types/supabase/supplier-types";
 import { useCallback, useEffect, useState } from "react";
 

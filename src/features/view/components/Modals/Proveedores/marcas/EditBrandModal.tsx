@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { EditBrandModalProps } from "@/lib/types/components/General/modals";
-import { createBrandFormStateFromBrand } from "@/features/application/mapping/mapping_marcas";
+import { createBrandFormStateFromBrand } from "@/features/controller/mapping/mapping_marcas";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
-import { useProveedores } from "@/features/application/hooks/services/useRealtimeProveedores";
-import { useSupplierSelectionHandlers } from "@/features/application/hooks/modals/proveedores/useSupplierSelectionHandlers";
+import { useProveedores } from "@/features/controller/hooks/services/useRealtimeProveedores";
+import { useSupplierSelectionHandlers } from "@/features/controller/hooks/modals/proveedores/useSupplierSelectionHandlers";
 import {
     applySelectedSuppliersToBrand,
     selectedSuppliersFromBrand,

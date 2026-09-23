@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useCallback, useEffect } from "react";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Zone, ZoneFormData, UseZoneMutationsResult, UseZoneResult } from "@/lib/types/supabase/zone-types"
 import { getZones, createZone, updateZone, deleteZone  } from "@/features/controller/services/zoneQueries"
 

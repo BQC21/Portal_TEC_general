@@ -6,7 +6,7 @@ import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { TABLE_HEADERS_SUPPLIER } from "@/lib/utils/headers";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
 import { EditSupplierModalProps } from "@/lib/types/components/General/modals";
-import { createSupplierFormStateFromSupplier } from "@/features/application/mapping/mapping_proveedores";
+import { createSupplierFormStateFromSupplier } from "@/features/controller/mapping/mapping_proveedores";
 import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
 import { Category } from "@/lib/utils/options";
 import { isValidSupplierCode, normalizeSupplierCode, suggestSupplierCode } from "@/lib/utils/helpers/manage_info/getInfo";

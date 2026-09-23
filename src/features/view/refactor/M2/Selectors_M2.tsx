@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import { SelectionRow } from "../../components/Form_fields/AddSelectionRow";
 import { AddProductSelectField } from "../../components/Form_fields/AddSelectField";
 import { AddProductReadonlyField } from "../../components/Form_fields/AddReadonlyField";
-import { handlerSelector } from "@/features/application/hooks/modals/Sizing/useHandlerSelector";
+import { handlerSelector } from "@/features/controller/hooks/modals/Sizing/useHandlerSelector";
 import { Selectors_M2Props } from "@/lib/types/components/sub_components/module_render";
 import {
     AWG_COLOR,

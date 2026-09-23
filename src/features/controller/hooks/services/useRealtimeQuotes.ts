@@ -1,5 +1,5 @@
 import { createQuote, deleteQuote, getQuotes, updateQuote } from "@/features/controller/services/QuoteQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Quote, QuoteFormData, useQuoteMutationResult, useQuoteResult } from "@/lib/types/supabase/quote-types";
 import { useCallback, useEffect, useState } from "react";
 

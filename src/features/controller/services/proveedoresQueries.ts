@@ -1,5 +1,5 @@
-import { mapSupabaseRowToSupplier, mapSupplierToSupabaseRow } from "@/features/application/mapping/mapping_proveedores";
-import { createClient } from "@/features/application/supabase/client";
+import { mapSupabaseRowToSupplier, mapSupplierToSupabaseRow } from "@/features/controller/mapping/mapping_proveedores";
+import { createClient } from "@/features/controller/supabase/client";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";
 import { SUPPLIER_TABLE } from "@/lib/utils/namingTolerance";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { createJoinProjectEquipos, deleteJoinProjectEquipos, getJoinProjectEquipos, updateJoinProjectEquipos } from "@/features/controller/services/projectEquiposQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Project_Equipos, Project_EquiposFormData, useProject_EquiposMutationResult, UseProject_EquiposResult } from "@/lib/types/supabase/project_equipos_join";
 import { PROJECTS_EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 import { useCallback, useEffect, useState } from "react";

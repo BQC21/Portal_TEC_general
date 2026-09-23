@@ -1,7 +1,7 @@
 "use client";
 
 import { createType, deleteType, getTypeById, getTypes, updateType } from "@/features/controller/services/typeQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Type, TypeFormData, UseTypeMutationsResult, UseTypeResult } from "@/lib/types/supabase/type-types";
 import { useEffect, useState } from "react";
 

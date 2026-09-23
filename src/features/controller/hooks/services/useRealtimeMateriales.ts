@@ -18,7 +18,7 @@ import type {
 	UseMaterialesResult,
 } from "@/lib/types/supabase/materiales-types";
 
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 
 const supabase = createClient();
 

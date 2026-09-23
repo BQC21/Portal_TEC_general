@@ -1,5 +1,5 @@
-import { mapProject_EquiposToSupabaseRow, mapSupabaseRowToProject_Equipos } from "@/features/application/mapping/project_equipos_mapping";
-import { createClient } from "@/features/application/supabase/client";
+import { mapProject_EquiposToSupabaseRow, mapSupabaseRowToProject_Equipos } from "@/features/controller/mapping/project_equipos_mapping";
+import { createClient } from "@/features/controller/supabase/client";
 import { Project_Equipos, Project_EquiposFormData } from "@/lib/types/supabase/project_equipos_join";
 import { PROJECTS_EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
 

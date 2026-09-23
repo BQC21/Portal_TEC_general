@@ -1,5 +1,5 @@
-import { mapProject_MaterialesToSupabaseRow, mapSupabaseRowToProject_Materiales } from "@/features/application/mapping/project_materiales_mapping";
-import { createClient } from "@/features/application/supabase/client";
+import { mapProject_MaterialesToSupabaseRow, mapSupabaseRowToProject_Materiales } from "@/features/controller/mapping/project_materiales_mapping";
+import { createClient } from "@/features/controller/supabase/client";
 import { Project_Materiales, Project_MaterialesFormData } from "@/lib/types/supabase/project_materiales_join";
 import { PROJECTS_MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 

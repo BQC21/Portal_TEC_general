@@ -17,18 +17,18 @@ import {
 import { DemandOptions, FillOptions } from "@/lib/types/components/General/options";
 import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS } from "@/lib/utils/options"; // opciones
 
-// import { useConverterNREL } from "@/features/application/hooks/api/useConverterNREL"
-import { useZone } from "@/features/application/hooks/services/useRealtimeZonas";
+// import { useConverterNREL } from "@/features/controller/hooks/api/useConverterNREL"
+import { useZone } from "@/features/controller/hooks/services/useRealtimeZonas";
 
-import { useEquipos } from "@/features/application/hooks/services/useRealtimeEquipos";
-import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales";
-import { createProjectFormStateFromProject } from "@/features/application/mapping/project_mapping";
+import { useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos";
+import { useMateriales } from "@/features/controller/hooks/services/useRealtimeMateriales";
+import { createProjectFormStateFromProject } from "@/features/controller/mapping/project_mapping";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { EditProjectModalProps } from "@/lib/types/components/General/modals";
-import { useComputedRequirements } from "@/features/application/hooks/modals/Sizing/useComputedRequirements";
-import { useSyncQuantities } from "@/features/application/hooks/modals/Sizing/useSyncQuantities";
-import { useSelectionHandlers } from "@/features/application/hooks/modals/Sizing/useSelectionHandlers";
+import { useComputedRequirements } from "@/features/controller/hooks/modals/Sizing/useComputedRequirements";
+import { useSyncQuantities } from "@/features/controller/hooks/modals/Sizing/useSyncQuantities";
+import { useSelectionHandlers } from "@/features/controller/hooks/modals/Sizing/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/render/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/consts/rows";
 import { General_info_M2 } from "@/features/view/refactor/M2/General_info_M2";

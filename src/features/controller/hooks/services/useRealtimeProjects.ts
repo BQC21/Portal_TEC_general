@@ -16,7 +16,7 @@ import type {
     UseProjectResult,
 } from "@/lib/types/supabase/project-types";
 
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 
 const supabase = createClient();
 

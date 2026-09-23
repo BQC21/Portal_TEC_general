@@ -1,6 +1,6 @@
 import { createFinantial, deleteFinantial, 
     getFinantial, updateFinantial } from "@/features/controller/services/finanzasQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import {
     Finantial,
     FinantialFormData,

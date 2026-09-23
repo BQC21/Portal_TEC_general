@@ -1,7 +1,7 @@
 "use client";
 
 import { createMarca, deleteMarca, getMarcas, getMarcasbyId, updateMarca } from "@/features/controller/services/marcasQueries";
-import { createClient } from "@/features/application/supabase/client";
+import { createClient } from "@/features/controller/supabase/client";
 import { Brand, BrandFormData, UseBrandMutationsResult, UseBrandResult } from "@/lib/types/supabase/brand.types";
 import { useCallback, useEffect, useState } from "react";
 

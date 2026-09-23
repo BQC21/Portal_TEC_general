@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useMateriales } from "@/features/application/hooks/services/useRealtimeMateriales";
+import { useMateriales } from "@/features/controller/hooks/services/useRealtimeMateriales";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Quote } from "@/lib/types/supabase/quote-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
