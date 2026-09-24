@@ -3,23 +3,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { AddProductCloseIcon } from "@/features/view/components/Icons/AddCloseIcon";
 import { EquiposFormState } from "@/lib/types/supabase/equipos-types";
-import { createEquiposFormStateFromEquipos } from "@/features/controller/mapping/mapping_equipos";
+import { createEquiposFormStateFromEquipos } from "@/features/model/mapping/mapping_equipos";
 import { EditEquipoModalProps } from "@/lib/types/components/General/modals";
 import {
     INITIAL_BRAND_FORM,
     INITIAL_SUPPLIER_FORM,
     INITIAL_TYPE_FORM,
 } from "@/lib/utils/initialValues";
-import { useTypes } from "@/features/controller/hooks/services/useRealtimeTipos";
-import { useBrands } from "@/features/controller/hooks/services/useRealtimeMarcas";
-import { useProveedores } from "@/features/controller/hooks/services/useRealtimeProveedores";
-import { useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos";
+import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
+import { useBrands } from "@/features/ViewModel/hooks/services/useRealtimeMarcas";
+import { useProveedores } from "@/features/ViewModel/hooks/services/useRealtimeProveedores";
+import { useEquipos } from "@/features/ViewModel/hooks/services/useRealtimeEquipos";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { SupplierFormstate } from "@/lib/types/supabase/supplier-types";
-import { useTypeSelection } from "@/features/controller/hooks/modals/equipos/useTypeSelection";
-import { useBrandSelection } from "@/features/controller/hooks/modals/equipos/useBrandSelection";
-import { useSuplierSelection } from "@/features/controller/hooks/modals/equipos/useSupplierSelection";
+import { useTypeSelection } from "@/features/ViewModel/hooks/modals/equipos/useTypeSelection";
+import { useBrandSelection } from "@/features/ViewModel/hooks/modals/equipos/useBrandSelection";
+import { useSuplierSelection } from "@/features/ViewModel/hooks/modals/equipos/useSupplierSelection";
 import { Data_info_M1 } from "@/features/view/refactor/M1/Data_info_M1";
 import { General_info_M1_EQ } from "@/features/view/refactor/M1/refactor_equipos/General_info_M1";
 import { Price_info_M1 } from "@/features/view/refactor/M1/Price_info_M1";

@@ -12,15 +12,15 @@ import TypeTable from "@/features/view/components/Tables/Proveedores/TypeTable";
 import AddBrandModal from "@/features/view/components/Modals/Proveedores/marcas/AddBrandModal";
 import AddSupplierModal from "@/features/view/components/Modals/Proveedores/proveedores/AddSupplierModal";
 import AddTypeModal from "@/features/view/components/Modals/Proveedores/tipo/AddTypeModal";
-import { useBrands, useBrandsMutations } from "@/features/controller/hooks/services/useRealtimeMarcas";
-import { useProveedores, useProveedoresMutations } from "@/features/controller/hooks/services/useRealtimeProveedores";
-import { useTypes, useTypesMutations } from "@/features/controller/hooks/services/useRealtimeTipos";
+import { useBrands, useBrandsMutations } from "@/features/ViewModel/hooks/services/useRealtimeMarcas";
+import { useProveedores, useProveedoresMutations } from "@/features/ViewModel/hooks/services/useRealtimeProveedores";
+import { useTypes, useTypesMutations } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
 import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
 import { useState } from "react";
-import { useDateSorting } from "@/features/controller/hooks/filters/useDateSorting";
+import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 import { SortingByDate } from "@/features/view/components/sorter/SortingByDate";
 import {
 	transformBrandRows,

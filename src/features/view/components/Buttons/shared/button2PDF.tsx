@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-import { useGenerateReportPdf } from "@/features/controller/hooks/api/useGenerateReportPdf";
+import { useGenerateReportPdf } from "@/features/ViewModel/hooks/api/useGenerateReportPdf";
 import { Button2PDFProps } from "@/lib/types/components/General/buttons";
 
 export default function Button2PDF({ disabled, getPayload }: Button2PDFProps) {

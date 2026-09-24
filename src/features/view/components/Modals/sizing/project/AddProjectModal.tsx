@@ -16,16 +16,16 @@ import { INITIAL_PROJECT_FORM, INITIAL_ZONE_FORM } from "@/lib/utils/initialValu
 import { DemandOptions, FillOptions } from "@/lib/types/components/General/options";
 import { ANGLE_OPTIONS, CONNECTION_TYPE_OPTIONS, STATUS_PROJECT_OPTIONS } from "@/lib/utils/options"; // opciones
 
-// import { useConverterNREL } from "@/features/controller/hooks/api/useConverterNREL"
-import { useZone } from "@/features/controller/hooks/services/useRealtimeZonas";
-import { useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos";
-import { useMateriales } from "@/features/controller/hooks/services/useRealtimeMateriales";
+// import { useConverterNREL } from "@/features/ViewModel/hooks/api/useConverterNREL"
+import { useZone } from "@/features/ViewModel/hooks/services/useRealtimeZonas";
+import { useEquipos } from "@/features/ViewModel/hooks/services/useRealtimeEquipos";
+import { useMateriales } from "@/features/ViewModel/hooks/services/useRealtimeMateriales";
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { shouldRender_M2_battery_properties, shouldRender_M2_configuration } from "@/lib/utils/helpers/render/render_modals";
 import { AddMProjectodalProps } from "@/lib/types/components/General/modals";
-import { useComputedRequirements } from "@/features/controller/hooks/modals/Sizing/useComputedRequirements";
-import { useSyncQuantities } from "@/features/controller/hooks/modals/Sizing/useSyncQuantities";
-import { useSelectionHandlers } from "@/features/controller/hooks/modals/Sizing/useSelectionHandlers";
+import { useComputedRequirements } from "@/features/ViewModel/hooks/modals/Sizing/useComputedRequirements";
+import { useSyncQuantities } from "@/features/ViewModel/hooks/modals/Sizing/useSyncQuantities";
+import { useSelectionHandlers } from "@/features/ViewModel/hooks/modals/Sizing/useSelectionHandlers";
 import { getFieldValueDarkClass, getFieldValueLightClass } from "@/lib/utils/helpers/render/fieldValueState";
 import { equipmentRows, materialRows } from "@/lib/utils/consts/rows";
 import { General_info_M2 } from "@/features/view/refactor/M2/General_info_M2";

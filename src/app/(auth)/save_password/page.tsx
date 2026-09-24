@@ -4,7 +4,7 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import Link from "next/link";
 
-import { createClient } from "@/features/controller/supabase/client";
+import { createClient } from "@/features/model/supabase/client";
 
 export default function SavePasswordPage() {
     const [email, setEmail] = useState("");

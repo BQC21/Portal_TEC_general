@@ -1,5 +1,5 @@
-import { createJoinProjectEquipos, deleteJoinProjectEquipos, updateJoinProjectEquipos } from "@/features/controller/services/projectEquiposQueries"
-import { createJoinProjectMateriales, deleteJoinProjectMateriales, updateJoinProjectMateriales } from "@/features/controller/services/projectMaterialesQueries"
+import { createJoinProjectEquipos, deleteJoinProjectEquipos, updateJoinProjectEquipos } from "@/features/model/services/projectEquiposQueries"
+import { createJoinProjectMateriales, deleteJoinProjectMateriales, updateJoinProjectMateriales } from "@/features/model/services/projectMaterialesQueries"
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources"
 import { QuoteResourceSource } from "@/lib/types/supabase/quote-types"
 import { Equipos } from "@/lib/types/supabase/equipos-types"

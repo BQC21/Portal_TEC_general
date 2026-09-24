@@ -4,15 +4,15 @@ import { EditQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useEffect, useMemo, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
-import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/features/controller/mapping/mapping_quotes";
+import { createManualCostsFromQuote, createQuoteFormStateFromQuote } from "@/features/model/mapping/mapping_quotes";
 import { SummaryCostTable } from "@/features/view/refactor/M3/Tables/quotes/tables/SummaryCostTable";
-import { useCostComputes } from "@/features/controller/hooks/modals/Quotes/useCostComputes";
+import { useCostComputes } from "@/features/ViewModel/hooks/modals/Quotes/useCostComputes";
 import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
-import { ManageLocalCosts } from "@/features/controller/hooks/modals/Quotes/useManageLocalCosts";
+import { ManageLocalCosts } from "@/features/ViewModel/hooks/modals/Quotes/useManageLocalCosts";
 import { Product_selected } from "@/features/view/refactor/M3/refactor/quotes/Product_selected";
 import { ResourcesTables } from "@/features/view/refactor/M3/refactor/quotes/ResourcesTables";
 import { ViaticosTables } from "@/features/view/refactor/M3/refactor/quotes/ViaticosTables";
-import { useQuoteSelectedProducts } from "@/features/controller/hooks/modals/Quotes/useQuoteSelectedProducts";
+import { useQuoteSelectedProducts } from "@/features/ViewModel/hooks/modals/Quotes/useQuoteSelectedProducts";
 import { ExcelResizableTables } from "@/features/view/components/Shells/ExcelResizableTables";
 import {
     syncQuoteEquiposToProject,
@@ -22,8 +22,8 @@ import {
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { UnitedQuotesPanel } from "@/features/view/refactor/M3/refactor/quotes/UnitedQuotesPanel";
-import { useUnitedQuoteAggregation } from "@/features/controller/hooks/modals/Quotes/useUnitedQuoteAggregation";
-import { useQuotes } from "@/features/controller/hooks/services/useRealtimeQuotes";
+import { useUnitedQuoteAggregation } from "@/features/ViewModel/hooks/modals/Quotes/useUnitedQuoteAggregation";
+import { useQuotes } from "@/features/ViewModel/hooks/services/useRealtimeQuotes";
 import {
     eligibleQuotesForUnion,
     getUnitedQuoteInfo,

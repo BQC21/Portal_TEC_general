@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { createClient } from "@/features/controller/supabase/server";
+import { createClient } from "@/features/model/supabase/server";
 
 function getSafeNextPath(next: string | null) {
     if (!next || !next.startsWith("/") || next.startsWith("//")) {

@@ -1,16 +1,16 @@
 "use client";
 
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
-import { useEquipos } from "@/features/controller/hooks/services/useRealtimeEquipos";
-import { useFinantials } from "@/features/controller/hooks/services/useRealtimeFinantial";
-import { useMateriales } from "@/features/controller/hooks/services/useRealtimeMateriales";
-import { useProjects } from "@/features/controller/hooks/services/useRealtimeProjects";
-import { useQuotes } from "@/features/controller/hooks/services/useRealtimeQuotes";
-import { useReports } from "@/features/controller/hooks/services/useRealtimeReports";
-import { useZone } from "@/features/controller/hooks/services/useRealtimeZonas";
-import { useProveedores } from "@/features/controller/hooks/services/useRealtimeProveedores";
-import { useBrands } from "@/features/controller/hooks/services/useRealtimeMarcas";
-import { useTypes } from "@/features/controller/hooks/services/useRealtimeTipos";
+import { useEquipos } from "@/features/ViewModel/hooks/services/useRealtimeEquipos";
+import { useFinantials } from "@/features/ViewModel/hooks/services/useRealtimeFinantial";
+import { useMateriales } from "@/features/ViewModel/hooks/services/useRealtimeMateriales";
+import { useProjects } from "@/features/ViewModel/hooks/services/useRealtimeProjects";
+import { useQuotes } from "@/features/ViewModel/hooks/services/useRealtimeQuotes";
+import { useReports } from "@/features/ViewModel/hooks/services/useRealtimeReports";
+import { useZone } from "@/features/ViewModel/hooks/services/useRealtimeZonas";
+import { useProveedores } from "@/features/ViewModel/hooks/services/useRealtimeProveedores";
+import { useBrands } from "@/features/ViewModel/hooks/services/useRealtimeMarcas";
+import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
 
 export default function DashboardPage() {
 

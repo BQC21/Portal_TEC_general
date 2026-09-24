@@ -1,0 +1,143 @@
+import { createClient } from "@/features/model/supabase/client";
+import { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
+import { mapSupabaseRowToEquipos } from "@/features/model/mapping/mapping_equipos";
+import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
+import { emptyToNull, toNullableInteger } from "@/lib/utils/normalization";
+
+function toEquiposSupabaseRow(equipo: EquiposFormData) {
+	return {
+		cod_prov: equipo.cod_prov,
+		proveedor: equipo.proveedor,
+		cod_producto: equipo.cod_producto,
+		tipo_de_producto: equipo.tipo_de_producto,
+		marca: equipo.marca,
+		descripcion: equipo.descripcion,
+		paneles_palet: equipo.paneles_palet,
+		tipo_de_conexion: equipo.tipo_conexion,
+		potencia_maxima: equipo.potencia_maxima,
+		mppt: equipo.mppt,
+		cadenas: equipo.cadenas,
+		potencia_ac: equipo.potencia_ac,
+		dod: equipo.dod,
+		voc_vmax: equipo.voc_vmax,
+		vmpp_vmin: equipo.vmpp_vmin,
+		voltaje_nominal_inversor: equipo.voltaje_nominal_inversor,
+		impp_i_in: emptyToNull(equipo.impp_i_in),
+		isc_i_out: equipo.isc_i_out,
+		unidad: equipo.unidad,
+		precio_soles: equipo.precio_soles,
+		precio_dolares: equipo.precio_dolares,
+		igv: equipo.igv / 100,
+		precio_soles_igv: equipo.precio_soles_igv,
+		precio_dolares_igv: equipo.precio_dolares_igv,
+		created_at: equipo.created_at ? new Date(equipo.created_at) : new Date(),
+		updated_at: equipo.updated_at ? new Date(equipo.updated_at) : new Date(),
+		tipo_id: toNullableInteger(equipo.tipo_id),
+		marca_id: toNullableInteger(equipo.marca_id),
+		proveedor_id: toNullableInteger(equipo.proveedor_id),
+	};
+}
+
+// --------------------------
+// ---- Operaciones CRUD ----
+// --------------------------
+
+export async function createEquipo(equipo: EquiposFormData): Promise<Equipos> {
+	const supabase = await createClient();
+	const supabaseRow = toEquiposSupabaseRow(equipo);
+
+	const { data, error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.insert(supabaseRow)
+		.select()
+		.single();
+
+	if (error) {
+		throw new Error(`Error al crear el equipo: ${error.message}`);
+	}
+
+	return mapSupabaseRowToEquipos(data);
+}
+
+export async function getEquipos(): Promise<Equipos[]> {
+	const supabase = await createClient();
+
+	const { data, error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.select("*, tipo(*), marcas(*), proveedores(*)");
+
+	if (error) {
+		throw new Error(`Error al obtener los equipos: ${error.message}`);
+	}
+
+	return data.map(mapSupabaseRowToEquipos);
+}
+
+export async function getEquipoById(id: string): Promise<Equipos> {
+	const supabase = await createClient();
+
+	const { data, error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.select("*")
+		.eq("id", id)
+		.single();
+
+	if (error) {
+		throw new Error(`Error al obtener el equipo: ${error.message}`);
+	}
+
+	return mapSupabaseRowToEquipos(data);
+}
+
+export async function updateEquipo(id: string, equipo: EquiposFormData): Promise<Equipos> {
+	const supabase = await createClient();
+	const supabaseRow = toEquiposSupabaseRow(equipo);
+
+	const { data, error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.update(supabaseRow)
+		.eq("id", id)
+		.select()
+		.single();
+
+	if (error) {
+		throw new Error(`Error al actualizar el equipo: ${error.message}`);
+	}
+
+	return mapSupabaseRowToEquipos(data);
+}
+
+export async function deleteEquipo(id: string): Promise<void> {
+	const supabase = await createClient();
+
+	const { error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.delete()
+		.eq("id", id);
+
+	if (error) {
+		throw new Error(`Error al eliminar el equipo: ${error.message}`);
+	}
+}
+
+export async function getEquipoFilterOptions(): Promise<{
+	types: string[];
+	brands: string[];
+	suppliers: string[];
+}> {
+	const supabase = await createClient();
+
+	const { data, error } = await supabase
+		.from(EQUIPOS_TABLE)
+		.select("tipo_de_producto, marca, proveedor");
+
+	if (error) {
+		throw new Error(`Error al obtener las opciones de filtrado: ${error.message}`);
+	}
+
+	const types = Array.from(new Set(data.map((item) => item.tipo_de_producto).filter(Boolean)));
+	const brands = Array.from(new Set(data.map((item) => item.marca).filter(Boolean)));
+	const suppliers = Array.from(new Set(data.map((item) => item.proveedor).filter(Boolean)));
+
+	return { types, brands, suppliers };
+}
