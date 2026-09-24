@@ -47,7 +47,7 @@ next-env.d.ts
 /.cursor/
 
 # scripts privados
-/src/passwords/
+/passwords/
 /python/output/
 /context/
 /test_sprite_tests/
