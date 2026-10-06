@@ -118,6 +118,34 @@ export const MATERIALES_TYPE_OPTIONS = [
 // ------------------
 // ------------------
 
+// Opciones para seleccionar depertamento
+export const DEPARTMENT_OPTIONS = [
+    "Amazonas",
+    "Áncash",
+    "Apurímac",
+    "Arequipa",
+    "Ayacucho",
+    "Cajamarca",
+    "Cusco",
+    "Huancavelica",
+    "Huánuco",
+    "Ica",
+    "Junín",
+    "La Libertad",
+    "Lambayeque",
+    "Lima",
+    "Loreto",
+    "Madre de Dios",
+    "Moquegua",
+    "Pasco",
+    "Piura",
+    "Puno",
+    "San Martín",
+    "Tacna",
+    "Tumbes",
+    "Ucayali",
+] as const;
+
 export const STATUS_PROJECT_OPTIONS = [
     "---",
     "Dimensionamiento iniciado",
