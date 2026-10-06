@@ -7,6 +7,7 @@ export type SupabaseZoneRow = {
     // propiedades generales
     id?: number | string;
     zona?: string;
+    departamento?: string;
     // cálculos de radiación
     latitude?: number;
     longitude?: number;
@@ -25,6 +26,7 @@ export type Zone = {
     // propiedades generales
     id: string;
     zona: string;
+    departamento: string;
     // cálculos de radiación
     latitude?: string;
     longitude?: string;

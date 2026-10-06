@@ -36,6 +36,7 @@ export default function ProjectTable({ zones,
                                 zones.map((zone) => (
                                     <tr key={zone.id} className="bg-white">
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{zone.zona}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{zone.departamento}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{zone.latitude}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{zone.longitude}</td>
                                         <td className={`w-[100px] border border-slate-200 px-4 py-5 font-medium`}>{zone.gti_respaldo}</td>

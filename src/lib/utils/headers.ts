@@ -120,6 +120,7 @@ export const TABLE_HEADERS_PROJECT = [
 
 export const TABLE_HEADERS_ZONE = [
     "Nombre de la zona",
+    "Departamento",
     "Latitud",
     "Longitud",
     "GTI Anual (Inclinado)",

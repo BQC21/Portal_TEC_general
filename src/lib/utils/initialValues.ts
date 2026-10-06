@@ -223,6 +223,7 @@ export const INITIAL_PROJECT_FORM: ProjectFormState = {
 export const INITIAL_ZONE_FORM: ZoneFormState = {
     // propiedades generales
     zona: "",        
+    departamento: "",
     // cálculos de radiación
     latitude: "",
     longitude: "",

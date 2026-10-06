@@ -6,6 +6,7 @@ import { parseNumber } from "@/lib/utils/normalization"
 export function createZoneFormStateFromZone(zone: Zone): ZoneFormState {
     return {
         zona: zone.zona,
+        departamento: zone.departamento,
         // cálculos de radiación
         latitude: zone.latitude,
         longitude: zone.longitude,
@@ -30,6 +31,7 @@ export function mapSupabaseRowToZone(
         // propiedades generales
 		id: row.id?.toString() || "",
         zona: row.zona?.toString() || "",
+        departamento: row.departamento?.toString() || "",
         // cálculos de radiación
         latitude: row.latitude?.toString()  || "",
         longitude: row.longitude?.toString()  || "",
@@ -52,6 +54,7 @@ export function mapZoneToSupabaseRow(
 ): SupabaseZoneRow {
     return {
         zona: zone.zona.trim(),
+        departamento: zone.departamento.trim(),
         // cálculos de radiación (campos vacíos → undefined para columnas numéricas nullable)
         latitude: parseNumber(zone.latitude),
         longitude: parseNumber(zone.longitude),
