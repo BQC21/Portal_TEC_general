@@ -28,6 +28,7 @@ export function ZoneSelection(value: string, zones: Zone[],
     if (selected) {
         setForm_zone({
             zona: selected.zona,
+            departamento: selected.departamento,
             latitude: selected.latitude,
             longitude: selected.longitude,
             ghi_respaldo: selected.ghi_respaldo,

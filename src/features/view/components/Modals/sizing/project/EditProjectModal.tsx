@@ -64,6 +64,7 @@ export default function EditProjectModal({
         existingProject.zona_info
             ? {
                 zona: existingProject.zona_info.zona,
+                departamento: existingProject.zona_info.departamento,
                 latitude: existingProject.zona_info.latitude,
                 longitude: existingProject.zona_info.longitude,
                 ghi_respaldo: existingProject.zona_info.ghi_respaldo,
