@@ -144,7 +144,7 @@ export const DEPARTMENT_OPTIONS = [
     "Tacna",
     "Tumbes",
     "Ucayali",
-] as const;
+];
 
 export const STATUS_PROJECT_OPTIONS = [
     "---",

@@ -13,6 +13,8 @@ import { AddProductTextField } from "@/features/view/components//Form_fields/Add
 import { INITIAL_ZONE_FORM } from "@/lib/utils/initialValues";
 import { TABLE_HEADERS_ZONE } from "@/lib/utils/headers";
 import { AddZoneModalProps } from "@/lib/types/components/General/modals";
+import { AddProductSelectField } from "../../../Form_fields/AddSelectField";
+import { DEPARTMENT_OPTIONS } from "@/lib/utils/options";
 
 export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) {
     const [form_zone, setForm_zone] = useState<ZoneFormState>(INITIAL_ZONE_FORM);
@@ -57,14 +59,21 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                                 value={form_zone.zona}
                                 onChange={(value) => updateField("zona", value)}
                             />
-                            <AddProductTextField
+                            <AddProductSelectField
                                 label={TABLE_HEADERS_ZONE[1]}
+                                required
+                                value={form_zone.departamento}
+                                options={DEPARTMENT_OPTIONS}
+                                onChange={(value) => updateField("departamento", value)}
+                            />
+                            <AddProductTextField
+                                label={TABLE_HEADERS_ZONE[2]}
                                 placeholder=" "
                                 value={form_zone.latitude || ""}
                                 onChange={(value) => updateField("latitude", value)}
                             />                           
                             <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[2]}
+                                label={TABLE_HEADERS_ZONE[3]}
                                 placeholder=" "
                                 value={form_zone.longitude || ""}
                                 onChange={(value) => updateField("longitude", value)}
@@ -72,33 +81,33 @@ export default function AddZoneModal({ onAddZone, onClose }: AddZoneModalProps) 
                         </section>
                         <section className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
                             <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[3]}
+                                label={TABLE_HEADERS_ZONE[4]}
                                 required
                                 placeholder=" "
                                 value={form_zone.gti_respaldo}
                                 onChange={(value) => updateField("gti_respaldo", value)}
                             />
                                 <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[4]}
+                                label={TABLE_HEADERS_ZONE[5]}
                                 placeholder=" "
                                 value={form_zone.gti_respaldo_diario || ""}
                                 onChange={(value) => updateField("gti_respaldo_diario", value)}
                             />
                             <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[5]}
+                                label={TABLE_HEADERS_ZONE[6]}
                                 required
                                 placeholder=" "
                                 value={form_zone.ghi_respaldo}
                                 onChange={(value) => updateField("ghi_respaldo", value)}
                             />
                             <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[6]}
+                                label={TABLE_HEADERS_ZONE[7]}
                                 placeholder=" "
                                 value={form_zone.ghi_respaldo_diario || ""}
                                 onChange={(value) => updateField("ghi_respaldo_diario", value)}
                             />
                             <AddProductTextField
-                                label={TABLE_HEADERS_ZONE[7]}
+                                label={TABLE_HEADERS_ZONE[8]}
                                 placeholder=" "
                                 value={String(form_zone.hsp_peor_mes)}
                                 onChange={(value) => updateField("hsp_peor_mes", value)}
