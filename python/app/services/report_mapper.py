@@ -78,6 +78,21 @@ def _map_equipos(items: list[EquipoItem]) -> list[PdfLineItem]:
         index += 1
     return lines
 
+def _electrical_materials_collapsed(items: list[MaterialItem]) -> bool:
+    electrical = []
+    for item in items:
+        info = item.material_info
+        if not info:
+            continue
+        tipo = _normalize_tipo(_to_str(info.tipo_de_producto))
+        if tipo not in MATERIAL_TIPOS_ELECTRICOS:
+            continue
+        electrical.append(item)
+    if not electrical:
+        return False
+    return all(item.visible is False for item in electrical)
+
+
 def _map_materiales_por_tipo(
     items: list[MaterialItem],
     allowed_tipos: set[str],
@@ -216,10 +231,11 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         equipos=_map_equipos(payload.equipos),
         materiales=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_ELECTRICOS),
         canalizacion=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_CANALIZACION),
-        show_equipments=bool(payload.show_equipments),
+        show_equipments=True,
         show_electrical_materials=bool(payload.show_electrical_materials),
         show_canalization_materials=bool(payload.show_canalization_materials),
-        show_mo=bool(payload.show_mo),
+        show_mo=True,
+        electrical_materials_glb=_electrical_materials_collapsed(payload.materiales or []),
         puesta_en_marcha=_map_puesta_en_marcha(
             payload.hidden_mo_ids,
             payload.puesta_en_marcha_items,

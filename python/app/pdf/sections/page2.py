@@ -343,20 +343,30 @@ def build_page2(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
 
     # Condicionar el display de materiales eléctricos
     if data.show_electrical_materials:
-        electrical_rows = [
-            [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
-            for i, item in enumerate(data.materiales)
-        ]
-        if electrical_rows:
-            idx += len(electrical_rows)
+        if data.electrical_materials_glb:
             story.append(
                 _items_table(
-                    ["#", "DESCRIPCIÓN - MATERIALES ELÉCTRICOS", "UNIDAD", "CANTIDAD"],
-                    electrical_rows,
-                    [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+                    ["DESCRIPCIÓN MATERIALES", "UNIDAD"],
+                    [["Materiales eléctricos", "GLB"]],
+                    [14 * cm, 4 * cm],
                 )
             )
             story.append(Spacer(1, 0.1 * cm))
+        else:
+            electrical_rows = [
+                [str(idx + i), item.descripcion, item.unidad, item.cantidad or ""]
+                for i, item in enumerate(data.materiales)
+            ]
+            if electrical_rows:
+                idx += len(electrical_rows)
+                story.append(
+                    _items_table(
+                        ["#", "DESCRIPCIÓN - MATERIALES ELÉCTRICOS", "UNIDAD", "CANTIDAD"],
+                        electrical_rows,
+                        [1 * cm, 11 * cm, 3 * cm, 3 * cm],
+                    )
+                )
+                story.append(Spacer(1, 0.1 * cm))
     else:
         story.append(Spacer(1, 0.1 * cm))
 

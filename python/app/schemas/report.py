@@ -162,6 +162,7 @@ class ReportPdfData(BaseModel):
     show_electrical_materials: bool = False
     show_canalization_materials: bool = False
     show_mo: bool = False
+    electrical_materials_glb: bool = False
     puesta_en_marcha: list[str] = Field(default_factory=list)
 
     filename: str = "cotizacion.pdf"
