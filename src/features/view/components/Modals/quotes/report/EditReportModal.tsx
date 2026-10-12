@@ -44,10 +44,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState(savedVisibility.hiddenEquipoIds);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState(savedVisibility.hiddenMaterialIds);
 
-    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(savedVisibility.showEquipmentsInPdf);
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(true);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(savedVisibility.showElectricalMaterialsInPdf);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(savedVisibility.showCanalizationMaterialsInPdf);
-    const [showMOInPdf, setShowMOInPdf] = useState(savedVisibility.showMOInPdf);
+    const [showMOInPdf, setShowMOInPdf] = useState(true);
 
     const [moActivities, setMoActivities] = useState(savedVisibility.moActivities);
 
@@ -164,10 +164,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
             visibilidad_pdf: normalizePdfVisibility({
                 hiddenEquipoIds,
                 hiddenMaterialIds,
-                showEquipmentsInPdf,
+                showEquipmentsInPdf: true,
                 showElectricalMaterialsInPdf,
                 showCanalizationMaterialsInPdf,
-                showMOInPdf,
+                showMOInPdf: true,
                 moActivities,
             }),
             updated_at: new Date(),
@@ -232,7 +232,6 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
                                 <h1 className="text-2xl font-bold text-slate-500">
                                     {quoteHeadingLabel(form.cotizacion_info ?? form_quotes)}
                                 </h1>
-
 
                                     {/* Inputación de datos */}
                                     <ReportDataInput

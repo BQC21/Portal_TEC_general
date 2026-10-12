@@ -49,10 +49,10 @@ export default function AddReportModal({onAddReport, onClose,
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState<string[]>([]);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState<string[]>([]);
     
-    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(false);
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(true);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(false);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(false);
-    const [showMOInPdf, setShowMOInPdf] = useState(false);
+    const [showMOInPdf, setShowMOInPdf] = useState(true);
     
     const [moActivities, setMoActivities] = useState(createInitialMOActivities);
 
@@ -89,10 +89,10 @@ export default function AddReportModal({onAddReport, onClose,
         const next = createInitialPdfVisibility(); // Persiste la visibilidad
         setHiddenEquipoIds(next.hiddenEquipoIds);
         setHiddenMaterialIds(next.hiddenMaterialIds);
-        setShowEquipmentsInPdf(next.showEquipmentsInPdf);
+        setShowEquipmentsInPdf(true);
         setShowElectricalMaterialsInPdf(next.showElectricalMaterialsInPdf);
         setShowCanalizationMaterialsInPdf(next.showCanalizationMaterialsInPdf);
-        setShowMOInPdf(next.showMOInPdf);
+        setShowMOInPdf(true);
         setMoActivities(next.moActivities);
     }, [form.cotizacion_id]);
 
@@ -181,10 +181,10 @@ export default function AddReportModal({onAddReport, onClose,
             visibilidad_pdf: normalizePdfVisibility({
                 hiddenEquipoIds,
                 hiddenMaterialIds,
-                showEquipmentsInPdf,
+                showEquipmentsInPdf: true,
                 showElectricalMaterialsInPdf,
                 showCanalizationMaterialsInPdf,
-                showMOInPdf,
+                showMOInPdf: true,
                 moActivities,
             }),
         })
