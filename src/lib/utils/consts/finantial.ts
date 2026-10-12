@@ -1,6 +1,7 @@
-export const VAN_HORIZON = 20; // años futuros a considerar para el cálculo del VAN
+export const VAN_HORIZON = 20; // 19 años futuros + año 0 = 20 filas
 export const OPEX_RATE = 0.015; // Porcentaje del CAPEX para calcular el OPEX
-export const DEFAULT_MAX_YEAR = 30;
+export const DEFAULT_MAX_YEAR = 20;
+export const FIXED_MAX_YEAR = 20;
 export const MIN_MAX_YEAR = 20;
 export const computedFieldClass = "bg-rose-100 text-rose-900 border-rose-200";
 export const MAX_CAMBIOS = 5;
