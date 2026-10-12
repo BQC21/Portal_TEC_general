@@ -20,7 +20,12 @@ export const DATE_SORT_SELECT_OPTIONS = [
     { value: "desc", label: SORTING_OPTIONS.desc },
 ] as const;
 
-export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material
+// Filtrado según ...
+export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material (MÓDULO FV)
+export const INVERTER_CONNECTION_FILTER_OPTIONS = [
+    "1F 220V","3F 220V", "3F 380V","3F 480V"]; // Configuración del inversor
+export const ELECTRICAL_PART_FILTER_OPTIONS = ["DC", "AC", "DC/AC", "---"]; // Tipo de instalación
+export const ELECTRICAL_PART_FILTER_TYPES = ["CABLE", "PROTECCIÓN", "CONSUMIBLE"]; // Materiales eléctricos filtrables
 export const Unidad_Consumible = ["Unidad", "Metros", "Cientos"] // Unidad si el producto es un CONSUMIBLE
 export const Category = ["Equipos", "Materiales", "Ambas"]; // Categoría del proveedor, marca o tipo de producto
 
