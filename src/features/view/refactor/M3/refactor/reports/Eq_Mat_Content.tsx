@@ -38,9 +38,9 @@ export function Eq_Mat_Content({
                         <input
                             type="checkbox"
                             checked={showEquipmentsInPdf}
-                            onChange={(event) =>
-                                onToggleEquipmentsTable?.(event.target.checked)
-                            }
+                            // disabled
+                            aria-label="Mostrar Equipos Principales en PDF"
+                            onChange={() => onToggleEquipmentsTable?.(true)}
                             className="h-5 w-5 accent-orange-500"
                         />
                     </label>

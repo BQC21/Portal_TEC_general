@@ -49,10 +49,10 @@ export function MO_Content({
                             <span>Mostrar Puesta en marcha en PDF</span>
                             <input
                                 type="checkbox"
-                                checked={showMOInPdf}
-                                onChange={(event) =>
-                                    onToggleMOTable?.(event.target.checked)
-                                }
+                                checked={Boolean(showMOInPdf)}
+                                // disabled
+                                aria-label="Mostrar Puesta en marcha en PDF"
+                                onChange={() => onToggleMOTable?.(true)}
                                 className="h-5 w-5 accent-orange-500"
                             />
                         </label>
