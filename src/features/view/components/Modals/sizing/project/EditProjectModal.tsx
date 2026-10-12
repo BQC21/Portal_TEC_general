@@ -319,7 +319,9 @@ export default function EditProjectModal({
 
     const isEquipmentTypeSelected = (type: string) => {
         return selectedEquipmentTable.some(item => item.row === type);
-    };
+    }
+    const sizingInputsLocked = selectedEquipmentTable.some((item) => item.row === "INVERSOR")
+        && selectedEquipmentTable.some((item) => item.row === "MÓDULO FV");
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/50 p-2">
@@ -347,7 +349,8 @@ export default function EditProjectModal({
                         setForm={setForm} 
                         ANGLE_OPTIONS={ANGLE_OPTIONS} 
                         selectedZone={selectedZone} 
-                        selectedAngle={String(selectedAngle)} />
+                        selectedAngle={String(selectedAngle)}
+                        inputsLocked={sizingInputsLocked} />
 
                     <Formulas_M2 />
 
@@ -362,7 +365,8 @@ export default function EditProjectModal({
                         getFieldValueDarkClass={getFieldValueDarkClass} 
                         shouldRender_M2_battery_properties={(value) => shouldRender_M2_battery_properties(value as string)} 
                         shouldRender_M2_configuration={(value) => shouldRender_M2_configuration(value as string)} 
-                        CONNECTION_TYPE_OPTIONS={CONNECTION_TYPE_OPTIONS} 
+                        CONNECTION_TYPE_OPTIONS={CONNECTION_TYPE_OPTIONS}
+                        inputsLocked={sizingInputsLocked} 
                         selectedEquipment={computedRequirements.computedRequirements.selectedEquipment ?? {
                             id: "",
                             description: "",
