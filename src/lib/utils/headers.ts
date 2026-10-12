@@ -142,6 +142,7 @@ export const TABLE_HEADERS_QUOTE = [
     "Actualizado",
     "Código de cotización",
     "Proyecto asociado",
+    "Independencia",
     "Versión de cotización",
     "IGV",
     "Tasa de cambio",
