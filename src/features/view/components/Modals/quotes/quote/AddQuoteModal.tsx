@@ -24,6 +24,7 @@ import {
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
+import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { UnitedQuotesPanel } from "@/features/view/refactor/M3/refactor/quotes/UnitedQuotesPanel";
 import { useUnitedQuoteAggregation } from "@/features/ViewModel/hooks/modals/Quotes/useUnitedQuoteAggregation";
 import {
@@ -372,6 +373,17 @@ export default function AddQuoteModal({
 
                     {showQuoteBody && !isUnited && (
                         <ExcelResizableTables>
+
+                        {hasSelectedProject && (
+                            <div className="mb-6 max-w-xl">
+                                <AddProductTextField
+                                    label="Nombre de la cotización"
+                                    value={form.nombre_cotizacion || form.proyecto_info?.nombre || ""}
+                                    onChange={(value) => updateField("nombre_cotizacion", value)}
+                                    placeholder="Nombre visible de la cotización"
+                                />
+                            </div>
+                        )}
 
                         <h1 className="text-2xl font-bold text-slate-500">
                             {quoteHeadingLabel(form)}

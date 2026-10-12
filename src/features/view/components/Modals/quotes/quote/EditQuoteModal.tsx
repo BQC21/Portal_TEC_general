@@ -268,6 +268,17 @@ export default function EditQuoteModal({
                         </div>
                     )}
 
+                    {hasSelectedProject && !isUnited && (
+                        <div className="mb-6 max-w-xl">
+                            <AddProductTextField
+                                label="Nombre de la cotización"
+                                value={form.nombre_cotizacion || form.proyecto_info?.nombre || ""}
+                                onChange={(value) => updateField("nombre_cotizacion", value)}
+                                placeholder="Nombre visible de la cotización"
+                            />
+                        </div>
+                    )}
+
                     {showQuoteBody && (
                         <ExcelResizableTables>
 
