@@ -4,7 +4,12 @@ import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { MaterialesFiltersProps } from "@/lib/types/components/Filter/filter_tables";
 import { CATALOG_FILTERS } from "@/lib/utils/consts/catalogFilters";
 import { TableFilterSelect } from "../../Filters/TableFilterSelect";
-import { DATE_SORT_PLACEHOLDER, DATE_SORT_SELECT_OPTIONS } from "@/lib/utils/options";
+import {
+    DATE_SORT_PLACEHOLDER,
+    DATE_SORT_SELECT_OPTIONS,
+    ELECTRICAL_PART_FILTER_OPTIONS,
+    ELECTRICAL_PART_FILTER_TYPES,
+} from "@/lib/utils/options";
 import { DateSortOrder } from "@/lib/types/components/General/options";
 
 export function MaterialesFilters({
@@ -15,7 +20,11 @@ export function MaterialesFilters({
     updatedOrder,
     onCreatedOrderChange,
     onUpdatedOrderChange,
+    parteElectrica,
+    onParteElectricaChange,
 }: MaterialesFiltersProps) {
+    const showElectricalPartFilter = ELECTRICAL_PART_FILTER_TYPES.includes(values.type);
+
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {CATALOG_FILTERS.map((filter) => (
@@ -41,6 +50,15 @@ export function MaterialesFilters({
                 </div>
             </label>
         ))}
+        {showElectricalPartFilter && (
+            <TableFilterSelect
+                label="Filtrar por parte eléctrica"
+                placeholder="Todas las partes"
+                value={parteElectrica}
+                options={[...ELECTRICAL_PART_FILTER_OPTIONS]}
+                onChange={onParteElectricaChange}
+            />
+        )}
         <TableFilterSelect
             label="Ordenar por Fecha creada"
             placeholder={DATE_SORT_PLACEHOLDER}

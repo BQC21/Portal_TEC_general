@@ -4,7 +4,7 @@ import { SelectorIcon } from "../../Icons/SelectorIcon";
 import { EquiposFiltersProps } from "@/lib/types/components/Filter/filter_tables";
 import { CATALOG_FILTERS } from "@/lib/utils/consts/catalogFilters";
 import { TableFilterSelect } from "../../Filters/TableFilterSelect";
-import { DATE_SORT_PLACEHOLDER, DATE_SORT_SELECT_OPTIONS } from "@/lib/utils/options";
+import { DATE_SORT_PLACEHOLDER, DATE_SORT_SELECT_OPTIONS, INVERTER_CONNECTION_FILTER_OPTIONS, Unidad_ModFV } from "@/lib/utils/options";
 import { DateSortOrder } from "@/lib/types/components/General/options";
 
 export function EquiposFilters({
@@ -15,7 +15,14 @@ export function EquiposFilters({
     updatedOrder,
     onCreatedOrderChange,
     onUpdatedOrderChange,
+    connectionType,
+    moduleUnit,
+    onConnectionTypeChange,
+    onModuleUnitChange,
 }: EquiposFiltersProps) {
+    const showConnectionFilter = values.type === "INVERSOR";
+    const showUnitFilter = values.type === "MÓDULO FV";
+
     return (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {CATALOG_FILTERS.map((filter) => (
@@ -41,6 +48,24 @@ export function EquiposFilters({
                 </div>
             </label>
         ))}
+        {showConnectionFilter && (
+            <TableFilterSelect
+                label="Filtrar por tipo de conexión"
+                placeholder="Todas las conexiones"
+                value={connectionType}
+                options={[...INVERTER_CONNECTION_FILTER_OPTIONS]}
+                onChange={onConnectionTypeChange}
+            />
+        )}
+        {showUnitFilter && (
+            <TableFilterSelect
+                label="Filtrar por unidad"
+                placeholder="Todas las unidades"
+                value={moduleUnit}
+                options={[...Unidad_ModFV]}
+                onChange={onModuleUnitChange}
+            />
+        )}
         <TableFilterSelect
             label="Ordenar por Fecha creada"
             placeholder={DATE_SORT_PLACEHOLDER}

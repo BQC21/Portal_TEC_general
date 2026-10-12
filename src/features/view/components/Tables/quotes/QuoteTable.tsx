@@ -9,7 +9,7 @@ import EditQuoteModal from "../../Modals/quotes/quote/EditQuoteModal";
 import { DeleteQuoteModal } from "../../Modals/quotes/quote/DeleteQuoteModal";
 import { Quote } from "@/lib/types/supabase/quote-types";
 import { formatCurrency } from "@/lib/utils/normalization";
-import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { quoteAssociatedLabel, quoteIndependenceLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function QuoteTable({quote, totalQuote, 
@@ -77,6 +77,7 @@ export default function QuoteTable({quote, totalQuote,
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td> */}
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(quote)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteIndependenceLabel(quote)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(quote.version)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.igv}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.tasa_cambio}</td>

@@ -4,6 +4,7 @@ import { TableFilterSelect } from "../../Filters/TableFilterSelect";
 import { uniqueNonEmptyValues } from "@/lib/utils/helpers/filters/tableFilterOptions";
 import { DATE_SORT_PLACEHOLDER, DATE_SORT_SELECT_OPTIONS } from "@/lib/utils/options";
 import { DateSortOrder } from "@/lib/types/components/General/options";
+import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
 
 export function ProjectFilters({
     projects,
@@ -30,9 +31,13 @@ export function ProjectFilters({
         () => uniqueNonEmptyValues(projects.map((project) => project.configuracion)),
         [projects],
     );
+    const versionOptions = useMemo(
+        () => uniqueNonEmptyValues(projects.map((project) => formatVersionLabel(project.version))),
+        [projects],
+    );
 
     return (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <TableFilterSelect
                 label="Filtrar por Orientación"
                 placeholder="Todos los ordenamientos"
@@ -60,6 +65,13 @@ export function ProjectFilters({
                 value={values.configuracion}
                 options={configurationOptions}
                 onChange={(value) => onFilterChange("configuracion", value)}
+            />
+            <TableFilterSelect
+                label="Filtrar por versión"
+                placeholder="Todas las versiones"
+                value={values.version}
+                options={versionOptions}
+                onChange={(value) => onFilterChange("version", value)}
             />
             <TableFilterSelect
                 label="Ordenar por Fecha creada"
