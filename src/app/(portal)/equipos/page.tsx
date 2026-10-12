@@ -11,8 +11,9 @@ import { useEquipoMutations, useEquipos } from "@/features/ViewModel/hooks/servi
 
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
-import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
+import type { FilterKey, ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
+import { normalizeModuloFVUnidad } from "@/lib/utils/helpers/computes/PanelNumber";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 
@@ -40,10 +41,20 @@ export default function EquiposPage() {
     // ---- Filtrado -------------------
     // ---------------------------------
 	const [searchDescription, setSearchDescription] = useState<string>("");
+	const [connectionType, setConnectionType] = useState("");
+	const [moduleUnit, setModuleUnit] = useState("");
 	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
 		equipos,
 		"Equipos",
 	);
+
+	function handleCatalogFilterChange(key: FilterKey, value: string) {
+		handleFilterChange(key, value);
+		if (key === "type") {
+			setConnectionType("");
+			setModuleUnit("");
+		}
+	}
 
 	const filteredEquipos = equipos.filter((equipo) => {
 		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type; // según tipo
@@ -51,8 +62,15 @@ export default function EquiposPage() {
 		const matchesSupplier = !filters.supplier || equipo.proveedor === filters.supplier; // según proveedor
 		const matchesDescription = !searchDescription || equipo.descripcion.toLowerCase() 
 									.includes(searchDescription.toLowerCase()); // según descripción
+		const matchesConnection = filters.type !== "INVERSOR"
+			|| !connectionType
+			|| equipo.tipo_conexion === connectionType;
+		const matchesUnit = filters.type !== "MÓDULO FV"
+			|| !moduleUnit
+			|| normalizeModuloFVUnidad(equipo.unidad) === normalizeModuloFVUnidad(moduleUnit);
 
-		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
+		return matchesType && matchesBrand && matchesSupplier && matchesDescription
+			&& matchesConnection && matchesUnit;
 	});
 
     // ---------------------------------
@@ -165,7 +183,11 @@ export default function EquiposPage() {
 							<EquiposFilters
 								values={filters}
 								filterOptions={filterOptions}
-								onFilterChange={handleFilterChange}
+								onFilterChange={handleCatalogFilterChange}
+								connectionType={connectionType}
+								moduleUnit={moduleUnit}
+								onConnectionTypeChange={setConnectionType}
+								onModuleUnitChange={setModuleUnit}
 								createdOrder={createdOrder}
 								updatedOrder={updatedOrder}
 								onCreatedOrderChange={setCreatedOrder}

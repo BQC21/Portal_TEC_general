@@ -11,7 +11,8 @@ import { useMateriales, useMaterialMutations } from "@/features/ViewModel/hooks/
 
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
-import type { ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
+import type { FilterKey, ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
+import { ELECTRICAL_PART_FILTER_TYPES } from "@/lib/utils/options";
 import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
@@ -41,18 +42,30 @@ export default function MaterialesPage() {
     // ---------------------------------
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
+	const [parteElectrica, setParteElectrica] = useState("");
 	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
 		materiales,
 		"Materiales",
 	);
+
+	function handleCatalogFilterChange(key: FilterKey, value: string) {
+		handleFilterChange(key, value);
+		if (key === "type") setParteElectrica("");
+	}
 
 	const filteredMateriales = materiales.filter((material) => {
 		const matchesType = !filters.type || material.tipo_de_producto === filters.type;
 		const matchesBrand = !filters.brand || material.marca === filters.brand;
 		const matchesSupplier = !filters.supplier || material.proveedor === filters.supplier;
 		const matchesDescription = !searchDescription || material.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+		const electricalPart = (material.parte_electrica || "---").trim() || "---";
+		const matchesElectricalPart = !ELECTRICAL_PART_FILTER_TYPES.includes(filters.type)
+			|| !parteElectrica
+			|| (parteElectrica === "---"
+				? electricalPart === "---"
+				: electricalPart.toUpperCase() === parteElectrica.toUpperCase());
 
-		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
+		return matchesType && matchesBrand && matchesSupplier && matchesDescription && matchesElectricalPart;
 	});
 
     // ---------------------------------
@@ -166,7 +179,9 @@ export default function MaterialesPage() {
 							<MaterialesFilters
 								values={filters}
 								filterOptions={filterOptions}
-								onFilterChange={handleFilterChange}
+								onFilterChange={handleCatalogFilterChange}
+								parteElectrica={parteElectrica}
+								onParteElectricaChange={setParteElectrica}
 								createdOrder={createdOrder}
 								updatedOrder={updatedOrder}
 								onCreatedOrderChange={setCreatedOrder}
