@@ -1,34 +1,14 @@
 "use client";
 
 import { EnergyTableProps } from "@/lib/types/components/sub_components/module_render";
-import { EnergyLineChart } from "./FinantialCharts";
 
 export function EnergyTable({
     energyRows,
-    maxYear,
-    onAddYear,
-    onRemoveYear,
 }: EnergyTableProps) {
     return (
         <section className="space-y-4">
             <div className="flex items-center justify-between gap-3">
                 <h2 className="text-xl font-bold text-slate-900">Variación de energía</h2>
-                <div className="flex gap-2">
-                    <button
-                        type="button"
-                        onClick={onRemoveYear}
-                        className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                    >
-                        Quitar año
-                    </button>
-                    <button
-                        type="button"
-                        onClick={onAddYear}
-                        className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-                    >
-                        Añadir año
-                    </button>
-                </div>
             </div>
 
             <div className="max-h-[1020px] overflow-auto rounded-2xl border border-slate-200">
@@ -74,16 +54,6 @@ export function EnergyTable({
                     </tbody>
                 </table>
             </div>
-
-            {/* <div className="rounded-2xl border border-slate-200 p-4">
-                <h3 className="mb-2 text-sm font-semibold text-slate-700">
-                    Energía generada por año (0–{maxYear})
-                </h3>
-                <EnergyLineChart
-                    years={energyRows.map((row) => row.year)}
-                    values={energyRows.map((row) => row.energy_mwh)}
-                />
-            </div> */}
         </section>
     );
 }
