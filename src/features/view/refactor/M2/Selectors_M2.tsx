@@ -22,7 +22,7 @@ import {
     getMm2ForAwg,
 } from "@/lib/utils/helpers/project_modals/cableMatrix";
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
-import { defaultSelectOption, toProductSelectOption, withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions";
+import { defaultSelectOption, SIZING_SEARCHABLE_LABELS, toProductSelectOption, withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions";
 import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/consts/tables_M2";
 
@@ -136,13 +136,14 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                 return (
                                     <div key={`equipment-${label}-${index}`} className="flex flex-col gap-2">
                                         <SelectionRow
-                                            label={label === "ACCESORIO"
+                                            label={SIZING_SEARCHABLE_LABELS.has(label)
                                                 ? withSelectableCount(label, equipment_filteredOptions)
                                                 : label}
                                             buttonLabel="Agregar"
                                             value={selectedEquipmentByRow[`${label}-${index}`]?.equipoId || ""}
                                             options={equipment_filteredOptions}
                                             customSelectClass={customSelectClass}
+                                            searchable={SIZING_SEARCHABLE_LABELS.has(label)}
                                             onChange={(value) => handle_onChange(value, label, index, "EQUIPO")}
                                             onClick={() => handle_click(label, index, "EQUIPO")}
                                         />
@@ -177,13 +178,16 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                     return (
                                         <div key={`material-row-${label}-${index}`} className="flex flex-col gap-2">
                                             <SelectionRow
-                                                label={label}
+                                                label={SIZING_SEARCHABLE_LABELS.has(label)
+                                                    ? withSelectableCount(label, material_filteredOptions)
+                                                    : label}
                                                 buttonLabel="Agregar"
                                                 value={isReadOnlyRow
                                                     ? autoCableId
                                                     : selectedMaterialByRow[`${label}-${index}`]?.materialId || ""}
                                                 options={material_filteredOptions}
                                                 disabled={isReadOnlyRow}
+                                                searchable={SIZING_SEARCHABLE_LABELS.has(label)}
                                                 onChange={(value) => {handle_onChange(value, label, index, "MATERIAL")}}
                                                 onClick={() => handle_click(label, index, "MATERIAL")}
                                             />
