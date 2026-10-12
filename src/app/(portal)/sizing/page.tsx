@@ -33,7 +33,7 @@ import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/
 import { useMemo, useState } from "react";
 import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
-import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
+import { getNextCopyVersion, getVersionValue, formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
 import { formatDate } from "@/lib/utils/helpers/manage_info/date_manage";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 import { ProjectFilters } from "@/features/view/components/Tables/sizing/ProjectFilters";
@@ -103,6 +103,7 @@ export default function ProjectsPage() {
         tipo_instalacion: "",
         estado_proyecto: "",
         configuracion: "",
+        version: "",
     });
 
     const filteredProjects = projects.filter((project) => {
@@ -112,8 +113,9 @@ export default function ProjectsPage() {
         const matchesInstallType = !projectFilters.tipo_instalacion || project.tipo_instalacion === projectFilters.tipo_instalacion;
         const matchesStatus = !projectFilters.estado_proyecto || project.estado_proyecto === projectFilters.estado_proyecto;
         const matchesConfiguration = !projectFilters.configuracion || project.configuracion === projectFilters.configuracion;
+        const matchesVersion = !projectFilters.version || formatVersionLabel(project.version) === projectFilters.version;
 
-		return matchesDescription && matchesOrientation && matchesInstallType && matchesStatus && matchesConfiguration;
+		return matchesDescription && matchesOrientation && matchesInstallType && matchesStatus && matchesConfiguration && matchesVersion;
 	});
 
     // ---------------------------------
