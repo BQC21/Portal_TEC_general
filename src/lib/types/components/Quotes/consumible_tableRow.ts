@@ -25,6 +25,7 @@ export type ConsumibleSelectableFamily =
     | "tornillo_spack"
     | "mc4"
     | "fusible"
+    | "tarugo"
 
 export type ConsumibleLinkedFamily =
     | "abrazadera"

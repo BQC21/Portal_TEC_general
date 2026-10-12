@@ -41,6 +41,7 @@ export const SELECTABLE_CONSUMIBLE_FAMILIES: ConsumibleSelectableFamily[] = [
     "tornillo_autorroscante",
     "tornillo_spack",
     "fusible",
+    "tarugo",
 ]
 
 export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string> = {
@@ -66,6 +67,7 @@ export const CONSUMIBLE_FAMILY_LABEL: Record<ConsumibleSelectableFamily, string>
     tornillo_spack: "Tornillo Spack",
     mc4: "MC4",
     fusible: "Fusible + Portafusible",
+    tarugo: "Tarugo",
 }
 
 export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
@@ -96,6 +98,7 @@ export const CONSUMIBLE_FAMILY_TIPO: Record<ConsumibleFamily, string> = {
     tornillo_spack: "CONSUMIBLE",
     mc4: "CONSUMIBLE",
     fusible: "PROTECCIÓN",
+    tarugo: "CONSUMIBLE",
 }
 
 export const CANALIZACION_FAMILY_ORDER: Record<string, number> = {
@@ -122,6 +125,7 @@ export const CONSUMIBLE_FAMILY_DEFAULT_CODE: Partial<Record<ConsumibleSelectable
     canaleta: "MPROJ00006",
     mc4: "MTISO00005",
     tirafon: "MCHOQ00008",
+    tarugo: "MCHOQ00001",
 }
 
 export const CABLE_FV_DEFAULT_CODE: Record<CableFvColor, string> = {
@@ -152,6 +156,7 @@ export const CONSUMIBLE_EXTRA_ADD_LABEL: Record<ConsumibleAddableFamily, string>
     tornillo_autorroscante: "Agregar otro tornillo autorroscante",
     tornillo_spack: "Agregar otro tornillo Spack",
     fusible: "Agregar otro fusible + portafusible",
+    tarugo: "Agregar otro tarugo",
 }
 
 export const CONSUMIBLE_RESTORE_LABEL: Record<ConsumibleRestorableFamily, string> = {
@@ -175,6 +180,7 @@ export const DEFAULT_INSERTED_FAMILIES = new Set<ConsumibleSelectableFamily>([
 
 export const SINGLE_DEFAULT_SELECTOR_FAMILIES = new Set<ConsumibleSelectableFamily>([
     "tirafon",
+    "tarugo",
 ])
 
 export const TERMINAL_PIN_MM2 = new Set(["10", "16", "25", "35"])
@@ -211,6 +217,7 @@ export const GROUPED_CONSUMIBLE_FAMILIES = new Set<ConsumibleFamily>([
     "tornillos_autorroscantes_100",
     "tornillo_autorroscante",
     "tornillo_spack",
+    "tarugo",
 ])
 
 export const CONSUMIBLE_FAMILIES_WITH_CODE_LABEL = new Set<ConsumibleSelectableFamily>([
