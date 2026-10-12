@@ -9,6 +9,7 @@ import { CAMBIO_OPTIONS, CAMBIO_ORDINAL, computedFieldClass } from "@/lib/utils/
 import {
     emptyCambio,
     formatPayback,
+    formatSystemType,
     resizeCambios,
 } from "@/lib/utils/helpers/computes/finantial_computes";
 import { formatCurrency } from "@/lib/utils/normalization";
@@ -38,13 +39,15 @@ export function FinantialData({ form, updateField, analysis }: Finantial_selecte
     return (
         <div className="grid gap-2">
             <h2 className="mt-2 mb-1 text-xl font-bold text-red-900">Ingrese datos</h2>
-            <AddProductNumberField
+            <AddProductReadonlyField
                 label="Energía generada por la planta (KWp)"
-                required
-                value={Number(form.planta) > 0 ? Number(form.planta) : ""}
-                onChange={(value) => updateField("planta", String(value))}
-                step={0.01}
-                min={0}
+                value={Number(form.planta) > 0 ? String(Number(form.planta)) : "—"}
+                colorClass={computedFieldClass}
+            />
+            <AddProductReadonlyField
+                label="Tipo de sistema"
+                value={formatSystemType(form.cotizacion_info?.proyecto_info?.tipo_instalacion)}
+                colorClass={computedFieldClass}
             />
             <AddProductNumberField
                 label="Generación en el primer año (MWh/primer año)"
