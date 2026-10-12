@@ -1,7 +1,7 @@
 "use client"
 
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { EditFinantialModalProps } from "@/lib/types/components/General/modals";
 import { FinantialFormState } from "@/lib/types/supabase/finantial-types";
@@ -18,6 +18,7 @@ import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/q
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
 import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
+import { getPlantPowerKwp } from "@/lib/utils/helpers/computes/finantial_computes";
 
 export default function EditFinantialModal({
     existingFinantial,
@@ -47,10 +48,13 @@ export default function EditFinantialModal({
         existingEquipos: existing_project_equipos,
     });
 
-    const { analysis, maxYear, addYear, removeYear } = useFinantialComputes(
+    const { analysis, maxYear } = useFinantialComputes(
         form,
         projectEquipos
     );
+
+    const plantKwp = useMemo(() => getPlantPowerKwp(projectEquipos), [projectEquipos]);
+    const plantValue = plantKwp > 0 ? String(Number(plantKwp.toFixed(3))) : "";
 
     useEffect(() => {
         setForm((current) => ({
@@ -72,6 +76,7 @@ export default function EditFinantialModal({
 
         await onUpdateFinantial({
             ...form,
+            planta: plantValue,
             cotizacion_info: form.cotizacion_info
                 ? {
                     ...form.cotizacion_info,
@@ -142,7 +147,7 @@ export default function EditFinantialModal({
                             </h1>
                             
                                 <FinantialData
-                                    form={form}
+                                    form={{ ...form, planta: plantValue }}
                                     updateField={updateField}
                                     analysis={analysis}
                                 />
@@ -152,8 +157,6 @@ export default function EditFinantialModal({
                                 <EnergyTable
                                     energyRows={analysis.energyRows}
                                     maxYear={maxYear}
-                                    onAddYear={addYear}
-                                    onRemoveYear={removeYear}
                                 />
                             </div>
                             <div className="grid gap-6 content-start">
@@ -173,7 +176,7 @@ export default function EditFinantialModal({
                         </button>
                         <Button2PDF
                             disabled={!form.cotizacion_id}
-                            getPayload={() => buildFinantialPdfPayload({ form, analysis })}
+                            getPayload={() => buildFinantialPdfPayload({ form: { ...form, planta: plantValue }, analysis })}
                         />
                         <button
                             type="submit"

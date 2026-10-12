@@ -20,6 +20,7 @@ import { buildFinantialPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload"
 import { isQuoteLinkedToProject, quoteHeadingLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
+import { getPlantPowerKwp } from "@/lib/utils/helpers/computes/finantial_computes";
 
 export default function AddFinantialModal({
     onAddFinantial,
@@ -54,10 +55,14 @@ export default function AddFinantialModal({
     });
 
     // enganchar los cálculos financieros
-    const { analysis, maxYear, addYear, removeYear } = useFinantialComputes(
+    const { analysis, maxYear } = useFinantialComputes(
         form,
         projectEquipos
     );
+
+    // automatizar cálculo de la energía de la planta
+    const plantKwp = useMemo(() => getPlantPowerKwp(projectEquipos), [projectEquipos]);
+    const plantValue = plantKwp > 0 ? String(Number(plantKwp.toFixed(3))) : "";
 
     // sincornizar los cálculos de LCOE y tiempo de retorno
     useEffect(() => {
@@ -68,6 +73,7 @@ export default function AddFinantialModal({
         }));
     }, [analysis.lcoe, analysis.tiempo_retorno]);
 
+    // Actualizar campos
     function updateField<K extends keyof FinantialFormState>(field: K, value: FinantialFormState[K]) {
         setForm((current) => {
             const updated = { ...current, [field]: value};
@@ -75,12 +81,14 @@ export default function AddFinantialModal({
         });
     }
     
+    // Handlers
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
         // Considerar también LCOE y tiempo de retorno
         await onAddFinantial({
             ...form,
+            planta: plantValue,
             lcoe: analysis.lcoe === null ? "" : String(analysis.lcoe.toFixed(4)),
             tiempo_retorno: analysis.tiempo_retorno ?? "",
         });
@@ -123,7 +131,7 @@ export default function AddFinantialModal({
                                     {quoteHeadingLabel(form_quotes)}
                                 </h1>                              
                                 <FinantialData
-                                    form={form}
+                                    form={{ ...form, planta: plantValue }}
                                     updateField={updateField}
                                     analysis={analysis}
                                 />
@@ -133,8 +141,6 @@ export default function AddFinantialModal({
                                 <EnergyTable
                                     energyRows={analysis.energyRows}
                                     maxYear={maxYear}
-                                    onAddYear={addYear}
-                                    onRemoveYear={removeYear}
                                 />
                             </div>
                             <div className="grid gap-6 content-start">
@@ -154,7 +160,7 @@ export default function AddFinantialModal({
                         </button>
                         <Button2PDF
                             disabled={!form.cotizacion_id}
-                            getPayload={() => buildFinantialPdfPayload({ form, analysis })}
+                            getPayload={() => buildFinantialPdfPayload({ form: { ...form, planta: plantValue }, analysis })}
                         />
                         <button
                             type="submit"
