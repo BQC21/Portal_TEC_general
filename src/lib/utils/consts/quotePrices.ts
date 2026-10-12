@@ -33,11 +33,6 @@ export const consumible_template = [
     { id: 27, cod_producto: "MPROJ00008", descripcion: "Cable UTP Cat 6", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 28, cod_producto: "MPROJ00009", descripcion: "Puerto RJ45", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 29, cod_producto: "MCHOQ00001", descripcion: "Tarugo 3/16\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 30, cod_producto: "MCHOQ00002", descripcion: "Tarugo 1/4\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 31, cod_producto: "MCHOQ00003", descripcion: "Tarugo 5/16\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 32, cod_producto: "MCHOQ00004", descripcion: "Tarugo 3/8\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 33, cod_producto: "MCHOQ00005", descripcion: "Tarugo 1/2\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
-    { id: 34, cod_producto: "MCHOQ00006", descripcion: "Tarugo 5/8\" x12", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     // Un solo tirafón inicial; el resto se elige en el selector o con +.
     { id: 35, cod_producto: "MCHOQ00008", descripcion: "Tirafon 5/16\" x2\"", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
     { id: 39, cod_producto: "MCHOQ00012", descripcion: "100to Precintos 100 mm", tipo_de_producto: "CONSUMIBLE", cantidad: 1 },
