@@ -2,6 +2,7 @@
 
 import { Fragment, useMemo, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
+import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
 import { TrashIcon } from "@/features/view/components/Icons/TrashIcon"
 import { useMateriales } from "@/features/ViewModel/hooks/services/useRealtimeMateriales"
@@ -18,6 +19,7 @@ import {
     isSelectableConsumibleFamily,
     isAddableConsumibleFamily,
     isFixedConsumibleFamily,
+    getConsumibleFamily,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 import {
@@ -152,6 +154,23 @@ export function Consume_PriceTable({
 
     const columnCount = showConsiderChecklist ? 14 : 13
 
+    // items a mostrar en la barra de búsqueda (los que no están en la tabla)
+    const catalogOptions = useMemo(() => {
+        const usedCodes = new Set(
+            displayRows.map((row) => row.cod_producto).filter(Boolean),
+        )
+        return materiales
+            .filter((material) => {
+                if (!material.cod_producto || usedCodes.has(material.cod_producto)) return false
+                return !isSelectableConsumibleFamily(getConsumibleFamily(material.descripcion))
+            })
+            .map((material) => ({
+                value: String(material.id),
+                label: `(${material.cod_producto}) - ${material.descripcion}`,
+            }))
+    }, [displayRows, materiales])
+
+    // Handler para remover filas
     function handleRemoveRow(item: ConsumibleDisplayRow) {
         setDismissedKeys((current) => {
             const next = new Set(current)
@@ -177,6 +196,24 @@ export function Consume_PriceTable({
             <div className="space-y-8 border-b border-slate-200 px-6 py-5">
                 <section className="space-y-4 w-full">
                     <h2 className="text-2xl font-bold text-slate-900">Costos de Consumibles</h2>
+                    {/* Seleccionable con barra de búsqueda */}
+                    <div className="max-w-xl">
+                        <AddProductSearchableSelectField
+                            label={`Agregar consumible (${catalogOptions.length})`}
+                            value=""
+                            options={[
+                                { value: "", label: "Seleccionar material" },
+                                ...catalogOptions,
+                            ]}
+                            searchPlaceholder="Buscar material..."
+                            emptyMessage="No hay materiales fuera de la tabla"
+                            onChange={(value) => {
+                                if (!value) return
+                                const material = materiales.find((entry) => String(entry.id) === value)
+                                if (material) onAddMaterial(material)
+                            }}
+                        />
+                    </div>
                     <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
                         <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
                             <table className="min-w-full w-max border-separate border-spacing-0">
