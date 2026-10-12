@@ -27,9 +27,14 @@ import { QuoteFilters } from "@/features/view/components/Tables/quotes/QuoteFilt
 import { ReportFilters } from "@/features/view/components/Tables/quotes/ReportFilters";
 import { FinantialFilters } from "@/features/view/components/Tables/quotes/FinantialFilters";
 import { QuoteFilterValues, ReportFilterValues } from "@/lib/types/components/Filter/filter_tables";
-import { matchesPriceFilter } from "@/lib/utils/helpers/filters/tableFilterOptions";
-import { getNextCopyVersion, getVersionValue } from "@/lib/utils/helpers/manage_info/version";
-import { quoteAssociatedLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { getNextCopyVersion, getVersionValue, formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
+import {
+    isQuoteLinkedToProject,
+    quoteAssociatedLabel,
+    quoteIndependence,
+    resolvedQuoteName,
+} from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 import {
 	transformFinantialRows,
 	transformQuoteRows,
@@ -93,34 +98,45 @@ export default function QuotesPage(){
 	const [searchReport, setSearchReport] = useState<string>("");
 	const [searchFinantial, setSearchFinantial] = useState<string>("");
     const [quoteFilters, setQuoteFilters] = useState<QuoteFilterValues>({
-        precio_dolares: "",
+        precio_orden: "",
+        version: "",
+        independencia: "",
     });
     const [reportFilters, setReportFilters] = useState<ReportFilterValues>({
-        precio_cotizacion: "",
+        precio_orden: "",
     });
 
-    const filteredQuotes = quotes.filter((quote) => {
+    const filteredQuotes = [...quotes.filter((quote) => {
 		const matchesDescription = !searchQuote ||
             quoteAssociatedLabel(quote)
                 .toLowerCase()
                 .includes(searchQuote.toLowerCase());
-        const matchesPrice = matchesPriceFilter(quote.precio_dolares, quoteFilters.precio_dolares);
+        const matchesVersion = !quoteFilters.version
+            || formatVersionLabel(quote.version) === quoteFilters.version;
+        const matchesIndependence = !quoteFilters.independencia
+            || quoteIndependence(quote) === quoteFilters.independencia;
 
-		return matchesDescription && matchesPrice;
-	});
+		return matchesDescription && matchesVersion && matchesIndependence;
+	})].sort((left, right) => {
+        if (quoteFilters.precio_orden !== "asc" && quoteFilters.precio_orden !== "desc") return 0;
+        const direction = quoteFilters.precio_orden === "asc" ? 1 : -1;
+        return (Number(left.precio_dolares) - Number(right.precio_dolares)) * direction;
+    });
 
-    const filteredReports = reports.filter((report) => {
+    const filteredReports = [...reports.filter((report) => {
 		const matchesDescription = !searchReport ||
             quoteAssociatedLabel(report.cotizacion_info)
                 .toLowerCase()
                 .includes(searchReport.toLowerCase());
-        const matchesPrice = matchesPriceFilter(
-            report.cotizacion_info?.precio_dolares,
-            reportFilters.precio_cotizacion,
-        );
 
-		return matchesDescription && matchesPrice;
-	});
+		return matchesDescription;
+	})].sort((left, right) => {
+        if (reportFilters.precio_orden !== "asc" && reportFilters.precio_orden !== "desc") return 0;
+        const direction = reportFilters.precio_orden === "asc" ? 1 : -1;
+        const leftPrice = Number(left.cotizacion_info?.precio_dolares);
+        const rightPrice = Number(right.cotizacion_info?.precio_dolares);
+        return (leftPrice - rightPrice) * direction;
+    });
 
     const filteredFinantial = finantials.filter((finantial) => {
 		const matchesDescription = !searchFinantial ||
@@ -192,7 +208,47 @@ export default function QuotesPage(){
     async function handleEditQuote(
         updatedQuote: Quote,
     ) {
-        const { id, ...quoteData } = updatedQuote;
+        const previous = quotes.find((item) => item.id === updatedQuote.id); // proyecto previo
+        const previousName = resolvedQuoteName(previous); // Nombre previo
+        const nextName = (updatedQuote.nombre_cotizacion ?? "").trim(); // nombre a cambiar
+        const versionNumber = Number.parseInt(getVersionValue(previous?.version), 10); // versión del proyecto
+        const nameChanged = Boolean(nextName) && nextName !== previousName; // nombre cambiado
+        const notIndependent = Boolean(
+            previous && (isUnitedQuote(previous) || isQuoteLinkedToProject(previous)),
+        ); // proyecto no independiente
+
+        // En caso un proyecto asociado a cambiado de nombre y no es su 1ra versión
+        if (previous && notIndependent && nameChanged && versionNumber > 1) {
+            const now = new Date();
+            const {
+                id: _id,
+                created_at: _createdAt,
+                updated_at: _updatedAt,
+                version: _version,
+                ...quoteData
+            } = updatedQuote;
+            await create_quote({
+                ...quoteData,
+                nombre_cotizacion: nextName,
+                version: "1",
+                created_at: now,
+                updated_at: now,
+                costos_manuales: JSON.parse(JSON.stringify(updatedQuote.costos_manuales)),
+            });
+            await refetch_quote();
+            await refetch_report();
+            await refetch_finantial();
+            await refetch_project_equipos();
+            await refetch_project_materiales();
+            return;
+        }
+
+        // Contenido de la cotización se copia, pero cambia a versión 1
+        // para proyectos asociados que cambian de nombre 
+        const quoteToSave = previous && nameChanged && versionNumber > 1
+            ? { ...updatedQuote, version: "1" }
+            : updatedQuote;
+        const { id, ...quoteData } = quoteToSave;
         await update_quote(id, quoteData);
         await refetch_quote();
         await refetch_report();
