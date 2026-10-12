@@ -17,10 +17,10 @@ export function createInitialPdfVisibility(): ReportPdfVisibility {
     return {
         hiddenEquipoIds: [],
         hiddenMaterialIds: [],
-        showEquipmentsInPdf: false,
+        showEquipmentsInPdf: true,
         showElectricalMaterialsInPdf: false,
         showCanalizationMaterialsInPdf: false,
-        showMOInPdf: false,
+        showMOInPdf: true,
         moActivities: createInitialMOActivities(),
     };
 }

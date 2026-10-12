@@ -208,6 +208,7 @@ export type General_info_M2Props = {
     ANGLE_OPTIONS: string[];
     selectedZone: string;
     selectedAngle: string;
+    inputsLocked?: boolean;
 }
 
 export type Data_info_M2Props = {
@@ -231,6 +232,7 @@ export type Data_info_M2Props = {
     shouldRender_M2_configuration: (value: string) => boolean;
     // opciones
     CONNECTION_TYPE_OPTIONS: string[];
+    inputsLocked?: boolean;
     // componentes seleccionados
     selectedEquipment: SelectedEquipmentItem;
     selectedInverter: SelectedEquipmentItem;
@@ -287,9 +289,7 @@ export type FinantialDetailsProps = {
 
 export type EnergyTableProps = {
     energyRows: EnergyRow[];
-    maxYear: number;
-    onAddYear: () => void;
-    onRemoveYear: () => void;
+    maxYear?: number;
 }
 
 export type FlowTableProps = {

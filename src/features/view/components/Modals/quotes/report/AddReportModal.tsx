@@ -181,10 +181,10 @@ export default function AddReportModal({onAddReport, onClose,
             visibilidad_pdf: normalizePdfVisibility({
                 hiddenEquipoIds,
                 hiddenMaterialIds,
-                showEquipmentsInPdf: true,
+                showEquipmentsInPdf: showEquipmentsInPdf,
                 showElectricalMaterialsInPdf,
                 showCanalizationMaterialsInPdf,
-                showMOInPdf: true,
+                showMOInPdf: showMOInPdf,
                 moActivities,
             }),
         })

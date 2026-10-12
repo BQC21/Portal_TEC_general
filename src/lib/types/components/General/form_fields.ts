@@ -41,6 +41,7 @@ export type AddProductRadioFieldProps = {
     label: string;
     checked: boolean;
     onChange: () => void;
+    disabled?: boolean;
 };
 
 // campo para título
@@ -82,6 +83,7 @@ export type SelectionRowProps = {
     customSelectClass?: string; // Optional custom class for select styling
     required?: boolean;
     disabled?: boolean; // el selector se muestra solo de lectura
+    searchable?: boolean;
 };
 
 // campo para texto

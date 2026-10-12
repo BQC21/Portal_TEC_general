@@ -52,7 +52,7 @@ export function MO_Content({
                                 checked={Boolean(showMOInPdf)}
                                 // disabled
                                 aria-label="Mostrar Puesta en marcha en PDF"
-                                onChange={() => onToggleMOTable?.(true)}
+                                onChange={(event) => onToggleMOTable?.(event.target.checked)}
                                 className="h-5 w-5 accent-orange-500"
                             />
                         </label>

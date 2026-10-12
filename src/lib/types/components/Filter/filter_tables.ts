@@ -30,6 +30,8 @@ export type MaterialesFiltersProps = {
     values: MaterialesFilterValues;
     filterOptions: CascadeFilterOptions;
     onFilterChange: (key: FilterKey, value: string) => void;
+    parteElectrica: string;
+    onParteElectricaChange: (value: string) => void;
 } & DateSortingFilterProps;
 
 // Filtrado de equipos
@@ -37,6 +39,10 @@ export type EquiposFiltersProps = {
     values: EquiposFilterValues;
     filterOptions: CascadeFilterOptions;
     onFilterChange: (key: FilterKey, value: string) => void;
+    connectionType: string;
+    moduleUnit: string;
+    onConnectionTypeChange: (value: string) => void;
+    onModuleUnitChange: (value: string) => void;
 } & DateSortingFilterProps;
 
 export type ProjectFilterValues = {
@@ -44,6 +50,7 @@ export type ProjectFilterValues = {
     tipo_instalacion: string;
     estado_proyecto: string;
     configuracion: string;
+    version: string;
 };
 
 export type ProjectFiltersProps = {
@@ -55,7 +62,9 @@ export type ProjectFiltersProps = {
 export type ZoneFiltersProps = DateSortingFilterProps;
 
 export type QuoteFilterValues = {
-    precio_dolares: string;
+    precio_orden: string;
+    version: string;
+    independencia: string;
 };
 
 export type QuoteFiltersProps = {
@@ -65,7 +74,7 @@ export type QuoteFiltersProps = {
 } & DateSortingFilterProps;
 
 export type ReportFilterValues = {
-    precio_cotizacion: string;
+    precio_orden: string;
 };
 
 export type ReportFiltersProps = {

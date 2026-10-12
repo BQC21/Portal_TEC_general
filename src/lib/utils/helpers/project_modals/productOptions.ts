@@ -43,3 +43,11 @@ export function selectableOptionCount(options: SelectOption[]): number {
 export function withSelectableCount(label: string, options: SelectOption[]): string {
     return `${label} (${selectableOptionCount(options)})`;
 }
+
+export const SIZING_SEARCHABLE_LABELS = new Set([
+    "ACCESORIO",
+    "BATERÍA",
+    "INVERSOR",
+    "MÓDULO FV",
+    "PROTECCIÓN",
+]);

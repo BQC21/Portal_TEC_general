@@ -44,10 +44,10 @@ export default function EditReportModal({existingReport, onUpdateReport, onClose
     const [hiddenEquipoIds, setHiddenEquipoIds] = useState(savedVisibility.hiddenEquipoIds);
     const [hiddenMaterialIds, setHiddenMaterialIds] = useState(savedVisibility.hiddenMaterialIds);
 
-    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(true);
+    const [showEquipmentsInPdf, setShowEquipmentsInPdf] = useState(savedVisibility.showEquipmentsInPdf);
     const [showElectricalMaterialsInPdf, setShowElectricalMaterialsInPdf] = useState(savedVisibility.showElectricalMaterialsInPdf);
     const [showCanalizationMaterialsInPdf, setShowCanalizationMaterialsInPdf] = useState(savedVisibility.showCanalizationMaterialsInPdf);
-    const [showMOInPdf, setShowMOInPdf] = useState(true);
+    const [showMOInPdf, setShowMOInPdf] = useState(savedVisibility.showMOInPdf);
 
     const [moActivities, setMoActivities] = useState(savedVisibility.moActivities);
 

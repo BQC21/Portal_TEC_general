@@ -231,10 +231,10 @@ def map_report_form(payload: ReportFormPayload) -> ReportPdfData:
         equipos=_map_equipos(payload.equipos),
         materiales=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_ELECTRICOS),
         canalizacion=_map_materiales_por_tipo(payload.materiales, MATERIAL_TIPOS_CANALIZACION),
-        show_equipments=True,
+        show_equipments=bool(payload.show_equipments),
         show_electrical_materials=bool(payload.show_electrical_materials),
         show_canalization_materials=bool(payload.show_canalization_materials),
-        show_mo=True,
+        show_mo=bool(payload.show_mo),
         electrical_materials_glb=_electrical_materials_collapsed(payload.materiales or []),
         puesta_en_marcha=_map_puesta_en_marcha(
             payload.hidden_mo_ids,

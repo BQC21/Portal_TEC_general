@@ -40,10 +40,11 @@ export function Eq_Mat_Content({
                             checked={showEquipmentsInPdf}
                             // disabled
                             aria-label="Mostrar Equipos Principales en PDF"
-                            onChange={() => onToggleEquipmentsTable?.(true)}
+                            onChange={(event) => onToggleEquipmentsTable?.(event.target.checked)}
                             className="h-5 w-5 accent-orange-500"
                         />
                     </label>
+
                     <label className="flex items-center gap-2 text-base font-semibold text-slate-800">
                         <span>Mostrar Materiales eléctricos en PDF</span>
                         <input

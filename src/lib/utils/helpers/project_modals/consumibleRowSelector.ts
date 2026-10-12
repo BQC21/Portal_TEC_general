@@ -126,6 +126,7 @@ export function getConsumibleFamily(descripcion: string): ConsumibleFamily | nul
 
     if (description.includes("tablero")) return "tablero"
     if (description.includes("bornera") && description.includes("linea")) return "bornera_linea"
+    if (description.includes("tarugo")) return "tarugo"
     if (description.includes("tirafon") || description.includes("tiraforn")) return "tirafon"
 
     const hundredPack = isHundredPack(description)
