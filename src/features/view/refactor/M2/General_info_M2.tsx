@@ -9,7 +9,7 @@ import { ZoneSelection } from "@/features/ViewModel/hooks/modals/Sizing/useZoneS
 import { General_info_M2Props } from "@/lib/types/components/sub_components/module_render";
 
 export function General_info_M2({ form, updateField, form_zone, zones, setForm_zone, setForm, 
-    ANGLE_OPTIONS, selectedZone, selectedAngle }: General_info_M2Props) {
+    ANGLE_OPTIONS, selectedZone, selectedAngle, inputsLocked = false }: General_info_M2Props) {
     return (
         <>
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-3 py-5 sm:px-6 lg:px-8">
@@ -24,6 +24,7 @@ export function General_info_M2({ form, updateField, form_zone, zones, setForm_z
                 <AddProductSelectField
                     label="Estado del proyecto"
                     required
+                    disabled={inputsLocked}
                     value={form.estado_proyecto}
                     options={STATUS_PROJECT_OPTIONS}
                     onChange={(value) => updateField("estado_proyecto", value)}
@@ -31,6 +32,7 @@ export function General_info_M2({ form, updateField, form_zone, zones, setForm_z
                 <AddProductSelectField
                     label="Tipo de instalación"
                     required
+                    disabled={inputsLocked}
                     value={form.tipo_instalacion}
                     options={INSTALL_TYPE_OPTIONS}
                     onChange={(value) => updateField("tipo_instalacion", value)}
@@ -48,6 +50,7 @@ export function General_info_M2({ form, updateField, form_zone, zones, setForm_z
                 <AddProductSearchableSelectField
                     label="Zona"
                     required
+                    disabled={inputsLocked}
                     value={form_zone.zona ?? ""}
                     options={["Seleccione zona", ...zones.map((zone) => zone.zona)]}
                     searchPlaceholder="Buscar zona..."
@@ -58,6 +61,7 @@ export function General_info_M2({ form, updateField, form_zone, zones, setForm_z
                 <AddProductSelectField
                     label="Orientación de la radiación"
                     required
+                    disabled={inputsLocked}
                     value={String(form.angulo)}
                     options={ANGLE_OPTIONS}
                     onChange={(value) => updateField("angulo", value)}

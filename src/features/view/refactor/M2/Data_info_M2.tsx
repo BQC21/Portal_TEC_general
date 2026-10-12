@@ -21,7 +21,7 @@ import {
 
 export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChange, handleOpcionLlenadoChange, handleOpcionLlenadoChangePANELES, computedRequirements, getFieldValueLightClass, 
     getFieldValueDarkClass, shouldRender_M2_battery_properties, shouldRender_M2_configuration, 
-    CONNECTION_TYPE_OPTIONS }: Data_info_M2Props) {
+    CONNECTION_TYPE_OPTIONS, inputsLocked = false }: Data_info_M2Props) {
 
     const handleAnnualDemandChange = useCallback(
         (value: string) => updateField("demanda_electrica", value),
@@ -81,11 +81,13 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                 <AddProductRadioField
                                     label="Por mes"
                                     checked={form.opcion_llenado_demanda === "MENSUAL"}
+                                    disabled={inputsLocked}
                                     onChange={() => handleOpcionDemandaLlenadoChange("MENSUAL")}
                                 />
                                 <AddProductRadioField
                                     label="Factor × 12"
                                     checked={isFactorDemand}
+                                    disabled={inputsLocked}
                                     onChange={() => {
                                         handleOpcionDemandaLlenadoChange("FACTOR");
                                         applyFactorDemand(Number(form.factor));
@@ -99,6 +101,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                         label={`Demanda eléctrica - ${month} (kWh)`}
                                         required
                                         centered
+                                        disabled={inputsLocked}
                                         value={monthlyValues[index]}
                                         onChange={(value) => updateMonth(index, value)}
                                         step={0.01}
@@ -109,6 +112,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                     label="Demanda mensual típica (kWh)"
                                     required
                                     centered
+                                    disabled={inputsLocked}
                                     value={Number(form.factor) > 0 ? Number(form.factor) : ""}
                                     onChange={(value) => applyFactorDemand(value)}
                                     step={0.01}
@@ -132,10 +136,12 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                             {/* Handlers */}
                             <AddProductRadioField
                                 label="Llenado automático"  checked={form.opcion_llenado == "AUTOMÁTICO"}
+                                disabled={inputsLocked}
                                 onChange={() => handleOpcionLlenadoChange("AUTOMÁTICO")}
                             />
                             <AddProductRadioField
                                 label="Llenado manual"  checked={form.opcion_llenado == "MANUAL"}
+                                disabled={inputsLocked}
                                 onChange={() => handleOpcionLlenadoChange("MANUAL")}
                             />
                             {form.opcion_llenado == "AUTOMÁTICO" ? (
@@ -160,6 +166,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                             label="Porcentaje de cobertura (%)"
                                             required
                                             centered
+                                            disabled={inputsLocked}
                                             value={Number(form.cobertura_porcentaje) > 0 ? Number(form.cobertura_porcentaje) : ""}
                                             onChange={(value) => updateField("cobertura_porcentaje", String(value))}
                                             step={1}
@@ -173,6 +180,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                         <div style={{ display: "flex", justifyContent: "center" }}>
                                             <AddProductNumberField
                                                 label="Energía requerida"    required    centered
+                                                disabled={inputsLocked}
                                                 value={Number(form.energia_requerida) > 0 ? Number(Number(form.energia_requerida).toFixed(2)) : ""}
                                                 onChange={(value) => updateField("energia_requerida", String(value))}
                                                 step={0.01} min={0}
@@ -181,6 +189,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                         <div style={{ display: "flex", justifyContent: "center" }}>
                                             <AddProductNumberField
                                                 label="Potencia DC requerida (KW)"    required    centered
+                                                disabled={inputsLocked}
                                                 value={Number(form.potencia_dc_requerida) > 0 ? Number(Number(form.potencia_dc_requerida).toFixed(2)) : ""}
                                                 onChange={(value) => updateField("potencia_dc_requerida", String(value))}
                                                 step={0.01} min={0} 
@@ -189,6 +198,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                         <div style={{ display: "flex", justifyContent: "center" }}>
                                             <AddProductNumberField
                                                 label="Potencia AC requerida (KW)"    required    centered
+                                                disabled={inputsLocked}
                                                 value={Number(form.potencia_ac_requerida) > 0 ? Number(Number(form.potencia_ac_requerida).toFixed(2)) : ""}
                                                 onChange={(value) => updateField("potencia_ac_requerida", String(value))}
                                                 step={0.01} min={0} 
@@ -206,6 +216,7 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                 <AddProductSelectField
                                     label="Configuración"
                                     required
+                                    disabled={inputsLocked}
                                     value={form.configuracion}
                                     options={CONNECTION_TYPE_OPTIONS}
                                     onChange={(value) => updateField("configuracion", value)}
