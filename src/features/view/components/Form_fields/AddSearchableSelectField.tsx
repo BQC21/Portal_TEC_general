@@ -74,7 +74,7 @@ export function AddProductSearchableSelectField({
             </button>
 
             {open && (
-                <div className="absolute left-0 right-0 z-30 mt-1 rounded-xl border border-slate-300 bg-white shadow-lg">
+                <div className="absolute left-0 z-50 mt-1 rounded-xl border border-slate-300 bg-white shadow-lg w-max min-w-full">
                     <div className="relative border-b border-slate-200 p-2">
                         <SearchIcon />
                         <input
