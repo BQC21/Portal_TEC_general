@@ -169,10 +169,10 @@ export function General_info_M1_EQ({
                                     }
                                 />
                         )}
-                        {unidad === "Palet" ? (
+                        {unidad === "Palet" || unidad === "Container" ? (
                             <>
                                 <AddProductNumberField
-                                    label="Números de paneles por palet"
+                                    label="Números de paneles por conjunto"
                                     value={Number(form.paneles_palet)}
                                     onChange={(value) => updateField("paneles_palet", value)}
                                     step={0.001}

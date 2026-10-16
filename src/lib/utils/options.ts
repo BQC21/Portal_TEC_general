@@ -21,7 +21,7 @@ export const DATE_SORT_SELECT_OPTIONS = [
 ] as const;
 
 // Filtrado según ...
-export const Unidad_ModFV = ["Unidad", "Palet"]; // Unidad del equipo o material (MÓDULO FV)
+export const Unidad_ModFV = ["Unidad", "Palet", "Container"]; // Unidad del equipo o material (MÓDULO FV)
 export const INVERTER_CONNECTION_FILTER_OPTIONS = [
     "1F 220V","3F 220V", "3F 380V","3F 480V"]; // Configuración del inversor
 export const ELECTRICAL_PART_FILTER_OPTIONS = ["DC", "AC", "DC/AC", "---"]; // Tipo de instalación
