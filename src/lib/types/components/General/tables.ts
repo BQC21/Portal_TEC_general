@@ -25,6 +25,7 @@ export type ProjectTableProps = {
     projects: Project[];
     projects_equipos: Project_Equipos[];
     projects_materiales: Project_Materiales[];
+    quotedProjectIds: ReadonlySet<string>;
     totalProjects: number;
     onUpdateProject: (
         project: Project,
@@ -80,6 +81,7 @@ export type TiposTableProps = {
 // cotizaciones
 export type QuoteTableProps = {
     quote: Quote[];
+    reportedQuoteIds: ReadonlySet<string>;
     totalQuote: number;
     onUpdateQuote: (quote: Quote) => void;
     onDeleteQuote: (quoteId: string) => void;
