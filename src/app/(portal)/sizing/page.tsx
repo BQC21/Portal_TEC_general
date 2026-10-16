@@ -30,6 +30,7 @@ import AddZoneModal from "@/features/view/components/Modals/sizing/zone/AddZoneM
 import { SelectedEquipmentItem, SelectedMaterialItem } from "@/lib/types/supabase/product-types";
 import { useProjectEquipos, useProjectEquiposMutations } from "@/features/ViewModel/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales, useProjectMaterialesMutations } from "@/features/ViewModel/hooks/services/useRealtimeProjectsMateriales";
+import { useQuotes } from "@/features/ViewModel/hooks/services/useRealtimeQuotes";
 import { useMemo, useState } from "react";
 import { sortZones } from "@/lib/utils/helpers/sorting/sorting";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
@@ -92,6 +93,12 @@ export default function ProjectsPage() {
     const {create: create_project_material,
         remove: remove_project_material
     } = useProjectMaterialesMutations();
+
+    const { quotes } = useQuotes();
+    const quotedProjectIds = useMemo(
+        () => new Set(quotes.map((quote) => String(quote.proyecto_id ?? "")).filter(Boolean)),
+        [quotes],
+    );
 
     // ---------------------------------
     // ---- Filtrado -------------------
@@ -315,6 +322,9 @@ export default function ProjectsPage() {
                             label: "Dimensionamientos",
                             content: (
                                 <>
+                                    <h1 className="text-sm text-gray-500 mb-4">
+                                        Las filas coloreadas en la tabla de proyectos representa una relación ya establecida con una cotizacion de la tabla de cotizaciones.
+                                    </h1>
                                     <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
                                         <div className="min-w-0 flex-1">
                                             <SearchBar
@@ -411,7 +421,8 @@ export default function ProjectsPage() {
                                         projects={projectDateSort.sortedRows}
                                         projects_equipos={project_equipos}
                                         projects_materiales={project_materiales}
-                                        totalProjects={projectDateSort.sortedRows.length}
+                                        quotedProjectIds={quotedProjectIds}
+                                        totalProjects={projects.length}
                                         onUpdateProject={handleUpdateProject}
                                         onDeleteProject={handleDeleteProject}
                                         onDeleteProjectEquipos={handleDeleteProjectEquipos}
@@ -493,7 +504,7 @@ export default function ProjectsPage() {
                                     </section>
                                     <ZoneTable
                                         zones={zoneDateSort.sortedRows}
-                                        totalZones={zoneDateSort.sortedRows.length}
+                                        totalZones={zones.length}
                                         onUpdateZone={handleUpdateZone}
                                         onDeleteZone={handleDeleteZone}
                                     />

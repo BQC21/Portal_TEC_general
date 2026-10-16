@@ -113,7 +113,7 @@ export default function ReportTable({report, totalReport,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalReport} reportes
+                Mostrando {report.length} de {totalReport} reportes
             </p>
         </section>
     )

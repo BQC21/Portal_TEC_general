@@ -22,7 +22,7 @@ import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-typ
 import { Quote, QuoteFormData } from "@/lib/types/supabase/quote-types";
 import { Report, ReportFormData } from "@/lib/types/supabase/report-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 import { QuoteFilters } from "@/features/view/components/Tables/quotes/QuoteFilters";
 import { ReportFilters } from "@/features/view/components/Tables/quotes/ReportFilters";
@@ -90,6 +90,10 @@ export default function QuotesPage(){
 
     // REPORTES
     const { reports, refetch: refetch_report } = useReports();
+    const reportedQuoteIds = useMemo(
+        () => new Set(reports.map((report) => String(report.cotizacion_id ?? "")).filter(Boolean)),
+        [reports],
+    );
     const { create: create_report,
         update: update_report,
         remove: remove_report,
@@ -311,7 +315,7 @@ export default function QuotesPage(){
     return (
         <PortalShell
             title="Proceso de cotización para los proyectos de dimensionamiento"
-            subtitle="Calcule el precio de venta y genera su reporte de cotización en formato PDF"
+            subtitle="Calcule el precio de venta y genera su reporte de cotización en formato PDF."
             activePath="/quotes"
         >
             <main className="min-h-screen bg-background text-foreground">
@@ -323,6 +327,9 @@ export default function QuotesPage(){
                                 label: "Cotizaciones",
                                 content: (
                                     <>
+                                        <h1 className="text-sm text-gray-500 mb-4">
+                                            Las filas coloreadas en la tabla de cotizaciones representa una relación ya establecida con un reporte de la tabla de reportes.
+                                        </h1>
                                         <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
                                             <div className="min-w-0 flex-1">
                                                 <SearchBar
@@ -399,7 +406,8 @@ export default function QuotesPage(){
                                         </section>
                                         <QuoteTable
                                             quote={quoteDateSort.sortedRows}
-                                            totalQuote={quoteDateSort.sortedRows.length}
+                                            reportedQuoteIds={reportedQuoteIds}
+                                            totalQuote={quotes.length}
                                             onUpdateQuote={handleEditQuote}
                                             onDeleteQuote={handleDeleteQuote}
                                             onDuplicateQuote={handleDuplicateQuote}
@@ -491,7 +499,7 @@ export default function QuotesPage(){
                                         </section>
                                         <ReportTable
                                             report={reportDateSort.sortedRows}
-                                            totalReport={reportDateSort.sortedRows.length}
+                                            totalReport={reports.length}
                                             onUpdateReport={handleEditReport}
                                             onDeleteReport={handleDeleteReport}
                                             projects_equipos={project_equipos}
@@ -578,7 +586,7 @@ export default function QuotesPage(){
                                         </section>
                                         <FinantialTable
                                             finantial={finantialDateSort.sortedRows}
-                                            totalFinantial={finantialDateSort.sortedRows.length}
+                                            totalFinantial={finantials.length}
                                             onUpdateFinantial={handleEditFinantial}
                                             onDeleteFinantial={handleDeleteFinantial}
                                             projects_equipos={project_equipos}

@@ -35,7 +35,7 @@ function computeColumnWidths(rows: ExportCellValue[][], headers: string[]) {
 			return Math.max(maxLength, cellLength);
 		}, header.length);
 
-		return { wch: Math.min(maxCellLength + 2, 40) };
+		return { wch: Math.min(Math.max(maxCellLength + 2, 10), 255) };
 	});
 }
 

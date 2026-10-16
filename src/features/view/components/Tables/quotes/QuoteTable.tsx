@@ -10,10 +10,10 @@ import { DeleteQuoteModal } from "../../Modals/quotes/quote/DeleteQuoteModal";
 import { Quote } from "@/lib/types/supabase/quote-types";
 import { formatCurrency } from "@/lib/utils/normalization";
 import { quoteAssociatedLabel, quoteIndependenceLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
-import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
+import { DATE_CELL_CLASS, getDateHeaderClass, LINKED_ROW_CELL_CLASS } from "@/lib/utils/helpers/render/tableDateColumn";
 
 export default function QuoteTable({quote, totalQuote, 
-    onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales}: QuoteTableProps){
+    onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales, reportedQuoteIds}: QuoteTableProps){
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -34,10 +34,12 @@ export default function QuoteTable({quote, totalQuote,
                         <tbody>
                             {quote.length > 0 ? (
                                 quote.map((quote) => {
+                                    const linked = reportedQuoteIds.has(String(quote.id));
+                                    const linkedCell = linked ? LINKED_ROW_CELL_CLASS : "";
                                     return (
-                                    <tr key={quote.id} className="bg-white">
+                                    <tr key={quote.id} className={linked ? LINKED_ROW_CELL_CLASS : "bg-white"}>
                                         
-                                        <td className="border border-slate-200 px-4 py-5">
+                                        <td className={`border border-slate-200 px-4 py-5 ${linkedCell}`}>
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Ver cotización" label="Ver Cotización">
                                                     {(close) => (
@@ -74,16 +76,16 @@ export default function QuoteTable({quote, totalQuote,
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(quote.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(quote.updated_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.cod_cotizacion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quote.cod_cotizacion}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.proyecto_info?.nombre}</td> */}
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteAssociatedLabel(quote)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quoteIndependenceLabel(quote)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(quote.version)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.igv}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.tasa_cambio}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatCurrency(Number(quote.precio_dolares), 'USD')}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{(Number(quote.gm)*100).toFixed(2)} %</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{quote.depre_tool} meses</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quoteAssociatedLabel(quote)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quoteIndependenceLabel(quote)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{formatVersionLabel(quote.version)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quote.igv}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quote.tasa_cambio}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{formatCurrency(Number(quote.precio_dolares), 'USD')}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{(Number(quote.gm)*100).toFixed(2)} %</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{quote.depre_tool} meses</td>
                                         
                                     </tr>
                                     );
@@ -100,7 +102,7 @@ export default function QuoteTable({quote, totalQuote,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalQuote} cotizaciones
+                Mostrando {quote.length} de {totalQuote} cotizaciones
             </p>
         </section>
     )

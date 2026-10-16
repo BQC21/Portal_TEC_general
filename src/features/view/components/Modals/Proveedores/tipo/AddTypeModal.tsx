@@ -3,12 +3,12 @@
 import { AddTypeModalProps } from "@/lib/types/components/General/modals";
 import { INITIAL_TYPE_FORM } from "@/lib/utils/initialValues";
 import { Category } from "@/lib/utils/options";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { TypeFormstate } from "@/lib/types/supabase/type-types";
 import { useBrands } from "@/features/ViewModel/hooks/services/useRealtimeMarcas";
 import { useBrandSelectionHandlers } from "@/features/ViewModel/hooks/modals/proveedores/useBrandSelectionHandlers";
-import { applySelectedBrandsToType } from "@/lib/utils/helpers/project_modals/brandOptions";
+import { applySelectedBrandsToType, findDefaultBrand, toSelectedBrandItem } from "@/lib/utils/helpers/project_modals/brandOptions";
 import { General_info_Type } from "@/features/view/refactor/M1/refactor_proveedores/General_info_Type";
 import { Selectors_Type } from "@/features/view/refactor/M1/refactor_proveedores/Selectors_Type";
 import { Tables_Type } from "@/features/view/refactor/M1/refactor_proveedores/Tables_Type";
@@ -30,6 +30,18 @@ export default function AddTypeModal({ onAddType, onClose }: AddTypeModalProps) 
         brand,
         typeCategoria: form_type.categoria,
     });
+    const seededDefaultBrand = useRef(false);
+
+    useEffect(() => {
+        if (seededDefaultBrand.current) return;
+        const found = findDefaultBrand(brand);
+        if (!found) return;
+        seededDefaultBrand.current = true;
+        setSelectedBrandTable((current) => {
+            if (current.length > 0 || current.some((item) => item.id === String(found.id))) return current;
+            return [toSelectedBrandItem(found)];
+        });
+    }, [brand, setSelectedBrandTable]);
 
     function updateField<K extends keyof TypeFormstate>(field: K, value: TypeFormstate[K]) {
         setForm_type((current) => ({ ...current, [field]: value }));

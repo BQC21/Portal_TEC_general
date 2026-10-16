@@ -4,11 +4,11 @@ import { AddBrandModalProps } from "@/lib/types/components/General/modals";
 import { BrandFormstate } from "@/lib/types/supabase/brand.types";
 import { INITIAL_BRAND_FORM } from "@/lib/utils/initialValues";
 import { Category } from "@/lib/utils/options";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProveedores } from "@/features/ViewModel/hooks/services/useRealtimeProveedores";
 import { useSupplierSelectionHandlers } from "@/features/ViewModel/hooks/modals/proveedores/useSupplierSelectionHandlers";
-import { applySelectedSuppliersToBrand } from "@/lib/utils/helpers/project_modals/supplierOptions";
+import { applySelectedSuppliersToBrand, findDefaultSupplier, toSelectedSupplierItem } from "@/lib/utils/helpers/project_modals/supplierOptions";
 import { General_info_Brand } from "@/features/view/refactor/M1/refactor_proveedores/General_info_Brand";
 import { Selectors_Brand } from "@/features/view/refactor/M1/refactor_proveedores/Selectors_Brand";
 import { Tables_Brand } from "@/features/view/refactor/M1/refactor_proveedores/Tables_Brand";
@@ -30,6 +30,18 @@ export default function AddBrandModal({ onAddBrand, onClose }: AddBrandModalProp
         supplier,
         brandCategoria: form_brand.categoria,
     });
+    const seededDefaultSupplier = useRef(false);
+
+    useEffect(() => {
+        if (seededDefaultSupplier.current) return;
+        const found = findDefaultSupplier(supplier);
+        if (!found) return;
+        seededDefaultSupplier.current = true;
+        setSelectedSupplierTable((current) => {
+            if (current.length > 0 || current.some((item) => item.id === String(found.id))) return current;
+            return [toSelectedSupplierItem(found)];
+        });
+    }, [setSelectedSupplierTable, supplier]);
 
     function updateField<K extends keyof BrandFormstate>(field: K, value: BrandFormstate[K]) {
         setForm_brand((current) => ({ ...current, [field]: value }));

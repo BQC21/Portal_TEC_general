@@ -89,7 +89,7 @@ export default function ProjectTable({ zones,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalZones} zonas
+                Mostrando {zones.length} de {totalZones} zonas
             </p>
         </section>
     )

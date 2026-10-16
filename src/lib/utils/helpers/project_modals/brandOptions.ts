@@ -18,6 +18,12 @@ export function toBrandSelectOption(item: Brand): SelectOption {
             : (item.nombre ?? ""),
     };
 }
+const DEFAULT_BRAND_NAME = "SIN MARCA";
+
+export function findDefaultBrand(brands: Brand[]) {
+    return brands.find((item) => item.nombre?.trim().toUpperCase() === DEFAULT_BRAND_NAME);
+}
+
 export function toSelectedBrandItem(item: Brand): SelectedBrandItem {
     return {
         row: BRAND_ROW_LABEL,

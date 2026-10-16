@@ -1,3 +1,4 @@
+import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
 import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 
 export function isQuoteLinkedToProject(quote: {
@@ -63,8 +64,21 @@ export function quoteHeadingLabel(quote?: {
 
 export function quoteOptionLabel(quote: {
     cod_cotizacion?: string | null;
-    proyecto_info?: { nombre?: string };
+    proyecto_info?: { nombre?: string } | null;
     nombre_cotizacion?: string | null;
 }) {
     return `(${quote.cod_cotizacion ?? ""}) - ${quoteAssociatedLabel(quote)}`;
+}
+
+export function quoteReportOptionLabel(quote: {
+    cod_cotizacion?: string | null;
+    proyecto_id?: string | null;
+    proyecto_info?: { id?: string; nombre?: string; version?: string | null } | null;
+    nombre_cotizacion?: string | null;
+    version?: string | null;
+}) {
+    const version = isQuoteLinkedToProject(quote)
+        ? quote.proyecto_info?.version
+        : quote.version;
+    return `${quoteOptionLabel(quote)} - ${formatVersionLabel(version)}`;
 }

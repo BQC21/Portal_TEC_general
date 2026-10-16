@@ -19,6 +19,14 @@ export function toSupplierSelectOption(item: Supplier): SelectOption {
     };
 }
 
+const DEFAULT_SUPPLIER_CODE = "SINP";
+const DEFAULT_SUPPLIER_NAME = "SIN PROVEEDOR";
+
+export function findDefaultSupplier(suppliers: Supplier[]) {
+    return suppliers.find((item) => item.codigo?.trim().toUpperCase() === DEFAULT_SUPPLIER_CODE)
+        ?? suppliers.find((item) => item.nombre?.trim().toUpperCase() === DEFAULT_SUPPLIER_NAME);
+}
+
 export function toSelectedSupplierItem(item: Supplier): SelectedSupplierlItem {
     return {
         row: SUPPLIER_ROW_LABEL,

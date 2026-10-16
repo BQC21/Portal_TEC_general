@@ -85,7 +85,7 @@ export default function SupplierTable({ supplier,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalSupplier} proveedores
+                Mostrando {supplier.length} de {totalSupplier} proveedores
             </p>
         </section>
     )

@@ -19,7 +19,7 @@ import Button2PDF from "../../../Buttons/shared/button2PDF";
 import { buildReportPdfPayload } from "@/lib/utils/helpers/quotes/pdfPayload";
 import { AddProductSearchableSelectField } from "../../../Form_fields/AddSearchableSelectField";
 import { percentMO } from "@/lib/utils/helpers/computes/report_computes";
-import { isQuoteLinkedToProject, quoteHeadingLabel, quoteOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { isQuoteLinkedToProject, quoteHeadingLabel, quoteReportOptionLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { isUnitedQuote } from "@/lib/utils/helpers/quotes/unitedQuotes";
 
@@ -212,10 +212,10 @@ export default function AddReportModal({onAddReport, onClose,
                     <AddProductSearchableSelectField
                         label="Seleccionar Cotización"
                         required
-                        value={form_quotes.cod_cotizacion ? quoteOptionLabel(form_quotes) : ""}
+                        value={form_quotes.cod_cotizacion ? quoteReportOptionLabel(form_quotes) : ""}
                         options={[
                             "Seleccione cotización",
-                            ...availableQuotes.map((quote) => quoteOptionLabel(quote)),
+                            ...availableQuotes.map((quote) => quoteReportOptionLabel(quote)),
                         ]}
                         searchPlaceholder="Buscar cotización..."
                         emptyMessage="No hay cotizaciones sin reporte con ese nombre"

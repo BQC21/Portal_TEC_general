@@ -13,9 +13,9 @@ import{
 import { ProjectTableProps } from "@/lib/types/components/General/tables";
 import { formatDemandaMensual } from "@/lib/utils/normalization";
 import { formatVersionLabel } from "@/lib/utils/helpers/manage_info/version";
-import { DATE_CELL_CLASS, getDateHeaderClass } from "@/lib/utils/helpers/render/tableDateColumn";
+import { DATE_CELL_CLASS, getDateHeaderClass, LINKED_ROW_CELL_CLASS } from "@/lib/utils/helpers/render/tableDateColumn";
 
-export default function ProjectTable({ projects, projects_equipos, projects_materiales, totalProjects,
+export default function ProjectTable({ projects, projects_equipos, projects_materiales, quotedProjectIds, totalProjects,
     onUpdateProject, onDeleteProject,
     onDeleteProjectEquipos,
     onDeleteProjectMateriales,
@@ -50,10 +50,12 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         .map((item) => item.material_info?.descripcion)
                                         .filter((description): description is string => Boolean(description));
                                     
+                                    const linked = quotedProjectIds.has(String(project.id));
+                                    const linkedCell = linked ? LINKED_ROW_CELL_CLASS : "";
                                     return (
-                                    <tr key={project.id} className="bg-white">
+                                    <tr key={project.id} className={linked ? LINKED_ROW_CELL_CLASS : "bg-white"}>
 
-                                        <td className="border border-slate-200 px-4 py-5">
+                                        <td className={`border border-slate-200 px-4 py-5 ${linkedCell}`}>
                                             <div className="flex items-center gap-4 text-slate-500">
                                                 <Button2Edit title="Ver proyecto" label="Ver Proyecto">
                                                     {(close) => (
@@ -101,25 +103,25 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(project.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(project.updated_at)}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.nombre}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{formatVersionLabel(project.version)}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.nombre}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{formatVersionLabel(project.version)}</td>
                                         {/* <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.descripcion}</td> */}
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.zona_info?.zona}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.angulo}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.tipo_instalacion}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.configuracion}</td>
-                                        <td className="border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words">
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.zona_info?.zona}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.angulo}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.tipo_instalacion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.configuracion}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium max-w-[180px] whitespace-pre-line break-words ${linkedCell}`}>
                                             {formatDemandaMensual(project.demanda_mensual)}
                                         </td>                        
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{Number(project.demanda_electrica).toFixed(0)} KWh</td>
-                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{Number(project.demanda_electrica).toFixed(0)} KWh</td>
+                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>
                                             {equiposDescriptions.length > 0 ? equiposDescriptions.join("\n") : "-"}
                                         </td>
-                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium`}>
+                                        <td className={`max-w-sm whitespace-pre-line border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>
                                             {materialesDescriptions.length > 0 ? materialesDescriptions.join("\n") : "-"}
                                         </td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500`}>{project.enlace}</td>
-                                        <td className={`border border-slate-200 px-4 py-5 font-medium`}>{project.estado_proyecto}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium text-brand-500 ${linkedCell}`}>{project.enlace}</td>
+                                        <td className={`border border-slate-200 px-4 py-5 font-medium ${linkedCell}`}>{project.estado_proyecto}</td>
                                         
                                     </tr>
                                     );
@@ -136,7 +138,7 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalProjects} proyectos
+                Mostrando {projects.length} de {totalProjects} proyectos
             </p>
         </section>
     )

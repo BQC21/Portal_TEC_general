@@ -19,7 +19,9 @@ import { Brand, BrandFormData } from "@/lib/types/supabase/brand.types";
 import { Supplier, SupplierFormData } from "@/lib/types/supabase/supplier-types";
 import { Type, TypeFormData } from "@/lib/types/supabase/type-types";
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
+import { TableFilterSelect } from "@/features/view/components/Filters/TableFilterSelect";
 import { useState } from "react";
+import { Category } from "@/lib/utils/options";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 import { SortingByDate } from "@/features/view/components/sorter/SortingByDate";
 import {
@@ -58,26 +60,32 @@ export default function ProveedoresPage() {
 	const [searchSupplier, setSearchSupplier] = useState<string>("");
 	const [searchBrand, setSearchBrand] = useState<string>("");
 	const [searchType, setSearchType] = useState<string>("");
+	const [categorySupplier, setCategorySupplier] = useState<string>("");
+	const [categoryBrand, setCategoryBrand] = useState<string>("");
+	const [categoryType, setCategoryType] = useState<string>("");
 
     const filteredSupplier = supplier.filter((supplier) => {
 		const matchesDescription = !searchSupplier || 
             supplier.nombre?.toLowerCase().includes(searchSupplier.toLowerCase());
+		const matchesCategory = !categorySupplier || supplier.categoria === categorySupplier;
 
-		return matchesDescription;
+		return matchesDescription && matchesCategory;
 	});
 
     const filteredBrand = brand.filter((brand) => {
 		const matchesDescription = !searchBrand || 
             brand.nombre?.toLowerCase().includes(searchBrand.toLowerCase());
+		const matchesCategory = !categoryBrand || brand.categoria === categoryBrand;
 
-		return matchesDescription;
+		return matchesDescription && matchesCategory;
 	});
 
     const filteredType = type.filter((type) => {
 		const matchesDescription = !searchType || 
             type.nombre?.toLowerCase().includes(searchType.toLowerCase());
+		const matchesCategory = !categoryType || type.categoria === categoryType;
 
-		return matchesDescription;
+		return matchesDescription && matchesCategory;
 	});
 
     const supplierDateSort = useDateSorting(filteredSupplier);
@@ -148,15 +156,23 @@ export default function ProveedoresPage() {
                                 label: "Lista de proveedores",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
-                                            <div className="min-w-0 flex-1">
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="w-full max-w-3xl">
                                                 <SearchBar
                                                     value={searchSupplier}
                                                     onChange={setSearchSupplier}
                                                     placeholder="Buscar por nombre del proveedor..."
                                                 />
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-3">
+                                            <div className="flex flex-wrap items-center justify-center gap-3">
+                                                <div className="w-64">
+                                                    <TableFilterSelect
+                                                        placeholder="Todas las categorías"
+                                                        value={categorySupplier}
+                                                        options={[...Category]}
+                                                        onChange={setCategorySupplier}
+                                                    />
+                                                </div>
                                                 <SortingByDate
                                                     field="created_at"
                                                     value={supplierDateSort.createdOrder}
@@ -167,6 +183,10 @@ export default function ProveedoresPage() {
                                                     value={supplierDateSort.updatedOrder}
                                                     onSortingChange={supplierDateSort.setUpdatedOrder}
                                                 />
+                                            </div>
+                                        </section>
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="flex flex-wrap items-center gap-3">
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de proveedores"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de proveedores."
@@ -213,7 +233,7 @@ export default function ProveedoresPage() {
                                         </section>
                                         <SupplierTable
                                             supplier={supplierDateSort.sortedRows}
-                                            totalSupplier={supplierDateSort.sortedRows.length}
+                                            totalSupplier={supplier.length}
                                             onUpdateSupplier={handleUpdateSupplier}
                                             onDeleteSupplier={handleDeleteSupplier}
                                         />
@@ -225,15 +245,23 @@ export default function ProveedoresPage() {
                                 label: "Lista de marcas",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
-                                            <div className="min-w-0 flex-1">
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="w-full max-w-3xl">
                                                 <SearchBar
                                                     value={searchBrand}
                                                     onChange={setSearchBrand}
                                                     placeholder="Buscar por nombre de la marca..."
                                                 />
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-3">
+                                            <div className="flex flex-wrap items-center justify-center gap-3">
+                                                <div className="w-64">
+                                                    <TableFilterSelect
+                                                        placeholder="Todas las categorías"
+                                                        value={categoryBrand}
+                                                        options={[...Category]}
+                                                        onChange={setCategoryBrand}
+                                                    />
+                                                </div>
                                                 <SortingByDate
                                                     field="created_at"
                                                     value={brandDateSort.createdOrder}
@@ -244,6 +272,10 @@ export default function ProveedoresPage() {
                                                     value={brandDateSort.updatedOrder}
                                                     onSortingChange={brandDateSort.setUpdatedOrder}
                                                 />
+                                            </div>
+                                        </section>
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="flex flex-wrap items-center gap-3">
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de marcas"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de marcas."
@@ -290,7 +322,7 @@ export default function ProveedoresPage() {
                                         </section>
                                         <BrandTable
                                             brand={brandDateSort.sortedRows}
-                                            totalBrand={brandDateSort.sortedRows.length}
+                                            totalBrand={brand.length}
                                             onUpdateBrand={handleUpdateBrand}
                                             onDeleteBrand={handleDeleteBrand}
                                         />
@@ -302,15 +334,23 @@ export default function ProveedoresPage() {
                                 label: "Lista de tipo de producto",
                                 content: (
                                     <>
-                                        <section className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-center">
-                                            <div className="min-w-0 flex-1">
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="w-full max-w-3xl">
                                                 <SearchBar
                                                     value={searchType}
                                                     onChange={setSearchType}
                                                     placeholder="Buscar por tipo de producto..."
                                                 />
                                             </div>
-                                            <div className="flex flex-wrap items-center gap-3">
+                                            <div className="flex flex-wrap items-center justify-center gap-3">
+                                                <div className="w-64">
+                                                    <TableFilterSelect
+                                                        placeholder="Todas las categorías"
+                                                        value={categoryType}
+                                                        options={[...Category]}
+                                                        onChange={setCategoryType}
+                                                    />
+                                                </div>
                                                 <SortingByDate
                                                     field="created_at"
                                                     value={typeDateSort.createdOrder}
@@ -321,6 +361,10 @@ export default function ProveedoresPage() {
                                                     value={typeDateSort.updatedOrder}
                                                     onSortingChange={typeDateSort.setUpdatedOrder}
                                                 />
+                                            </div>
+                                        </section>
+                                        <section className="mb-4 flex w-full flex-col items-center gap-3">
+                                            <div className="flex flex-wrap items-center gap-3">
                                                 <Button2MassiveUpload
                                                     title="Subida masiva de tipos de producto"
                                                     description="Selecciona un archivo XLSX con la estructura de la hoja de tipos de producto."
@@ -367,7 +411,7 @@ export default function ProveedoresPage() {
                                         </section>
                                         <TypeTable
                                             type={typeDateSort.sortedRows}
-                                            totalType={typeDateSort.sortedRows.length}
+                                            totalType={type.length}
                                             onUpdateType={handleUpdateType}
                                             onDeleteType={handleDeleteType}
                                         />

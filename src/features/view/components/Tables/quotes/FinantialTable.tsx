@@ -95,7 +95,7 @@ export default function FinantialTable({finantial, totalFinantial,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalFinantial} análisis financieros
+                Mostrando {finantial.length} de {totalFinantial} análisis financieros
             </p>
         </section>
     )

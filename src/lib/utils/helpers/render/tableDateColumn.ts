@@ -16,3 +16,4 @@ export function getDateHeaderClass(header: string): string {
 }
 
 export const DATE_CELL_CLASS = "bg-orange-100";
+export const LINKED_ROW_CELL_CLASS = "bg-green-100";

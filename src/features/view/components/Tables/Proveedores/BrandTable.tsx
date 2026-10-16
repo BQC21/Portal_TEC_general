@@ -87,7 +87,7 @@ export default function BrandTable({ brand,
                 </div>
             </div>
             <p className="text-lg text-slate-500">
-                Mostrando {totalBrand} marcas
+                Mostrando {brand.length} de {totalBrand} marcas
             </p>
         </section>
     )
