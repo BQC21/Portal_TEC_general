@@ -15,6 +15,7 @@ import AddReportModal from "@/features/view/components/Modals/quotes/report/AddR
 import { useProjectEquipos } from "@/features/ViewModel/hooks/services/useRealtimeProjectsEquipos";
 import { useProjectMateriales } from "@/features/ViewModel/hooks/services/useRealtimeProjectsMateriales";
 import { useQuoteMutations, useQuotes } from "@/features/ViewModel/hooks/services/useRealtimeQuotes";
+import { useSyncQuoteSalePrices } from "@/features/ViewModel/hooks/modals/Quotes/useSyncQuoteSalePrices";
 import { useReportMutations, useReports } from "@/features/ViewModel/hooks/services/useRealtimeReports";
 import { useFinantialMutations, useFinantials } from "@/features/ViewModel/hooks/services/useRealtimeFinantial";
 import { Finantial, FinantialFormData } from "@/lib/types/supabase/finantial-types";
@@ -64,7 +65,7 @@ export default function QuotesPage(){
     // ---------------------------------
     // ---- Usar Base de datos ---------
     // ---------------------------------  
-    const { quotes, refetch: refetch_quote } = useQuotes();
+    const { quotes, loading: quotesLoading, refetch: refetch_quote } = useQuotes();
     const { create: create_quote,
         update: update_quote,
         remove: remove_quote
@@ -72,10 +73,20 @@ export default function QuotesPage(){
 
 
     // JOIN EQUIPOS <---> PROYECTOS
-    const { projects_equipos: project_equipos, refetch: refetch_project_equipos } = useProjectEquipos();
+    const { projects_equipos: project_equipos, loading: equiposLoading, refetch: refetch_project_equipos } = useProjectEquipos();
 
     // JOIN MATERIALES <---> PROYECTOS    
-    const { projects_materiales: project_materiales, refetch: refetch_project_materiales } = useProjectMateriales();
+    const { projects_materiales: project_materiales, loading: materialesLoading, refetch: refetch_project_materiales } = useProjectMateriales();
+
+    useSyncQuoteSalePrices({
+        quotes,
+        quotesLoading,
+        projectEquipos: project_equipos,
+        equiposLoading,
+        projectMateriales: project_materiales,
+        materialesLoading,
+        refetchQuotes: refetch_quote,
+    });
 
     // REPORTES
     const { reports, refetch: refetch_report } = useReports();
