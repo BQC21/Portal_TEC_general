@@ -9,10 +9,8 @@ import { useEquipos } from "@/features/ViewModel/hooks/services/useRealtimeEquip
 import { formatCurrency } from "@/lib/utils/normalization"
 import { Structure_PriceTable_props } from "@/lib/types/components/Quotes/Quote_tables"
 import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/AddEquipoReadOnlyField"
-import { StructureOption } from "@/lib/types/components/Sizing/computes"
-import { bestStructureCombination } from "@/lib/utils/helpers/computes/best_structure_arrays"
-import { cantidadEstructurasParaUnidades, dadosPerStructure, isBatteryStructure, isDados, matchesStructureAngle, unitsPerStructure } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
-import { cantidadModuloFVComoUnidades, resolvePanelesPorPalet } from "@/lib/utils/helpers/computes/PanelNumber"
+import { matchesStructureAngle, isDados } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
+import { resolveStructureRows } from "@/lib/utils/helpers/project_modals/structureQuantities"
 import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 
 export function Structure_PriceTable({
@@ -39,122 +37,9 @@ export function Structure_PriceTable({
     // ALMACENAMIENTO cantidad
     // ---------------
 
-    const panelCount = useMemo(
-        () => {
-            const modules = selected_equipos.filter((item) =>
-                item.equipo_info?.tipo_de_producto === "MÓDULO FV",
-            )
-            const panelesPorPalet = resolvePanelesPorPalet(
-                modules.map((item) => ({
-                    unidad: item.equipo_info?.unidad,
-                    paneles_palet: item.equipo_info?.paneles_palet,
-                    descripcion: item.equipo_info?.descripcion,
-                })),
-            )
-            return modules.reduce(
-                (sum, item) =>
-                    sum + cantidadModuloFVComoUnidades(
-                        item.cantidad,
-                        item.equipo_info?.unidad,
-                        panelesPorPalet,
-                        item.equipo_info?.descripcion,
-                    ),
-                0,
-            )
-        },
+    const { rows: estructuraEquipos, dadosQuantity } = useMemo(
+        () => resolveStructureRows(selected_equipos),
         [selected_equipos],
-    )
-
-    const batteryCount = useMemo(
-        () => selected_equipos
-            .filter((item) => item.equipo_info?.tipo_de_producto === "BATERÍA")
-            .reduce((sum, item) => sum + (Number(item.cantidad) || 0), 0),
-        [selected_equipos],
-    )
-
-    // La cantidad no se edita: es el total de unidades a soportar (módulos FV o baterías)
-    // entre las que admite cada estructura. Con varias estructuras del mismo tipo el
-    // reparto se resuelve como combinación en lugar de dividir el total en cada fila.
-    const estructuraEquipos = useMemo(() => {
-        const structures = selected_equipos
-            .filter((item) => item.equipo_info?.tipo_de_producto === "ESTRUCTURA")
-
-        const toOptions = (items: typeof structures): StructureOption[] =>
-            items
-                .map((item) => ({
-                    id: String(item.id),
-                    capacity: unitsPerStructure(item.equipo_info?.descripcion),
-                    unitCost: Number(item.equipo_info?.precio_soles) || 0,
-                }))
-                .filter((option) => option.capacity > 0)
-
-        const moduleOptions = toOptions(structures.filter((item) =>
-            !isBatteryStructure(item.equipo_info?.descripcion)
-            && !isDados(item.equipo_info?.descripcion),
-        ))
-        const batteryOptions = toOptions(structures.filter((item) =>
-            isBatteryStructure(item.equipo_info?.descripcion),
-        ))
-
-        const moduleCombination = moduleOptions.length > 1
-            ? bestStructureCombination(panelCount, moduleOptions)
-            : null
-        const batteryCombination = batteryOptions.length > 1
-            ? bestStructureCombination(batteryCount, batteryOptions, "at-least")
-            : null
-
-        return structures.map((item) => {
-            const descripcion = item.equipo_info?.descripcion
-            if (isDados(descripcion)) {
-                return { item, perStructure: 0, cantidad: Number(item.cantidad) || 0, isDados: true, isBattery: false }
-            }
-
-            const perStructure = unitsPerStructure(descripcion)
-            const isBattery = isBatteryStructure(descripcion)
-            if (perStructure <= 0) {
-                return { item, perStructure, cantidad: Number(item.cantidad), isDados: false, isBattery }
-            }
-
-            if (moduleCombination && !isBattery) {
-                return {
-                    item,
-                    perStructure,
-                    cantidad: moduleCombination.get(String(item.id)) ?? 0,
-                    isDados: false,
-                    isBattery,
-                }
-            }
-
-            if (batteryCombination && isBattery) {
-                return {
-                    item,
-                    perStructure,
-                    cantidad: batteryCombination.get(String(item.id)) ?? 0,
-                    isDados: false,
-                    isBattery,
-                }
-            }
-
-            const totalUnits = isBattery ? batteryCount : panelCount
-            return {
-                item,
-                perStructure,
-                cantidad: cantidadEstructurasParaUnidades(totalUnits, perStructure),
-                isDados: false,
-                isBattery,
-            }
-        })
-    }, [selected_equipos, panelCount, batteryCount])
-
-    const dadosQuantity = useMemo(
-        () => estructuraEquipos
-            .filter(({ isDados: dadosRow, isBattery }) => !dadosRow && !isBattery)
-            .reduce((sum, { perStructure, cantidad }) => {
-                const factor = dadosPerStructure(perStructure)
-                if (factor <= 0) return sum
-                return sum + factor * Math.ceil(cantidad)
-            }, 0),
-        [estructuraEquipos],
     )
 
     // ---------------
