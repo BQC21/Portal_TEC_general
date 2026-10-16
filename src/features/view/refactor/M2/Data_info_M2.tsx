@@ -12,6 +12,7 @@ import { compute_cobertura, monthsFromFactor } from "@/lib/utils/helpers/compute
 import { MONTH_LABELS } from "@/lib/utils/consts/energy";
 import {
     cantidadesPaletYUnidad,
+    etiquetaConjuntoModuloFV,
     optionalInputMax,
     optionalInputMin,
     panelesPorPaletDeModulo,
@@ -346,7 +347,13 @@ export function Data_info_M2({ form, updateField, handleOpcionDemandaLlenadoChan
                                 )
                             }
                                     <AddEquipoReadonlyField
-                                        label="Número de palets"
+                                        label={etiquetaConjuntoModuloFV(
+                                            computedRequirements.selectedEquipment
+                                                ? [computedRequirements.selectedEquipment]
+                                                : [],
+                                        ) === "containers"
+                                            ? "Número de containers"
+                                            : "Número de palets"}
                                         value={String(palets)}
                                         colorClass={"text-slate-800 bg-[#50A0FF]"}
                                     />
