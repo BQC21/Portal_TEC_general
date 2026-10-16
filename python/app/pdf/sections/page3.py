@@ -123,7 +123,7 @@ def _website_right() -> Table:
         alignment=TA_LEFT,
     )
     link = Paragraph(
-        '<link href="https://tec-renovables.pe/"><font color="#0A2F6B"><u>www.tec-renovables.pe</u></font></link>',
+        '<link href="https://tec-energysolutions.pe/"><font color="#0A2F6B"><u>www.tec-energysolutions.pe</u></font></link>',
         link_style,
     )
     inner = Table([[_globe_icon(11), link]], colWidths=[0.45 * cm, 4.6 * cm])

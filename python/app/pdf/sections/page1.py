@@ -139,7 +139,7 @@ def _website_right() -> Table:
         alignment=TA_LEFT,
     )
     link = Paragraph(
-        f'<link href="https://tec-renovables.pe/"><font color="#0A2F6B"><u>www.tec-renovables.pe</u></font></link>',
+        f'<link href="https://tec-energysolutions.pe/"><font color="#0A2F6B"><u>www.tec-energysolutions.pe</u></font></link>',
         link_style,
     )
     inner = Table([[_globe_icon(11), link]], colWidths=[0.45 * cm, 4.6 * cm])
@@ -225,38 +225,38 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
 
     story.append(
         Paragraph(
-            "Somos TEC: Tecnología, Eficiencia y Compromiso… Soluciones solares empresariales" 
+            "Somos TEC: Tecnología, Eficiencia y Compromiso… Soluciones solares empresariales " 
             "que iluminan el futuro de un Perú sostenible.",
             italic_style,
         )
     )
 
-    story.append(Spacer(1, 0.25 * cm))
+    story.append(Spacer(1, 0.45 * cm))
 
     story.append(
         Paragraph(
-            "En <b>TEC Energy Solutions</b> impulsamos la transición hacia un modelo energético más" 
-            "competitivo y responsable, ofreciendo proyectos de <b>Generación de Energía Fotovoltaica</b>" 
-            "diseñados para maximizar el <b>ahorro en energía y reducir la huella ambiental</b> de las empresas." 
-            "Nuestro equipo de especialistas acompaña a cada cliente en todo el proceso, desde la ingeniería"
-            "y la instalación hasta el mantenimiento y el monitoreo de nuestros sistemas, asegurando" 
+            "En <b>TEC Energy Solutions</b> impulsamos la transición hacia un modelo energético más " 
+            "competitivo y responsable, ofreciendo proyectos de <b>Generación de Energía Fotovoltaica</b> " 
+            "diseñados para maximizar el <b>ahorro en energía y reducir la huella ambiental</b> de las empresas. " 
+            "Nuestro equipo de especialistas acompaña a cada cliente en todo el proceso, desde la ingeniería "
+            "y la instalación hasta el mantenimiento y el monitoreo de nuestros sistemas, asegurando " 
             "soluciones confiables y sostenibles.",
             justify,
         )
     )
 
-    story.append(Spacer(1, 0.25 * cm))
+    story.append(Spacer(1, 0.45 * cm))
 
     story.append(
         Paragraph(
-            "Nuestra experiencia en el sector comercial e industrial, junto con nuestra participación" 
-            "en foros internacionales, nos respalda como un socio estratégico para organizaciones" 
+            "Nuestra experiencia en el sector comercial e industrial, junto con nuestra participación " 
+            "en foros internacionales, nos respalda como un socio estratégico para organizaciones " 
             "que buscan eficiencia energética y liderazgo en sostenibilidad.",
             justify,
         )
     )
 
-    story.append(Spacer(1, 0.25 * cm))
+    story.append(Spacer(1, 0.45 * cm))
     
     story.append(
         Paragraph(
@@ -271,7 +271,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         )
     )
 
-    story.append(Spacer(1, 0.25 * cm))
+    story.append(Spacer(1, 0.45 * cm))
     
     story.append(
         Paragraph(

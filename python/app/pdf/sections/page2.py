@@ -69,16 +69,16 @@ def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
         [
             Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
             Paragraph(
-                f'Pág web: <link href="https://tec-renovables.pe/"><font color="#0A2F6B"><u>www.tec-renovables.pe</u></font></link>',
+                f'Pág web: <link href="https://tec-energysolutions.pe/"><font color="#0A2F6B"><u>www.tec-energysolutions.pe</u></font></link>',
                 link_style,
             ),
         ],
         [
             Paragraph("RUC: 20612681466", styles["small"]),
-            Paragraph("Tel: 944590566", styles["right"]),
+            Paragraph("Teléfono: 944590566", styles["right"]),
         ],
         [
-            Paragraph("Calle Cnel Luis Arias Schreiber 135, Miraflores", styles["small"]),
+            Paragraph("Ca. Luis Arias Schreiber 135 Oficina 201, Miraflores", styles["small"]),
             Paragraph("", styles["right"]),
         ],
     ]
