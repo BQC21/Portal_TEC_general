@@ -16,7 +16,7 @@ export type StructureOption = {
 
 export type StructureCombinationMode = "at-most" | "at-least"
 
-export type ModuloFVUnidadKind = "palet" | "unidad";
+export type ModuloFVUnidadKind = "palet" | "container" | "unidad";
 
 export type ModuloFVSelection = {
     id?: string;
