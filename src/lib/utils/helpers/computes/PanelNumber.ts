@@ -13,15 +13,34 @@ export function normalizeModuloFVUnidad(unidad?: string | null): ModuloFVUnidadK
     ) {
         return "palet";
     }
+    if (
+        unidadNormalizada === "container"
+        || unidadNormalizada === "containers"
+        || unidadNormalizada === "contenedor"
+        || unidadNormalizada === "contenedores"
+    ) {
+        return "container";
+    }
     if (unidadNormalizada === "unidad" || unidadNormalizada === "uni") return "unidad";
     return null;
+}
+
+export function isContainerModuloFV(unidad?: string | null, descripcion?: string | null): boolean {
+    if (normalizeModuloFVUnidad(unidad) === "container") return true;
+    return /\bcontainers?\b/i.test(descripcion ?? "")
+        || /\bcontenedores?\b/i.test(descripcion ?? "");
+}
+
+export function isConjuntoModuloFV(unidad?: string | null, descripcion?: string | null): boolean {
+    return isPaletModuloFV(unidad, descripcion) || isContainerModuloFV(unidad, descripcion);
 }
 
 export function panelesPorPaletDeModulo(
     unidad?: string | null,
     paneles_palet?: number | null,
 ): number {
-    if (normalizeModuloFVUnidad(unidad) !== "palet") return 0;
+    const kind = normalizeModuloFVUnidad(unidad);
+    if (kind !== "palet" && kind !== "container") return 0;
     const n = Number(paneles_palet);
     return Number.isFinite(n) && n > 0 ? Math.trunc(n) : 0;
 }
@@ -32,12 +51,19 @@ export function isPaletModuloFV(unidad?: string | null, descripcion?: string | n
 }
 
 export function hasSelectedPaletModuloFV(modulos: ModuloFVSelection[]): boolean {
-    return modulos.some((item) => isPaletModuloFV(item.unidad));
+    return modulos.some((item) => isConjuntoModuloFV(item.unidad));
 }
 
 export function panelesPorPaletDesdeSeleccion(modulos: ModuloFVSelection[]): number {
-    const palet = modulos.find((item) => isPaletModuloFV(item.unidad));
-    return panelesPorPaletDeModulo(palet?.unidad, palet?.paneles_palet);
+    const conjunto = modulos.find((item) => isConjuntoModuloFV(item.unidad));
+    return panelesPorPaletDeModulo(conjunto?.unidad, conjunto?.paneles_palet);
+}
+
+export function etiquetaConjuntoModuloFV(
+    modulos: Array<{ unidad?: string | null }>,
+): "containers" | "palets" {
+    if (modulos.some((item) => isContainerModuloFV(item.unidad))) return "containers";
+    return "palets";
 }
 
 export function canAddModuloFV(
@@ -74,7 +100,8 @@ export function cantidadModuloFVTabla(
 ): number {
     const paneles = Number(numeroPaneles) || 0;
     const { palets, unidades } = cantidadesPaletYUnidad(paneles, paneles_por_palet);
-    if (normalizeModuloFVUnidad(unidad) === "palet") {
+    const kind = normalizeModuloFVUnidad(unidad);
+    if (kind === "palet" || kind === "container") {
         return palets;
     }
     if (usarRestoUnidades) {
@@ -89,15 +116,15 @@ export function cantidadModuloFVEnTabla(
     unidad?: string | null,
     modulosSeleccionados: ModuloFVSelection[] = [],
 ): number {
-    const esPalet = isPaletModuloFV(unidad);
-    const porPalet = esPalet
+    const esConjunto = isConjuntoModuloFV(unidad);
+    const porConjunto = esConjunto
         ? panelesPorPaletDeModulo(unidad, paneles_por_palet)
         : panelesPorPaletDesdeSeleccion(modulosSeleccionados);
     return cantidadModuloFVTabla(
         numeroPaneles,
-        porPalet,
+        porConjunto,
         unidad,
-        !esPalet && hasSelectedPaletModuloFV(modulosSeleccionados),
+        !esConjunto && hasSelectedPaletModuloFV(modulosSeleccionados),
     );
 }
 
@@ -166,9 +193,16 @@ export function resolvePanelesPorPalet(
         descripcion?: string | null;
     }>,
 ): number {
-    const paletItem = items.find((item) => isPaletModuloFV(item.unidad, item.descripcion));
-    const fromPalet = Number(paletItem?.paneles_palet);
-    if (Number.isFinite(fromPalet) && fromPalet > 0) return Math.trunc(fromPalet);
+    const conjuntoItem = items.find((item) => isConjuntoModuloFV(item.unidad, item.descripcion));
+    const fromConjunto = Number(conjuntoItem?.paneles_palet);
+    if (Number.isFinite(fromConjunto) && fromConjunto > 0) return Math.trunc(fromConjunto);
+    if (
+        conjuntoItem
+        && isContainerModuloFV(conjuntoItem.unidad, conjuntoItem.descripcion)
+        && !isPaletModuloFV(conjuntoItem.unidad, conjuntoItem.descripcion)
+    ) {
+        return 1;
+    }
 
     const fromAny = items
         .map((item) => Number(item.paneles_palet))
@@ -185,12 +219,11 @@ export function cantidadModuloFVComoUnidades(
     descripcion?: string | null,
 ): number {
     const n = Math.max(0, Math.ceil(Number(cantidad) || 0));
-    if (!isPaletModuloFV(unidad, descripcion)) return n;
-    const panelesPorPalet = Number(paneles_palet);
-    const factor = Number.isFinite(panelesPorPalet) && panelesPorPalet > 0
-        ? Math.trunc(panelesPorPalet)
-        : DEFAULT_PANELES_POR_PALET;
-    return n * factor;
+    if (!isConjuntoModuloFV(unidad, descripcion)) return n;
+    const stored = Number(paneles_palet);
+    if (Number.isFinite(stored) && stored > 0) return n * Math.trunc(stored);
+    if (isContainerModuloFV(unidad, descripcion) && !isPaletModuloFV(unidad, descripcion)) return n;
+    return n * DEFAULT_PANELES_POR_PALET;
 }
 
 export function cantidadBateriaComoUnidades(
@@ -212,7 +245,7 @@ export function toEquipoReportRows(equipos: EquipoReportSource[]): EquipoReportD
 
             const preferred =
                 moduloItems.find((candidate) =>
-                    !isPaletModuloFV(
+                    !isConjuntoModuloFV(
                         candidate.equipo_info?.unidad,
                         candidate.equipo_info?.descripcion,
                     ),

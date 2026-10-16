@@ -6,7 +6,7 @@ import {
 } from "@/lib/types/components/Quotes/finantial_analysis";
 import { FinantialCambioEquipo, FinantialCambioItem } from "@/lib/types/supabase/finantial-types";
 import { OPEX_RATE, VAN_HORIZON } from "@/lib/utils/consts/finantial";
-import { isPaletModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
+import { isConjuntoModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 
 // Construcción de la energía
 export function buildEnergyRows(input: {
@@ -315,7 +315,7 @@ export function getPlantPowerKwp(
             const power = Number(item.equipo_info?.potencia_maxima) || 0;
             const quantity = Number(item.cantidad) || 0;
             const panelsPerPallet = Number(item.equipo_info?.paneles_palet) || 0;
-            const isPallet = isPaletModuloFV(item.equipo_info?.unidad, item.equipo_info?.descripcion);
+            const isPallet = isConjuntoModuloFV(item.equipo_info?.unidad, item.equipo_info?.descripcion);
             const panels = isPallet
                 ? quantity * (panelsPerPallet > 0 ? panelsPerPallet : 1)
                 : quantity;
