@@ -69,7 +69,7 @@ def _company_header(styles: dict[str, ParagraphStyle]) -> Table:
         [
             Paragraph("<b>TEC SOLUCIONES RENOVABLES S.A.C</b>", styles["body"]),
             Paragraph(
-                f'Pág web: <link href="https://tec-energysolutions.pe/"><font color="#0A2F6B"><u>www.tec-energysolutions.pe</u></font></link>',
+                f'<link href="https://tec-energysolutions.pe/"><font color="#0A2F6B"><u>www.tec-energysolutions.pe</u></font></link>',
                 link_style,
             ),
         ],
