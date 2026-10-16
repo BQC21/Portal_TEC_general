@@ -134,7 +134,7 @@ export default function MaterialesPage() {
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-							<Button2MassiveUpload
+							{/* <Button2MassiveUpload
 								title="Subida masiva de materiales"
 								description="Selecciona un archivo XLSX con la estructura de la hoja de materiales eléctricos."
 								tableName={MATERIALES_TABLE}
@@ -142,7 +142,7 @@ export default function MaterialesPage() {
 								columns={MATERIALES_UPLOAD_COLUMNS}
 								transformRows={transformMaterialesRows}
 								onSuccess={refetch}
-							/>
+							/> */}
 							<Button2MassiveDownload
 								title="Descarga masiva de materiales"
 								description="Exporta el catálogo de materiales eléctricos en XLSX o CSV."

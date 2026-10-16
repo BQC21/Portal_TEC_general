@@ -138,7 +138,7 @@ export default function EquiposPage() {
                                 value={sorting}
                                 onSortingChange={setSorting}
                             />
-							<Button2MassiveUpload
+							{/* <Button2MassiveUpload
 								title="Subida masiva de equipos"
 								description="Selecciona un archivo XLSX con la estructura de la hoja de equipos principales."
 								tableName={EQUIPOS_TABLE}
@@ -146,7 +146,7 @@ export default function EquiposPage() {
 								columns={EQUIPOS_UPLOAD_COLUMNS}
 								transformRows={transformEquiposRows}
 								onSuccess={refetch}
-							/>
+							/> */}
 							<Button2MassiveDownload
 								title="Descarga masiva de equipos"
 								description="Exporta el catálogo de equipos principales en XLSX o CSV."
