@@ -4,12 +4,8 @@ import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { Quote } from "@/lib/types/supabase/quote-types";
 import { Project_Equipos } from "@/lib/types/supabase/project_equipos_join";
 import { Project_Materiales } from "@/lib/types/supabase/project_materiales_join";
-import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
-import { resolveQuoteDisplayResources } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
-import {
-    computeQuoteCostTotals,
-    sumQuoteCostTotals,
-} from "@/lib/utils/helpers/computes/quote_cost_totals";
+import { liveQuoteCostTotals } from "@/lib/utils/helpers/computes/quote_sale_price";
+import { sumQuoteCostTotals } from "@/lib/utils/helpers/computes/quote_cost_totals";
 import {
     mergeManualCosts,
     mergeProjectEquipos,
@@ -48,33 +44,15 @@ export function useUnitedQuoteAggregation({
             };
         }
 
-        const parts = selectedQuotes.map((quote) => {
-            const { equipos, materiales: quoteMateriales } = resolveQuoteDisplayResources({
-                hasSelectedQuote: true,
-                isIndependent: !isQuoteLinkedToProject(quote),
+        const parts = selectedQuotes.map((quote) => ({
+            quote,
+            ...liveQuoteCostTotals({
                 quote,
                 existingEquipos: existingProjectEquipos,
                 existingMateriales: existingProjectMateriales,
-            });
-
-            return {
-                quote,
-                equipos,
-                materiales: quoteMateriales,
-                ...computeQuoteCostTotals({
-                    projectEquipos: equipos,
-                    projectMateriales: quoteMateriales,
-                    manualCosts: quote.costos_manuales,
-                    gm_general: Number(quote.gm_general),
-                    markup: Number(quote.markup),
-                    gm_viaticos: Number(quote.gm_viaticos),
-                    tasa_cambio: Number(quote.tasa_cambio),
-                    depre_tool: Number(quote.depre_tool),
-                    materialesCatalog: materiales,
-                    applyResourceChecklists: !isQuoteLinkedToProject(quote),
-                }),
-            };
-        });
+                materialesCatalog: materiales,
+            }),
+        }));
 
         const mergedEquipos = mergeProjectEquipos(parts.flatMap((part) => part.equipos));
         const mergedMateriales = mergeProjectMateriales(parts.flatMap((part) => part.materiales));

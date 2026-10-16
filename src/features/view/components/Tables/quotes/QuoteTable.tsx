@@ -91,7 +91,7 @@ export default function QuoteTable({quote, totalQuote,
                             ) : (
                                 <tr className="bg-white">
                                     <td colSpan={TABLE_HEADERS_QUOTE.length} className="px-4 py-10 text-center text-slate-500">
-                                        No hay cotizaciones registradas todavía.
+                                        No hay cotizaciones registradas todavía.    
                                     </td>
                                 </tr>
                             )}
