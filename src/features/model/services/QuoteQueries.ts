@@ -150,6 +150,26 @@ export async function getQuoteById(id: string): Promise<Quote> {
     return mapSupabaseRowtoQuote(data);
 }
 
+export async function updateQuoteSalePrice(
+    id: string,
+    sale: { precio_dolares: number; gm?: number },
+): Promise<void> {
+    const supabase = createClient();
+    const patch: { precio_dolares: number; gm?: number } = {
+        precio_dolares: sale.precio_dolares,
+    };
+    if (sale.gm != null) patch.gm = sale.gm;
+
+    const { error } = await supabase
+        .from(QUOTE_TABLE)
+        .update(patch)
+        .eq("id", id);
+
+    if (error) {
+        throw new Error(`Error al actualizar el precio de la cotización: ${error.message}`);
+    }
+}
+
 // actualizar
 export async function updateQuote(id: string, quote: QuoteFormData): Promise<Quote> {
     const supabase = createClient();
