@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { AddProductNumberField } from "../../components/Form_fields/AddNumberField";
 import { Tables_M2_props } from "@/lib/types/components/sub_components/module_render";
-import { cantidadModuloFVEnTabla, unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
+import { cantidadModuloFVEnTabla, etiquetaConjuntoModuloFV, unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { syncSolisAutoAccessories } from "@/lib/utils/helpers/project_modals/solisAccessories";
 import { allowsQuantityOverride, followsCadenaNumber, isVisibleEquipment, isVisibleMaterial, materialRowKey, structureQuantityMax } from "@/lib/utils/helpers/project_modals/tables_M2_fnc";
 
@@ -70,7 +70,7 @@ export function Tables_M2({selectedEquipmentTable, setSelectedEquipmentTable,
                     <h2 className="text-2xl font-bold text-slate-900">Equipos principales seleccionados</h2>
                     {unidadesPendientes > 0 && (
                         <p className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
-                            Se seleccionaron palets y {unidadesPendientes === 1
+                            Se seleccionaron {etiquetaConjuntoModuloFV(selectedModules)} y {unidadesPendientes === 1
                                 ? "falta 1 unidad"
                                 : `faltan ${unidadesPendientes} unidades`} para completar los paneles exactos registrados. Agregue un módulo FV por unidad.
                         </p>

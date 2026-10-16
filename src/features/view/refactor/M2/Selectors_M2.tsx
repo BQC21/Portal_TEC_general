@@ -23,7 +23,7 @@ import {
 } from "@/lib/utils/helpers/project_modals/cableMatrix";
 import { extractMm2 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector";
 import { defaultSelectOption, SIZING_SEARCHABLE_LABELS, toProductSelectOption, withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions";
-import { unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
+import { etiquetaConjuntoModuloFV, unidadesPendientesModuloFV } from "@/lib/utils/helpers/computes/PanelNumber";
 import { matrixCellStyles, matrixHeaderStyles } from "@/lib/utils/consts/tables_M2";
 
 export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTable, selectedMaterialTable, 
@@ -149,7 +149,7 @@ export function Selectors_M2({ equipmentRows, materialRows, selectedEquipmentTab
                                         />
                                         {label === "MÓDULO FV" && unidadesPendientes > 0 && (
                                             <p className="rounded-xl border border-amber-300 bg-amber-50 px-3 py-2 text-sm font-medium text-amber-800">
-                                                Se seleccionaron palets y {unidadesPendientes === 1
+                                                Se seleccionaron {etiquetaConjuntoModuloFV(selectedEquipmentTable.filter((item) => item.row === "MÓDULO FV"))} y {unidadesPendientes === 1
                                                     ? "falta 1 unidad"
                                                     : `faltan ${unidadesPendientes} unidades`} para completar los paneles exactos registrados.
                                             </p>
