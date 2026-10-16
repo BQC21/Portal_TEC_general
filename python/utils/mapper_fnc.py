@@ -75,13 +75,26 @@ def _is_palet_unidad(unidad: str, descripcion: str = "") -> bool:
     return bool(re.search(r"\bpal+ets?\b", descripcion, flags=re.IGNORECASE))
 
 
+def _is_container_unidad(unidad: str, descripcion: str = "") -> bool:
+    normalized = unidad.strip().lower()
+    if normalized in {"container", "containers", "contenedor", "contenedores"}:
+        return True
+    return bool(re.search(r"\bcontainers?\b", descripcion, flags=re.IGNORECASE)) or bool(
+        re.search(r"\bcontenedores?\b", descripcion, flags=re.IGNORECASE)
+    )
+
+
+def _is_conjunto_unidad(unidad: str, descripcion: str = "") -> bool:
+    return _is_palet_unidad(unidad, descripcion) or _is_container_unidad(unidad, descripcion)
+
+
 def _resolve_paneles_por_palet(items: list[EquipoItem]) -> int:
     palet_item = next(
         (
             item
             for item in items
             if item.equipo_info
-            and _is_palet_unidad(
+            and _is_conjunto_unidad(
                 _to_str(item.equipo_info.unidad),
                 _to_str(item.equipo_info.descripcion),
             )
@@ -92,6 +105,10 @@ def _resolve_paneles_por_palet(items: list[EquipoItem]) -> int:
         from_palet = int(_to_float(palet_item.equipo_info.paneles_palet))
         if from_palet > 0:
             return from_palet
+        unidad = _to_str(palet_item.equipo_info.unidad)
+        descripcion = _to_str(palet_item.equipo_info.descripcion)
+        if _is_container_unidad(unidad, descripcion) and not _is_palet_unidad(unidad, descripcion):
+            return 1
     for item in items:
         value = int(_to_float(item.equipo_info.paneles_palet if item.equipo_info else None))
         if value > 0:
@@ -106,9 +123,11 @@ def _cantidad_modulo_en_unidades(
     descripcion: str = "",
 ) -> int:
     n = max(0, int(math.ceil(_to_float(cantidad))))
-    if not _is_palet_unidad(unidad, descripcion):
+    if not _is_conjunto_unidad(unidad, descripcion):
         return n
-    por_palet = int(_to_float(paneles_palet))
-    if por_palet <= 0:
-        por_palet = PANELES_POR_PALET
-    return n * por_palet
+    por_conjunto = int(_to_float(paneles_palet))
+    if por_conjunto > 0:
+        return n * por_conjunto
+    if _is_container_unidad(unidad, descripcion) and not _is_palet_unidad(unidad, descripcion):
+        return n
+    return n * PANELES_POR_PALET
