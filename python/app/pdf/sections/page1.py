@@ -282,9 +282,9 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
 
     # Inclusión de firma
     if data.incluir_firma:
-        story.append(Spacer(1, 0.2 * cm))
+        story.append(Spacer(1, 0.1 * cm))
         story.append(Paragraph("Atentamente:", atentamente))
-        story.append(Spacer(1, 0.2 * cm))
+        story.append(Spacer(1, 0.1 * cm))
         
         firm = _rl_image("Coco_Firm.png", width=6.0 * cm, height=2.0 * cm)
         firm_table = Table([[firm]], colWidths=[_CONTENT_W])
@@ -301,7 +301,7 @@ def build_page1(data: ReportPdfData, styles: dict[str, ParagraphStyle]) -> list:
         
         story.append(Paragraph("<b>Ing. Jorge Guerrero Tarazona</b>", signature))
         story.append(Paragraph("Gerente General", signature))
-        story.append(Spacer(1, 0.2 * cm))
+        story.append(Spacer(1, 0.1 * cm))
     else:
         story.append(Spacer(1, 3.0 * cm))
 
