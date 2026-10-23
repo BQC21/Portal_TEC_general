@@ -1,114 +1,13 @@
-import { EatingItem, ManualCosts, MontoItem } from "@/lib/types/components/Quotes/manual_resources";
+import { ManualCosts } from "@/lib/types/components/Quotes/manual_resources";
 import { SupabaseProjectRow } from "@/lib/types/supabase/project-types";
 import { Quote, QuoteFormData, QuoteFormState, SupabaseQuoteRow } from "@/lib/types/supabase/quote-types";
 import { parseNullableDate } from "@/lib/utils/helpers/manage_info/date_manage";
-import { INITIAL_MANUAL_RESOURCE_COSTS } from "@/lib/utils/initialValues";
-import { parseNumber } from "@/lib/utils/normalization";
+import { normalizeManualCosts, parseNumber } from "@/lib/utils/normalization";
 import { mapSupabaseRowToProject } from "./project_mapping";
 
-function normalizeEatingItems(saved: unknown, defaults: EatingItem[]): EatingItem[] {
-    if (Array.isArray(saved)) {
-        return saved.length > 0 ? saved : defaults;
-    }
-
-    if (saved && typeof saved === "object" && "monto" in saved) {
-        const legacy = saved as MontoItem;
-        return [{
-            id: crypto.randomUUID(),
-            descripcion: "Alimentación",
-            monto: legacy.monto ?? 0,
-            personas: legacy.personas ?? 0,
-            dias: legacy.dias ?? 0,
-        }];
-    }
-
-    return defaults;
-}
-
-function normalizeMontoItems(saved: unknown, defaults: MontoItem[]): MontoItem[] {
-    if (Array.isArray(saved)) {
-        return saved.length > 0 ? saved : defaults;
-    }
-
-    if (saved && typeof saved === "object" && "monto" in saved) {
-        const legacy = saved as MontoItem;
-        return [{
-            id: crypto.randomUUID(),
-            descripcion: legacy.descripcion || "Gastos de viaje",
-            monto: legacy.monto ?? 0,
-            personas: legacy.personas ?? 0,
-            dias: legacy.dias ?? 0,
-        }];
-    }
-
-    return defaults;
-}
-
-function normalizeManualCosts(costs?: ManualCosts | null): ManualCosts {
-    const defaults = INITIAL_MANUAL_RESOURCE_COSTS;
-    const saved = costs ?? defaults;
-
-    return {
-        Recursos: {
-            ...defaults.Recursos,
-            ...saved.Recursos,
-            consumible: Array.isArray(saved.Recursos?.consumible)
-                ? saved.Recursos.consumible
-                : defaults.Recursos.consumible,
-            epp: Array.isArray(saved.Recursos?.epp) ? saved.Recursos.epp : defaults.Recursos.epp,
-            tooling: Array.isArray(saved.Recursos?.tooling) ? saved.Recursos.tooling : defaults.Recursos.tooling,
-            personal: Array.isArray(saved.Recursos?.personal) ? saved.Recursos.personal : defaults.Recursos.personal,
-            sctr: Array.isArray(saved.Recursos?.sctr) ? saved.Recursos.sctr : defaults.Recursos.sctr,
-            considerar_epp_reutilizable:
-                saved.Recursos?.considerar_epp_reutilizable ??
-                defaults.Recursos.considerar_epp_reutilizable,
-            estructuras_cantidad_manual:
-                saved.Recursos?.estructuras_cantidad_manual ??
-                defaults.Recursos.estructuras_cantidad_manual,
-            considerar_equipos_principales:
-                saved.Recursos?.considerar_equipos_principales !== false,
-            considerar_estructuras:
-                saved.Recursos?.considerar_estructuras !== false,
-            considerar_consumibles:
-                saved.Recursos?.considerar_consumibles !== false,
-            consumibles_ocultos: Array.isArray(saved.Recursos?.consumibles_ocultos)
-                ? saved.Recursos.consumibles_ocultos.map(String)
-                : [],
-            equipos_seleccionados: saved.Recursos?.equipos_seleccionados,
-            materiales_seleccionados: saved.Recursos?.materiales_seleccionados,
-        },
-        Viaticos: {
-            ...defaults.Viaticos,
-            ...saved.Viaticos,
-            // eating: normalizeEatingItems(saved.Viaticos?.eating, defaults.Viaticos.eating),
-            // traveling: {
-            //     ...defaults.Viaticos.traveling,
-            //     ...saved.Viaticos?.traveling,
-            // },
-            // mobility: {
-            //     ...defaults.Viaticos.mobility,
-            //     ...saved.Viaticos?.mobility,
-            // },
-            // hotel: {
-            //     ...defaults.Viaticos.hotel,
-            //     ...saved.Viaticos?.hotel,
-            // },
-            gastos_viaje: normalizeMontoItems(
-                saved.Viaticos?.gastos_viaje,
-                defaults.Viaticos.gastos_viaje,
-            ),
-            courier: saved.Viaticos?.courier?.length
-                ? saved.Viaticos.courier
-                : defaults.Viaticos.courier,
-        },
-        union: saved.union && Array.isArray(saved.union.quote_ids)
-            ? {
-                quote_ids: saved.union.quote_ids.map(String),
-                cantidad: Number(saved.union.cantidad) || saved.union.quote_ids.length,
-            }
-            : undefined,
-    };
-}
+// ---------------------------
+// -- Mapeadores -------------
+// ---------------------------
 
 // Creador de valores por defecto asociado a costos manuales
 export function createManualCostsFromQuote(quote: Quote): ManualCosts {

@@ -5,6 +5,7 @@ import { mapSupabaseRowToZone } from "./zone_mapping"
 import { SupabaseBrandRow } from "@/lib/types/supabase/brand.types"
 import { mapSupabaseRowToBrand } from "./mapping_marcas"
 import { normalizeAssociationIds, toIntegerIdArray, toNullableInteger } from "@/lib/utils/normalization"
+import { parseTypeProperties } from "@/lib/utils/consts/typeProperties"
 
 // Actualización del formulario
 export function createTypeFormStateFromType(type: Type): TypeFormstate {
@@ -20,6 +21,7 @@ export function createTypeFormStateFromType(type: Type): TypeFormstate {
         marca_ids,
         marca_info: type.marca_info,
         marcas_info: type.marcas_info ?? [],
+        propiedades: type.propiedades,
     }
 }
 
@@ -69,6 +71,7 @@ export function mapSupabaseRowToType(
         marca_ids,
         marca_info: nestedBrands[0],
         marcas_info: nestedBrands,
+        propiedades: parseTypeProperties(row.propiedades),
 	}
 }
 
@@ -88,5 +91,6 @@ export function mapTypeToSupabaseRow(
         // fechas
         created_at: type.created_at,
         updated_at: type.updated_at,
+        ...(type.propiedades ? { propiedades: type.propiedades } : {}),
     }
 }

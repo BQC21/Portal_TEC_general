@@ -1,4 +1,4 @@
-import {CurrencyCode} from "@/lib/types/components/General/options"
+import {CurrencyCode, FIRMOptions} from "@/lib/types/components/General/options"
 import {PRICE_CURRENCY_OPTIONS} from "@/lib/utils/options"
 import { EMPTY_VENTA } from "./empty";
 import { MOActivity } from "../types/components/sub_components/module_render";
@@ -226,6 +226,11 @@ export function normalizePdfVisibility(value: unknown): ReportPdfVisibility {
         moActivities: asMoActivities(raw.moActivities),
         enviado: Boolean(raw.enviado),
     };
+}
+
+export function normalizeOpcionFirma(value?: string): FIRMOptions {
+    if (value === "CON FIRMA" || value === "Con firma") return "CON FIRMA";
+    return "SIN FIRMA";
 }
 
 // ---------------------
