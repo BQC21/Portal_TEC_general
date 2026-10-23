@@ -1,6 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { Properties_Type } from "@/features/view/refactor/M1/refactor_proveedores/Properties_Type";
+import { TypeProperty } from "@/lib/utils/consts/typeProperties";
+import { defaultPropertiesForType } from "@/lib/utils/helpers/render/EP_MAT_tables";
+import { ensureTypePropertyColumns } from "@/features/model/services/catalogColumn";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { EditTypeModalProps } from "@/lib/types/components/General/modals";
 import { createTypeFormStateFromType } from "@/features/model/mapping/mapping_type";
@@ -16,8 +20,20 @@ import { Selectors_Type } from "@/features/view/refactor/M1/refactor_proveedores
 import { Tables_Type } from "@/features/view/refactor/M1/refactor_proveedores/Tables_Type";
 
 export default function EditTypeModal({ existingType, onUpdateType, onClose }: EditTypeModalProps) {
+    
+    // hooks
     const { brand } = useBrands();
+    
+    // estados
     const [form_type, setForm_type] = useState<TypeFormstate>(createTypeFormStateFromType(existingType));
+
+    // propiedades
+    const [properties, setProperties] = useState<TypeProperty[]>(() =>
+        existingType.propiedades ?? defaultPropertiesForType(existingType.nombre, existingType.categoria),
+    );
+    const [propertyError, setPropertyError] = useState("");
+
+    // Selector de marcas
     const {
         selectedBrandByRow,
         selectedBrandTable,
@@ -31,14 +47,26 @@ export default function EditTypeModal({ existingType, onUpdateType, onClose }: E
         initialSelected: selectedBrandsFromType(existingType, brand),
     });
 
+    // Actualizar formularios
     function updateField<K extends keyof TypeFormstate>(field: K, value: TypeFormstate[K]) {
         setForm_type((current) => ({ ...current, [field]: value }));
     }
 
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    // Handler
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         if (!form_type.nombre?.trim() || !form_type.categoria?.trim()) return;
-        onUpdateType(applySelectedBrandsToType(form_type, selectedBrandTable));
+        setPropertyError("");
+        try {
+            await ensureTypePropertyColumns(form_type.categoria, properties);
+        } catch (error) {
+            setPropertyError(error instanceof Error ? error.message : "No se pudo crear la propiedad.");
+            return;
+        }
+        onUpdateType(applySelectedBrandsToType(
+            { ...form_type, propiedades: properties },
+            selectedBrandTable,
+        ));
     }
 
     return (
@@ -67,6 +95,16 @@ export default function EditTypeModal({ existingType, onUpdateType, onClose }: E
                         selectedBrandTable={selectedBrandTable}
                         setSelectedBrandTable={setSelectedBrandTable}
                     />
+                    <Properties_Type
+                        categoria={form_type.categoria}
+                        properties={properties}
+                        onChange={setProperties}
+                    />
+                    {propertyError ? (
+                        <p className="mx-auto mt-2 max-w-7xl px-3 text-sm font-medium text-red-600 sm:px-6 lg:px-8">
+                            {propertyError}
+                        </p>
+                    ) : null}
                     <div className="mt-8 flex justify-end gap-4 border-t border-slate-200 pt-6">
                         <button
                             type="button"
