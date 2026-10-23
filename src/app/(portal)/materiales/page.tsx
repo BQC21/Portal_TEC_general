@@ -12,7 +12,7 @@ import { useMateriales, useMaterialMutations } from "@/features/ViewModel/hooks/
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
 import type { FilterKey } from "@/lib/types/components/General/options"; // Tipados
-import { CatalogSheet, CodeSortOrder } from "@/lib/types/components/Filter/filter_tables";
+import { CatalogSheet, CodeSortOrder, MetricSort } from "@/lib/types/components/Filter/filter_tables";
 import { ELECTRICAL_PART_FILTER_TYPES } from "@/lib/utils/options";
 import { sortByNumericField, sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
@@ -33,9 +33,12 @@ import {
 	MATERIALES_UPLOAD_HEADERS,
 } from "@/lib/utils/consts/massiveUpload";
 import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
+import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
+import { defaultPropertiesForType } from "@/lib/utils/consts/typeProperties";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();
+	const { type: productTypes } = useTypes();
 	const { create: create, update: update, remove: remove} = useMaterialMutations();
 
     // ---------------------------------
@@ -44,6 +47,7 @@ export default function MaterialesPage() {
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [parteElectrica, setParteElectrica] = useState("");
+	const [metricSort, setMetricSort] = useState<MetricSort | null>(null);
 	const [sheet, setSheet] = useState<CatalogSheet>("generales");
 	const [codeOrder, setCodeOrder] = useState<CodeSortOrder>("asc");
 	const [priceOrder, setPriceOrder] = useState<CodeSortOrder | "">("");
@@ -81,8 +85,15 @@ export default function MaterialesPage() {
         if (sheet === "precios" && priceOrder) {
             return sortByNumericField(filteredMateriales, "precio_dolares", priceOrder);
         }
+		if (sheet === "especificas" && metricSort) {
+            return sortByNumericField(
+                filteredMateriales,
+                metricSort.field as keyof (typeof filteredMateriales)[number],
+                metricSort.order,
+            );
+        }
         return sortGroupedByCodeSupplier(filteredMateriales, "cod_prov", codeOrder);
-    }, [filteredMateriales, sheet, priceOrder, codeOrder]);
+    }, [filteredMateriales, sheet, priceOrder, metricSort, codeOrder]);
 
     const {
         sortedRows: datedMateriales,
@@ -93,6 +104,15 @@ export default function MaterialesPage() {
     } = useDateSorting(sortedByCodeMateriales);
     const sortedMateriales = sheet === "generales" ? datedMateriales : sortedByCodeMateriales;
 	
+	// Persistir las propiedades específicas
+	const specificProperties = useMemo(() => {
+		if (!filters.type) return [];
+		const selected = productTypes.find((item) => item.nombre === filters.type);
+		const properties = selected?.propiedades
+			?? defaultPropertiesForType(filters.type, selected?.categoria ?? "Materiales");
+		return properties.filter((property) => property.columna !== "unidad");
+	}, [filters.type, productTypes]);
+
 	// ---------------------------------
 	// ---- Lista de eventos -----------
 	// ---------------------------------
@@ -216,6 +236,7 @@ export default function MaterialesPage() {
 						onDeleteMateriales={handleDeleteMateriales}
 						sheet={sheet}
 						onSheetChange={setSheet}
+						specificProperties={specificProperties}
 					/>
 				</div>
 			</main>
