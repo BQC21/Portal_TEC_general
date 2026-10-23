@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 
 import { EquiposFilters } from "@/features/view/components/Tables/Equipos/EquiposFilters";
@@ -13,7 +14,7 @@ import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
 import type { FilterKey } from "@/lib/types/components/General/options"; // Tipados
-import { CatalogSheet, CodeSortOrder, MetricSort } from "@/lib/types/components/Filter/filter_tables";
+import { CodeSortOrder, MetricSort } from "@/lib/types/components/Filter/filter_tables";
 import { sortByNumericField, sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 import { normalizeModuloFVUnidad } from "@/lib/utils/helpers/computes/PanelNumber";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
@@ -47,7 +48,6 @@ export default function EquiposPage() {
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [connectionType, setConnectionType] = useState("");
 	const [moduleUnit, setModuleUnit] = useState("");
-	const [sheet, setSheet] = useState<CatalogSheet>("generales");
 	const [codeOrder, setCodeOrder] = useState<CodeSortOrder>("asc");
 	const [priceOrder, setPriceOrder] = useState<CodeSortOrder | "">("");
 	const [metricSort, setMetricSort] = useState<MetricSort | null>(null);
@@ -64,42 +64,46 @@ export default function EquiposPage() {
 		}
 	}
 
-	const filteredEquipos = equipos.filter((equipo) => {
-		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type; // según tipo
-		const matchesBrand = !filters.brand || equipo.marca === filters.brand; // según marca
-		const matchesSupplier = !filters.supplier || equipo.proveedor === filters.supplier; // según proveedor
-		const matchesDescription = !searchDescription || equipo.descripcion.toLowerCase() 
-									.includes(searchDescription.toLowerCase()); // según descripción
-		const matchesConnection = sheet !== "especificas"
-			|| filters.type !== "INVERSOR"
+	const catalogEquipos = equipos.filter((equipo) => {
+		const matchesType = !filters.type || equipo.tipo_de_producto === filters.type;
+		const matchesBrand = !filters.brand || equipo.marca === filters.brand;
+		const matchesSupplier = !filters.supplier || equipo.proveedor === filters.supplier;
+		const matchesDescription = !searchDescription || equipo.descripcion.toLowerCase()
+									.includes(searchDescription.toLowerCase());
+		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
+	});
+	const specificEquipos = catalogEquipos.filter((equipo) => {
+		const matchesConnection = filters.type !== "INVERSOR"
 			|| !connectionType
 			|| equipo.tipo_conexion === connectionType;
-		const matchesUnit = sheet !== "especificas"
-			|| filters.type !== "MÓDULO FV"
+		const matchesUnit = filters.type !== "MÓDULO FV"
 			|| !moduleUnit
 			|| normalizeModuloFVUnidad(equipo.unidad) === normalizeModuloFVUnidad(moduleUnit);
-
-		return matchesType && matchesBrand && matchesSupplier && matchesDescription
-			&& matchesConnection && matchesUnit;
+		return matchesConnection && matchesUnit;
 	});
 
     // ---------------------------------
     // ---- Ordenamiento ---------------
     // ---------------------------------
 
-    const sortedByCodeEquipos = useMemo(() => {
-        if (sheet === "precios" && priceOrder) {
-            return sortByNumericField(filteredEquipos, "precio_dolares", priceOrder);
-        }
-        if (sheet === "especificas" && metricSort) {
+    const generalesByCode = useMemo(
+        () => sortGroupedByCodeSupplier(catalogEquipos, "cod_prov", codeOrder),
+        [catalogEquipos, codeOrder],
+    );
+    const especificasSorted = useMemo(() => {
+        if (metricSort) {
             return sortByNumericField(
-                filteredEquipos,
-                metricSort.field as keyof (typeof filteredEquipos)[number],
+                specificEquipos,
+                metricSort.field as keyof (typeof specificEquipos)[number],
                 metricSort.order,
             );
         }
-        return sortGroupedByCodeSupplier(filteredEquipos, "cod_prov", codeOrder);
-    }, [filteredEquipos, sheet, priceOrder, metricSort, codeOrder]);
+        return sortGroupedByCodeSupplier(specificEquipos, "cod_prov", codeOrder);
+    }, [specificEquipos, metricSort, codeOrder]);
+    const preciosSorted = useMemo(() => {
+        if (priceOrder) return sortByNumericField(catalogEquipos, "precio_dolares", priceOrder);
+        return sortGroupedByCodeSupplier(catalogEquipos, "cod_prov", codeOrder);
+    }, [catalogEquipos, priceOrder, codeOrder]);
 
     const {
         sortedRows: datedEquipos,
@@ -107,8 +111,7 @@ export default function EquiposPage() {
         updatedOrder,
         setCreatedOrder,
         setUpdatedOrder,
-    } = useDateSorting(sortedByCodeEquipos);
-    const sortedEquipos = sheet === "generales" ? datedEquipos : sortedByCodeEquipos;
+    } = useDateSorting(generalesByCode);
 
 	// Persistir las propiedades específicas
 	const specificProperties = useMemo(() => {
@@ -195,57 +198,113 @@ export default function EquiposPage() {
                     </div>
                 </section>
 
-					{sheet !== "precios" && (
-					<section className="panel p-4">
-						<div className="space-y-6">
-							<EquiposFilters
-								values={filters}
-								filterOptions={filterOptions}
-								onFilterChange={handleCatalogFilterChange}
-								connectionType={connectionType}
-								moduleUnit={moduleUnit}
-								onConnectionTypeChange={setConnectionType}
-								onModuleUnitChange={setModuleUnit}
-								createdOrder={createdOrder}
-								updatedOrder={updatedOrder}
-								onCreatedOrderChange={setCreatedOrder}
-								onUpdatedOrderChange={setUpdatedOrder}
-								sheet={sheet}
-								codeOrder={codeOrder}
-								onCodeOrderChange={setCodeOrder}
-								metricSort={metricSort}
-								onMetricSortChange={setMetricSort}
-							/>
-						</div>
-					</section>
-					)}
-
-					{sheet === "precios" && (
-					<section className="panel p-4">
-						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-							<TableFilterSelect
-								label="Ordenar por precio ($)"
-								placeholder="Sin orden"
-								value={priceOrder}
-								options={[
-									{ value: "asc", label: "Ascendente" },
-									{ value: "desc", label: "Descendente" },
-								]}
-								icon="sort"
-								onChange={(value) => setPriceOrder((value || "") as CodeSortOrder | "")}
-							/>
-						</div>
-					</section>
-					)}
-
-					<EquiposTable
-						equipos={sortedEquipos}
-						totalEquipos={equipos.length}
-						onUpdateEquipos={handleUpdateEquipos}
-						onDeleteEquipos={handleDeleteEquipos}
-						sheet={sheet}
-						onSheetChange={setSheet}
-						specificProperties={specificProperties}
+					<ExcelWorkbook
+						defaultSheetId="generales"
+						sheets={[
+							{
+								id: "generales",
+								label: "Prop.generales",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<EquiposFilters
+												values={filters}
+												filterOptions={filterOptions}
+												onFilterChange={handleCatalogFilterChange}
+												connectionType={connectionType}
+												moduleUnit={moduleUnit}
+												onConnectionTypeChange={setConnectionType}
+												onModuleUnitChange={setModuleUnit}
+												createdOrder={createdOrder}
+												updatedOrder={updatedOrder}
+												onCreatedOrderChange={setCreatedOrder}
+												onUpdatedOrderChange={setUpdatedOrder}
+												sheet="generales"
+												codeOrder={codeOrder}
+												onCodeOrderChange={setCodeOrder}
+												metricSort={metricSort}
+												onMetricSortChange={setMetricSort}
+											/>
+										</section>
+										<EquiposTable
+											equipos={datedEquipos}
+											totalEquipos={equipos.length}
+											onUpdateEquipos={handleUpdateEquipos}
+											onDeleteEquipos={handleDeleteEquipos}
+											sheet="generales"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+							{
+								id: "especificas",
+								label: "Prop.específicas",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<EquiposFilters
+												values={filters}
+												filterOptions={filterOptions}
+												onFilterChange={handleCatalogFilterChange}
+												connectionType={connectionType}
+												moduleUnit={moduleUnit}
+												onConnectionTypeChange={setConnectionType}
+												onModuleUnitChange={setModuleUnit}
+												createdOrder={createdOrder}
+												updatedOrder={updatedOrder}
+												onCreatedOrderChange={setCreatedOrder}
+												onUpdatedOrderChange={setUpdatedOrder}
+												sheet="especificas"
+												codeOrder={codeOrder}
+												onCodeOrderChange={setCodeOrder}
+												metricSort={metricSort}
+												onMetricSortChange={setMetricSort}
+											/>
+										</section>
+										<EquiposTable
+											equipos={especificasSorted}
+											totalEquipos={equipos.length}
+											onUpdateEquipos={handleUpdateEquipos}
+											onDeleteEquipos={handleDeleteEquipos}
+											sheet="especificas"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+							{
+								id: "precios",
+								label: "Precios",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+												<TableFilterSelect
+													label="Ordenar por precio ($)"
+													placeholder="Sin orden"
+													value={priceOrder}
+													options={[
+														{ value: "asc", label: "Ascendente" },
+														{ value: "desc", label: "Descendente" },
+													]}
+													icon="sort"
+													onChange={(value) => setPriceOrder((value || "") as CodeSortOrder | "")}
+												/>
+											</div>
+										</section>
+										<EquiposTable
+											equipos={preciosSorted}
+											totalEquipos={equipos.length}
+											onUpdateEquipos={handleUpdateEquipos}
+											onDeleteEquipos={handleDeleteEquipos}
+											sheet="precios"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+						]}
 					/>
 				</div>
 			</main>

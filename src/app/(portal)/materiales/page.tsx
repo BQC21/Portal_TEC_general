@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 
+import { ExcelWorkbook } from "@/features/view/components/Shells/ExcelWorkbook";
 import { PortalShell } from "@/features/view/components/Shells/PortalShell";
 
 import { MaterialesFilters } from "@/features/view/components/Tables/Materiales/MaterialesFilters";
@@ -12,7 +13,7 @@ import { useMateriales, useMaterialMutations } from "@/features/ViewModel/hooks/
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
 import type { FilterKey } from "@/lib/types/components/General/options"; // Tipados
-import { CatalogSheet, CodeSortOrder, MetricSort } from "@/lib/types/components/Filter/filter_tables";
+import { CodeSortOrder } from "@/lib/types/components/Filter/filter_tables";
 import { ELECTRICAL_PART_FILTER_TYPES } from "@/lib/utils/options";
 import { sortByNumericField, sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
@@ -47,8 +48,6 @@ export default function MaterialesPage() {
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [parteElectrica, setParteElectrica] = useState("");
-	const [metricSort, setMetricSort] = useState<MetricSort | null>(null);
-	const [sheet, setSheet] = useState<CatalogSheet>("generales");
 	const [codeOrder, setCodeOrder] = useState<CodeSortOrder>("asc");
 	const [priceOrder, setPriceOrder] = useState<CodeSortOrder | "">("");
 	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
@@ -61,39 +60,37 @@ export default function MaterialesPage() {
 		if (key === "type") setParteElectrica("");
 	}
 
-	const filteredMateriales = materiales.filter((material) => {
+	const catalogMateriales = materiales.filter((material) => {
 		const matchesType = !filters.type || material.tipo_de_producto === filters.type;
 		const matchesBrand = !filters.brand || material.marca === filters.brand;
 		const matchesSupplier = !filters.supplier || material.proveedor === filters.supplier;
 		const matchesDescription = !searchDescription || material.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
+		return matchesType && matchesBrand && matchesSupplier && matchesDescription;
+	});
+	const specificMateriales = catalogMateriales.filter((material) => {
 		const electricalPart = (material.parte_electrica || "---").trim() || "---";
-		const matchesElectricalPart = sheet !== "especificas"
-			|| !ELECTRICAL_PART_FILTER_TYPES.includes(filters.type)
-			|| !parteElectrica
-			|| (parteElectrica === "---"
-				? electricalPart === "---"
-				: electricalPart.toUpperCase() === parteElectrica.toUpperCase());
-
-		return matchesType && matchesBrand && matchesSupplier && matchesDescription && matchesElectricalPart;
+		if (!ELECTRICAL_PART_FILTER_TYPES.includes(filters.type) || !parteElectrica) return true;
+		return parteElectrica === "---"
+			? electricalPart === "---"
+			: electricalPart.toUpperCase() === parteElectrica.toUpperCase();
 	});
 
     // ---------------------------------
     // ---- Ordenamiento ---------------
     // ---------------------------------
 
-    const sortedByCodeMateriales = useMemo(() => {
-        if (sheet === "precios" && priceOrder) {
-            return sortByNumericField(filteredMateriales, "precio_dolares", priceOrder);
-        }
-		if (sheet === "especificas" && metricSort) {
-            return sortByNumericField(
-                filteredMateriales,
-                metricSort.field as keyof (typeof filteredMateriales)[number],
-                metricSort.order,
-            );
-        }
-        return sortGroupedByCodeSupplier(filteredMateriales, "cod_prov", codeOrder);
-    }, [filteredMateriales, sheet, priceOrder, metricSort, codeOrder]);
+    const generalesByCode = useMemo(
+        () => sortGroupedByCodeSupplier(catalogMateriales, "cod_prov", codeOrder),
+        [catalogMateriales, codeOrder],
+    );
+    const especificasSorted = useMemo(
+        () => sortGroupedByCodeSupplier(specificMateriales, "cod_prov", codeOrder),
+        [specificMateriales, codeOrder],
+    );
+    const preciosSorted = useMemo(() => {
+        if (priceOrder) return sortByNumericField(catalogMateriales, "precio_dolares", priceOrder);
+        return sortGroupedByCodeSupplier(catalogMateriales, "cod_prov", codeOrder);
+    }, [catalogMateriales, priceOrder, codeOrder]);
 
     const {
         sortedRows: datedMateriales,
@@ -101,8 +98,7 @@ export default function MaterialesPage() {
         updatedOrder,
         setCreatedOrder,
         setUpdatedOrder,
-    } = useDateSorting(sortedByCodeMateriales);
-    const sortedMateriales = sheet === "generales" ? datedMateriales : sortedByCodeMateriales;
+    } = useDateSorting(generalesByCode);
 	
 	// Persistir las propiedades específicas
 	const specificProperties = useMemo(() => {
@@ -190,53 +186,105 @@ export default function MaterialesPage() {
                     </div>
                 </section>
 
-					{sheet !== "precios" && (
-					<section className="panel p-4">
-						<div className="space-y-6">
-							<MaterialesFilters
-								values={filters}
-								filterOptions={filterOptions}
-								onFilterChange={handleCatalogFilterChange}
-								parteElectrica={parteElectrica}
-								onParteElectricaChange={setParteElectrica}
-								createdOrder={createdOrder}
-								updatedOrder={updatedOrder}
-								onCreatedOrderChange={setCreatedOrder}
-								onUpdatedOrderChange={setUpdatedOrder}
-								sheet={sheet}
-								codeOrder={codeOrder}
-								onCodeOrderChange={setCodeOrder}
-							/>
-						</div>
-					</section>
-					)}
-
-					{sheet === "precios" && (
-					<section className="panel p-4">
-						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-							<TableFilterSelect
-								label="Ordenar por precio ($)"
-								placeholder="Sin orden"
-								value={priceOrder}
-								options={[
-									{ value: "asc", label: "Ascendente" },
-									{ value: "desc", label: "Descendente" },
-								]}
-								icon="sort"
-								onChange={(value) => setPriceOrder((value || "") as CodeSortOrder | "")}
-							/>
-						</div>
-					</section>
-					)}
-
-					<MaterialesTable
-						materiales={sortedMateriales}
-						totalMateriales={materiales.length}
-						onUpdateMateriales={handleUpdateMateriales}
-						onDeleteMateriales={handleDeleteMateriales}
-						sheet={sheet}
-						onSheetChange={setSheet}
-						specificProperties={specificProperties}
+					<ExcelWorkbook
+						defaultSheetId="generales"
+						sheets={[
+							{
+								id: "generales",
+								label: "Prop.generales",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<MaterialesFilters
+												values={filters}
+												filterOptions={filterOptions}
+												onFilterChange={handleCatalogFilterChange}
+												parteElectrica={parteElectrica}
+												onParteElectricaChange={setParteElectrica}
+												createdOrder={createdOrder}
+												updatedOrder={updatedOrder}
+												onCreatedOrderChange={setCreatedOrder}
+												onUpdatedOrderChange={setUpdatedOrder}
+												sheet="generales"
+												codeOrder={codeOrder}
+												onCodeOrderChange={setCodeOrder}
+											/>
+										</section>
+										<MaterialesTable
+											materiales={datedMateriales}
+											totalMateriales={materiales.length}
+											onUpdateMateriales={handleUpdateMateriales}
+											onDeleteMateriales={handleDeleteMateriales}
+											sheet="generales"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+							{
+								id: "especificas",
+								label: "Prop.específicas",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<MaterialesFilters
+												values={filters}
+												filterOptions={filterOptions}
+												onFilterChange={handleCatalogFilterChange}
+												parteElectrica={parteElectrica}
+												onParteElectricaChange={setParteElectrica}
+												createdOrder={createdOrder}
+												updatedOrder={updatedOrder}
+												onCreatedOrderChange={setCreatedOrder}
+												onUpdatedOrderChange={setUpdatedOrder}
+												sheet="especificas"
+												codeOrder={codeOrder}
+												onCodeOrderChange={setCodeOrder}
+											/>
+										</section>
+										<MaterialesTable
+											materiales={especificasSorted}
+											totalMateriales={materiales.length}
+											onUpdateMateriales={handleUpdateMateriales}
+											onDeleteMateriales={handleDeleteMateriales}
+											sheet="especificas"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+							{
+								id: "precios",
+								label: "Precios",
+								content: (
+									<>
+										<section className="panel mb-6 p-4">
+											<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+												<TableFilterSelect
+													label="Ordenar por precio ($)"
+													placeholder="Sin orden"
+													value={priceOrder}
+													options={[
+														{ value: "asc", label: "Ascendente" },
+														{ value: "desc", label: "Descendente" },
+													]}
+													icon="sort"
+													onChange={(value) => setPriceOrder((value || "") as CodeSortOrder | "")}
+												/>
+											</div>
+										</section>
+										<MaterialesTable
+											materiales={preciosSorted}
+											totalMateriales={materiales.length}
+											onUpdateMateriales={handleUpdateMateriales}
+											onDeleteMateriales={handleDeleteMateriales}
+											sheet="precios"
+											specificProperties={specificProperties}
+										/>
+									</>
+								),
+							},
+						]}
 					/>
 				</div>
 			</main>
