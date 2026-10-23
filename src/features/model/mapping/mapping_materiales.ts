@@ -7,6 +7,7 @@ import { mapSupabaseRowToBrand } from "./mapping_marcas";
 import { mapSupabaseRowToSupplier } from "./mapping_proveedores";
 import { SupabaseSupplierRow } from "@/lib/types/supabase/supplier-types";
 import { toNullableInteger } from "@/lib/utils/normalization";
+import { catalogMaterialesExtras } from "@/lib/utils/helpers/render/EP_MAT_tables";
 
 // enlace con los atributos de Supabase
 export function createMaterialesFormStateFromMateriales(material: Materiales): MaterialesFormState {
@@ -88,6 +89,7 @@ export function mapSupabaseRowToMateriales(
                 ? mapSupabaseRowToSupplier(row.proveedores as SupabaseSupplierRow)
                 : undefined,
         priceInputCurrency: row.priceInputCurrency || "",
+        extras: catalogMaterialesExtras(row),
     };
 }
 

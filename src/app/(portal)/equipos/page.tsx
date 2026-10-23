@@ -34,7 +34,7 @@ import {
 	EQUIPOS_UPLOAD_HEADERS,
 } from "@/lib/utils/consts/massiveUpload";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
-import { defaultPropertiesForType } from "@/lib/utils/consts/typeProperties";
+import { defaultPropertiesForType } from "@/lib/utils/helpers/render/EP_MAT_tables";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();

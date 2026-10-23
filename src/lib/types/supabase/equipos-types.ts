@@ -96,6 +96,7 @@ export type Equipos = {
     marca_info?: Brand;
     proveedor_id: string;
     proveedor_info?: Supplier;
+    extras?: Record<string, string | number | null>;
 };
 
 // Estado de la visualización

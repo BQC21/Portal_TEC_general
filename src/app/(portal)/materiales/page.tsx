@@ -34,7 +34,7 @@ import {
 } from "@/lib/utils/consts/massiveUpload";
 import { MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
 import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
-import { defaultPropertiesForType } from "@/lib/utils/consts/typeProperties";
+import { defaultPropertiesForType } from "@/lib/utils/helpers/render/EP_MAT_tables";
 
 export default function MaterialesPage() {
 	const { materiales, refetch } = useMateriales();
