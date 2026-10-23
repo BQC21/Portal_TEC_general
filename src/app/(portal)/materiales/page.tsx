@@ -11,14 +11,15 @@ import { useMateriales, useMaterialMutations } from "@/features/ViewModel/hooks/
 
 import type { Materiales, MaterialesFormState } from "@/lib/types/supabase/materiales-types";
 
-import type { FilterKey, ProductSortingOrder } from "@/lib/types/components/General/options"; // Tipados
+import type { FilterKey } from "@/lib/types/components/General/options"; // Tipados
+import { CatalogSheet, CodeSortOrder } from "@/lib/types/components/Filter/filter_tables";
 import { ELECTRICAL_PART_FILTER_TYPES } from "@/lib/utils/options";
-import { sortGroupedByCodeSupplier, sortGroupedByPrice } from "@/lib/utils/helpers/sorting/sorting";
+import { sortByNumericField, sortGroupedByCodeSupplier } from "@/lib/utils/helpers/sorting/sorting";
 import { useCatalogCascadeFilters } from "@/features/ViewModel/hooks/filters/useCatalogCascadeFilters";
 import { useDateSorting } from "@/features/ViewModel/hooks/filters/useDateSorting";
 
 import { SearchBar } from "@/features/view/components/Bars/SearchBar";
-import { Sorting_IGV_USD } from "@/features/view/components/sorter/SortingIGVUSD";
+import { TableFilterSelect } from "@/features/view/components/Filters/TableFilterSelect";
 
 import Button2Add from "@/features/view/components/Buttons/shared/button2Add";
 import Button2MassiveClean from "@/features/view/components/Buttons/shared/button2MassiveClean";
@@ -43,6 +44,9 @@ export default function MaterialesPage() {
 
 	const [searchDescription, setSearchDescription] = useState<string>("");
 	const [parteElectrica, setParteElectrica] = useState("");
+	const [sheet, setSheet] = useState<CatalogSheet>("generales");
+	const [codeOrder, setCodeOrder] = useState<CodeSortOrder>("asc");
+	const [priceOrder, setPriceOrder] = useState<CodeSortOrder | "">("");
 	const { filters, filterOptions, handleFilterChange } = useCatalogCascadeFilters(
 		materiales,
 		"Materiales",
@@ -59,7 +63,8 @@ export default function MaterialesPage() {
 		const matchesSupplier = !filters.supplier || material.proveedor === filters.supplier;
 		const matchesDescription = !searchDescription || material.descripcion.toLowerCase().includes(searchDescription.toLowerCase());
 		const electricalPart = (material.parte_electrica || "---").trim() || "---";
-		const matchesElectricalPart = !ELECTRICAL_PART_FILTER_TYPES.includes(filters.type)
+		const matchesElectricalPart = sheet !== "especificas"
+			|| !ELECTRICAL_PART_FILTER_TYPES.includes(filters.type)
 			|| !parteElectrica
 			|| (parteElectrica === "---"
 				? electricalPart === "---"
@@ -73,25 +78,20 @@ export default function MaterialesPage() {
     // ---------------------------------
 
     const sortedByCodeMateriales = useMemo(() => {
-        return sortGroupedByCodeSupplier(filteredMateriales, "cod_producto");
-    }, [filteredMateriales]);	
-
-    const [sorting, setSorting] = useState<ProductSortingOrder>("codigo"); // estado para ordenar la lista de productos
-
-    const sortedByPriceMateriales = useMemo(() => {
-        const materialesToSort = [...sortedByCodeMateriales]; // procura si la tabla ha sido filtrada o no
-        return sorting === "codigo" ? materialesToSort : 
-            sorting === "asc" ? sortGroupedByPrice(materialesToSort, "asc") :
-                sorting === "desc" ? sortGroupedByPrice(materialesToSort, "desc") : []
-    }, [sortedByCodeMateriales, sorting]); // lógica para asignar el tipo de ordenamiento de productos
+        if (sheet === "precios" && priceOrder) {
+            return sortByNumericField(filteredMateriales, "precio_dolares", priceOrder);
+        }
+        return sortGroupedByCodeSupplier(filteredMateriales, "cod_prov", codeOrder);
+    }, [filteredMateriales, sheet, priceOrder, codeOrder]);
 
     const {
-        sortedRows: sortedMateriales,
+        sortedRows: datedMateriales,
         createdOrder,
         updatedOrder,
         setCreatedOrder,
         setUpdatedOrder,
-    } = useDateSorting(sortedByPriceMateriales);
+    } = useDateSorting(sortedByCodeMateriales);
+    const sortedMateriales = sheet === "generales" ? datedMateriales : sortedByCodeMateriales;
 	
 	// ---------------------------------
 	// ---- Lista de eventos -----------
@@ -130,10 +130,6 @@ export default function MaterialesPage() {
                         </div>
 
                         <div className="flex flex-wrap items-center gap-3">
-                            <Sorting_IGV_USD
-                                value={sorting}
-                                onSortingChange={setSorting}
-                            />
 							{/* <Button2MassiveUpload
 								title="Subida masiva de materiales"
 								description="Selecciona un archivo XLSX con la estructura de la hoja de materiales eléctricos."
@@ -174,6 +170,7 @@ export default function MaterialesPage() {
                     </div>
                 </section>
 
+					{sheet !== "precios" && (
 					<section className="panel p-4">
 						<div className="space-y-6">
 							<MaterialesFilters
@@ -186,15 +183,39 @@ export default function MaterialesPage() {
 								updatedOrder={updatedOrder}
 								onCreatedOrderChange={setCreatedOrder}
 								onUpdatedOrderChange={setUpdatedOrder}
+								sheet={sheet}
+								codeOrder={codeOrder}
+								onCodeOrderChange={setCodeOrder}
 							/>
 						</div>
 					</section>
+					)}
+
+					{sheet === "precios" && (
+					<section className="panel p-4">
+						<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+							<TableFilterSelect
+								label="Ordenar por precio ($)"
+								placeholder="Sin orden"
+								value={priceOrder}
+								options={[
+									{ value: "asc", label: "Ascendente" },
+									{ value: "desc", label: "Descendente" },
+								]}
+								icon="sort"
+								onChange={(value) => setPriceOrder((value || "") as CodeSortOrder | "")}
+							/>
+						</div>
+					</section>
+					)}
 
 					<MaterialesTable
 						materiales={sortedMateriales}
 						totalMateriales={materiales.length}
 						onUpdateMateriales={handleUpdateMateriales}
 						onDeleteMateriales={handleDeleteMateriales}
+						sheet={sheet}
+						onSheetChange={setSheet}
 					/>
 				</div>
 			</main>
