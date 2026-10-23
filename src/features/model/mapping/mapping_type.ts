@@ -5,7 +5,7 @@ import { mapSupabaseRowToZone } from "./zone_mapping"
 import { SupabaseBrandRow } from "@/lib/types/supabase/brand.types"
 import { mapSupabaseRowToBrand } from "./mapping_marcas"
 import { normalizeAssociationIds, toIntegerIdArray, toNullableInteger } from "@/lib/utils/normalization"
-import { parseTypeProperties } from "@/lib/utils/consts/typeProperties"
+import { parseTypeProperties } from "@/lib/utils/helpers/render/EP_MAT_tables"
 
 // Actualización del formulario
 export function createTypeFormStateFromType(type: Type): TypeFormstate {

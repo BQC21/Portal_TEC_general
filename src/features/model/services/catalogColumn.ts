@@ -1,5 +1,6 @@
 import { createClient } from "@/features/model/supabase/client";
-import { TypeProperty, columnAlreadyExists, tablesForCategory } from "@/lib/utils/consts/typeProperties";
+import { TypeProperty } from "@/lib/utils/consts/typeProperties";
+import { columnAlreadyExists, tablesForCategory } from "@/lib/utils/helpers/render/EP_MAT_tables";
 
 export async function ensureTypePropertyColumns(
     categoria: string | undefined,
