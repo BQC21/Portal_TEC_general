@@ -8,6 +8,7 @@ import { EquiposFilters } from "@/features/view/components/Tables/Equipos/Equipo
 import { EquiposTable } from "@/features/view/components/Tables/Equipos/EquiposTable";
 
 import { useEquipoMutations, useEquipos } from "@/features/ViewModel/hooks/services/useRealtimeEquipos";
+import { useTypes } from "@/features/ViewModel/hooks/services/useRealtimeTipos";
 
 import type { Equipos, EquiposFormData } from "@/lib/types/supabase/equipos-types";
 
@@ -33,9 +34,11 @@ import {
 	EQUIPOS_UPLOAD_HEADERS,
 } from "@/lib/utils/consts/massiveUpload";
 import { EQUIPOS_TABLE } from "@/lib/utils/namingTolerance";
+import { defaultPropertiesForType } from "@/lib/utils/consts/typeProperties";
 
 export default function EquiposPage() {
 	const { equipos, refetch } = useEquipos();
+	const { type: productTypes } = useTypes();
 	const { create: create, update: update, remove: remove} = useEquipoMutations();
 
     // ---------------------------------
@@ -106,6 +109,15 @@ export default function EquiposPage() {
         setUpdatedOrder,
     } = useDateSorting(sortedByCodeEquipos);
     const sortedEquipos = sheet === "generales" ? datedEquipos : sortedByCodeEquipos;
+
+	// Persistir las propiedades específicas
+	const specificProperties = useMemo(() => {
+		if (!filters.type) return [];
+		const selected = productTypes.find((item) => item.nombre === filters.type);
+		const properties = selected?.propiedades
+			?? defaultPropertiesForType(filters.type, selected?.categoria ?? "Equipos");
+		return properties.filter((property) => property.columna !== "unidad");
+	}, [filters.type, productTypes]);
 
     // ---------------------------------
     // ---- Lista de eventos -----------
@@ -233,6 +245,7 @@ export default function EquiposPage() {
 						onDeleteEquipos={handleDeleteEquipos}
 						sheet={sheet}
 						onSheetChange={setSheet}
+						specificProperties={specificProperties}
 					/>
 				</div>
 			</main>
