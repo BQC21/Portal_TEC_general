@@ -11,6 +11,8 @@ import { Report } from "../../supabase/report-types";
 import { Supplier } from "../../supabase/supplier-types";
 import { Type } from "../../supabase/type-types";
 import { Zone } from "../../supabase/zone-types";
+import { TypeProperty } from "@/lib/utils/consts/typeProperties";
+import { CatalogSheet } from "../Filter/filter_tables";
 
 // zonas
 export type ZoneTableProps = {
@@ -44,6 +46,9 @@ export type MaterialesTableProps = {
     totalMateriales: number;
     onUpdateMateriales: (material: Materiales) => void;
     onDeleteMateriales: (materialId: string) => void;
+    sheet: CatalogSheet;
+    onSheetChange: (sheet: CatalogSheet) => void;
+    specificProperties?: TypeProperty[];
 };
 
 // equipos
@@ -52,6 +57,9 @@ export type EquiposTableProps = {
     totalEquipos: number;
     onUpdateEquipos: (equipo: Equipos) => void;
     onDeleteEquipos: (equipoId: string) => void;
+    sheet: CatalogSheet;
+    onSheetChange: (sheet: CatalogSheet) => void;
+    specificProperties?: TypeProperty[];
 };
 
 // proveedores
