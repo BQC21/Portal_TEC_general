@@ -3,7 +3,7 @@
 import { AddQuoteModalProps } from "@/lib/types/components/General/modals";
 import { AddProductCloseIcon } from "../../../Icons/AddCloseIcon";
 import { useProjects } from "@/features/ViewModel/hooks/services/useRealtimeProjects";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { QuoteFormState } from "@/lib/types/supabase/quote-types";
 import { INITIAL_MANUAL_RESOURCE_COSTS, INITIAL_PROJECT_FORM, INITIAL_QUOTE_FORM } from "@/lib/utils/initialValues";
 import { ProjectFormState } from "@/lib/types/supabase/project-types";
@@ -33,7 +33,7 @@ import {
     withUnionInfo,
 } from "@/lib/utils/helpers/quotes/unitedQuotes";
 import { MAX_UNITED_QUOTES, MIN_UNITED_QUOTES } from "@/lib/utils/consts/unitedQuotes";
-import { quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { defaultQuoteOrientation, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { QuoteMode } from "@/lib/types/components/General/options";
 
 export default function AddQuoteModal({
@@ -72,6 +72,7 @@ export default function AddQuoteModal({
     const [unitedCount, setUnitedCount] = useState(MIN_UNITED_QUOTES);
     const [unitedIds, setUnitedIds] = useState<string[]>(() => emptySelectedIds(MIN_UNITED_QUOTES));
     const [submitError, setSubmitError] = useState("");
+    const orientationTouched = useRef(false); // LAS COTIZACIONES UNIDAS NO PERMITEN CAMBIO DE ORIENTACIÓN PARA LA COTIZACIÓN
 
     const unionEligibleQuotes = useMemo(
         () => eligibleQuotesForUnion(existingQuotes),
@@ -151,6 +152,7 @@ export default function AddQuoteModal({
         setUnitedIds((current) => current.map((id, slot) => slot === index ? quoteId : id));
     }
 
+    // handler
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
 
@@ -169,12 +171,19 @@ export default function AddQuoteModal({
             }
             setSubmitError("");
 
+            const mergedCosts = withQuoteResourceSnapshot(
+                unitedAggregation.mergedManualCosts ?? INITIAL_MANUAL_RESOURCE_COSTS,
+                unitedAggregation.mergedEquipos,
+                unitedAggregation.mergedMateriales,
+            );
             const costos_manuales = withUnionInfo(
-                withQuoteResourceSnapshot(
-                    unitedAggregation.mergedManualCosts ?? INITIAL_MANUAL_RESOURCE_COSTS,
-                    unitedAggregation.mergedEquipos,
-                    unitedAggregation.mergedMateriales,
-                ),
+                {
+                    ...mergedCosts,
+                    Recursos: {
+                        ...mergedCosts.Recursos,
+                        orientacion: "---",
+                    },
+                },
                 {
                     quote_ids: selectedIds,
                     cantidad: unitedCount,
@@ -241,7 +250,29 @@ export default function AddQuoteModal({
         updateRecursosConsiderFlag,
         toggleConsumibleOculto,
         setConsumiblesHidden,
+        updateOrientacion,
     } = ManageLocalCosts(setManualResourceCosts);
+
+    useEffect(() => {
+        if (orientationTouched.current) return;
+        const next = isIndependent || isUnited
+            ? "---"
+            : defaultQuoteOrientation({
+                proyecto_id: form.proyecto_id,
+                proyecto_info: form.proyecto_info,
+                nombre_cotizacion: form.nombre_cotizacion,
+                costos_manuales: form.costos_manuales,
+            });
+        updateOrientacion(next);
+    }, [
+        isIndependent,
+        isUnited,
+        form.proyecto_id,
+        form.proyecto_info,
+        form.nombre_cotizacion,
+        form.costos_manuales,
+        updateOrientacion,
+    ]);
 
     // ----------
     // CÁLCULOS TOTALES
@@ -421,6 +452,11 @@ export default function AddQuoteModal({
                             updateRecursosConsiderFlag={updateRecursosConsiderFlag}
                             toggleConsumibleOculto={toggleConsumibleOculto}
                             setConsumiblesHidden={setConsumiblesHidden}
+                            onOrientacionChange={(value) => {
+                                orientationTouched.current = true;
+                                updateOrientacion(value);
+                            }}
+                            applyConsumeDefaults
                         />
 
                         <ViaticosTables

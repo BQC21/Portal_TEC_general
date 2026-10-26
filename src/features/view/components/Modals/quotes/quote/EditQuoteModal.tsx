@@ -20,7 +20,7 @@ import {
     withQuoteResourceSnapshot,
 } from "@/lib/utils/helpers/project_modals/quoteResourceSnapshot";
 import { AddProductTextField } from "../../../Form_fields/AddTextField";
-import { isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
+import { defaultQuoteOrientation, isQuoteLinkedToProject, quoteHeadingLabel } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 import { UnitedQuotesPanel } from "@/features/view/refactor/M3/refactor/quotes/UnitedQuotesPanel";
 import { useUnitedQuoteAggregation } from "@/features/ViewModel/hooks/modals/Quotes/useUnitedQuoteAggregation";
 import { useQuotes } from "@/features/ViewModel/hooks/services/useRealtimeQuotes";
@@ -143,7 +143,17 @@ export default function EditQuoteModal({
     // ----------
 
     const [manualResourceCosts, setManualResourceCosts] = 
-        useState<ManualCosts>(() => createManualCostsFromQuote(existingQuote)); // valores iniciales
+        useState<ManualCosts>(() => {
+            const costs = createManualCostsFromQuote(existingQuote);
+            if (costs.Recursos.orientacion) return costs;
+            return {
+                ...costs,
+                Recursos: {
+                    ...costs.Recursos,
+                    orientacion: defaultQuoteOrientation(existingQuote),
+                },
+            };
+        });
 
     const { updateManualCostItem, 
         updateManualCostMonto,
@@ -155,6 +165,7 @@ export default function EditQuoteModal({
         updateRecursosConsiderFlag,
         toggleConsumibleOculto,
         setConsumiblesHidden,
+        updateOrientacion,
     } = ManageLocalCosts(setManualResourceCosts);
 
     // ----------
@@ -318,6 +329,7 @@ export default function EditQuoteModal({
                             updateRecursosConsiderFlag={updateRecursosConsiderFlag}
                             toggleConsumibleOculto={toggleConsumibleOculto}
                             setConsumiblesHidden={setConsumiblesHidden}
+                            onOrientacionChange={updateOrientacion}
                         />
 
                         <ViaticosTables
