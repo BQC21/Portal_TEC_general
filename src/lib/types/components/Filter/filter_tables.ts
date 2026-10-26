@@ -26,12 +26,19 @@ export type DateSortingFilterProps = {
 };
 
 // Filtrado de materiales
+export type CatalogSheet = "generales" | "especificas" | "precios";
+export type CodeSortOrder = "asc" | "desc";
+export type MetricSort = { field: string; order: CodeSortOrder };
+
 export type MaterialesFiltersProps = {
     values: MaterialesFilterValues;
     filterOptions: CascadeFilterOptions;
     onFilterChange: (key: FilterKey, value: string) => void;
     parteElectrica: string;
     onParteElectricaChange: (value: string) => void;
+    sheet: CatalogSheet;
+    codeOrder: CodeSortOrder;
+    onCodeOrderChange: (value: CodeSortOrder) => void;
 } & DateSortingFilterProps;
 
 // Filtrado de equipos
@@ -43,6 +50,11 @@ export type EquiposFiltersProps = {
     moduleUnit: string;
     onConnectionTypeChange: (value: string) => void;
     onModuleUnitChange: (value: string) => void;
+    sheet: CatalogSheet;
+    codeOrder: CodeSortOrder;
+    onCodeOrderChange: (value: CodeSortOrder) => void;
+    metricSort: MetricSort | null;
+    onMetricSortChange: (value: MetricSort | null) => void;
 } & DateSortingFilterProps;
 
 export type ProjectFilterValues = {

@@ -20,6 +20,8 @@ export type EP_PriceTable_props = {
 export type Structure_PriceTable_props = {
     selected_equipos: Project_Equipos[]
     projectAngle?: string
+    orientacion?: string
+    onOrientacionChange?: (value: string) => void
     cantidadManual?: boolean
     onCantidadManualChange?: (value: boolean) => void
     onUpdateCantidad: (id: string | number, cantidad: number) => void
@@ -42,6 +44,7 @@ export type Consume_PriceTable_props = {
     hiddenConsumeKeys?: string[]
     onToggleConsumeKey?: (key: string) => void
     onSetConsumeKeysHidden?: (keys: string[], hidden: boolean) => void
+    applyConsumeDefaults?: boolean
 }
 
 export type EPP_PriceTable_props = {

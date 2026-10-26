@@ -342,6 +342,8 @@ export type ResourcesTablesProps = {
     ) => void;
     toggleConsumibleOculto?: (key: string) => void;
     setConsumiblesHidden?: (keys: string[], hidden: boolean) => void;
+    onOrientacionChange?: (value: string) => void;
+    applyConsumeDefaults?: boolean;
 } & ManualCostHandlers;
 
 export type ViaticosTablesProps = {

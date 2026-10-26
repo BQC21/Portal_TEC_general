@@ -47,7 +47,6 @@ export type MaterialesTableProps = {
     onUpdateMateriales: (material: Materiales) => void;
     onDeleteMateriales: (materialId: string) => void;
     sheet: CatalogSheet;
-    onSheetChange: (sheet: CatalogSheet) => void;
     specificProperties?: TypeProperty[];
 };
 
@@ -58,7 +57,6 @@ export type EquiposTableProps = {
     onUpdateEquipos: (equipo: Equipos) => void;
     onDeleteEquipos: (equipoId: string) => void;
     sheet: CatalogSheet;
-    onSheetChange: (sheet: CatalogSheet) => void;
     specificProperties?: TypeProperty[];
 };
 

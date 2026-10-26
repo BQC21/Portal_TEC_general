@@ -92,6 +92,7 @@ export type ManualCosts = {
         considerar_estructuras?: boolean;
         considerar_consumibles?: boolean;
         consumibles_ocultos?: string[];
+        orientacion?: string;
         equipos_seleccionados?: Project_Equipos[];
         materiales_seleccionados?: Project_Materiales[];
     };
