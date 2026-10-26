@@ -10,13 +10,11 @@ import { Personal_PriceTable } from "../../Tables/quotes/subtables/Recursos/Pers
 import { SCTR_PriceTable } from "../../Tables/quotes/subtables/Recursos/SCTR_PriceTable";
 import { AddProductSelectField } from "@/features/view/components/Form_fields/AddSelectField";
 import { EPP_REUSABLE_OPTIONS } from "@/lib/utils/options";
-import { isQuoteLinkedToProject } from "@/lib/utils/helpers/quotes/linkQuote2Project";
 
 export function ResourcesTables({
     recursos,
     projectEquipos,
     projectMateriales,
-    form,
     manualResourceCosts,
     updateManualCostItem,
     addManualCostItem,
@@ -35,6 +33,8 @@ export function ResourcesTables({
     updateRecursosConsiderFlag,
     toggleConsumibleOculto,
     setConsumiblesHidden,
+    onOrientacionChange,
+    applyConsumeDefaults = false,
 }: ResourcesTablesProps) {
     return(
         <div className="mt-6 grid gap-6 grid-cols-[1fr_2fr]">
@@ -71,11 +71,9 @@ export function ResourcesTables({
                 >
                     <Structure_PriceTable
                         selected_equipos={projectEquipos}
-                        projectAngle={
-                            isQuoteLinkedToProject(form)
-                                ? form.proyecto_info?.angulo
-                                : undefined
-                        }
+                        projectAngle={manualResourceCosts.Recursos.orientacion || "---"}
+                        orientacion={manualResourceCosts.Recursos.orientacion || "---"}
+                        onOrientacionChange={onOrientacionChange}
                         cantidadManual={Boolean(manualResourceCosts.Recursos.estructuras_cantidad_manual)}
                         onCantidadManualChange={updateEstructurasCantidadManual}
                         onUpdateCantidad={onUpdateEquipoCantidad}
@@ -109,6 +107,7 @@ export function ResourcesTables({
                         hiddenConsumeKeys={manualResourceCosts.Recursos.consumibles_ocultos ?? []}
                         onToggleConsumeKey={toggleConsumibleOculto}
                         onSetConsumeKeysHidden={setConsumiblesHidden}
+                        applyConsumeDefaults={applyConsumeDefaults}
                     />
                 </CollapsibleTableSection>
                 <CollapsibleTableSection title="EPPs">

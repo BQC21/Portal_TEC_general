@@ -12,10 +12,13 @@ import { AddEquipoReadonlyField } from "@/features/view/components/Form_fields/A
 import { matchesStructureAngle, isDados } from "@/lib/utils/helpers/project_modals/structure_number_fnc"
 import { resolveStructureRows } from "@/lib/utils/helpers/project_modals/structureQuantities"
 import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
+import { ANGLE_OPTIONS } from "@/lib/utils/options"
 
 export function Structure_PriceTable({
         selected_equipos,
         projectAngle,
+        orientacion,
+        onOrientacionChange,
         cantidadManual = false,
         onCantidadManualChange,
         onUpdateCantidad,
@@ -162,7 +165,15 @@ export function Structure_PriceTable({
                 <section className="space-y-4">
                     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <h2 className="text-2xl font-bold text-slate-900">Costos de Estructuras</h2>
-                        <div className="flex flex-wrap gap-2">
+                        <div className="flex flex-wrap items-end gap-3">
+                            <div className="w-52">
+                                <AddProductSelectField
+                                    label="Orientación"
+                                    options={ANGLE_OPTIONS}
+                                    value={orientacion || "---"}
+                                    onChange={(value) => onOrientacionChange?.(value)}
+                                />
+                            </div>
                             <button
                                 type="button"
                                 onClick={() => onCantidadManualChange?.(false)}

@@ -1,6 +1,6 @@
 "use client"
 
-import { Fragment, useMemo, useState } from "react"
+import { Fragment, useEffect, useMemo, useRef, useState } from "react"
 import { AddProductNumberField } from "@/features/view/components/Form_fields/AddNumberField"
 import { AddProductSearchableSelectField } from "@/features/view/components/Form_fields/AddSearchableSelectField"
 import { PlusIcon } from "@/features/view/components/Icons/PlusIcon"
@@ -19,7 +19,7 @@ import {
     isSelectableConsumibleFamily,
     isAddableConsumibleFamily,
     isFixedConsumibleFamily,
-    getConsumibleFamily,
+    isPriorityConsumable,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 import { withSelectableCount } from "@/lib/utils/helpers/project_modals/productOptions"
 import {
@@ -100,10 +100,12 @@ export function Consume_PriceTable({
         hiddenConsumeKeys = [],
         onToggleConsumeKey,
         onSetConsumeKeysHidden,
+        applyConsumeDefaults = false,
     }: Consume_PriceTable_props){
 
     // recolectar materiales
-    const { materiales } = useMateriales()
+    const { materiales, loading: materialesLoading } = useMateriales()
+    const consumeDefaultsApplied = useRef(false)
     
     // Determina si se puede colapsar la tabla
     const [collapsedGroups, setCollapsedGroups] = useState<Set<ConsumibleGroupKey>>(new Set())
@@ -157,18 +159,42 @@ export function Consume_PriceTable({
     // items a mostrar en la barra de búsqueda (los que no están en la tabla)
     const catalogOptions = useMemo(() => {
         const usedCodes = new Set(
-            displayRows.map((row) => row.cod_producto).filter(Boolean),
+            visibleDisplayRows.map((row) => row.cod_producto).filter(Boolean),
         )
         return materiales
-            .filter((material) => {
-                if (!material.cod_producto || usedCodes.has(material.cod_producto)) return false
-                return !isSelectableConsumibleFamily(getConsumibleFamily(material.descripcion))
-            })
+            .filter((material) => Boolean(material.cod_producto) && !usedCodes.has(material.cod_producto))
             .map((material) => ({
                 value: String(material.id),
                 label: `(${material.cod_producto}) - ${material.descripcion}`,
             }))
-    }, [displayRows, materiales])
+    }, [visibleDisplayRows, materiales])
+
+    useEffect(() => {
+        if (!applyConsumeDefaults || consumeDefaultsApplied.current || materialesLoading) return
+        if (displayRows.length === 0) return
+        consumeDefaultsApplied.current = true
+        const hiddenKeys: string[] = []
+        displayRows.forEach((row) => {
+            if (isPriorityConsumable(row.descripcion)) return
+            hiddenKeys.push(row.key)
+            if (Number(row.cantidad) === 0) return
+            if (row.source === "catalog" && row.catalogId != null) {
+                onUpdateCantidad(row.catalogId, 0)
+                return
+            }
+            if (row.templateIndex != null) {
+                onUpdateItem(row.templateIndex, "cantidad", 0)
+            }
+        })
+        if (hiddenKeys.length > 0) onSetConsumeKeysHidden?.(hiddenKeys, true)
+    }, [
+        applyConsumeDefaults,
+        materialesLoading,
+        displayRows,
+        onSetConsumeKeysHidden,
+        onUpdateCantidad,
+        onUpdateItem,
+    ])
 
     // Handler para remover filas
     function handleRemoveRow(item: ConsumibleDisplayRow) {
