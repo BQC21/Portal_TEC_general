@@ -22,6 +22,7 @@ import {
     getCanalizacionSortOrder,
     getConsumibleFamily,
     getExtraCatalogConsumibles,
+    isPriorityConsumable,
     resolveConsumibleTipo,
 } from "@/lib/utils/helpers/project_modals/consumibleRowSelector"
 
@@ -171,7 +172,7 @@ export function buildSortedConsumibles(
         descripcion: material.descripcion,
         tipo_de_producto: resolveConsumibleTipo(material.descripcion, material.tipo_de_producto),
         unidad: material.unidad ?? "",
-        cantidad: 1,
+        cantidad: isPriorityConsumable(material.descripcion) ? 1 : 0,
         precio_soles: Number(material.precio_soles),
         precio_soles_igv: Number(material.precio_soles_igv),
         precio_dolares: Number(material.precio_dolares),

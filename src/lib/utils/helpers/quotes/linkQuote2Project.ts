@@ -32,6 +32,17 @@ export function quoteIndependence(quote?: {
     return "asociado";
 }
 
+export function defaultQuoteOrientation(quote?: {
+    proyecto_id?: string | null;
+    proyecto_info?: { id?: string; nombre?: string; angulo?: string | null } | null;
+    nombre_cotizacion?: string | null;
+    costos_manuales?: { union?: { quote_ids?: string[] } } | null;
+} | null) {
+    if (quoteIndependence(quote) !== "asociado") return "---";
+    const angle = quote?.proyecto_info?.angulo?.trim();
+    return angle || "---";
+}
+
 export function quoteIndependenceLabel(quote?: Parameters<typeof quoteIndependence>[0]) {
     const kind = quoteIndependence(quote);
     if (kind === "unidas") return "Cotizaciones unidas";

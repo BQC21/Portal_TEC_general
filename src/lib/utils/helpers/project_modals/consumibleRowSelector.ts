@@ -28,6 +28,11 @@ import {
 } from "@/lib/utils/consts/consumibles"
 import { formatProductOptionLabel } from "@/lib/utils/helpers/project_modals/productOptions"
 
+export function isPriorityConsumable(descripcion?: string): boolean {
+    const text = (descripcion ?? "").toUpperCase()
+    return text.includes("ITM") || text.includes("SPD") || text.includes("CABLE AC")
+}
+
 // -------------------
 // Funciones
 // -------------------

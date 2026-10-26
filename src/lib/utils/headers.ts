@@ -153,6 +153,7 @@ export const TABLE_HEADERS_QUOTE = [
 
 export const TABLE_HEADERS_REPORT = [
     "Acciones",
+    "Enviado",
     "Creado",
     "Actualizado",
     "Cotización asociada",

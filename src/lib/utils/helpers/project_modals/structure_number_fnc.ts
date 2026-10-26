@@ -52,12 +52,19 @@ export function isInclinado(angulo: string | undefined): boolean {
     return angulo === "Inclinado"
 }
 
+function isUnsetAngle(angulo: string | undefined): boolean {
+    const value = angulo?.trim() ?? ""
+    return !value || value === "---" || value === "- - -"
+}
+
 function isCoplanarStructure(descripcion: string | undefined): boolean {
-    return (descripcion ?? "").toLowerCase().includes("coplanar")
+    const text = normalizeStructureText(descripcion ?? "")
+    return text.includes("fijo") || text.includes("fija") || text.includes("coplanar")
 }
 
 function isInclinedStructure(descripcion: string | undefined): boolean {
-    return (descripcion ?? "").toLowerCase().includes("regulable")
+    const text = normalizeStructureText(descripcion ?? "")
+    return text.includes("regulable") || text.includes("inclinada") || text.includes("inclinado")
 }
 
 // Filtra estructuras según la orientación del proyecto (coplanar / inclinado).
@@ -66,8 +73,18 @@ export function matchesStructureAngle(
     descripcion: string | undefined,
     angulo: string | undefined,
 ): boolean {
-    if (!angulo?.trim()) return true // COTIZACIÓN INDEPENDIENTE
-    if (isCoplanarStructure(descripcion)) return isCoplanar(angulo)
-    if (isInclinedStructure(descripcion)) return isInclinado(angulo)
+    if (isUnsetAngle(angulo)) return true
+    const coplanar = isCoplanarStructure(descripcion)
+    const inclined = isInclinedStructure(descripcion)
+    if (isCoplanar(angulo)) {
+        if (coplanar) return true
+        if (inclined) return false
+        return true
+    }
+    if (isInclinado(angulo)) {
+        if (inclined) return true
+        if (coplanar) return false
+        return true
+    }
     return true
 }

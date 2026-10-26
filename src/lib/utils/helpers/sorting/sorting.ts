@@ -20,15 +20,27 @@ export function shouldRender_ProductSortingSelection(currentOrder: ProductSortin
 // ordenamiento según el código del proveedor de forma descendente
 export function sortGroupedByCodeSupplier<T extends Record<string, unknown>>(
     rows: T[],
-    key: keyof T
+    key: keyof T,
+    order: "asc" | "desc" = "asc",
 ): T[] {
+    const direction = order === "desc" ? -1 : 1;
     return [...rows].sort((a, b) => {
-        // conversión a string
-        const aValue = String(a[key] ?? ""); // fila actual
-        const bValue = String(b[key] ?? ""); // fila siguiente
+        const aValue = String(a[key] ?? "");
+        const bValue = String(b[key] ?? "");
+        return aValue.localeCompare(bValue, "es", { sensitivity: "base", numeric: true }) * direction;
+    });
+}
 
-        // comparación de valores
-        return aValue.localeCompare(bValue, "es", { sensitivity: "base", numeric: true }); // comparación natural de códigos
+export function sortByNumericField<T extends Record<string, unknown>>(
+    rows: T[],
+    key: keyof T,
+    order: "asc" | "desc",
+): T[] {
+    const direction = order === "desc" ? -1 : 1;
+    return [...rows].sort((left, right) => {
+        const leftValue = Number(left[key] ?? 0);
+        const rightValue = Number(right[key] ?? 0);
+        return (leftValue - rightValue) * direction;
     });
 }
 

@@ -13,6 +13,16 @@ export const SORTING_OPTIONS = {
     desc: "Descendente",
 } as const;
 
+export const CODE_ORDER_OPTIONS = [
+    { value: "asc", label: "Ascendente" },
+    { value: "desc", label: "Descendente" },
+];
+
+export const METRIC_ORDER_OPTIONS = [
+    { value: "asc", label: "Ascendente" },
+    { value: "desc", label: "Descendente" },
+];
+
 export const DATE_SORT_PLACEHOLDER = "Todos los ordenamientos";
 
 export const DATE_SORT_SELECT_OPTIONS = [
@@ -20,11 +30,13 @@ export const DATE_SORT_SELECT_OPTIONS = [
     { value: "desc", label: SORTING_OPTIONS.desc },
 ] as const;
 
+
+
 // Filtrado según ...
 export const Unidad_ModFV = ["Unidad", "Palet", "Container"]; // Unidad del equipo o material (MÓDULO FV)
 export const INVERTER_CONNECTION_FILTER_OPTIONS = ["1F 220V","3F 220V", "3F 380V","3F 480V"]; // Configuración del inversor
 export const ELECTRICAL_PART_FILTER_OPTIONS = ["DC", "AC", "DC/AC", "---"]; // Tipo de instalación
-export const ELECTRICAL_PART_FILTER_TYPES = ["CABLE", "PROTECCIÓN", "CONSUMIBLE"]; // Materiales eléctricos filtrables
+export const ELECTRICAL_PART_FILTER_TYPES = ["CABLE", "PROTECCIÓN", "CONSUMIBLE", "CANALIZACIÓN"]; // Materiales eléctricos filtrables
 export const Unidad_Consumible = ["Unidad", "Metros", "Cientos"] // Unidad si el producto es un CONSUMIBLE
 export const Category = ["Equipos", "Materiales", "Ambas"]; // Categoría del proveedor, marca o tipo de producto
 

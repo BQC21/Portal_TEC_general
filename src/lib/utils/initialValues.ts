@@ -159,7 +159,8 @@ export const INITIAL_TYPE_FORM: TypeFormstate = {
     marca_id: "",
     marca_ids: [],
     marca_info: undefined,
-    marcas_info: [],  
+    marcas_info: [],
+    propiedades: undefined,
 }
 
 // ------ M2

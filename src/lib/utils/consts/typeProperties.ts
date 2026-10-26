@@ -1,5 +1,3 @@
-import { EQUIPOS_TABLE, MATERIALES_TABLE } from "@/lib/utils/namingTolerance";
-
 export type TypeProperty = {
     etiqueta: string;
     columna: string;
