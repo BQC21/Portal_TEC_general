@@ -19,6 +19,7 @@ export type ReportPdfVisibility = {
         descripcion: string;
         visible: boolean;
     }>;
+    enviado?: boolean;
 };
 
 // estado del formulario
@@ -51,6 +52,7 @@ export type SupabaseReportRow = {
     payFormat?: string;
     opcion_firma?: string;
     visibilidad_pdf?: ReportPdfVisibility | null;
+    enviado?: boolean | null;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;
@@ -80,6 +82,7 @@ export type Report = {
     payFormat: string;
     opcion_firma:string;
     visibilidad_pdf: ReportPdfVisibility;
+    enviado?: boolean;
     // fechas
     created_at?: Date | string | null;
     updated_at?: Date | string | null;

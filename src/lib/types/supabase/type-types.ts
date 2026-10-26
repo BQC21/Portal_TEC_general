@@ -1,3 +1,4 @@
+import { TypeProperty } from "@/lib/utils/consts/typeProperties";
 import { Brand, SupabaseBrandRow } from "./brand.types";
 
 // Estado del formulario 
@@ -18,7 +19,8 @@ export type SupabaseTypeRow = {
     marca_ids?: Array<number | string> | null;
     marca_info?: SupabaseBrandRow;
     marcas?: SupabaseBrandRow;
-    marcas_info?: SupabaseBrandRow[];               
+    marcas_info?: SupabaseBrandRow[];
+    propiedades?: TypeProperty[] | null;
 };
 
 // Campos para la base de datos
@@ -34,7 +36,8 @@ export type Type = {
     marca_id: string;
     marca_ids: string[];
     marca_info?: Brand;
-    marcas_info?: Brand[];  
+    marcas_info?: Brand[];
+    propiedades?: TypeProperty[];
 };
 
 // Estado de la visualización
