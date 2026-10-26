@@ -21,6 +21,9 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
     onDeleteProjectMateriales,
     onDuplicateProject }: ProjectTableProps) {
 
+    const coloredRows = projects.filter((project) => quotedProjectIds.has(String(project.id))).length;
+    const plainRows = projects.length - coloredRows;
+
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -139,6 +142,9 @@ export default function ProjectTable({ projects, projects_equipos, projects_mate
             </div>
             <p className="text-lg text-slate-500">
                 Mostrando {projects.length} de {totalProjects} proyectos
+            </p>
+            <p className="text-lg text-slate-500">
+                Filas coloreadas: {coloredRows}. Filas no coloreadas: {plainRows}.
             </p>
         </section>
     )

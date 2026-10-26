@@ -16,6 +16,9 @@ export default function ReportTable({report, totalReport,
     projects_equipos, projects_materiales}: ReportTableProps){
     return(
         <section className="space-y-4 w-full">
+            <p className="text-lg text-slate-600">
+                Marque la casilla si el reporte ya fue enviado. Las filas marcadas se muestran en verde.
+            </p>
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
                 <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
                     <table className="min-w-full w-max border-separate border-spacing-0">
@@ -41,8 +44,9 @@ export default function ReportTable({report, totalReport,
                                     const reportMateriales = proyectoId
                                         ? projects_materiales.filter((item) => item.proyecto_id === proyectoId)
                                         : [];
+                                    const sent = Boolean(report.enviado);
                                     return (
-                                    <tr key={report.id} className="bg-white">
+                                    <tr key={report.id} className={sent ? "bg-green-100" : "bg-white"}>
 
                                         <td className="border border-slate-200 px-4 py-5">
                                             <div className="flex items-center gap-4 text-slate-500">
@@ -74,6 +78,17 @@ export default function ReportTable({report, totalReport,
                                                     )}
                                                 </Button2Delete>
                                             </div>
+                                        </td>
+                                        <td className="border border-slate-200 px-4 py-5">
+                                            <input
+                                                type="checkbox"
+                                                checked={sent}
+                                                onChange={() => {
+                                                    void onUpdateReport({ ...report, enviado: !sent });
+                                                }}
+                                                aria-label={`Marcar el reporte de ${report.cliente || "cliente"} como enviado`}
+                                                className="h-5 w-5 accent-green-600"
+                                            />
                                         </td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(report.created_at)}</td>
                                         <td className={`border border-slate-200 px-4 py-5 font-medium ${DATE_CELL_CLASS}`}>{formatDate(report.updated_at)}</td>

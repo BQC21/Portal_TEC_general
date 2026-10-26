@@ -14,6 +14,9 @@ import { DATE_CELL_CLASS, getDateHeaderClass, LINKED_ROW_CELL_CLASS } from "@/li
 
 export default function QuoteTable({quote, totalQuote, 
     onUpdateQuote, onDeleteQuote, onDuplicateQuote, projects_equipos, projects_materiales, reportedQuoteIds}: QuoteTableProps){
+    const coloredRows = quote.filter((item) => reportedQuoteIds.has(String(item.id))).length;
+    const plainRows = quote.length - coloredRows;
+
     return(
         <section className="space-y-4 w-full">
             <div className="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_2px_8px_rgba(15,23,42,0.04)]">
@@ -103,6 +106,9 @@ export default function QuoteTable({quote, totalQuote,
             </div>
             <p className="text-lg text-slate-500">
                 Mostrando {quote.length} de {totalQuote} cotizaciones
+            </p>
+            <p className="text-lg text-slate-500">
+                Filas coloreadas: {coloredRows}. Filas no coloreadas: {plainRows}.
             </p>
         </section>
     )
