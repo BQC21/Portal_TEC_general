@@ -331,6 +331,19 @@ export function ManageLocalCosts(
         });
     }
 
+    function updateOrientacion(value: string) {
+        setManualResourceCosts((current) => {
+            if (current.Recursos.orientacion === value) return current;
+            return {
+                ...current,
+                Recursos: {
+                    ...current.Recursos,
+                    orientacion: value,
+                },
+            };
+        });
+    }
+
     function setConsumiblesHidden(keys: string[], hidden: boolean) {
         setManualResourceCosts((current) => {
             const next = new Set(current.Recursos.consumibles_ocultos ?? []);
@@ -359,5 +372,6 @@ export function ManageLocalCosts(
         updateRecursosConsiderFlag,
         toggleConsumibleOculto,
         setConsumiblesHidden,
+        updateOrientacion,
     };
 }

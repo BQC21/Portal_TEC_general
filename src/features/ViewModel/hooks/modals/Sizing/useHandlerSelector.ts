@@ -158,6 +158,11 @@ export function handlerSelector(label:string, product_type: "EQUIPO" | "MATERIAL
                     .filter((material) => {
                         if (material.tipo_de_producto !== label) return false;
 
+                        if (label === "PROTECCIÓN") {
+                            const description = (material.descripcion ?? "").toUpperCase();
+                            if (!description.includes("ITM") && !description.includes("SPD")) return false;
+                        }
+
                         // Condicionar a que solo se muestre los materiales de tipo CABLES 
                         // que contengan "AC" en su descripción
                         if (label === "CABLE" && !material.descripcion.includes("AC")) return false;
