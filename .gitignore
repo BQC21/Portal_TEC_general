@@ -54,6 +54,7 @@ next-env.d.ts
 /testsprite_tests/
 testsprite_tests/tmp/
 testsprite_tests/tmp/config.json
+passwords.txt
 
 # archivos privados
 /tmp/
